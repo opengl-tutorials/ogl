@@ -2,10 +2,8 @@
 #include <stdlib.h>
 
 #include <GL/glew.h>
-#include <GL/glfw.h>
 
-#include <glm/glm.hpp>
-using namespace glm;
+#include <GL/glfw.h>
 
 #include <common/shader.hpp>
 
@@ -22,42 +20,67 @@ int main( void )
     glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE,GL_TRUE);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
-    glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 
     // Open a window and create its OpenGL context
-    if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
+    if( !glfwOpenWindow( 800, 800, 0,0,0,0, 32,0, GLFW_WINDOW ) )
     {
         fprintf( stderr, "Failed to open GLFW window\n" );
 
         glfwTerminate();
         exit( EXIT_FAILURE );
     }
-//	int ret = glewInit();
-
-	  if (glewInit()) {
-                fprintf(stderr, "failed to initialize OpenGL\n");
-                return -1;
-        }
-
-
+	int ret = glewInit();
 	GLuint VertexArrayID;
 	glGenVertexArrays(1, &VertexArrayID);
     glBindVertexArray(VertexArrayID);
 
-	GLuint programID = LoadShaders( "SimpleVertexShader.vertexshader", "SimpleFragmentShader.fragmentshader" );
-
+	GLuint programID = LoadShaders( "TransformVertexShader.vertexshader", "ColorFragmentShader.fragmentshader" );
 
 	static const GLfloat g_vertex_buffer_data[] = { 
-		-1.0f, -1.0f, 0,1,
-		 1.0f, -1.0f, 0,1,
-		 0.0f,  1.0f, 0,1,
+		 0.500000, -0.500000, -0.500000,
+		 0.500000, -0.500000,  0.500000,
+		-0.500000, -0.500000,  0.500000,
+		-0.500000, -0.500000, -0.500000,
+		 0.500000,  0.500000, -0.500000,
+		 0.500000,  0.500000,  0.500000,
+		-0.500000,  0.500000,  0.500000,
+		-0.500000,  0.500000, -0.500000
 	};
-	static const GLushort g_element_buffer_data[] = { 0, 1, 2 };
+	static const GLfloat g_color_buffer_data[] = { 
+		 1.000000, 0.000000, 0.000000,
+		 0.000000, 1.000000, 0.000000,
+		 0.000000, 0.000000, 1.000000,
+		 1.000000, 0.000000, 0.000000,
+		 0.000000, 1.000000, 0.000000,
+		 0.000000, 0.000000, 1.000000,
+		 1.000000, 0.000000, 0.000000,
+		 0.000000, 1.000000, 0.000000,
+	};
+	static const GLushort g_element_buffer_data[] = { 
+		5, 1, 4,
+		5, 4, 8,
+		3, 7, 8,
+		3, 8, 4,
+		2, 6, 3,
+		6, 7, 3,
+		1, 5, 2,
+		5, 6, 2,
+		5, 8, 6,
+		8, 7, 6,
+		1, 2, 3,
+		1, 3, 4
+	};
 
 	GLuint buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+
+	GLuint colorbuffer;
+    glGenBuffers(1, &colorbuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
 
     GLuint elementbuffer;
     glGenBuffers(1, &elementbuffer);
@@ -69,7 +92,7 @@ int main( void )
     {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		glViewport(0, 0, 1024,768);
+		glViewport(0, 0, 800,800);
 		glClearColor(0,0,0.3f,0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -78,23 +101,36 @@ int main( void )
 		glBindBuffer(GL_ARRAY_BUFFER, buffer);
 		glVertexAttribPointer(
 			0,  /* attribute */
-			4,                                /* size */
+			3,                                /* size */
 			GL_FLOAT,                         /* type */
 			GL_FALSE,                         /* normalized? */
 			0,                /* stride */
 			(void*)0                          /* array buffer offset */
 		);
+
+		glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
+		glVertexAttribPointer(
+			1,  /* attribute */
+			3,                                /* size */
+			GL_FLOAT,                         /* type */
+			GL_FALSE,                         /* normalized? */
+			0,                /* stride */
+			(void*)0                          /* array buffer offset */
+		);
+
 		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 		glDrawElements(
 			GL_TRIANGLES,  /* mode */
-			3,                  /* count */
+			12*3,                  /* count */
 			GL_UNSIGNED_SHORT,  /* type */
 			(void*)0            /* element array buffer offset */
 		);
     
 		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
 
 
         // Swap buffers

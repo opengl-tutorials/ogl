@@ -8,9 +8,6 @@ using namespace glm;
 
 int main( void )
 {
-    int width, height, x;
-    double t;
-
     // Initialise GLFW
     if( !glfwInit() )
     {

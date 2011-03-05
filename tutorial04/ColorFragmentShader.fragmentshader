@@ -1,0 +1,10 @@
+#version 330 core
+
+in vec3 interpolatedFragmentColor;
+out vec4 color;
+
+void main()
+{
+	color.xyz = interpolatedFragmentColor;
+	color.w = 1;
+}

@@ -5,7 +5,9 @@
 #include <GL/glfw.h>
 
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 using namespace glm;
+
 
 #include <common/shader.hpp>
 
@@ -44,13 +46,18 @@ int main( void )
 	glGenVertexArrays(1, &VertexArrayID);
     glBindVertexArray(VertexArrayID);
 
-	GLuint programID = LoadShaders( "SimpleVertexShader.vertexshader", "SimpleFragmentShader.fragmentshader" );
+	GLuint programID = LoadShaders( "SimpleTransform.vertexshader", "SingleColor.fragmentshader" );
 
+	GLuint MatrixID  = glGetUniformLocation(programID, "MVP");
+    glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+	glm::mat4 View = glm::lookAt(glm::vec3(10,10,10), glm::vec3(0,0,0), glm::vec3(0,1,0));
+	glm::mat4 Model = glm::mat4(1.0f);
+	glm::mat4 MVP = Projection * View * Model;
 
 	static const GLfloat g_vertex_buffer_data[] = { 
-		-1.0f, -1.0f, 0,1,
-		 1.0f, -1.0f, 0,1,
-		 0.0f,  1.0f, 0,1,
+		-1.0f, -1.0f, 0,
+		 1.0f, -1.0f, 0,
+		 0.0f,  1.0f, 0,
 	};
 	static const GLushort g_element_buffer_data[] = { 0, 1, 2 };
 
@@ -74,11 +81,12 @@ int main( void )
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glUseProgram(programID);
+		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 
 		glBindBuffer(GL_ARRAY_BUFFER, buffer);
 		glVertexAttribPointer(
 			0,  /* attribute */
-			4,                                /* size */
+			3,                                /* size */
 			GL_FLOAT,                         /* type */
 			GL_FALSE,                         /* normalized? */
 			0,                /* stride */
