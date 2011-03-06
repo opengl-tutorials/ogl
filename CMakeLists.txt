@@ -80,6 +80,21 @@ add_custom_command(
    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial04${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial04/"
 )
 
+# Tutorial 5
+add_executable(tutorial05
+	tutorial05/tutorial05.cpp
+	common/shader.cpp
+	common/shader.hpp
+)
+target_link_libraries(tutorial05
+	${ALL_LIBS}
+)
+add_custom_command(
+   TARGET tutorial05 POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy ${GLEW_OUTPUT_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/tutorial05/"
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial05${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial05/"
+)
+
 
 # User playground
 add_executable(playground 

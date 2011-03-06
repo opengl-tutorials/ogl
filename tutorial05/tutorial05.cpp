@@ -11,6 +11,80 @@
 #include <glm/gtc/matrix_transform.hpp>
 using namespace glm;
 
+GLuint loadBMP_custom(const char * imagepath){
+
+	printf("Reading image %s\n", imagepath);
+
+	// Data read from the header of the BMP file
+    unsigned char header[54];
+    unsigned int dataPos;
+	unsigned int imageSize;
+	unsigned int width, height, bpp;
+	// Actual RGB data
+	unsigned char * data;
+
+	// Open the file
+    FILE * file = fopen(imagepath,"rb");
+	if (!file)							    {printf("Image could not be opened\n"); return 0;}
+
+	// Read the header, i.e. the 54 first bytes
+
+	// If less than 54 byes are read, problem
+    if ( fread(header, 1, 54, file)!=54 ){ 
+		printf("Not a correct BMP file\n");
+		return false;
+	}
+	// A BMP files always begins with "BM"
+    if ( header[0]!='B' || header[1]!='M' ){
+		printf("Not a correct BMP file\n");
+		return 0;
+	}
+	// Make sure this is a 24bpp file
+    if ( *(int*)&(header[0x1E])!=0  )         {printf("Not a correct BMP file\n");    return 0;}
+    if ( *(int*)&(header[0x1C])!=24 )         {printf("Not a correct BMP file\n");    return 0;}
+
+	// Read the information about the image
+    dataPos    = *(int*)&(header[0x0A]);
+    imageSize  = *(int*)&(header[0x22]);
+    width      = *(int*)&(header[0x12]);
+    height     = *(int*)&(header[0x16]);
+    bpp=3;
+
+	// Some BMP files are misformatted, guess missing information
+    if (imageSize==0)    imageSize=width*height*3; // 3 : one byte for each Red, Green and Blue component
+    if (dataPos==0)      dataPos=54;
+
+	// Create a buffer
+    data = new unsigned char [imageSize];
+
+	// Read the actual data from the file into the buffer
+    fread(data,1,imageSize,file);
+
+	// Everything is in memory now, the file wan be closed
+    fclose (file);
+
+	// Swap Red and Blue component for each texel of the image
+    unsigned char t;
+    for (unsigned int i = 0; i < imageSize; i += 3 )
+	{
+        t = data[i];
+        data[i] = data[i+2];
+        data[i+2] = t;
+	}
+
+	// Create one OpenGL texture
+	GLuint textureID;
+	glGenTextures(1, &textureID);
+	
+	// "Bind" the newly created texture as a 2D texture
+	glBindTexture(GL_TEXTURE_2D, textureID);
+
+	// Give the image to OpenGL
+    glTexImage2D(textureID, 0,bpp, width, height, 0,(bpp == 3 ? GL_RGB : GL_RGBA), GL_UNSIGNED_BYTE, data);
+
+	// Return the ID of the texture we just created
+    return textureID;
+}
 
 int main( void )
 {
@@ -40,13 +114,17 @@ int main( void )
 	glGenVertexArrays(1, &VertexArrayID);
     glBindVertexArray(VertexArrayID);
 
-	GLuint programID = LoadShaders( "TransformVertexShader.vertexshader", "ColorFragmentShader.fragmentshader" );
+	GLuint programID = LoadShaders( "TransformVertexShader.vertexshader", "TextureFragmentShader.fragmentshader" );
 
 	GLuint MatrixID  = glGetUniformLocation(programID, "MVP");
     glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 	glm::mat4 View = glm::lookAt(glm::vec3(5,5,5), glm::vec3(0,0,0), glm::vec3(0,1,0));
 	glm::mat4 Model = glm::mat4(1.0f);
 	glm::mat4 MVP = Projection * View * Model;
+
+
+	GLuint Texture = loadBMP_custom("texture.bmp");
+	GLuint TextureID  = glGetUniformLocation(programID, "texture");
 
 	static const GLfloat g_vertex_buffer_data[] = { 
 		 0.500000, -0.500000, -0.500000,
@@ -58,15 +136,15 @@ int main( void )
 		-0.500000,  0.500000,  0.500000,
 		-0.500000,  0.500000, -0.500000
 	};
-	static const GLfloat g_color_buffer_data[] = { 
-		 1.000000, 0.000000, 0.000000,
-		 0.000000, 1.000000, 0.000000,
-		 0.000000, 0.000000, 1.000000,
-		 1.000000, 0.000000, 0.000000,
-		 0.000000, 1.000000, 0.000000,
-		 0.000000, 0.000000, 1.000000,
-		 1.000000, 0.000000, 0.000000,
-		 0.000000, 1.000000, 0.000000,
+	static const GLfloat g_uv_buffer_data[] = { 
+		 0.000000, 0.000000,
+		 1.000000, 0.000000,
+		 0.000000, 1.000000,
+		 1.000000, 1.000000,
+		 0.000000, 0.000000,
+		 1.000000, 0.000000,
+		 0.000000, 1.000000,
+		 1.000000, 1.000000
 	};
 	static const GLushort g_element_buffer_data[] = { 
 		4, 0, 3,
@@ -88,10 +166,10 @@ int main( void )
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 
-	GLuint colorbuffer;
-    glGenBuffers(1, &colorbuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
+	GLuint uvbuffer;
+    glGenBuffers(1, &uvbuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
 
     GLuint elementbuffer;
     glGenBuffers(1, &elementbuffer);
@@ -103,15 +181,20 @@ int main( void )
     {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		glViewport(0, 0, 800,800);
-		glClearColor(0,0,0.3f,0);
+		glViewport(0, 0, 1024,768);
+		glClearColor(0, 0, 0.3f, 0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		
 		glEnable(GL_DEPTH_TEST); // activer ou désactiver
 
 		glUseProgram(programID);
+		
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, TextureID);
+		glUniform1ui(TextureID, 0);
 
 		glBindBuffer(GL_ARRAY_BUFFER, buffer);
 		glVertexAttribPointer(
@@ -123,10 +206,10 @@ int main( void )
 			(void*)0                          /* array buffer offset */
 		);
 
-		glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 		glVertexAttribPointer(
 			1,  /* attribute */
-			3,                                /* size */
+			2,                                /* size */
 			GL_FLOAT,                         /* type */
 			GL_FALSE,                         /* normalized? */
 			0,                /* stride */
