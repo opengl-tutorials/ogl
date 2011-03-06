@@ -75,13 +75,15 @@ GLuint loadBMP_custom(const char * imagepath){
 	// Create one OpenGL texture
 	GLuint textureID;
 	glGenTextures(1, &textureID);
+	glActiveTexture(GL_TEXTURE0);
 	
 	// "Bind" the newly created texture as a 2D texture
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
 	// Give the image to OpenGL
-    glTexImage2D(textureID, 0,bpp, width, height, 0,(bpp == 3 ? GL_RGB : GL_RGBA), GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0,(bpp == 3 ? GL_RGB : GL_RGBA), GL_UNSIGNED_BYTE, data);
 
+	glGenerateMipmap(GL_TEXTURE_2D);
 	// Return the ID of the texture we just created
     return textureID;
 }
@@ -118,11 +120,12 @@ int main( void )
 
 	GLuint MatrixID  = glGetUniformLocation(programID, "MVP");
     glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
-	glm::mat4 View = glm::lookAt(glm::vec3(5,5,5), glm::vec3(0,0,0), glm::vec3(0,1,0));
+	glm::mat4 View = glm::lookAt(glm::vec3(10,10,10), glm::vec3(0,0,0), glm::vec3(0,1,0));
 	glm::mat4 Model = glm::mat4(1.0f);
 	glm::mat4 MVP = Projection * View * Model;
 
 
+		//glEnable(GL_TEXTURE_2D);
 	GLuint Texture = loadBMP_custom("texture.bmp");
 	GLuint TextureID  = glGetUniformLocation(programID, "texture");
 
@@ -176,25 +179,25 @@ int main( void )
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(g_element_buffer_data), g_element_buffer_data, GL_STATIC_DRAW);
 	
-	
+	glViewport(0, 0, 1024,768);
+	glClearColor(0, 0, 0.3f, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST); // activer ou désactiver
+
 	do
     {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		glViewport(0, 0, 1024,768);
-		glClearColor(0, 0, 0.3f, 0);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		
-		glEnable(GL_DEPTH_TEST); // activer ou désactiver
-
 		glUseProgram(programID);
 		
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+		
 
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, TextureID);
-		glUniform1ui(TextureID, 0);
+		//glEnable(GL_TEXTURE_2D);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, Texture);
+
+		glUniform1i(TextureID, 0);
 
 		glBindBuffer(GL_ARRAY_BUFFER, buffer);
 		glVertexAttribPointer(
@@ -229,6 +232,7 @@ int main( void )
     
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
+
 
 
         // Swap buffers
