@@ -7,6 +7,11 @@
 
 #include <common/shader.hpp>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+using namespace glm;
+
+
 int main( void )
 {
     // Initialise GLFW
@@ -37,6 +42,12 @@ int main( void )
 
 	GLuint programID = LoadShaders( "TransformVertexShader.vertexshader", "ColorFragmentShader.fragmentshader" );
 
+	GLuint MatrixID  = glGetUniformLocation(programID, "MVP");
+    glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+	glm::mat4 View = glm::lookAt(glm::vec3(5,5,5), glm::vec3(0,0,0), glm::vec3(0,1,0));
+	glm::mat4 Model = glm::mat4(1.0f);
+	glm::mat4 MVP = Projection * View * Model;
+
 	static const GLfloat g_vertex_buffer_data[] = { 
 		 0.500000, -0.500000, -0.500000,
 		 0.500000, -0.500000,  0.500000,
@@ -58,18 +69,18 @@ int main( void )
 		 0.000000, 1.000000, 0.000000,
 	};
 	static const GLushort g_element_buffer_data[] = { 
-		5, 1, 4,
-		5, 4, 8,
-		3, 7, 8,
-		3, 8, 4,
-		2, 6, 3,
-		6, 7, 3,
+		4, 0, 3,
+		4, 3, 7,
+		2, 6, 7,
+		2, 7, 3,
 		1, 5, 2,
 		5, 6, 2,
-		5, 8, 6,
-		8, 7, 6,
-		1, 2, 3,
-		1, 3, 4
+		0, 4, 1,
+		4, 5, 1,
+		4, 7, 5,
+		7, 6, 5,
+		0, 1, 2,
+		0, 2, 3
 	};
 
 	GLuint buffer;
@@ -96,7 +107,11 @@ int main( void )
 		glClearColor(0,0,0.3f,0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		
+		glEnable(GL_DEPTH_TEST); // activer ou désactiver
+
 		glUseProgram(programID);
+		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 
 		glBindBuffer(GL_ARRAY_BUFFER, buffer);
 		glVertexAttribPointer(
