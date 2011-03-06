@@ -46,7 +46,14 @@ target_link_libraries(GLFW_27
 	${OPENGL_LIBRARY}
 )
 
-set( GLFW_OUTPUT_NAME "GLFW_27.lib" )
+if ( ${CMAKE_SYSTEM_NAME} STREQUAL "Windows")   # Windows
+	set( GLFW_OUTPUT_NAME "GLFW_27.lib" )
+elseif ( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux") # Linux
+	set( GLFW_OUTPUT_NAME "libGLFW_27.a" )
+else ( ${CMAKE_SYSTEM_NAME} STREQUAL "Windows") # Something else ? 
+	message( ERROR "Unknown system : ${CMAKE_SYSTEM_NAME}")
+endif( ${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+
 set( GLFW_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${GLFW_OUTPUT_NAME}" PARENT_SCOPE)
 
 
@@ -77,5 +84,13 @@ target_link_libraries(GLEW_158
 	${OPENGL_LIBRARY}
 )
 
-set( GLEW_OUTPUT_NAME "GLEW_158.dll" )
+if ( ${CMAKE_SYSTEM_NAME} STREQUAL "Windows")   # Windows
+	set( GLEW_OUTPUT_NAME "GLEW_158.dll" )
+elseif ( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux") # Linux
+	set( GLEW_OUTPUT_NAME "libGLEW_158.so" )
+else ( ${CMAKE_SYSTEM_NAME} STREQUAL "Windows") # Something else ? 
+	message( ERROR "Unknown system : ${CMAKE_SYSTEM_NAME}")
+endif( ${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+
+
 set( GLEW_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${GLEW_OUTPUT_NAME}" PARENT_SCOPE)
