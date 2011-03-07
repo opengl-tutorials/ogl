@@ -85,6 +85,8 @@ add_executable(tutorial05
 	tutorial05/tutorial05.cpp
 	common/shader.cpp
 	common/shader.hpp
+	common/texture.cpp
+	common/texture.hpp
 )
 target_link_libraries(tutorial05
 	${ALL_LIBS}
@@ -93,6 +95,44 @@ add_custom_command(
    TARGET tutorial05 POST_BUILD
    COMMAND ${CMAKE_COMMAND} -E copy ${GLEW_OUTPUT_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/tutorial05/"
    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial05${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial05/"
+)
+
+# Tutorial 6
+add_executable(tutorial06
+	tutorial06/tutorial06.cpp
+	common/shader.cpp
+	common/shader.hpp
+	common/controls.cpp
+	common/controls.hpp
+	common/texture.cpp
+	common/texture.hpp
+)
+target_link_libraries(tutorial06
+	${ALL_LIBS}
+)
+add_custom_command(
+   TARGET tutorial06 POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy ${GLEW_OUTPUT_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/tutorial06/"
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial06${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial06/"
+)
+
+# Tutorial 7
+add_executable(tutorial07
+	tutorial07/tutorial07.cpp
+	common/shader.cpp
+	common/shader.hpp
+	common/controls.cpp
+	common/controls.hpp
+	common/texture.cpp
+	common/texture.hpp
+)
+target_link_libraries(tutorial07
+	${ALL_LIBS}
+)
+add_custom_command(
+   TARGET tutorial07 POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy ${GLEW_OUTPUT_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/tutorial07/"
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial07${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial07/"
 )
 
 

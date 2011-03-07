@@ -3,3 +3,5 @@ syntax: glob
 *.dll
 *.exe
 build/*
+*.bak
+Thumbs.db

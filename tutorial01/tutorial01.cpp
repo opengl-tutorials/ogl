@@ -1,10 +1,14 @@
+// Include standard headers
 #include <stdio.h>
 #include <stdlib.h>
 
+// Include GLEW
 #include <GL/glew.h>
 
+// Include GLFW
 #include <GL/glfw.h>
 
+// Include GLM
 #include <glm/glm.hpp>
 using namespace glm;
 
@@ -14,35 +18,38 @@ int main( void )
     if( !glfwInit() )
     {
         fprintf( stderr, "Failed to initialize GLFW\n" );
-        exit( EXIT_FAILURE );
+        return -1;
     }
 
     glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
     glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE,GL_TRUE);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
-	//glfwOpenWindowHint(GLFW_OPENGL_FORWARD_COMPAT,GL_TRUE);
- //   glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Open a window and create its OpenGL context
     if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
     {
         fprintf( stderr, "Failed to open GLFW window\n" );
-
         glfwTerminate();
-        exit( EXIT_FAILURE );
+        return -1;
     }
 
-	glfwSetWindowTitle( "Spinning Triangle" );
+	// Initialize GLEW
+	if (glewInit() != GLEW_OK) {
+		fprintf(stderr, "Failed to initialize GLEW\n");
+		return -1;
+	}
 
-    // Ensure we can capture the escape key being pressed below
+	glfwSetWindowTitle( "Tutorial 01" );
+
+	// Ensure we can capture the escape key being pressed below
     glfwEnable( GLFW_STICKY_KEYS );
 
-    // Enable vertical sync (on cards that support it)
-    glfwSwapInterval( 1 );
+	// Dark blue background
+	glClearColor(0.0f, 0.0f, 0.3f, 0.0f);
 
-    do
-    {
+    do{
 		// Draw nothing, see you in tutorial 2 !
 
         // Swap buffers
@@ -55,6 +62,6 @@ int main( void )
     // Close OpenGL window and terminate GLFW
     glfwTerminate();
 
-    exit( EXIT_SUCCESS );
+    return 0;
 }
 

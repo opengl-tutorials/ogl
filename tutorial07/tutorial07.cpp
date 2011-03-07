@@ -45,7 +45,7 @@ int main( void )
 		return -1;
 	}
 
-	glfwSetWindowTitle( "Tutorial 05" );
+	glfwSetWindowTitle( "Tutorial 07" );
 
 	// Ensure we can capture the escape key being pressed below
     glfwEnable( GLFW_STICKY_KEYS );
@@ -72,7 +72,7 @@ int main( void )
     glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 	// Camera matrix
 	glm::mat4 View       = glm::lookAt(
-								glm::vec3(2,2,2), // Camera is at (2,2,2), in World Space
+								glm::vec3(5,5,5), // Camera is at (5,5,5), in World Space
 								glm::vec3(0,0,0), // and looks at the origin
 								glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
 						   );
@@ -81,7 +81,7 @@ int main( void )
 	// Our ModelViewProjection : multiplication of our 3 matrices
 	glm::mat4 MVP        = Projection * View * Model; // Remember, matrix multiplication is the other way around
 
-	// Load the texture using any two methods
+
 	//GLuint Texture = loadBMP_custom("texture.bmp");
 	GLuint Texture = loadTGA_glfw("texture.tga");
 	

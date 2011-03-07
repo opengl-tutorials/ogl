@@ -1,9 +1,14 @@
+// Include standard headers
 #include <stdio.h>
 #include <stdlib.h>
 
+// Include GLEW
 #include <GL/glew.h>
+
+// Include GLFW
 #include <GL/glfw.h>
 
+// Include GLM
 #include <glm/glm.hpp>
 using namespace glm;
 
@@ -15,87 +20,95 @@ int main( void )
     if( !glfwInit() )
     {
         fprintf( stderr, "Failed to initialize GLFW\n" );
-        exit( EXIT_FAILURE );
+        return -1;
     }
 
     glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
     glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE,GL_TRUE);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
-    glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Open a window and create its OpenGL context
     if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
     {
         fprintf( stderr, "Failed to open GLFW window\n" );
-
         glfwTerminate();
-        exit( EXIT_FAILURE );
+        return -1;
     }
-//	int ret = glewInit();
 
-	  if (glewInit()) {
-                fprintf(stderr, "failed to initialize OpenGL\n");
-                return -1;
-        }
+	// Initialize GLEW
+	if (glewInit() != GLEW_OK) {
+		fprintf(stderr, "Failed to initialize GLEW\n");
+		return -1;
+	}
 
+	glfwSetWindowTitle( "Tutorial 02" );
+
+	// Ensure we can capture the escape key being pressed below
+    glfwEnable( GLFW_STICKY_KEYS );
+
+	// Dark blue background
+	glClearColor(0.0f, 0.0f, 0.3f, 0.0f);
 
 	GLuint VertexArrayID;
 	glGenVertexArrays(1, &VertexArrayID);
-    glBindVertexArray(VertexArrayID);
+	glBindVertexArray(VertexArrayID);
 
+	// Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders( "SimpleVertexShader.vertexshader", "SimpleFragmentShader.fragmentshader" );
 
 
 	static const GLfloat g_vertex_buffer_data[] = { 
-		-1.0f, -1.0f, 0,1,
-		 1.0f, -1.0f, 0,1,
-		 0.0f,  1.0f, 0,1,
+		-1.0f, -1.0f, 0.0f,
+		 1.0f, -1.0f, 0.0f,
+		 0.0f,  1.0f, 0.0f,
 	};
 	static const GLushort g_element_buffer_data[] = { 0, 1, 2 };
 
-	GLuint buffer;
-    glGenBuffers(1, &buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+	GLuint vertexbuffer;
+	glGenBuffers(1, &vertexbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 
-    GLuint elementbuffer;
-    glGenBuffers(1, &elementbuffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(g_element_buffer_data), g_element_buffer_data, GL_STATIC_DRAW);
-	
-	
-	do
-    {
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	GLuint elementbuffer;
+	glGenBuffers(1, &elementbuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(g_element_buffer_data), g_element_buffer_data, GL_STATIC_DRAW);
 
-		glViewport(0, 0, 1024,768);
-		glClearColor(0,0,0.3f,0);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	do{
+
+		// Clear the screen
+		glClear( GL_COLOR_BUFFER_BIT );
+
+		// Use our shader
 		glUseProgram(programID);
 
-		glBindBuffer(GL_ARRAY_BUFFER, buffer);
-		glVertexAttribPointer(
-			0,  /* attribute */
-			4,                                /* size */
-			GL_FLOAT,                         /* type */
-			GL_FALSE,                         /* normalized? */
-			0,                /* stride */
-			(void*)0                          /* array buffer offset */
-		);
+		// 1rst attribute buffer : vertices
 		glEnableVertexAttribArray(0);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
-		glDrawElements(
-			GL_TRIANGLES,  /* mode */
-			3,                  /* count */
-			GL_UNSIGNED_SHORT,  /* type */
-			(void*)0            /* element array buffer offset */
+		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+		glVertexAttribPointer(
+			0,                  // attribute
+			3,                  // size
+			GL_FLOAT,           // type
+			GL_FALSE,           // normalized?
+			0,                  // stride
+			(void*)0            // array buffer offset
 		);
-    
-		glDisableVertexAttribArray(0);
 
+		// Index buffer
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
+
+		// Draw the triangle !
+		glDrawElements(
+			GL_TRIANGLES,      // mode
+			3,                 // count
+			GL_UNSIGNED_SHORT, // type
+			(void*)0           // element array buffer offset
+		);
+
+		glDisableVertexAttribArray(0);
 
         // Swap buffers
         glfwSwapBuffers();
@@ -107,6 +120,6 @@ int main( void )
     // Close OpenGL window and terminate GLFW
     glfwTerminate();
 
-    exit( EXIT_SUCCESS );
+    return 0;
 }
 

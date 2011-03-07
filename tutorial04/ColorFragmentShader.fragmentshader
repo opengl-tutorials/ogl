@@ -5,5 +5,5 @@ out vec3 color;
 
 void main()
 {
-	color.xyz = interpolatedFragmentColor;
+	color = interpolatedFragmentColor;
 }
