@@ -181,7 +181,6 @@ int main( void )
 			(void*)0                          // array buffer offset
 		);
 
-
 		// Index buffer
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 
