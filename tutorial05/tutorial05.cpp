@@ -75,17 +75,51 @@ GLuint loadBMP_custom(const char * imagepath){
 	// Create one OpenGL texture
 	GLuint textureID;
 	glGenTextures(1, &textureID);
-	glActiveTexture(GL_TEXTURE0);
 	
-	// "Bind" the newly created texture as a 2D texture
+	// "Bind" the newly created texture : all future texture functions will modify this texture
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
 	// Give the image to OpenGL
     glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0,(bpp == 3 ? GL_RGB : GL_RGBA), GL_UNSIGNED_BYTE, data);
 
+	// Poor filtering, or ...
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); 
+
+	// ... nice trilinear filtering.
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); 
 	glGenerateMipmap(GL_TEXTURE_2D);
+
 	// Return the ID of the texture we just created
     return textureID;
+}
+
+GLuint loadBMP_glfw(const char * imagepath){
+
+	// Create one OpenGL texture
+	GLuint textureID;
+	glGenTextures(1, &textureID);
+
+	// "Bind" the newly created texture : all future texture functions will modify this texture
+	glBindTexture(GL_TEXTURE_2D, textureID);
+
+	// Read the file, call glTexImage2D with the right parameters
+	// GLFW_BUILD_MIPMAPS_BIT tells GLFW to compute itself the various mipmaps, 
+	// so calling glGenerateMipmap() is useless.
+	glfwLoadTexture2D(imagepath, GLFW_BUILD_MIPMAPS_BIT);
+
+	// Nice trilinear filtering.
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); 
+
+
+	// Return the ID of the texture we just created
+	return textureID;
 }
 
 int main( void )
@@ -111,7 +145,14 @@ int main( void )
         glfwTerminate();
         exit( EXIT_FAILURE );
     }
+
 	int ret = glewInit();
+
+	glViewport(0, 0, 1024,768);
+	glClearColor(0, 0, 0.3f, 0);
+	glEnable(GL_DEPTH_TEST); // Desactivate to see rendering artefacts
+
+
 	GLuint VertexArrayID;
 	glGenVertexArrays(1, &VertexArrayID);
     glBindVertexArray(VertexArrayID);
@@ -125,8 +166,9 @@ int main( void )
 	glm::mat4 MVP = Projection * View * Model;
 
 
-		//glEnable(GL_TEXTURE_2D);
-	GLuint Texture = loadBMP_custom("texture.bmp");
+	//GLuint Texture = loadBMP_custom("texture.bmp");
+	GLuint Texture = loadBMP_glfw("texture.tga");
+	
 	GLuint TextureID  = glGetUniformLocation(programID, "texture");
 
 	static const GLfloat g_vertex_buffer_data[] = { 
@@ -179,43 +221,38 @@ int main( void )
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(g_element_buffer_data), g_element_buffer_data, GL_STATIC_DRAW);
 	
-	glViewport(0, 0, 1024,768);
-	glClearColor(0, 0, 0.3f, 0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST); // activer ou désactiver
 
 	do
     {
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		glUseProgram(programID);
 		
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 		
-
-		//glEnable(GL_TEXTURE_2D);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, Texture);
-
 		glUniform1i(TextureID, 0);
 
 		glBindBuffer(GL_ARRAY_BUFFER, buffer);
 		glVertexAttribPointer(
-			0,  /* attribute */
+			0,                                /* attribute */
 			3,                                /* size */
 			GL_FLOAT,                         /* type */
 			GL_FALSE,                         /* normalized? */
-			0,                /* stride */
+			0,                                /* stride */
 			(void*)0                          /* array buffer offset */
 		);
 
 		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 		glVertexAttribPointer(
-			1,  /* attribute */
+			1,                                /* attribute */
 			2,                                /* size */
 			GL_FLOAT,                         /* type */
 			GL_FALSE,                         /* normalized? */
-			0,                /* stride */
+			0,                                /* stride */
 			(void*)0                          /* array buffer offset */
 		);
 
@@ -224,16 +261,14 @@ int main( void )
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 		glDrawElements(
-			GL_TRIANGLES,  /* mode */
-			12*3,                  /* count */
-			GL_UNSIGNED_SHORT,  /* type */
-			(void*)0            /* element array buffer offset */
+			GL_TRIANGLES,                     /* mode */
+			12*3,                             /* count */
+			GL_UNSIGNED_SHORT,                /* type */
+			(void*)0                          /* element array buffer offset */
 		);
     
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
-
-
 
         // Swap buffers
         glfwSwapBuffers();
