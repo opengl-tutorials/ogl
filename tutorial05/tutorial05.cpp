@@ -72,7 +72,7 @@ int main( void )
     glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 	// Camera matrix
 	glm::mat4 View       = glm::lookAt(
-								glm::vec3(2,2,2), // Camera is at (2,2,2), in World Space
+								glm::vec3(4,3,3), // Camera is at (4,3,3), in World Space
 								glm::vec3(0,0,0), // and looks at the origin
 								glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
 						   );
@@ -82,45 +82,91 @@ int main( void )
 	glm::mat4 MVP        = Projection * View * Model; // Remember, matrix multiplication is the other way around
 
 	// Load the texture using any two methods
-	//GLuint Texture = loadBMP_custom("texture.bmp");
-	GLuint Texture = loadTGA_glfw("texture.tga");
+	//GLuint Texture = loadBMP_custom("uvtemplate.bmp");
+	GLuint Texture = loadTGA_glfw("uvtemplate.tga");
 	
 	// Get a handle for our "myTextureSampler" uniform
 	GLuint TextureID  = glGetUniformLocation(programID, "myTextureSampler");
 
+	// Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
+	// A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
 	static const GLfloat g_vertex_buffer_data[] = { 
-		 0.500000, -0.500000, -0.500000,
-		 0.500000, -0.500000,  0.500000,
-		-0.500000, -0.500000,  0.500000,
-		-0.500000, -0.500000, -0.500000,
-		 0.500000,  0.500000, -0.500000,
-		 0.500000,  0.500000,  0.500000,
-		-0.500000,  0.500000,  0.500000,
-		-0.500000,  0.500000, -0.500000
+		-1.0f,-1.0f,-1.0f,
+		-1.0f,-1.0f, 1.0f,
+		-1.0f, 1.0f, 1.0f,
+		 1.0f, 1.0f,-1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f, 1.0f,-1.0f,
+		 1.0f,-1.0f, 1.0f,
+		-1.0f,-1.0f,-1.0f,
+		 1.0f,-1.0f,-1.0f,
+		 1.0f, 1.0f,-1.0f,
+		 1.0f,-1.0f,-1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f,-1.0f,
+		 1.0f,-1.0f, 1.0f,
+		-1.0f,-1.0f, 1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f, 1.0f, 1.0f,
+		-1.0f,-1.0f, 1.0f,
+		 1.0f,-1.0f, 1.0f,
+		 1.0f, 1.0f, 1.0f,
+		 1.0f,-1.0f,-1.0f,
+		 1.0f, 1.0f,-1.0f,
+		 1.0f,-1.0f,-1.0f,
+		 1.0f, 1.0f, 1.0f,
+		 1.0f,-1.0f, 1.0f,
+		 1.0f, 1.0f, 1.0f,
+		 1.0f, 1.0f,-1.0f,
+		-1.0f, 1.0f,-1.0f,
+		 1.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f,-1.0f,
+		-1.0f, 1.0f, 1.0f,
+		 1.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f, 1.0f,
+		 1.0f,-1.0f, 1.0f
 	};
+
+	// Two UV coordinatesfor each vertex. They were created withe Blender.
 	static const GLfloat g_uv_buffer_data[] = { 
-		 0.000000, 0.000000,
-		 1.000000, 0.000000,
-		 0.000000, 1.000000,
-		 1.000000, 1.000000,
-		 0.000000, 0.000000,
-		 1.000000, 0.000000,
-		 0.000000, 1.000000,
-		 1.000000, 1.000000
-	};
-	static const GLushort g_element_buffer_data[] = { 
-		4, 0, 3,
-		4, 3, 7,
-		2, 6, 7,
-		2, 7, 3,
-		1, 5, 2,
-		5, 6, 2,
-		0, 4, 1,
-		4, 5, 1,
-		4, 7, 5,
-		7, 6, 5,
-		0, 1, 2,
-		0, 2, 3
+		0.000005,-0.004081,
+		0.000925,0.294922,
+		0.300783,0.294922,
+		0.902339,-0.004081,
+		0.601561,0.294922,
+		0.901419,0.294922,
+		0.601561,0.294922,
+		0.300783,0.593925,
+		0.601561,0.594842,
+		0.902339,-0.004081,
+		0.601561,-0.004999,
+		0.601561,0.294922,
+		0.000005,-0.004081,
+		0.300783,0.294922,
+		0.300783,-0.004999,
+		0.601561,0.294922,
+		0.300783,0.294922,
+		0.300783,0.593925,
+		0.902339,0.593925,
+		0.901419,0.294922,
+		0.601561,0.294922,
+		0.601561,-0.004081,
+		0.300783,0.294922,
+		0.601561,0.294922,
+		0.300783,0.294922,
+		0.601561,-0.004081,
+		0.300783,-0.004999,
+		0.000925,0.294922,
+		0.000005,0.593925,
+		0.300783,0.594842,
+		0.000925,0.294922,
+		0.300783,0.594842,
+		0.300783,0.294922,
+		0.601561,0.594842,
+		0.902339,0.593925,
+		0.601561,0.294922 
 	};
 
 	GLuint vertexbuffer;
@@ -132,12 +178,6 @@ int main( void )
     glGenBuffers(1, &uvbuffer);
     glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
-
-	GLuint elementbuffer;
-	glGenBuffers(1, &elementbuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(g_element_buffer_data), g_element_buffer_data, GL_STATIC_DRAW);
-
 
 	do{
 
@@ -161,7 +201,7 @@ int main( void )
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 		glVertexAttribPointer(
-			0,                  // attribute
+			0,                  // attribute. No particular reason for 0, but must match the layout in the shader.
 			3,                  // size
 			GL_FLOAT,           // type
 			GL_FALSE,           // normalized?
@@ -173,24 +213,16 @@ int main( void )
 		glEnableVertexAttribArray(1);
 		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 		glVertexAttribPointer(
-			1,                                // attribute
-			2,                                // size
+			1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+			2,                                // size : U+V => 2
 			GL_FLOAT,                         // type
 			GL_FALSE,                         // normalized?
 			0,                                // stride
 			(void*)0                          // array buffer offset
 		);
 
-		// Index buffer
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
-
 		// Draw the triangle !
-		glDrawElements(
-			GL_TRIANGLES,      // mode
-			12*3,              // count
-			GL_UNSIGNED_SHORT, // type
-			(void*)0           // element array buffer offset
-		);
+		glDrawArrays(GL_TRIANGLES, 0, 12*3); // From index 0 to 12*3 -> 12 triangles
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
