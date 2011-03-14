@@ -73,9 +73,10 @@ set(GLEW_HEADERS
 
 add_definitions(
 	-DGLEW_BUILD
+	-DGLEW_STATIC
 )
 
-add_library( GLEW_158 SHARED
+add_library( GLEW_158 STATIC
 	${GLEW_SOURCE}
 	${GLEW_INCLUDE}
 )
