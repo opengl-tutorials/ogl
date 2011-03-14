@@ -87,7 +87,7 @@ int main( void )
 
 
 	//GLuint Texture = loadBMP_custom("texture.bmp");
-	GLuint Texture = loadTGA_glfw("texture3.tga");
+	GLuint Texture = loadTGA_glfw("uvmap.tga");
 	
 	// Get a handle for our "myTextureSampler" uniform
 	GLuint TextureID  = glGetUniformLocation(programID, "myTextureSampler");
@@ -97,7 +97,7 @@ int main( void )
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
 	std::vector<glm::vec3> normals; // Won't be used at the moment.
-	bool res = loadOBJ("suzanne.obj", vertices, uvs, normals);
+	bool res = loadOBJ("cube.obj", vertices, uvs, normals);
 
 	// Load it into a VBO
 

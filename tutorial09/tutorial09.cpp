@@ -49,7 +49,7 @@ int main( void )
 		return -1;
 	}
 
-	glfwSetWindowTitle( "Tutorial 07" );
+	glfwSetWindowTitle( "Tutorial 09" );
 
 	// Ensure we can capture the escape key being pressed below
     glfwEnable( GLFW_STICKY_KEYS );
