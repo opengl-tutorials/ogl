@@ -1,3 +1,7 @@
+add_definitions(
+	-DGLEW_STATIC
+	-D_CRT_SECURE_NO_WARNINGS
+)
 
 include_directories(
 	glfw-2.7/lib/win32/
@@ -5,8 +9,6 @@ include_directories(
 	glfw-2.7/include/
 	glew-1.5.8/include/
 )
-
-
 
 set(GLFW_SOURCE	
 	glfw-2.7/lib/enable.c 
@@ -36,7 +38,6 @@ set(GLFW_HEADERS
 	glfw-2.7/lib/internal.h
 )
 
-
 add_library( GLFW_27 STATIC
 	${GLFW_SOURCE}
 	${GLFW_HEADERS}
@@ -45,22 +46,6 @@ add_library( GLFW_27 STATIC
 target_link_libraries(GLFW_27
 	${OPENGL_LIBRARY}
 )
-
-if ( ${CMAKE_SYSTEM_NAME} STREQUAL "Windows")   # Windows
-	set( GLFW_OUTPUT_NAME "GLFW_27.lib" )
-elseif ( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux") # Linux
-	set( GLFW_OUTPUT_NAME "libGLFW_27.a" )
-else ( ${CMAKE_SYSTEM_NAME} STREQUAL "Windows") # Something else ? 
-	message( ERROR "Unknown system : ${CMAKE_SYSTEM_NAME}")
-endif( ${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
-
-set( GLFW_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${GLFW_OUTPUT_NAME}" PARENT_SCOPE)
-
-
-
-
-
-
 
 
 
@@ -71,10 +56,6 @@ set(GLEW_SOURCE
 set(GLEW_HEADERS
 )
 
-add_definitions(
-	-DGLEW_BUILD
-	-DGLEW_STATIC
-)
 
 add_library( GLEW_158 STATIC
 	${GLEW_SOURCE}
@@ -85,13 +66,3 @@ target_link_libraries(GLEW_158
 	${OPENGL_LIBRARY}
 )
 
-if ( ${CMAKE_SYSTEM_NAME} STREQUAL "Windows")   # Windows
-	set( GLEW_OUTPUT_NAME "GLEW_158.dll" )
-elseif ( ${CMAKE_SYSTEM_NAME} STREQUAL "Linux") # Linux
-	set( GLEW_OUTPUT_NAME "libGLEW_158.so" )
-else ( ${CMAKE_SYSTEM_NAME} STREQUAL "Windows") # Something else ? 
-	message( ERROR "Unknown system : ${CMAKE_SYSTEM_NAME}")
-endif( ${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
-
-
-set( GLEW_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${GLEW_OUTPUT_NAME}" PARENT_SCOPE)
