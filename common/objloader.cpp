@@ -23,6 +23,7 @@ bool loadOBJ(
 	FILE * file = fopen(path, "r");
 	if( file == NULL ){
 		printf("Impossible to open the file !\n");
+		return false;
 	}
 
 	while( 1 ){
@@ -43,7 +44,7 @@ bool loadOBJ(
 		}else if ( strcmp( lineHeader, "vn" ) == 0 ){
 			glm::vec3 normal;
 			fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z );
-			temp_vertices.push_back(normal);
+			temp_normals.push_back(normal);
 		}else if ( strcmp( lineHeader, "f" ) == 0 ){
 			std::string vertex1, vertex2, vertex3;
 			unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
@@ -80,12 +81,12 @@ bool loadOBJ(
 			unsigned int uvIndex = uvIndices[v+i];
 			glm::vec2 uv = temp_uvs[ uvIndex-1 ];
 			
-			//unsigned int normalIndex = normalIndices[v+i];
-			//glm::vec3 normal = temp_vertices[ normalIndex-1 ];
+			unsigned int normalIndex = normalIndices[v+i];
+			glm::vec3 normal = temp_normals[ normalIndex-1 ];
 			
 			out_vertices.push_back(vertex);
 			out_uvs     .push_back(uv);
-			//out_normals .push_back(normal);
+			out_normals .push_back(normal);
 		}
 	}
 

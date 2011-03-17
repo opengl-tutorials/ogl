@@ -1,10 +1,19 @@
 #version 330 core
 
 in vec2 interpolatedFragmentUV;
+in vec3 worldCoordinates;
+in vec3 normal;
+
 out vec3 color;
 
 uniform sampler2D myTextureSampler;
+uniform vec3 LightPosition;
 
 void main(){
-	color = texture2D( myTextureSampler, interpolatedFragmentUV ).rgb;
+	vec3 n = normal;
+	vec3 l = LightPosition - worldCoordinates;
+	float distance = length( l );
+	l = normalize( l );
+	vec3 c = texture2D( myTextureSampler, interpolatedFragmentUV ).rgb;
+	color = c * dot( n,l ) / l;
 }
