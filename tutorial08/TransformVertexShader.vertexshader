@@ -1,20 +1,29 @@
 #version 330 core
 
-layout(location = 0) in vec3 vertexPosition;
+layout(location = 0) in vec3 vertexPosition_modelspace;
 layout(location = 1) in vec2 vertexUV;
-layout(location = 2) in vec3 vertexNormal;
+layout(location = 2) in vec3 vertexNormal_modelspace;
 
-out vec2 interpolatedFragmentUV;
-out vec3 worldCoordinates;
-out vec3 normal;
+out vec2 UV;
+out vec3 Position_worldspace;
+out vec3 Normal_cameraspace;
+out vec3 EyeDirection_cameraspace;
+out vec3 LightDirection_cameraspace;
 
 uniform mat4 MVP;
+uniform mat4 MV;
 uniform mat4 M;
+uniform vec3 LightPosition_worldspace;
 
 void main(){	
-	gl_Position =  MVP * vec4(vertexPosition,1);
-	worldCoordinates = vertexPosition;
-	normal = (M * vec4(vertexNormal,0)).xyz; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
-	interpolatedFragmentUV = vertexUV;
+	gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
+	Position_worldspace = (M * vec4(vertexPosition_modelspace,1)).xyz;
+	EyeDirection_cameraspace = (MV * vec4(vertexPosition_modelspace,1)).xyz * -1.0f;
+
+	vec3 LightPosition_cameraspace = (MV * vec4(LightPosition_worldspace,1)).xyz;
+	LightDirection_cameraspace = LightPosition_cameraspace + EyeDirection_cameraspace;
+	
+	Normal_cameraspace = (MV * vec4(vertexNormal_modelspace,0)).xyz; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
+	UV = vertexUV;
 }
 

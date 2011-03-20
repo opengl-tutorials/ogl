@@ -71,10 +71,11 @@ int main( void )
 
 	// Get a handle for our "MVP" uniform
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
+	GLuint ModelViewMatrixID = glGetUniformLocation(programID, "MV");
 	GLuint ModelMatrixID = glGetUniformLocation(programID, "M");
 
 	// Load the texture
-	GLuint Texture = loadTGA_glfw("uvmap.tga");
+	GLuint Texture = loadTGA_glfw("uvmap_suzanne.tga");
 	
 	// Get a handle for our "myTextureSampler" uniform
 	GLuint TextureID  = glGetUniformLocation(programID, "myTextureSampler");
@@ -104,7 +105,7 @@ int main( void )
 
 	// Get a handle for our "LightPosition" uniform
 	glUseProgram(programID);
-	GLuint LightID = glGetUniformLocation(programID, "LightPosition");
+	GLuint LightID = glGetUniformLocation(programID, "LightPosition_worldspace");
 
 	do{
 
@@ -120,14 +121,16 @@ int main( void )
 		glm::mat4 ViewMatrix = getViewMatrix();
 		glm::mat4 ModelMatrix = glm::mat4(1.0);
 		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+		glm::mat4 MV = ViewMatrix * ModelMatrix;
 
 		// Send our transformation to the currently bound shader, 
 		// in the "MVP" uniform
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+		glUniformMatrix4fv(ModelViewMatrixID, 1, GL_FALSE, &MV[0][0]);
 
 		double time = glfwGetTime();
-		glm::vec3 lightPos = glm::vec3(5,5,5) + glm::vec3(sin(time*7),cos(time*3), sin(time*5)) * 2.0f;
+		glm::vec3 lightPos = glm::vec3(4,4,4);// + glm::vec3(sin(time*7),cos(time*3), sin(time*5)) * 2.0f;
 		glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
 
 
