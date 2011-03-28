@@ -67,44 +67,29 @@ int main( void )
 	glBindVertexArray(VertexArrayID);
 
 	// Create and compile our GLSL program from the shaders
-	GLuint programID = LoadShaders( "TransformVertexShader.vertexshader", "TextureFragmentShader.fragmentshader" );
+	GLuint programID = LoadShaders( "StandardShading.vertexshader", "StandardShading.fragmentshader" );
 
 	// Get a handle for our "MVP" uniform
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
+	GLuint ViewMatrixID = glGetUniformLocation(programID, "V");
+	GLuint ModelMatrixID = glGetUniformLocation(programID, "M");
 
-	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-    glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
-	// Camera matrix
-	glm::mat4 View       = glm::lookAt(
-								glm::vec3(5,5,5), // Camera is at (5,5,5), in World Space
-								glm::vec3(0,0,0), // and looks at the origin
-								glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-						   );
-	// Model matrix : an identity matrix (model will be at the origin)
-	glm::mat4 Model      = glm::mat4(1.0f);
-	// Our ModelViewProjection : multiplication of our 3 matrices
-	glm::mat4 MVP        = Projection * View * Model; // Remember, matrix multiplication is the other way around
-
-
-	//GLuint Texture = loadBMP_custom("texture.bmp");
-	GLuint Texture = loadTGA_glfw("texture3.tga");
+	// Load the texture
+	GLuint Texture = loadTGA_glfw("uvmap.tga");
 	
 	// Get a handle for our "myTextureSampler" uniform
 	GLuint TextureID  = glGetUniformLocation(programID, "myTextureSampler");
 
-
 	// Read our .obj file
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
-	std::vector<glm::vec3> normals; // Won't be used at the moment.
+	std::vector<glm::vec3> normals;
 	bool res = loadOBJ("suzanne.obj", vertices, uvs, normals);
-
-	for (int i=0;i!=vertices.size(); ++i){normals.push_back(glm::vec3(0,0,0));}
 
 	std::vector<unsigned int> indices;
 	std::vector<glm::vec3> indexed_vertices;
 	std::vector<glm::vec2> indexed_uvs;
-	std::vector<glm::vec3> indexed_normals; // Won't be used at the moment.
+	std::vector<glm::vec3> indexed_normals;
 	indexVBO(vertices, uvs, normals, indices, indexed_vertices, indexed_uvs, indexed_normals);
 
 	// Load it into a VBO
@@ -119,12 +104,36 @@ int main( void )
     glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
     glBufferData(GL_ARRAY_BUFFER, indexed_uvs.size() * sizeof(glm::vec2), &indexed_uvs[0], GL_STATIC_DRAW);
 
+	GLuint normalbuffer;
+    glGenBuffers(1, &normalbuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
+    glBufferData(GL_ARRAY_BUFFER, indexed_normals.size() * sizeof(glm::vec3), &indexed_normals[0], GL_STATIC_DRAW);
+
+	// Generate a buffer for the indices as well
 	GLuint elementbuffer;
 	glGenBuffers(1, &elementbuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
+	// Get a handle for our "LightPosition" uniform
+	glUseProgram(programID);
+	GLuint LightID = glGetUniformLocation(programID, "LightPosition_worldspace");
+
+	// For speed computation
+	double lastTime = glfwGetTime();
+	int nbFrames = 0;
+
 	do{
+
+		// Measure speed
+		double currentTime = glfwGetTime();
+		nbFrames++;
+		if ( currentTime - lastTime >= 1.0 ){ // If last prinf() was more than 1sec ago
+			// printf and reset
+			printf("%f ms/frame\n", 1000.0/double(nbFrames));
+			nbFrames = 0;
+			lastTime += 1.0;
+		}
 
 		// Clear the screen
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -142,6 +151,11 @@ int main( void )
 		// Send our transformation to the currently bound shader, 
 		// in the "MVP" uniform
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+		glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
+
+		glm::vec3 lightPos = glm::vec3(4,4,4);
+		glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
 
 		// Bind our texture in Texture Unit 0
 		glActiveTexture(GL_TEXTURE0);
@@ -173,24 +187,32 @@ int main( void )
 			(void*)0                          // array buffer offset
 		);
 
-
-		//// Draw the triangle !
-		//glDrawArrays(GL_TRIANGLES, 0, out_vertices.size() );
-
+		// 3rd attribute buffer : normals
+		glEnableVertexAttribArray(2);
+		glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
+		glVertexAttribPointer(
+			2,                                // attribute
+			3,                                // size
+			GL_FLOAT,                         // type
+			GL_FALSE,                         // normalized?
+			0,                                // stride
+			(void*)0                          // array buffer offset
+		);
 
 		// Index buffer
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 
-		// Draw the triangle !
+		// Draw the triangles !
 		glDrawElements(
 			GL_TRIANGLES,      // mode
-			indices.size(),                 // count
+			indices.size(),    // count
 			GL_UNSIGNED_INT,   // type
 			(void*)0           // element array buffer offset
 		);
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
 
         // Swap buffers
         glfwSwapBuffers();
