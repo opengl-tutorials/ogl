@@ -31,7 +31,6 @@ int main( void )
     }
 
     glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
-    glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE,GL_TRUE);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
 	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -229,7 +228,14 @@ int main( void )
     while( glfwGetKey( GLFW_KEY_ESC ) != GLFW_PRESS &&
            glfwGetWindowParam( GLFW_OPENED ) );
 
-	// Delete the VBO, the shader and the texture
+	// Cleanup VBO, shader and texture
+	glDeleteBuffers(1, &vertexbuffer);
+	glDeleteBuffers(1, &uvbuffer);
+	glDeleteBuffers(1, &normalbuffer);
+	glDeleteProgram(programID);
+	glDeleteTextures(1, &TextureID);
+
+	// Delete the text's VBO, the shader and the texture
 	cleanupText2D();
 
     // Close OpenGL window and terminate GLFW

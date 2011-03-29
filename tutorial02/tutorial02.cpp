@@ -24,7 +24,6 @@ int main( void )
     }
 
     glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
-    glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE,GL_TRUE);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
 	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -105,6 +104,9 @@ int main( void )
 
     // Close OpenGL window and terminate GLFW
     glfwTerminate();
+
+	// Cleanup VBO
+	glDeleteBuffers(1, &vertexbuffer);
 
     return 0;
 }
