@@ -176,6 +176,30 @@ add_custom_command(
    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial09${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial09/"
 )
 
+# Tutorial 10
+add_executable(tutorial10
+	tutorial10/tutorial10.cpp
+	common/shader.cpp
+	common/shader.hpp
+	common/controls.cpp
+	common/controls.hpp
+	common/texture.cpp
+	common/texture.hpp
+	common/objloader.cpp
+	common/objloader.hpp
+	common/vboindexer.cpp
+	common/vboindexer.hpp
+	common/text2D.hpp
+	common/text2D.cpp
+)
+target_link_libraries(tutorial10
+	${ALL_LIBS}
+)
+add_custom_command(
+   TARGET tutorial10 POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial10${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial10/"
+)
+
 
 # User playground
 add_executable(playground 
