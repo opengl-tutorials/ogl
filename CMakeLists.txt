@@ -177,6 +177,26 @@ add_custom_command(
 )
 
 # Tutorial 10
+add_executable(tutorial10_transparency
+	tutorial10_transparency/tutorial10.cpp
+	common/shader.cpp
+	common/shader.hpp
+	common/controls.cpp
+	common/controls.hpp
+	common/texture.cpp
+	common/texture.hpp
+	common/objloader.cpp
+	common/objloader.hpp
+	common/vboindexer.cpp
+	common/vboindexer.hpp
+)
+target_link_libraries(tutorial10_transparency
+	${ALL_LIBS}
+)
+add_custom_command(
+   TARGET tutorial10_transparency POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial10_transparency${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial10_transparency/"
+)
 
 # Tutorial 11
 add_executable(tutorial11_2d_fonts
