@@ -48,13 +48,16 @@ int main( void )
 		return -1;
 	}
 
-	glfwSetWindowTitle( "Tutorial 09" );
+	glfwSetWindowTitle( "Tutorial 10" );
 
 	// Ensure we can capture the escape key being pressed below
     glfwEnable( GLFW_STICKY_KEYS );
 
 	// Dark blue background
 	glClearColor(0.0f, 0.0f, 0.3f, 0.0f);
+
+	// Cull triangles which normal is not towards the camera
+	//glEnable(GL_CULL_FACE); // Not this time !
 
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
