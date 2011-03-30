@@ -26,79 +26,79 @@ add_definitions(
 )
 
 # Tutorial 1
-add_executable(tutorial01 
-	tutorial01/tutorial01.cpp
+add_executable(tutorial01_first_window 
+	tutorial01_first_window/tutorial01.cpp
 )
-target_link_libraries(tutorial01
+target_link_libraries(tutorial01_first_window
 	${ALL_LIBS}
 )
 add_custom_command(
-   TARGET tutorial01 POST_BUILD
-   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial01${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial01/"
+   TARGET tutorial01_first_window POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial01_first_window${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial01_first_window/"
 )
 
 
 # Tutorial 2
-add_executable(tutorial02 
-	tutorial02/tutorial02.cpp
+add_executable(tutorial02_red_triangle 
+	tutorial02_red_triangle/tutorial02.cpp
 	common/shader.cpp
 	common/shader.hpp
 )
-target_link_libraries(tutorial02
+target_link_libraries(tutorial02_red_triangle
 	${ALL_LIBS}
 )
 add_custom_command(
-   TARGET tutorial02 POST_BUILD
-   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial02${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial02/"
+   TARGET tutorial02_red_triangle POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial02_red_triangle${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial02_red_triangle/"
 )
 
 # Tutorial 3
-add_executable(tutorial03 
-	tutorial03/tutorial03.cpp
+add_executable(tutorial03_matrices 
+	tutorial03_matrices/tutorial03.cpp
 	common/shader.cpp
 	common/shader.hpp
 )
-target_link_libraries(tutorial03
+target_link_libraries(tutorial03_matrices
 	${ALL_LIBS}
 )
 add_custom_command(
-   TARGET tutorial03 POST_BUILD
-   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial03${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial03/"
+   TARGET tutorial03_matrices POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial03_matrices${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial03_matrices/"
 )
 
 # Tutorial 4
-add_executable(tutorial04
-	tutorial04/tutorial04.cpp
+add_executable(tutorial04_colored_cube
+	tutorial04_colored_cube/tutorial04.cpp
 	common/shader.cpp
 	common/shader.hpp
 )
-target_link_libraries(tutorial04
+target_link_libraries(tutorial04_colored_cube
 	${ALL_LIBS}
 )
 add_custom_command(
-   TARGET tutorial04 POST_BUILD
-   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial04${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial04/"
+   TARGET tutorial04_colored_cube POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial04_colored_cube${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial04_colored_cube/"
 )
 
 # Tutorial 5
-add_executable(tutorial05
-	tutorial05/tutorial05.cpp
+add_executable(tutorial05_textured_cube
+	tutorial05_textured_cube/tutorial05.cpp
 	common/shader.cpp
 	common/shader.hpp
 	common/texture.cpp
 	common/texture.hpp
 )
-target_link_libraries(tutorial05
+target_link_libraries(tutorial05_textured_cube
 	${ALL_LIBS}
 )
 add_custom_command(
-   TARGET tutorial05 POST_BUILD
-   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial05${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial05/"
+   TARGET tutorial05_textured_cube POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial05_textured_cube${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial05_textured_cube/"
 )
 
 # Tutorial 6
-add_executable(tutorial06
-	tutorial06/tutorial06.cpp
+add_executable(tutorial06_keyboard_and_mouse
+	tutorial06_keyboard_and_mouse/tutorial06.cpp
 	common/shader.cpp
 	common/shader.hpp
 	common/controls.cpp
@@ -106,17 +106,17 @@ add_executable(tutorial06
 	common/texture.cpp
 	common/texture.hpp
 )
-target_link_libraries(tutorial06
+target_link_libraries(tutorial06_keyboard_and_mouse
 	${ALL_LIBS}
 )
 add_custom_command(
-   TARGET tutorial06 POST_BUILD
-   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial06${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial06/"
+   TARGET tutorial06_keyboard_and_mouse POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial06_keyboard_and_mouse${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial06_keyboard_and_mouse/"
 )
 
 # Tutorial 7
-add_executable(tutorial07
-	tutorial07/tutorial07.cpp
+add_executable(tutorial07_model_loading
+	tutorial07_model_loading/tutorial07.cpp
 	common/shader.cpp
 	common/shader.hpp
 	common/controls.cpp
@@ -126,17 +126,17 @@ add_executable(tutorial07
 	common/objloader.cpp
 	common/objloader.hpp
 )
-target_link_libraries(tutorial07
+target_link_libraries(tutorial07_model_loading
 	${ALL_LIBS}
 )
 add_custom_command(
-   TARGET tutorial07 POST_BUILD
-   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial07${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial07/"
+   TARGET tutorial07_model_loading POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial07_model_loading${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial07_model_loading/"
 )
 
 # Tutorial 8
-add_executable(tutorial08
-	tutorial08/tutorial08.cpp
+add_executable(tutorial08_basic_shading
+	tutorial08_basic_shading/tutorial08.cpp
 	common/shader.cpp
 	common/shader.hpp
 	common/controls.cpp
@@ -146,17 +146,17 @@ add_executable(tutorial08
 	common/objloader.cpp
 	common/objloader.hpp
 )
-target_link_libraries(tutorial08
+target_link_libraries(tutorial08_basic_shading
 	${ALL_LIBS}
 )
 add_custom_command(
-   TARGET tutorial08 POST_BUILD
-   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial08${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial08/"
+   TARGET tutorial08_basic_shading POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial08_basic_shading${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial08_basic_shading/"
 )
 
 # Tutorial 9
-add_executable(tutorial09
-	tutorial09/tutorial09.cpp
+add_executable(tutorial09_vbo_indexing
+	tutorial09_vbo_indexing/tutorial09.cpp
 	common/shader.cpp
 	common/shader.hpp
 	common/controls.cpp
@@ -168,17 +168,19 @@ add_executable(tutorial09
 	common/vboindexer.cpp
 	common/vboindexer.hpp
 )
-target_link_libraries(tutorial09
+target_link_libraries(tutorial09_vbo_indexing
 	${ALL_LIBS}
 )
 add_custom_command(
-   TARGET tutorial09 POST_BUILD
-   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial09${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial09/"
+   TARGET tutorial09_vbo_indexing POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial09_vbo_indexing${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial09_vbo_indexing/"
 )
 
 # Tutorial 10
-add_executable(tutorial10
-	tutorial10/tutorial10.cpp
+
+# Tutorial 11
+add_executable(tutorial11_2d_fonts
+	tutorial11_2d_fonts/tutorial11.cpp
 	common/shader.cpp
 	common/shader.hpp
 	common/controls.cpp
@@ -192,12 +194,12 @@ add_executable(tutorial10
 	common/text2D.hpp
 	common/text2D.cpp
 )
-target_link_libraries(tutorial10
+target_link_libraries(tutorial11_2d_fonts
 	${ALL_LIBS}
 )
 add_custom_command(
-   TARGET tutorial10 POST_BUILD
-   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial10${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial10/"
+   TARGET tutorial11_2d_fonts POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial11_2d_fonts${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial11_2d_fonts/"
 )
 
 
