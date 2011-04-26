@@ -1,0 +1,14 @@
+/*!
+	\defgroup virtrev VIRTREV Extensions
+	
+	\brief Extensions develop and maintain by Mathieu [matrem] Roumillac (http://www.opengl.org/discussion_boards/ubbthreads.php?ubb=showprofile&User=22660).
+**/
+
+/*!
+	\defgroup virtrev_xstream GLM_VIRTREV_xstream: xml like output
+	\ingroup virtrev
+	
+	\brief Streaming vector and matrix in a xml way.
+
+	Include <glm/virtrev/xstream.hpp> for this functionality.
+**/
