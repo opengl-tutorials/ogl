@@ -56,13 +56,13 @@ int main( void )
 	// Dark blue background
 	glClearColor(0.0f, 0.0f, 0.3f, 0.0f);
 
-	// Cull triangles which normal is not towards the camera
-	//glEnable(GL_CULL_FACE); // Not this time !
-
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
 	// Accept fragment if it closer to the camera than the former one
 	glDepthFunc(GL_LESS); 
+
+	// Cull triangles which normal is not towards the camera
+	//glEnable(GL_CULL_FACE); // Not this time !
 
 	GLuint VertexArrayID;
 	glGenVertexArrays(1, &VertexArrayID);
