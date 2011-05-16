@@ -1,0 +1,1190 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.0 r9654"
+   inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseWhite.png"
+   inkscape:export-xdpi="65.266655"
+   inkscape:export-ydpi="65.266655"
+   sodipodi:docname="New document 1">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="Arrow1Mstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Mstart"
+       style="overflow:visible">
+      <path
+         id="path3774"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none"
+         transform="scale(0.4) translate(10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Send"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Send"
+       style="overflow:visible;">
+      <path
+         id="path3783"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;"
+         transform="scale(0.2) rotate(180) translate(6,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Sstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow2Sstart"
+       style="overflow:visible">
+      <path
+         id="path3798"
+         style="font-size:12.0;fill-rule:evenodd;stroke-width:0.62500000;stroke-linejoin:round"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         transform="scale(0.3) translate(-2.3,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Mend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow2Mend"
+       style="overflow:visible;">
+      <path
+         id="path3795"
+         style="font-size:12.0;fill-rule:evenodd;stroke-width:0.62500000;stroke-linejoin:round;"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         transform="scale(0.6) rotate(180) translate(0,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow2Lend"
+       style="overflow:visible;">
+      <path
+         id="path3789"
+         style="font-size:12.0;fill-rule:evenodd;stroke-width:0.62500000;stroke-linejoin:round;"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         transform="scale(1.1) rotate(180) translate(1,0)" />
+    </marker>
+    <inkscape:path-effect
+       effect="skeletal"
+       id="path-effect3761"
+       is_visible="true"
+       pattern="M 0,0 0,10 10,5 z"
+       copytype="single_stretched"
+       prop_scale="1"
+       scale_y_rel="false"
+       spacing="0"
+       normal_offset="0"
+       tang_offset="0"
+       prop_units="false"
+       vertical_pattern="false"
+       fuse_tolerance="0" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="461.20995"
+     inkscape:cy="703.47969"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-global="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:snap-grids="false"
+     inkscape:snap-to-guides="false"
+     inkscape:window-width="1680"
+     inkscape:window-height="988"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect2987"
+       width="564.31122"
+       height="469.80356"
+       x="80.803497"
+       y="83.625893"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <path
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       sodipodi:nodetypes="ccccc"
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:6.80000019;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+       d="m 467.72362,315.44428 -6.77895,-0.003 0.53298,123.77652 6.29925,1.11591 z"
+       id="path5635"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect3757"
+       width="497.86542"
+       height="41.416439"
+       x="111.47572"
+       y="260.40259"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3763"
+       d="m 143.15876,152.84851 -4.25,5.28125 96.79464,77.14731 4.81697,-4.20982 z"
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:6.80000019;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4401"
+       style="font-size:12px;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+       d="m 237.8169,221.42297 30.4742,36.64054 -41.95187,-22.37396 c 11.61947,-3.06095 10.79428,-2.14247 11.47767,-14.26658 z"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <g
+       id="g5187"
+       transform="translate(-2.6714563,9.003176)"
+       style="stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:tile-cx="299.89781"
+       inkscape:tile-cy="257.7794"
+       inkscape:tile-w="52.08904"
+       inkscape:tile-h="4.82126"
+       inkscape:tile-x0="273.85329"
+       inkscape:tile-y0="255.36877"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766">
+      <path
+         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+         d="m 276.52475,248.29425 0,1 50.75,0 0,-1 -50.75,0 z"
+         id="path4415"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 322.05827,246.36559 6.55552,2.41063 -6.55552,2.41063 c 1.0473,-1.42323 1.04126,-3.37047 0,-4.82126 z"
+         style="font-size:12px;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.1;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="path5175"
+         inkscape:connector-curvature="0" />
+    </g>
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       id="use5327"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(0.93969262,-0.34202014,0.34202014,0.93969262,-71.919227,107.04566)"
+       id="use5329"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(0.76604444,-0.64278761,0.64278761,0.76604444,-103.05299,232.09738)"
+       id="use5331"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(0.5,-0.8660254,0.8660254,0.5,-89.393551,360.08203)"
+       id="use5333"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(0.17364818,-0.98480775,0.98480775,0.17364818,-32.864451,475.59031)"
+       id="use5335"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(-0.17364818,-0.98480775,0.98480775,-0.17364818,59.547964,565.01628)"
+       id="use5337"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(-0.5,-0.8660254,0.8660254,-0.5,177.0485,617.40442)"
+       id="use5339"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(-0.76604444,-0.64278761,0.64278761,-0.76604444,305.26443,626.40274)"
+       id="use5341"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(-0.93969262,-0.34202014,0.34202014,-0.93969262,428.92612,591.05544)"
+       id="use5343"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(-1,0,0,-1,533.24912,515.63749)"
+       id="use5345"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <path
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       sodipodi:nodetypes="ccccc"
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:6.80000019;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+       d="m 266.73019,152.84851 -4.25,5.28125 96.79464,77.14731 4.81697,-4.20982 z"
+       id="path5407"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       sodipodi:nodetypes="cccc"
+       d="m 361.38833,221.42297 30.4742,36.64054 -41.95187,-22.37396 c 11.61947,-3.06095 10.79428,-2.14247 11.47767,-14.26658 z"
+       style="font-size:12px;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+       id="path5409"
+       inkscape:connector-curvature="0" />
+    <g
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:tile-y0="255.36877"
+       inkscape:tile-x0="273.85329"
+       inkscape:tile-h="4.82126"
+       inkscape:tile-w="52.08904"
+       inkscape:tile-cy="257.7794"
+       inkscape:tile-cx="299.89781"
+       style="stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       transform="translate(120.89997,9.003176)"
+       id="g5411">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5413"
+         d="m 276.52475,248.29425 0,1 50.75,0 0,-1 -50.75,0 z"
+         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path5415"
+         style="font-size:12px;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.1;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m 322.05827,246.36559 6.55552,2.41063 -6.55552,2.41063 c 1.0473,-1.42323 1.04126,-3.37047 0,-4.82126 z" />
+    </g>
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       id="use5417"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0"
+       transform="translate(123.57143,0)"
+       width="744.09448"
+       height="1052.3622" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5419"
+       transform="matrix(0.93969262,-0.34202014,0.34202014,0.93969262,51.652202,107.04566)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5421"
+       transform="matrix(0.76604444,-0.64278761,0.64278761,0.76604444,20.518439,232.09738)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5423"
+       transform="matrix(0.5,-0.8660254,0.8660254,0.5,34.177878,360.08203)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5425"
+       transform="matrix(0.17364818,-0.98480775,0.98480775,0.17364818,90.706978,475.59031)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5427"
+       transform="matrix(-0.17364818,-0.98480775,0.98480775,-0.17364818,183.11939,565.01628)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5429"
+       transform="matrix(-0.5,-0.8660254,0.8660254,-0.5,300.61993,617.40442)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5431"
+       transform="matrix(-0.76604444,-0.64278761,0.64278761,-0.76604444,428.83586,626.40274)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5433"
+       transform="matrix(-0.93969262,-0.34202014,0.34202014,-0.93969262,552.49755,591.05544)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5435"
+       transform="matrix(-1,0,0,-1,656.82055,515.63749)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path5437"
+       d="m 388.87305,152.84851 -4.25,5.28125 96.79464,77.14731 4.81697,-4.20982 z"
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:6.80000019;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path5439"
+       style="font-size:12px;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+       d="m 483.53119,221.42297 30.4742,36.64054 -41.95187,-22.37396 c 11.61947,-3.06095 10.79428,-2.14247 11.47767,-14.26658 z"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <g
+       id="g5441"
+       transform="translate(243.04283,9.003176)"
+       style="stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:tile-cx="299.89781"
+       inkscape:tile-cy="257.7794"
+       inkscape:tile-w="52.08904"
+       inkscape:tile-h="4.82126"
+       inkscape:tile-x0="273.85329"
+       inkscape:tile-y0="255.36877"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766">
+      <path
+         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+         d="m 276.52475,248.29425 0,1 50.75,0 0,-1 -50.75,0 z"
+         id="path5443"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 322.05827,246.36559 6.55552,2.41063 -6.55552,2.41063 c 1.0473,-1.42323 1.04126,-3.37047 0,-4.82126 z"
+         style="font-size:12px;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.1;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="path5445"
+         inkscape:connector-curvature="0" />
+    </g>
+    <use
+       height="1052.3622"
+       width="744.09448"
+       transform="translate(245.71429,0)"
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       id="use5447"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(0.93969262,-0.34202014,0.34202014,0.93969262,173.79506,107.04566)"
+       id="use5449"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(0.76604444,-0.64278761,0.64278761,0.76604444,142.6613,232.09738)"
+       id="use5451"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(0.5,-0.8660254,0.8660254,0.5,156.32074,360.08203)"
+       id="use5453"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(0.17364818,-0.98480775,0.98480775,0.17364818,212.84984,475.59031)"
+       id="use5455"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(-0.17364818,-0.98480775,0.98480775,-0.17364818,305.26225,565.01628)"
+       id="use5457"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(-0.5,-0.8660254,0.8660254,-0.5,422.76279,617.40442)"
+       id="use5459"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(-0.76604444,-0.64278761,0.64278761,-0.76604444,550.97872,626.40274)"
+       id="use5461"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(-0.93969262,-0.34202014,0.34202014,-0.93969262,674.64041,591.05544)"
+       id="use5463"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(-1,0,0,-1,778.96341,515.63749)"
+       id="use5465"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <rect
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       y="480.40259"
+       x="111.47572"
+       height="41.416439"
+       width="497.86542"
+       id="rect5523"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <path
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       sodipodi:nodetypes="ccccc"
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:6.80000019;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+       d="m 321.6522,315.44428 -6.77895,-0.003 0.53298,123.77652 6.29925,1.11591 z"
+       id="path5525"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       sodipodi:nodetypes="cccc"
+       d="m 327.52726,432.18375 -9.45828,46.70917 -8.85216,-46.71394 c 9.6666,7.1371 8.43372,7.06957 18.31044,0.005 z"
+       style="font-size:12px;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+       id="path5527"
+       inkscape:connector-curvature="0" />
+    <g
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:tile-y0="255.36877"
+       inkscape:tile-x0="273.85329"
+       inkscape:tile-h="4.82126"
+       inkscape:tile-w="52.08904"
+       inkscape:tile-cy="257.7794"
+       inkscape:tile-cx="299.89781"
+       style="stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       transform="translate(48.04283,229.00318)"
+       id="g5529">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5531"
+         d="m 276.52475,248.29425 0,1 50.75,0 0,-1 -50.75,0 z"
+         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path5533"
+         style="font-size:12px;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.1;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m 322.05827,246.36559 6.55552,2.41063 -6.55552,2.41063 c 1.0473,-1.42323 1.04126,-3.37047 0,-4.82126 z" />
+    </g>
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       id="use5535"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0"
+       transform="translate(50.714286,220)"
+       width="744.09448"
+       height="1052.3622" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5537"
+       transform="matrix(0.93969262,-0.34202014,0.34202014,0.93969262,-21.204941,327.04566)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5539"
+       transform="matrix(0.76604444,-0.64278761,0.64278761,0.76604444,-52.338704,452.09738)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5541"
+       transform="matrix(0.5,-0.8660254,0.8660254,0.5,-38.679265,580.08203)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5543"
+       transform="matrix(0.17364818,-0.98480775,0.98480775,0.17364818,17.849835,695.59031)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5545"
+       transform="matrix(-0.17364818,-0.98480775,0.98480775,-0.17364818,110.26225,785.01628)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5547"
+       transform="matrix(-0.5,-0.8660254,0.8660254,-0.5,227.76279,837.40442)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5549"
+       transform="matrix(-0.76604444,-0.64278761,0.64278761,-0.76604444,355.97872,846.40274)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5551"
+       transform="matrix(-0.93969262,-0.34202014,0.34202014,-0.93969262,479.64041,811.05544)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5553"
+       transform="matrix(-1,0,0,-1,583.96341,735.63749)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <g
+       id="g5559"
+       transform="translate(120.89997,229.00318)"
+       style="stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:tile-cx="299.89781"
+       inkscape:tile-cy="257.7794"
+       inkscape:tile-w="52.08904"
+       inkscape:tile-h="4.82126"
+       inkscape:tile-x0="273.85329"
+       inkscape:tile-y0="255.36877"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766">
+      <path
+         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+         d="m 276.52475,248.29425 0,1 50.75,0 0,-1 -50.75,0 z"
+         id="path5561"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 322.05827,246.36559 6.55552,2.41063 -6.55552,2.41063 c 1.0473,-1.42323 1.04126,-3.37047 0,-4.82126 z"
+         style="font-size:12px;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.1;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="path5563"
+         inkscape:connector-curvature="0" />
+    </g>
+    <use
+       height="1052.3622"
+       width="744.09448"
+       transform="translate(123.57143,220)"
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       id="use5565"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(0.93969262,-0.34202014,0.34202014,0.93969262,51.652202,327.04566)"
+       id="use5567"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path5631"
+       d="m 394.15219,315.44428 -6.77895,-0.003 0.53298,123.77652 6.29925,1.11591 z"
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:6.80000019;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(0.76604444,-0.64278761,0.64278761,0.76604444,20.518439,452.09738)"
+       id="use5569"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path5633"
+       style="font-size:12px;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+       d="m 400.02725,432.18375 -9.45828,46.70917 -8.85216,-46.71394 c 9.6666,7.1371 8.43372,7.06957 18.31044,0.005 z"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(0.5,-0.8660254,0.8660254,0.5,34.177878,580.08203)"
+       id="use5571"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(0.17364818,-0.98480775,0.98480775,0.17364818,90.706978,695.59031)"
+       id="use5573"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(-0.17364818,-0.98480775,0.98480775,-0.17364818,183.11939,785.01628)"
+       id="use5575"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(-0.5,-0.8660254,0.8660254,-0.5,300.61993,837.40442)"
+       id="use5577"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(-0.76604444,-0.64278761,0.64278761,-0.76604444,428.83586,846.40274)"
+       id="use5579"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(-0.93969262,-0.34202014,0.34202014,-0.93969262,552.49755,811.05544)"
+       id="use5581"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g5187"
+       xlink:href="#g5187"
+       transform="matrix(-1,0,0,-1,656.82055,735.63749)"
+       id="use5583"
+       width="744.09448"
+       height="1052.3622"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766" />
+    <g
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:tile-y0="255.36877"
+       inkscape:tile-x0="273.85329"
+       inkscape:tile-h="4.82126"
+       inkscape:tile-w="52.08904"
+       inkscape:tile-cy="257.7794"
+       inkscape:tile-cx="299.89781"
+       style="stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       transform="translate(194.4714,229.00318)"
+       id="g5589">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5591"
+         d="m 276.52475,248.29425 0,1 50.75,0 0,-1 -50.75,0 z"
+         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path5593"
+         style="font-size:12px;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.1;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m 322.05827,246.36559 6.55552,2.41063 -6.55552,2.41063 c 1.0473,-1.42323 1.04126,-3.37047 0,-4.82126 z" />
+    </g>
+    <path
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       sodipodi:nodetypes="cccc"
+       d="m 473.59868,432.18375 -9.45828,46.70917 -8.85216,-46.71394 c 9.6666,7.1371 8.43372,7.06957 18.31044,0.005 z"
+       style="font-size:12px;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+       id="path5637"
+       inkscape:connector-curvature="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       id="use5595"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0"
+       transform="translate(197.14286,220)"
+       width="744.09448"
+       height="1052.3622" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5597"
+       transform="matrix(0.93969262,-0.34202014,0.34202014,0.93969262,125.22363,327.04566)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5599"
+       transform="matrix(0.76604444,-0.64278761,0.64278761,0.76604444,94.089871,452.09738)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5601"
+       transform="matrix(0.5,-0.8660254,0.8660254,0.5,107.74931,580.08203)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5603"
+       transform="matrix(0.17364818,-0.98480775,0.98480775,0.17364818,164.27841,695.59031)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5605"
+       transform="matrix(-0.17364818,-0.98480775,0.98480775,-0.17364818,256.69082,785.01628)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5607"
+       transform="matrix(-0.5,-0.8660254,0.8660254,-0.5,374.19136,837.40442)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5609"
+       transform="matrix(-0.76604444,-0.64278761,0.64278761,-0.76604444,502.40729,846.40274)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5611"
+       transform="matrix(-0.93969262,-0.34202014,0.34202014,-0.93969262,626.06898,811.05544)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <use
+       inkscape:export-ydpi="95.675766"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       height="1052.3622"
+       width="744.09448"
+       id="use5613"
+       transform="matrix(-1,0,0,-1,730.39198,735.63749)"
+       xlink:href="#g5187"
+       inkscape:tiled-clone-of="#g5187"
+       y="0"
+       x="0" />
+    <g
+       id="g6211"
+       style="fill:#ffffff;fill-opacity:1"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766">
+      <path
+         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.60000001999999997;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+         d="m 257,165.1875 0.4375,0.40625 2.4375,-2.6875 -0.46875,-0.375 z m -2.8125,3.09375 0.4375,0.40625 2.40625,-2.65625 -0.4375,-0.40625 z m -2.84375,3.125 0.46875,0.40625 2.40625,-2.65625 -0.4375,-0.40625 z m -2.8125,3.125 0.4375,0.375 2.4375,-2.65625 -0.4375,-0.40625 z m -2.8125,3.09375 0.4375,0.40625 2.4375,-2.65625 -0.46875,-0.40625 z m -2.8125,3.125 0.4375,0.40625 2.40625,-2.6875 -0.4375,-0.40625 z m -2.84375,3.09375 0.46875,0.40625 2.40625,-2.65625 -0.4375,-0.40625 z m -2.8125,3.125 0.4375,0.40625 2.4375,-2.6875 -0.46875,-0.40625 z m -2.8125,3.09375 0.4375,0.40625 2.40625,-2.65625 -0.4375,-0.40625 z m -2.84375,3.125 0.46875,0.40625 2.40625,-2.6875 -0.4375,-0.375 z m -2.8125,3.09375 0.4375,0.40625 2.4375,-2.65625 -0.4375,-0.40625 z m -2.8125,3.125 0.4375,0.40625 2.40625,-2.65625 -0.4375,-0.40625 z m -2.8125,3.125 0.4375,0.375 L 226,200.25 l -0.4375,-0.40625 z m -2.84375,3.09375 0.4375,0.40625 2.4375,-2.65625 -0.4375,-0.40625 z m -2.6875,2.96875 0.46875,0.40625 2.28125,-2.53125 -0.46875,-0.40625 z"
+         id="path5639"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:0.24000001000000001pt;marker-start:none;fill:#ffffff;fill-opacity:1"
+         d="m 258.0305,164.49705 0.0827,1.69504 1.93276,-3.9172 -3.71049,2.30484 1.69504,-0.0827 z"
+         id="path6217"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 221.04139,207.44143 -3.71382,1.94179 1.5711,-3.88519 c 0.21038,1.03915 1.07822,1.82138 2.14272,1.9434 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.62500000000000000;stroke-linejoin:round;fill:#ffffff;fill-opacity:1"
+         id="path6219"
+         inkscape:connector-curvature="0" />
+    </g>
+    <g
+       style="fill:#ffffff;fill-opacity:1"
+       id="g6221"
+       transform="matrix(0.67211644,0.74044546,-0.74044546,0.67211644,331.54111,44.115657)"
+       inkscape:export-filename="C:\Users\Arnaud\Desktop\diffuseAngle.png"
+       inkscape:export-xdpi="95.675766"
+       inkscape:export-ydpi="95.675766">
+      <path
+         inkscape:connector-curvature="0"
+         id="path6223"
+         d="m 257,165.1875 0.4375,0.40625 2.4375,-2.6875 -0.46875,-0.375 z m -2.8125,3.09375 0.4375,0.40625 2.40625,-2.65625 -0.4375,-0.40625 z m -2.84375,3.125 0.46875,0.40625 2.40625,-2.65625 -0.4375,-0.40625 z m -2.8125,3.125 0.4375,0.375 2.4375,-2.65625 -0.4375,-0.40625 z m -2.8125,3.09375 0.4375,0.40625 2.4375,-2.65625 -0.46875,-0.40625 z m -2.8125,3.125 0.4375,0.40625 2.40625,-2.6875 -0.4375,-0.40625 z m -2.84375,3.09375 0.46875,0.40625 2.40625,-2.65625 -0.4375,-0.40625 z m -2.8125,3.125 0.4375,0.40625 2.4375,-2.6875 -0.46875,-0.40625 z m -2.8125,3.09375 0.4375,0.40625 2.40625,-2.65625 -0.4375,-0.40625 z m -2.84375,3.125 0.46875,0.40625 2.40625,-2.6875 -0.4375,-0.375 z m -2.8125,3.09375 0.4375,0.40625 2.4375,-2.65625 -0.4375,-0.40625 z m -2.8125,3.125 0.4375,0.40625 2.40625,-2.65625 -0.4375,-0.40625 z m -2.8125,3.125 0.4375,0.375 L 226,200.25 l -0.4375,-0.40625 z m -2.84375,3.09375 0.4375,0.40625 2.4375,-2.65625 -0.4375,-0.40625 z m -2.6875,2.96875 0.46875,0.40625 2.28125,-2.53125 -0.46875,-0.40625 z"
+         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.60000002;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path6225"
+         d="m 258.0305,164.49705 0.0827,1.69504 1.93276,-3.9172 -3.71049,2.30484 1.69504,-0.0827 z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.24000001pt;marker-start:none" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path6227"
+         style="font-size:12px;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         d="m 221.04139,207.44143 -3.71382,1.94179 1.5711,-3.88519 c 0.21038,1.03915 1.07822,1.82138 2.14272,1.9434 z" />
+    </g>
+  </g>
+</svg>
