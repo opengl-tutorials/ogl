@@ -18,7 +18,6 @@ using namespace glm;
 #include <common/texture.hpp>
 #include <common/controls.hpp>
 #include <common/objloader.hpp>
-#include <common/vboindexer.hpp>
 
 int main( void )
 {
@@ -52,6 +51,7 @@ int main( void )
 
 	// Ensure we can capture the escape key being pressed below
     glfwEnable( GLFW_STICKY_KEYS );
+	glfwSetMousePos(1024/2, 768/2);
 
 	// Dark blue background
 	glClearColor(0.0f, 0.0f, 0.3f, 0.0f);

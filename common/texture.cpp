@@ -14,7 +14,7 @@ GLuint loadBMP_custom(const char * imagepath){
     unsigned char header[54];
     unsigned int dataPos;
 	unsigned int imageSize;
-	unsigned int width, height, bpp;
+	unsigned int width, height;
 	// Actual RGB data
 	unsigned char * data;
 
@@ -43,11 +43,10 @@ GLuint loadBMP_custom(const char * imagepath){
     imageSize  = *(int*)&(header[0x22]);
     width      = *(int*)&(header[0x12]);
     height     = *(int*)&(header[0x16]);
-    bpp=3;
 
 	// Some BMP files are misformatted, guess missing information
     if (imageSize==0)    imageSize=width*height*3; // 3 : one byte for each Red, Green and Blue component
-    if (dataPos==0)      dataPos=54;
+    if (dataPos==0)      dataPos=54; // The BMP header is done that way
 
 	// Create a buffer
     data = new unsigned char [imageSize];
@@ -58,15 +57,6 @@ GLuint loadBMP_custom(const char * imagepath){
 	// Everything is in memory now, the file wan be closed
     fclose (file);
 
-	// Swap Red and Blue component for each texel of the image
-    unsigned char t;
-    for (unsigned int i = 0; i < imageSize; i += 3 )
-	{
-        t = data[i];
-        data[i] = data[i+2];
-        data[i+2] = t;
-	}
-
 	// Create one OpenGL texture
 	GLuint textureID;
 	glGenTextures(1, &textureID);
@@ -75,7 +65,7 @@ GLuint loadBMP_custom(const char * imagepath){
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
 	// Give the image to OpenGL
-    glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0,(bpp == 3 ? GL_RGB : GL_RGBA), GL_UNSIGNED_BYTE, data);
+	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
 
 	// Poor filtering, or ...
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);

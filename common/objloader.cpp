@@ -29,10 +29,13 @@ bool loadOBJ(
 	while( 1 ){
 
 		char lineHeader[128];
+		// read the first word of the line
 		int res = fscanf(file, "%s", lineHeader);
 		if (res == EOF)
-			break;
+			break; // EOF = End Of File. Quit the loop.
 
+		// else : parse lineHeader
+		
 		if ( strcmp( lineHeader, "v" ) == 0 ){
 			glm::vec3 vertex;
 			fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z );
@@ -70,24 +73,24 @@ bool loadOBJ(
 
 	}
 
-	// For each triangle
-	for( unsigned int v=0; v<vertexIndices.size(); v+=3 ){
-		// For each vertex of the triangle
-		for ( unsigned int i=0; i<3; i+=1 ){
+	// For each vertex of each triangle
+	for( unsigned int i=0; i<vertexIndices.size(); i++ ){
 
-			unsigned int vertexIndex = vertexIndices[v+i];
-			glm::vec3 vertex = temp_vertices[ vertexIndex-1 ];
-			
-			unsigned int uvIndex = uvIndices[v+i];
-			glm::vec2 uv = temp_uvs[ uvIndex-1 ];
-			
-			unsigned int normalIndex = normalIndices[v+i];
-			glm::vec3 normal = temp_normals[ normalIndex-1 ];
-			
-			out_vertices.push_back(vertex);
-			out_uvs     .push_back(uv);
-			out_normals .push_back(normal);
-		}
+		// Get the indices of its attributes
+		unsigned int vertexIndex = vertexIndices[i];
+		unsigned int uvIndex = uvIndices[i];
+		unsigned int normalIndex = normalIndices[i];
+		
+		// Get the attributes thanks to the index
+		glm::vec3 vertex = temp_vertices[ vertexIndex-1 ];
+		glm::vec2 uv = temp_uvs[ uvIndex-1 ];
+		glm::vec3 normal = temp_normals[ normalIndex-1 ];
+		
+		// Put the attributes in buffers
+		out_vertices.push_back(vertex);
+		out_uvs     .push_back(uv);
+		out_normals .push_back(normal);
+	
 	}
 
 	return true;

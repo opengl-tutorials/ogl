@@ -19,7 +19,7 @@ using namespace glm;
 #include <common/controls.hpp>
 #include <common/objloader.hpp>
 #include <common/vboindexer.hpp>
-#include <common/text2D.hpp>
+#include <common/tangentspace.hpp>
 
 int main( void )
 {
@@ -30,10 +30,11 @@ int main( void )
         return -1;
     }
 
-    glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
+    glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 1);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
-	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	//glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 
     // Open a window and create its OpenGL context
     if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
@@ -49,7 +50,7 @@ int main( void )
 		return -1;
 	}
 
-	glfwSetWindowTitle( "Tutorial 11" );
+	glfwSetWindowTitle( "Tutorial 13" );
 
 	// Ensure we can capture the escape key being pressed below
     glfwEnable( GLFW_STICKY_KEYS );
@@ -77,24 +78,41 @@ int main( void )
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
 	GLuint ViewMatrixID = glGetUniformLocation(programID, "V");
 	GLuint ModelMatrixID = glGetUniformLocation(programID, "M");
+	GLuint ModelView3x3MatrixID = glGetUniformLocation(programID, "MV3x3");
 
 	// Load the texture
-	GLuint Texture = loadTGA_glfw("uvmap.tga");
+	GLuint DiffuseTexture = loadTGA_glfw("diffuse.tga");
+	GLuint NormalTexture = loadTGA_glfw("normal.tga");
+	GLuint SpecularTexture = loadTGA_glfw("specular.tga");
 	
 	// Get a handle for our "myTextureSampler" uniform
-	GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
+	GLuint DiffuseTextureID  = glGetUniformLocation(programID, "DiffuseTextureSampler");
+	GLuint NormalTextureID  = glGetUniformLocation(programID, "NormalTextureSampler");
+	GLuint SpecularTextureID  = glGetUniformLocation(programID, "SpecularTextureSampler");
 
 	// Read our .obj file
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
 	std::vector<glm::vec3> normals;
-	bool res = loadOBJ("suzanne.obj", vertices, uvs, normals);
+	bool res = loadOBJ("cylinder.obj", vertices, uvs, normals);
+
+	std::vector<glm::vec3> tangents;
+	std::vector<glm::vec3> bitangents;
+	computeTangentBasis(
+		vertices, uvs, // input
+		tangents, bitangents    // output
+	);
 
 	std::vector<unsigned short> indices;
 	std::vector<glm::vec3> indexed_vertices;
 	std::vector<glm::vec2> indexed_uvs;
 	std::vector<glm::vec3> indexed_normals;
-	indexVBO(vertices, uvs, normals, indices, indexed_vertices, indexed_uvs, indexed_normals);
+	std::vector<glm::vec3> indexed_tangents;
+	std::vector<glm::vec3> indexed_bitangents;
+	indexVBO_TBN(
+		vertices, uvs, normals, tangents, bitangents, 
+		indices, indexed_vertices, indexed_uvs, indexed_normals, indexed_tangents, indexed_bitangents
+	);
 
 	// Load it into a VBO
 
@@ -113,6 +131,16 @@ int main( void )
     glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
     glBufferData(GL_ARRAY_BUFFER, indexed_normals.size() * sizeof(glm::vec3), &indexed_normals[0], GL_STATIC_DRAW);
 
+	GLuint tangentbuffer;
+    glGenBuffers(1, &tangentbuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, tangentbuffer);
+    glBufferData(GL_ARRAY_BUFFER, indexed_tangents.size() * sizeof(glm::vec3), &indexed_tangents[0], GL_STATIC_DRAW);
+
+	GLuint bitangentbuffer;
+    glGenBuffers(1, &bitangentbuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, bitangentbuffer);
+    glBufferData(GL_ARRAY_BUFFER, indexed_bitangents.size() * sizeof(glm::vec3), &indexed_bitangents[0], GL_STATIC_DRAW);
+
 	// Generate a buffer for the indices as well
 	GLuint elementbuffer;
 	glGenBuffers(1, &elementbuffer);
@@ -122,9 +150,6 @@ int main( void )
 	// Get a handle for our "LightPosition" uniform
 	glUseProgram(programID);
 	GLuint LightID = glGetUniformLocation(programID, "LightPosition_worldspace");
-
-	// Initialize our little text library with the Holstein font
-	initText2D( "Holstein.tga" );
 
 	// For speed computation
 	double lastTime = glfwGetTime();
@@ -153,6 +178,8 @@ int main( void )
 		glm::mat4 ProjectionMatrix = getProjectionMatrix();
 		glm::mat4 ViewMatrix = getViewMatrix();
 		glm::mat4 ModelMatrix = glm::mat4(1.0);
+		glm::mat4 ModelViewMatrix = ViewMatrix * ModelMatrix;
+		glm::mat3 ModelView3x3Matrix = glm::mat3(ModelViewMatrix);
 		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 
 		// Send our transformation to the currently bound shader, 
@@ -160,15 +187,31 @@ int main( void )
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 		glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
+		glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
+		glUniformMatrix3fv(ModelView3x3MatrixID, 1, GL_FALSE, &ModelView3x3Matrix[0][0]);
+		
 
-		glm::vec3 lightPos = glm::vec3(4,4,4);
+		glm::vec3 lightPos = glm::vec3(0,0,4);
 		glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
 
-		// Bind our texture in Texture Unit 0
+		// Bind our diffuse texture in Texture Unit 0
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, Texture);
-		// Set our "myTextureSampler" sampler to user Texture Unit 0
-		glUniform1i(TextureID, 0);
+		glBindTexture(GL_TEXTURE_2D, DiffuseTexture);
+		// Set our "DiffuseTextureSampler" sampler to user Texture Unit 0
+		glUniform1i(DiffuseTextureID, 0);
+
+		// Bind our normal texture in Texture Unit 1
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, NormalTexture);
+		// Set our "Normal	TextureSampler" sampler to user Texture Unit 0
+		glUniform1i(NormalTextureID, 1);
+
+		// Bind our normal texture in Texture Unit 2
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, SpecularTexture);
+		// Set our "Normal	TextureSampler" sampler to user Texture Unit 0
+		glUniform1i(SpecularTextureID, 2);
+
 
 		// 1rst attribute buffer : vertices
 		glEnableVertexAttribArray(0);
@@ -206,6 +249,30 @@ int main( void )
 			(void*)0                          // array buffer offset
 		);
 
+		// 4th attribute buffer : tangents
+		glEnableVertexAttribArray(3);
+		glBindBuffer(GL_ARRAY_BUFFER, tangentbuffer);
+		glVertexAttribPointer(
+			3,                                // attribute
+			3,                                // size
+			GL_FLOAT,                         // type
+			GL_FALSE,                         // normalized?
+			0,                                // stride
+			(void*)0                          // array buffer offset
+		);
+
+		// 5th attribute buffer : bitangents
+		glEnableVertexAttribArray(4);
+		glBindBuffer(GL_ARRAY_BUFFER, bitangentbuffer);
+		glVertexAttribPointer(
+			4,                                // attribute
+			3,                                // size
+			GL_FLOAT,                         // type
+			GL_FALSE,                         // normalized?
+			0,                                // stride
+			(void*)0                          // array buffer offset
+		);
+
 		// Index buffer
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 
@@ -220,10 +287,58 @@ int main( void )
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);
+		glDisableVertexAttribArray(3);
+		glDisableVertexAttribArray(4);
 
-		char text[256];
-		sprintf(text,"%.2f sec", glfwGetTime() );
-		printText2D(text, 10, 500, 60);
+		glMatrixMode(GL_PROJECTION);
+		glLoadMatrixf((const GLfloat*)&ProjectionMatrix[0]);
+		glMatrixMode(GL_MODELVIEW);
+		glm::mat4 MV = ViewMatrix * ModelMatrix;
+		glLoadMatrixf((const GLfloat*)&MV[0]);
+
+
+		glUseProgram(0);
+		glColor3f(0,0,1);
+		glBegin(GL_LINES);
+		for (int i=0; i<indices.size(); i++){
+			glm::vec3 p = indexed_vertices[indices[i]];
+			glVertex3fv(&p.x);
+			glm::vec3 o = glm::normalize(indexed_normals[indices[i]]);
+			p+=o*0.1f;
+			glVertex3fv(&p.x);
+		}
+		glEnd();
+		glColor3f(1,0,0);
+		glBegin(GL_LINES);
+		for (int i=0; i<indices.size(); i++){
+			glm::vec3 p = indexed_vertices[indices[i]];
+			glVertex3fv(&p.x);
+			glm::vec3 o = glm::normalize(indexed_tangents[indices[i]]);
+			p+=o*0.1f;
+			glVertex3fv(&p.x);
+		}
+		glEnd();
+		glColor3f(0,1,0);
+		glBegin(GL_LINES);
+		for (int i=0; i<indices.size(); i++){
+			glm::vec3 p = indexed_vertices[indices[i]];
+			glVertex3fv(&p.x);
+			glm::vec3 o = glm::normalize(indexed_bitangents[indices[i]]);
+			p+=o*0.1f;
+			glVertex3fv(&p.x);
+		}
+		glEnd();
+
+		glColor3f(1,1,1);
+		glBegin(GL_LINES);
+			glVertex3fv(&lightPos.x);
+			lightPos+=glm::vec3(1,0,0);
+			glVertex3fv(&lightPos.x);
+			lightPos-=glm::vec3(1,0,0);
+			glVertex3fv(&lightPos.x);
+			lightPos+=glm::vec3(0,1,0);
+			glVertex3fv(&lightPos.x);
+		glEnd();
 
         // Swap buffers
         glfwSwapBuffers();
@@ -232,17 +347,18 @@ int main( void )
     while( glfwGetKey( GLFW_KEY_ESC ) != GLFW_PRESS &&
            glfwGetWindowParam( GLFW_OPENED ) );
 
-	// Cleanup VBO, shader and texture
+	// Cleanup VBO and shader
 	glDeleteBuffers(1, &vertexbuffer);
 	glDeleteBuffers(1, &uvbuffer);
 	glDeleteBuffers(1, &normalbuffer);
+	glDeleteBuffers(1, &tangentbuffer);
+	glDeleteBuffers(1, &bitangentbuffer);
 	glDeleteProgram(programID);
-	glDeleteTextures(1, &TextureID);
+	glDeleteTextures(1, &DiffuseTextureID);
+	glDeleteTextures(1, &NormalTextureID);
+	glDeleteTextures(1, &SpecularTextureID);
 
-	// Delete the text's VBO, the shader and the texture
-	cleanupText2D();
-
-    // Close OpenGL window and terminate GLFW
+	// Close OpenGL window and terminate GLFW
     glfwTerminate();
 
     return 0;
