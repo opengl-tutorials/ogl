@@ -52,6 +52,7 @@ int main( void )
 
 	// Ensure we can capture the escape key being pressed below
     glfwEnable( GLFW_STICKY_KEYS );
+	glfwSetMousePos(1024/2, 768/2);
 
 	// Dark blue background
 	glClearColor(0.0f, 0.0f, 0.3f, 0.0f);
@@ -88,7 +89,7 @@ int main( void )
 	std::vector<glm::vec3> normals;
 	bool res = loadOBJ("suzanne.obj", vertices, uvs, normals);
 
-	std::vector<unsigned int> indices;
+	std::vector<unsigned short> indices;
 	std::vector<glm::vec3> indexed_vertices;
 	std::vector<glm::vec2> indexed_uvs;
 	std::vector<glm::vec3> indexed_normals;
@@ -115,7 +116,7 @@ int main( void )
 	GLuint elementbuffer;
 	glGenBuffers(1, &elementbuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned short), &indices[0], GL_STATIC_DRAW);
 
 	// Get a handle for our "LightPosition" uniform
 	glUseProgram(programID);
@@ -267,7 +268,7 @@ int main( void )
 		glDrawElements(
 			GL_TRIANGLES,      // mode
 			indices.size(),    // count
-			GL_UNSIGNED_INT,   // type
+			GL_UNSIGNED_SHORT, // type
 			(void*)0           // element array buffer offset
 		);
 
