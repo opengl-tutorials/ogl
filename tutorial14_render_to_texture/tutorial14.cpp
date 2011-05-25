@@ -326,6 +326,13 @@ int main( void )
 	glDeleteProgram(programID);
 	glDeleteTextures(1, &TextureID);
 
+	glDeleteFramebuffers(1, &FramebufferName);
+	glDeleteTextures(1, &renderedTexture);
+	glDeleteRenderbuffers(1, &depthrenderbuffer);
+	glDeleteBuffers(1, &quad_vertexbuffer);
+	glDeleteVertexArrays(1, &quad_VertexArrayID);
+
+
 	// Close OpenGL window and terminate GLFW
     glfwTerminate();
 

@@ -4,13 +4,18 @@
 layout(location = 0) in vec3 vertexPosition_modelspace;
 layout(location = 1) in vec2 vertexUV;
 layout(location = 2) in vec3 vertexNormal_modelspace;
+layout(location = 3) in vec3 vertexTangent_modelspace;
+layout(location = 4) in vec3 vertexBitangent_modelspace;
 
 // Output data ; will be interpolated for each fragment.
 out vec2 UV;
 out vec3 Position_worldspace;
-out vec3 Normal_cameraspace;
 out vec3 EyeDirection_cameraspace;
 out vec3 LightDirection_cameraspace;
+
+out vec3 o_vertexNormal_modelspace;
+out vec3 o_vertexTangent_modelspace;
+out vec3 o_vertexBitangent_modelspace;
 
 // Values that stay constant for the whole mesh.
 uniform mat4 MVP;
@@ -36,9 +41,13 @@ void main(){
 	LightDirection_cameraspace = LightPosition_cameraspace + EyeDirection_cameraspace;
 	
 	// Normal of the the vertex, in camera space
-	Normal_cameraspace = ( V * M * vec4(vertexNormal_modelspace,0)).xyz; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
+//	Normal_cameraspace = ( V * M * vec4(vertexNormal_modelspace,0)).xyz; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
 	
 	// UV of the vertex. No special space for this one.
 	UV = vertexUV;
+	
+	o_vertexNormal_modelspace = normalize(vertexNormal_modelspace);
+	o_vertexTangent_modelspace = normalize(vertexTangent_modelspace);
+	o_vertexBitangent_modelspace = normalize(vertexBitangent_modelspace);
 }
 
