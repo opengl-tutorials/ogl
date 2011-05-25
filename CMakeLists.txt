@@ -222,6 +222,33 @@ add_custom_command(
    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial11_2d_fonts${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial11_2d_fonts/"
 )
 
+# Tutorial 13
+add_executable(tutorial13_normal_mapping
+	tutorial13_normal_mapping/tutorial13.cpp
+	common/shader.cpp
+	common/shader.hpp
+	common/controls.cpp
+	common/controls.hpp
+	common/texture.cpp
+	common/texture.hpp
+	common/objloader.cpp
+	common/objloader.hpp
+	common/vboindexer.cpp
+	common/vboindexer.hpp
+	common/text2D.hpp
+	common/text2D.cpp
+	common/tangentspace.hpp
+	common/tangentspace.cpp
+)
+target_link_libraries(tutorial13_normal_mapping
+	${ALL_LIBS}
+)
+add_custom_command(
+   TARGET tutorial13_normal_mapping POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial13_normal_mapping${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial13_normal_mapping/"
+)
+
+
 # Tutorial 14
 add_executable(tutorial14_render_to_texture
 	tutorial14_render_to_texture/tutorial14.cpp
