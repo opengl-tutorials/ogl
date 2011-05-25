@@ -20,7 +20,7 @@ bool getSimilarVertexIndex(
 	std::vector<glm::vec3> & out_vertices,
 	std::vector<glm::vec2> & out_uvs,
 	std::vector<glm::vec3> & out_normals,
-	unsigned int & result
+	unsigned short & result
 ){
 	// Lame linear search
 	for ( unsigned int i=0; i<out_vertices.size(); i++ ){
@@ -48,7 +48,7 @@ void indexVBO(
 	std::vector<glm::vec2> & in_uvs,
 	std::vector<glm::vec3> & in_normals,
 
-	std::vector<unsigned int> & out_indices,
+	std::vector<unsigned short> & out_indices,
 	std::vector<glm::vec3> & out_vertices,
 	std::vector<glm::vec2> & out_uvs,
 	std::vector<glm::vec3> & out_normals
@@ -57,7 +57,7 @@ void indexVBO(
 	for ( unsigned int i=0; i<in_vertices.size(); i++ ){
 
 		// Try to find a similar vertex in out_XXXX
-		unsigned int index;
+		unsigned short index;
 		bool found = getSimilarVertexIndex(in_vertices[i], in_uvs[i], in_normals[i],     out_vertices, out_uvs, out_normals, index);
 
 		if ( found ){ // A similar vertex is already in the VBO, use it instead !
@@ -84,7 +84,7 @@ void indexVBO_TBN(
 	std::vector<glm::vec3> & in_tangents,
 	std::vector<glm::vec3> & in_bitangents,
 
-	std::vector<unsigned int> & out_indices,
+	std::vector<unsigned short> & out_indices,
 	std::vector<glm::vec3> & out_vertices,
 	std::vector<glm::vec2> & out_uvs,
 	std::vector<glm::vec3> & out_normals,
@@ -95,7 +95,7 @@ void indexVBO_TBN(
 	for ( unsigned int i=0; i<in_vertices.size(); i++ ){
 
 		// Try to find a similar vertex in out_XXXX
-		unsigned int index;
+		unsigned short index;
 		bool found = getSimilarVertexIndex(in_vertices[i], in_uvs[i], in_normals[i],     out_vertices, out_uvs, out_normals, index);
 
 		if ( found ){ // A similar vertex is already in the VBO, use it instead !
