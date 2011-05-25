@@ -221,7 +221,7 @@ int main( void )
 		glDisableVertexAttribArray(2);
 
 		char text[256];
-		sprintf(text,"%f sec", glfwGetTime() );
+		sprintf(text,"%.2f sec", glfwGetTime() );
 		printText2D(text, 10, 500, 60);
 
         // Swap buffers

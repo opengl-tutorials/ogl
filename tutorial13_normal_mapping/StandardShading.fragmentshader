@@ -3,36 +3,55 @@
 // Interpolated values from the vertex shaders
 in vec2 UV;
 in vec3 Position_worldspace;
-in vec3 Normal_cameraspace;
 in vec3 EyeDirection_cameraspace;
 in vec3 LightDirection_cameraspace;
+
+in vec3 o_vertexNormal_modelspace;
+in vec3 o_vertexTangent_modelspace;
+in vec3 o_vertexBitangent_modelspace;
 
 // Ouput data
 out vec3 color;
 
 // Values that stay constant for the whole mesh.
-uniform sampler2D myTextureSampler;
-uniform mat4 MV;
+uniform sampler2D DiffuseTextureSampler;
+uniform sampler2D NormalTextureSampler;
+uniform sampler2D SpecularTextureSampler;
+uniform mat4 V;
+uniform mat4 M;
+uniform mat3 MV3x3;
 uniform vec3 LightPosition_worldspace;
 
 void main(){
 
 	// Light emission properties
 	vec3 LightColor = vec3(1,1,1);
-	float LightPower = 50.0f;
+	float LightPower = 40.0f;
 	
 	// Material properties
-	vec3 MaterialDiffuseColor = texture2D( myTextureSampler, UV ).rgb;
+	vec3 MaterialDiffuseColor = texture2D( DiffuseTextureSampler, UV ).rgb;
 	vec3 MaterialAmbiantColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
-	vec3 MaterialSpecularColor = vec3(0.3,0.3,0.3);
+	vec3 MaterialSpecularColor = texture2D( SpecularTextureSampler, UV ).rgb * 0.3;
 
+	// Local normal, in tangent space
+	vec3 TextureNormal_tangentspace = normalize(texture2D( NormalTextureSampler, UV ).rgb*2.0 - 1.0);
+	
+	mat3 TBN = transpose(mat3(
+		MV3x3 * o_vertexTangent_modelspace,
+		MV3x3 * o_vertexBitangent_modelspace,
+		MV3x3 * o_vertexNormal_modelspace	
+	)); // You can use dot products instead of building this matrix and transposing it. See References for details.
+
+	vec3 LightDirection_tangentspace = TBN * normalize(LightDirection_cameraspace);
+	vec3 EyeDirection_tangentspace =  TBN * normalize(EyeDirection_cameraspace);
+	
 	// Distance to the light
 	float distance = length( LightPosition_worldspace - Position_worldspace );
 
 	// Normal of the computed fragment, in camera space
-	vec3 n = normalize( Normal_cameraspace );
+	vec3 n = TextureNormal_tangentspace;
 	// Direction of the light (from the fragment to the light)
-	vec3 l = normalize( LightDirection_cameraspace );
+	vec3 l = LightDirection_tangentspace;
 	// Cosine of the angle between the normal and the light direction, 
 	// clamped above 0
 	//  - light is at the vertical of the triangle -> 1
@@ -41,7 +60,7 @@ void main(){
 	float cosTheta = clamp( dot( n,l ), 0,1 );
 	
 	// Eye vector (towards the camera)
-	vec3 E = normalize(EyeDirection_cameraspace);
+	vec3 E = normalize(EyeDirection_tangentspace);
 	// Direction in which the triangle reflects the light
 	vec3 R = reflect(-l,n);
 	// Cosine of the angle between the Eye vector and the Reflect vector,
@@ -58,4 +77,7 @@ void main(){
 		// Specular : reflective highlight, like a mirror
 		MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance*distance);
 
+		//color.xyz = EyeDirection_tangentspace;
+		//color.g=0.0;color.b=0.0;
+	
 }
