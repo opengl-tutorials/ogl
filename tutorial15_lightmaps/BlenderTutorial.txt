@@ -1,0 +1,50 @@
+Blender 2.5, huge differences
+
+ - Create a new scene
+    Delete cube : selection with right clic, Suppr
+ - Create the ground
+    New plane
+    Move
+ - Create the sphere
+    New sphere
+    Move
+    Set smooth
+ - Render to check that everything is all right(optional)
+    Move and rotate the camera
+    F12
+    Esc
+ - Merge objects
+    right clic
+    merge
+ - Split window
+    Cross
+    Select UV panel
+    How to unsplit windows
+ - Create UVs
+    Edit mode (tab)
+    Generate UVs
+ - Modify UVs (optional)
+    Face mode
+    B to select in a Box
+    A to select All, or nothing
+    G to Grab (move)
+    R to rotate
+    Ctrl while moving : steps
+ - Create texture
+    New
+    Ok
+ - Bake
+    Click ONCE and WAIT
+ - Visualize
+    Textured Mode
+ - Export OBJ
+    Triangulate
+    Export
+ - Export image
+    
+
+ - What could go wrong
+    OBJ exporter not available
+    Bad render -> make sure normals are all right -> edit, display normals, toggle
+    
+    

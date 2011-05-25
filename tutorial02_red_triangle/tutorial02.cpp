@@ -76,7 +76,7 @@ int main( void )
 		glClear( GL_COLOR_BUFFER_BIT );
 
 		// Use our shader
-		glUseProgram(programID);
+		//glUseProgram(programID);
 
 		// 1rst attribute buffer : vertices
 		glEnableVertexAttribArray(0);

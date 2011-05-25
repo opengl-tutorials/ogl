@@ -31,9 +31,6 @@ float initialFoV = 45.0f;
 float speed = 3.0f; // 3 units / second
 float mouseSpeed = 5.0f;
 
-glm::mat4 getViewMatrixFromInputs();
-glm::mat4 getPerspectiveMatrixFromInputs();
-
 
 void computeMatricesFromInputs(){
 
@@ -49,14 +46,11 @@ void computeMatricesFromInputs(){
 	glfwGetMousePos(&xpos, &ypos);
 
 	// Reset mouse position for next frame
-	glfwSetMousePos(1024/2, 738/2);
+	glfwSetMousePos(1024/2, 768/2);
 
 	// Compute new orientation
-	horizontalAngle += mouseSpeed * deltaTime * float(1024/2 - xpos );
-	verticalAngle   += mouseSpeed * deltaTime * float( 738/2 - ypos );
-
-	// Up vector
-	glm::vec3 up(0,1,0);
+	horizontalAngle += mouseSpeed * float(1024/2 - xpos );
+	verticalAngle   += mouseSpeed * float( 738/2 - ypos );
 
 	// Direction : Spherical coordinates to Cartesian coordinates conversion
 	glm::vec3 direction(
@@ -64,11 +58,17 @@ void computeMatricesFromInputs(){
 		sin(verticalAngle),
 		cos(verticalAngle) * cos(horizontalAngle)
 	);
-
+	
 	// Right vector
-	glm::vec3 right = glm::cross( direction, up );
+	glm::vec3 right = glm::vec3(
+		sin(horizontalAngle + 3.14f/2.0f), 
+		0,
+		cos(horizontalAngle + 3.14f/2.0f)
+	);
 
-
+	// Up vector
+	glm::vec3 up = glm::cross( direction, up );
+	
 	// Move forward
 	if (glfwGetKey( GLFW_KEY_UP ) == GLFW_PRESS){
 		position += direction * deltaTime * speed;

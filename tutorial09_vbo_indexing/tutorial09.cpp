@@ -20,6 +20,8 @@ using namespace glm;
 #include <common/objloader.hpp>
 #include <common/vboindexer.hpp>
 
+#include "NvTriStrip.h"
+
 int main( void )
 {
     // Initialise GLFW
@@ -88,12 +90,18 @@ int main( void )
 	std::vector<glm::vec3> normals;
 	bool res = loadOBJ("suzanne.obj", vertices, uvs, normals);
 
-	std::vector<unsigned int> indices;
+	std::vector<unsigned short> indices;
 	std::vector<glm::vec3> indexed_vertices;
 	std::vector<glm::vec2> indexed_uvs;
 	std::vector<glm::vec3> indexed_normals;
 	indexVBO(vertices, uvs, normals, indices, indexed_vertices, indexed_uvs, indexed_normals);
 
+	SetListsOnly(true);
+	SetCacheSize(24);
+	unsigned short numGroups;
+	PrimitiveGroup * primGroups, * remappedGroups;
+	GenerateStrips(&indices[0], indices.size(),	&primGroups, &numGroups, false);
+	RemapIndices(primGroups, 1,	indexed_vertices.size(), &remappedGroups);
 	// Load it into a VBO
 
 	GLuint vertexbuffer;
@@ -115,7 +123,7 @@ int main( void )
 	GLuint elementbuffer;
 	glGenBuffers(1, &elementbuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned short), remappedGroups[0].indices , GL_STATIC_DRAW);
 
 	// Get a handle for our "LightPosition" uniform
 	glUseProgram(programID);
@@ -208,7 +216,7 @@ int main( void )
 		glDrawElements(
 			GL_TRIANGLES,      // mode
 			indices.size(),    // count
-			GL_UNSIGNED_INT,   // type
+			GL_UNSIGNED_SHORT,   // type
 			(void*)0           // element array buffer offset
 		);
 
