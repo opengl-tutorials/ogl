@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 "
+   sodipodi:docname="transforms.svg">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lend"
+       style="overflow:visible;">
+      <path
+         id="path3882"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Mend"
+       style="overflow:visible;">
+      <path
+         id="path3888"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;"
+         transform="scale(0.4) rotate(180) translate(10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-5"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3882-8"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-1"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3882-2"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="285.03725"
+     inkscape:cy="818.19989"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:snap-object-midpoints="false"
+     inkscape:snap-center="false"
+     inkscape:snap-grids="false"
+     inkscape:snap-midpoints="true"
+     inkscape:window-width="1280"
+     inkscape:window-height="744"
+     inkscape:window-x="-4"
+     inkscape:window-y="-4"
+     inkscape:window-maximized="1"
+     inkscape:snap-nodes="true"
+     showguides="true"
+     inkscape:guide-bbox="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3792" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="64.285713"
+       y="99.505035"
+       id="text2985"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2987"
+         x="64.285713"
+         y="99.505035" /></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="34.285713"
+       y="109.50504"
+       id="text2989"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2991"
+         x="34.285713"
+         y="109.50504" /></text>
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="198.57143"
+       y="63.790752"
+       id="text2997"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2999"
+         x="198.57143"
+         y="63.790752" /></text>
+    <g
+       id="g4876"
+       transform="translate(31.991203,-3.0219555e-5)"
+       inkscape:export-filename="C:\Documents and Settings\Arnaud\Bureau\MVP.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         ry="7.8571424"
+         style="fill:#812955;fill-opacity:1;stroke:#000000;stroke-width:1.172912;stroke-linejoin:round;stroke-opacity:1"
+         y="82.362183"
+         x="15"
+         height="29.285713"
+         width="170"
+         id="rect3022" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text2993"
+         y="102.73161"
+         x="32.511719"
+         style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:16px"
+           y="102.73161"
+           x="32.511719"
+           id="tspan2995"
+           sodipodi:role="line">Model Coordinates</tspan></text>
+    </g>
+    <g
+       id="g4871"
+       transform="translate(35.905264,7.4096683)"
+       inkscape:export-filename="C:\Documents and Settings\Arnaud\Bureau\MVP.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         ry="7.8571424"
+         style="fill:#812955;fill-opacity:1;stroke:#000000;stroke-width:1.172912;stroke-linejoin:round;stroke-opacity:1"
+         y="191.99277"
+         x="11.085938"
+         height="29.285713"
+         width="170"
+         id="rect3022-4" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text2993-0"
+         y="212.36218"
+         x="30"
+         style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:16px"
+           y="212.36218"
+           x="30"
+           id="tspan2995-9"
+           sodipodi:role="line">World Coordinates</tspan></text>
+    </g>
+    <g
+       id="g4866"
+       transform="translate(26.991203,14.080536)"
+       inkscape:export-filename="C:\Documents and Settings\Arnaud\Bureau\MVP.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         ry="7.8571424"
+         style="fill:#812955;fill-opacity:1;stroke:#000000;stroke-width:1.172912;stroke-linejoin:round;stroke-opacity:1"
+         y="302.36218"
+         x="20"
+         height="29.285713"
+         width="170"
+         id="rect3022-4-4" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text2993-0-8"
+         y="322.7316"
+         x="31.035156"
+         style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:16px"
+           y="322.7316"
+           x="31.035156"
+           id="tspan2995-9-8"
+           sodipodi:role="line">Camera Coordinates</tspan></text>
+    </g>
+    <g
+       id="g4861"
+       transform="translate(-5.8095783,9.6559525e-6)"
+       inkscape:export-filename="C:\Documents and Settings\Arnaud\Bureau\MVP.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         ry="7.8571424"
+         style="fill:#812955;fill-opacity:1;stroke:#000000;stroke-width:1.36428428;stroke-linejoin:round;stroke-opacity:1"
+         y="433.5787"
+         x="22.800781"
+         height="29.285713"
+         width="230"
+         id="rect3022-4-4-2" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text2993-0-8-4"
+         y="452.36218"
+         x="40"
+         style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:16px"
+           y="452.36218"
+           x="40"
+           id="tspan2995-9-8-5"
+           sodipodi:role="line">Homogeneous Coordinates</tspan></text>
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 131.9912,111.64787 0,87.75457"
+       id="path4512"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="C:\Documents and Settings\Arnaud\Bureau\MVP.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       id="g4881"
+       transform="translate(47.14285,0.71428262)"
+       inkscape:export-filename="C:\Documents and Settings\Arnaud\Bureau\MVP.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <text
+         sodipodi:linespacing="125%"
+         id="text4700"
+         y="162.36218"
+         x="140"
+         style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:16px"
+           id="tspan4704"
+           y="162.36218"
+           x="140"
+           sodipodi:role="line">Model Matrix</tspan></text>
+      <path
+         inkscape:connector-curvature="0"
+         id="path4708"
+         d="m 137.85715,141.6479 -5,0 0,30 5,0"
+         style="fill:none;stroke:#000000;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path4708-0"
+         d="m 232.85715,141.6479 5,0 0,30 -5,0"
+         style="fill:none;stroke:#000000;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    </g>
+    <g
+       id="g4887"
+       transform="translate(15,15.35718)"
+       inkscape:export-filename="C:\Documents and Settings\Arnaud\Bureau\MVP.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <text
+         sodipodi:linespacing="125%"
+         id="text4700-3"
+         y="263.07645"
+         x="172.14285"
+         style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:16px"
+           id="tspan4704-6"
+           y="263.07645"
+           x="172.14285"
+           sodipodi:role="line">View Matrix</tspan></text>
+      <path
+         inkscape:connector-curvature="0"
+         id="path4708-2"
+         d="m 170,242.36218 -5,0 0,30 5,0"
+         style="fill:none;stroke:#000000;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path4708-0-4"
+         d="m 260,242.36218 5,0 0,30 -5,0"
+         style="fill:none;stroke:#000000;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 131.9912,228.68815 0,87.75457"
+       id="path4512-8"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="C:\Documents and Settings\Arnaud\Bureau\MVP.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 131.9912,345.72843 0,87.85028"
+       id="path4512-8-1"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="C:\Documents and Settings\Arnaud\Bureau\MVP.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       id="g4893"
+       transform="translate(20,0.71432757)"
+       inkscape:export-filename="C:\Documents and Settings\Arnaud\Bureau\MVP.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <text
+         sodipodi:linespacing="125%"
+         id="text4700-3-4"
+         y="393.07648"
+         x="167.14282"
+         style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:16px"
+           id="tspan4704-6-9"
+           y="393.07648"
+           x="167.14282"
+           sodipodi:role="line">Projection Matrix</tspan></text>
+      <path
+         inkscape:connector-curvature="0"
+         id="path4708-2-8"
+         d="m 165,372.36218 -5,0 0,30 5,0"
+         style="fill:none;stroke:#000000;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path4708-0-4-2"
+         d="m 290,372.36218 5,0 0,30 -5,0"
+         style="fill:none;stroke:#000000;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    </g>
+  </g>
+</svg>
