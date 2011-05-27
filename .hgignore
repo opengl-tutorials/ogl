@@ -5,3 +5,6 @@ syntax: glob
 build/*
 *.bak
 Thumbs.db
+glob:OpenGL-tutorial_v*
+relre:.*\.blend.+
+glob:*.mtl
