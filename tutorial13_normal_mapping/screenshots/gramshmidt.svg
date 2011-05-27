@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.0 r9654"
+   sodipodi:docname="g.svg">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="Arrow1Send"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Send"
+       style="overflow:visible;">
+      <path
+         id="path3773"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;"
+         transform="scale(0.2) rotate(180) translate(6,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Sstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Sstart"
+       style="overflow:visible">
+      <path
+         id="path3770"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none"
+         transform="scale(0.2) translate(6,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Mend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow2Mend"
+       style="overflow:visible;">
+      <path
+         id="path3785"
+         style="font-size:12.0;fill-rule:evenodd;stroke-width:0.62500000;stroke-linejoin:round;"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         transform="scale(0.6) rotate(180) translate(0,0)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="117.38159"
+     inkscape:cy="805.54967"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:object-nodes="true"
+     inkscape:snap-global="false"
+     inkscape:window-width="842"
+     inkscape:window-height="710"
+     inkscape:window-x="75"
+     inkscape:window-y="75"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow2Mend)"
+       d="M 75.714286,270.21932 61.071429,209.50504"
+       id="path4565"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\Arnaud\Projects\tutorials\tutorial13_normal_mapping\screenshots\gramshmidt.png"
+       inkscape:export-xdpi="206.99171"
+       inkscape:export-ydpi="206.99171" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow2Mend)"
+       d="M 75.714286,270.21932 135.35714,237.00504"
+       id="path4567"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\Arnaud\Projects\tutorials\tutorial13_normal_mapping\screenshots\gramshmidt.png"
+       inkscape:export-xdpi="206.99171"
+       inkscape:export-ydpi="206.99171" />
+    <text
+       xml:space="preserve"
+       style="font-size:8px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="54.64286"
+       y="207.00504"
+       id="text4933"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\Users\Arnaud\Projects\tutorials\tutorial13_normal_mapping\screenshots\gramshmidt.png"
+       inkscape:export-xdpi="206.99171"
+       inkscape:export-ydpi="206.99171"><tspan
+         sodipodi:role="line"
+         id="tspan4935"
+         x="54.64286"
+         y="207.00504">n</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:8px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="133.92857"
+       y="233.07646"
+       id="text4937"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\Users\Arnaud\Projects\tutorials\tutorial13_normal_mapping\screenshots\gramshmidt.png"
+       inkscape:export-xdpi="206.99171"
+       inkscape:export-ydpi="206.99171"><tspan
+         sodipodi:role="line"
+         id="tspan4939"
+         x="133.92857"
+         y="233.07646">t</tspan></text>
+    <path
+       inkscape:connector-curvature="0"
+       id="path4941"
+       d="m 71.439099,252.42856 63.907521,-15.413"
+       style="fill:none;stroke:#000000;stroke-width:0.42103788;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:0.42103788, 0.84207576;stroke-dashoffset:0;marker-end:none"
+       inkscape:export-filename="C:\Users\Arnaud\Projects\tutorials\tutorial13_normal_mapping\screenshots\gramshmidt.png"
+       inkscape:export-xdpi="206.99171"
+       inkscape:export-ydpi="206.99171" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.42103788;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:0.42103788, 0.84207576;stroke-dashoffset:0;marker-end:none"
+       d="m 75.714286,270.21932 63.907524,-15.413"
+       id="path5125"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\Arnaud\Projects\tutorials\tutorial13_normal_mapping\screenshots\gramshmidt.png"
+       inkscape:export-xdpi="206.99171"
+       inkscape:export-ydpi="206.99171" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.87024802px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Sstart);marker-end:url(#Arrow1Send)"
+       d="m 67.534426,253.92431 3.71132,15.49153"
+       id="path5127"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\Arnaud\Projects\tutorials\tutorial13_normal_mapping\screenshots\gramshmidt.png"
+       inkscape:export-xdpi="206.99171"
+       inkscape:export-ydpi="206.99171" />
+    <text
+       xml:space="preserve"
+       style="font-size:8px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="43.133377"
+       y="265.13367"
+       id="text4937-1"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\Users\Arnaud\Projects\tutorials\tutorial13_normal_mapping\screenshots\gramshmidt.png"
+       inkscape:export-xdpi="206.99171"
+       inkscape:export-ydpi="206.99171"><tspan
+         sodipodi:role="line"
+         x="43.133377"
+         y="265.13367"
+         id="tspan5524">dot(n,t)</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow2Mend)"
+       d="m 135.34662,237.01556 4.27519,17.79076"
+       id="path5528"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\Arnaud\Projects\tutorials\tutorial13_normal_mapping\screenshots\gramshmidt.png"
+       inkscape:export-xdpi="206.99171"
+       inkscape:export-ydpi="206.99171" />
+    <text
+       xml:space="preserve"
+       style="font-size:8px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="138.55038"
+       y="248.37775"
+       id="text5716"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="C:\Users\Arnaud\Projects\tutorials\tutorial13_normal_mapping\screenshots\gramshmidt.png"
+       inkscape:export-xdpi="206.99171"
+       inkscape:export-ydpi="206.99171"><tspan
+         sodipodi:role="line"
+         id="tspan5718"
+         x="138.55038"
+         y="248.37775">-n*dot(n,t)</tspan></text>
+  </g>
+</svg>

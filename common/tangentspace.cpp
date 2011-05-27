@@ -1,16 +1,19 @@
 #include <vector>
 #include <glm\glm.hpp>
 
+#include "tangentspace.hpp"
+
 void computeTangentBasis(
 	// inputs
 	std::vector<glm::vec3> & vertices,
 	std::vector<glm::vec2> & uvs,
+	std::vector<glm::vec3> & normals,
 	// outputs
 	std::vector<glm::vec3> & tangents,
 	std::vector<glm::vec3> & bitangents
 ){
 
-	for ( int i=0; i<vertices.size(); i+=3){
+	for ( int i=0; i<vertices.size(); i+=3 ){
 
 		// Shortcuts for vertices
 		glm::vec3 & v0 = vertices[i+0];
@@ -47,6 +50,22 @@ void computeTangentBasis(
 
 	}
 
+	// See "Going Further"
+	for ( int i=0; i<vertices.size(); i+=1 )
+    {
+        glm::vec3 & n = normals[i];
+        glm::vec3 & t = tangents[i];
+        glm::vec3 & b = bitangents[i];
+        
+        // Gram-Schmidt orthogonalize
+		t = glm::normalize(t - n * glm::dot(n, t));
+        
+        // Calculate handedness
+		if (glm::dot(glm::cross(n, t), b) < 0.0f){
+			t = t * -1.0f;
+		}
+
+    }
 
 
 }

@@ -72,7 +72,7 @@ int main( void )
 	glBindVertexArray(VertexArrayID);
 
 	// Create and compile our GLSL program from the shaders
-	GLuint programID = LoadShaders( "StandardShading.vertexshader", "StandardShading.fragmentshader" );
+	GLuint programID = LoadShaders( "NormalMapping.vertexshader", "NormalMapping.fragmentshader" );
 
 	// Get a handle for our "MVP" uniform
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
@@ -99,7 +99,7 @@ int main( void )
 	std::vector<glm::vec3> tangents;
 	std::vector<glm::vec3> bitangents;
 	computeTangentBasis(
-		vertices, uvs, // input
+		vertices, uvs, normals, // input
 		tangents, bitangents    // output
 	);
 
@@ -290,6 +290,14 @@ int main( void )
 		glDisableVertexAttribArray(3);
 		glDisableVertexAttribArray(4);
 
+
+		////////////////////////////////////////////////////////
+		// DEBUG ONLY !!!
+		// Don't use this in real code !!
+		////////////////////////////////////////////////////////
+
+
+
 		glMatrixMode(GL_PROJECTION);
 		glLoadMatrixf((const GLfloat*)&ProjectionMatrix[0]);
 		glMatrixMode(GL_MODELVIEW);
@@ -298,6 +306,8 @@ int main( void )
 
 
 		glUseProgram(0);
+
+		// normals
 		glColor3f(0,0,1);
 		glBegin(GL_LINES);
 		for (int i=0; i<indices.size(); i++){
@@ -308,6 +318,7 @@ int main( void )
 			glVertex3fv(&p.x);
 		}
 		glEnd();
+		// tangents
 		glColor3f(1,0,0);
 		glBegin(GL_LINES);
 		for (int i=0; i<indices.size(); i++){
@@ -318,6 +329,7 @@ int main( void )
 			glVertex3fv(&p.x);
 		}
 		glEnd();
+		// bitangents
 		glColor3f(0,1,0);
 		glBegin(GL_LINES);
 		for (int i=0; i<indices.size(); i++){
@@ -328,15 +340,15 @@ int main( void )
 			glVertex3fv(&p.x);
 		}
 		glEnd();
-
+		// light pos
 		glColor3f(1,1,1);
 		glBegin(GL_LINES);
 			glVertex3fv(&lightPos.x);
-			lightPos+=glm::vec3(1,0,0);
+			lightPos+=glm::vec3(1,0,0)*0.1f;
 			glVertex3fv(&lightPos.x);
-			lightPos-=glm::vec3(1,0,0);
+			lightPos-=glm::vec3(1,0,0)*0.1f;
 			glVertex3fv(&lightPos.x);
-			lightPos+=glm::vec3(0,1,0);
+			lightPos+=glm::vec3(0,1,0)*0.1f;
 			glVertex3fv(&lightPos.x);
 		glEnd();
 
