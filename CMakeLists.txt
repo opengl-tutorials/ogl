@@ -274,6 +274,29 @@ add_custom_command(
 )
 
 
+# Tutorial 15
+add_executable(tutorial15_lightmaps
+	tutorial15_lightmaps/tutorial15.cpp
+	common/shader.cpp
+	common/shader.hpp
+	common/controls.cpp
+	common/controls.hpp
+	common/texture.cpp
+	common/texture.hpp
+	common/objloader.cpp
+	common/objloader.hpp
+	common/vboindexer.cpp
+	common/vboindexer.hpp
+)
+target_link_libraries(tutorial15_lightmaps
+	${ALL_LIBS}
+)
+add_custom_command(
+   TARGET tutorial15_lightmaps POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial15_lightmaps${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial15_lightmaps/"
+)
+
+
 # User playground
 add_executable(playground 
 	playground/playground.cpp

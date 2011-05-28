@@ -1,5 +1,19 @@
 Blender 2.5, huge differences
-
+ - What we're going to do
+    demo
+	mini blender tutorial
+	Blender 2.57beta
+ - Basic controls
+	Rotate : middle mouse button
+	Pan : Maj - middle mouse button
+	zoom : wheel
+	select : right clic
+		B
+			A
+	grab
+	rotate
+	scale
+	edit/object modes
  - Create a new scene
     Delete cube : selection with right clic, Suppr
  - Create the ground
@@ -9,6 +23,7 @@ Blender 2.5, huge differences
     New sphere
     Move
     Set smooth
+ - Move light
  - Render to check that everything is all right(optional)
     Move and rotate the camera
     F12
@@ -19,24 +34,26 @@ Blender 2.5, huge differences
  - Split window
     Cross
     Select UV panel
-    How to unsplit windows
+    How to uns	plit windows
+ - Create texture
+    "+"
+	1024*1024
+	call it lightmap
  - Create UVs
     Edit mode (tab)
-    Generate UVs
+    Smart UV project
  - Modify UVs (optional)
-    Face mode
+    Fac			e mode
     B to select in a Box
     A to select All, or nothing
     G to Grab (move)
     R to rotate
     Ctrl while moving : steps
- - Create texture
-    New
-    Ok
  - Bake
     Click ONCE and WAIT
  - Visualize
     Textured Mode
+ - Better light
  - Export OBJ
     Triangulate
     Export
