@@ -33,8 +33,8 @@ void main(){
 	vec3 MaterialAmbiantColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
 	vec3 MaterialSpecularColor = texture2D( SpecularTextureSampler, UV ).rgb * 0.3;
 
-	// Local normal, in tangent space
-	vec3 TextureNormal_tangentspace = normalize(texture2D( NormalTextureSampler, UV ).rgb*2.0 - 1.0);
+	// Local normal, in tangent space. V tex coordinate is inverted because normal map is in TGA (not in DDS) for better quality
+	vec3 TextureNormal_tangentspace = normalize(texture2D( NormalTextureSampler, vec2(UV.x,-UV.y) ).rgb*2.0 - 1.0);
 	
 	mat3 TBN = transpose(mat3(
 		MV3x3 * o_vertexTangent_modelspace,
