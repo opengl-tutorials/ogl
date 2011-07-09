@@ -81,9 +81,9 @@ int main( void )
 	GLuint ModelView3x3MatrixID = glGetUniformLocation(programID, "MV3x3");
 
 	// Load the texture
-	GLuint DiffuseTexture = loadTGA_glfw("diffuse.tga");
+	GLuint DiffuseTexture = loadDDS("diffuse.DDS");
 	GLuint NormalTexture = loadTGA_glfw("normal.tga");
-	GLuint SpecularTexture = loadTGA_glfw("specular.tga");
+	GLuint SpecularTexture = loadDDS("specular.DDS");
 	
 	// Get a handle for our "myTextureSampler" uniform
 	GLuint DiffuseTextureID  = glGetUniformLocation(programID, "DiffuseTextureSampler");

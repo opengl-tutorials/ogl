@@ -1,0 +1,9 @@
+#version 330 core
+
+// Ouput data
+layout(location = 0) out float color;
+
+
+void main(){
+	color = gl_FragCoord.z;
+}
