@@ -1,9 +1,9 @@
 #version 330 core
 
 // Ouput data
-layout(location = 0) out float color;
+layout(location = 0) out float fragmentdepth;
 
 
 void main(){
-	color = gl_FragCoord.z;
+	fragmentdepth = gl_FragCoord.z;
 }

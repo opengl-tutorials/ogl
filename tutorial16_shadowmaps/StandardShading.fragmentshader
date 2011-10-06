@@ -80,11 +80,19 @@ void main(){
 	float bias = 0.005*tan(acos(cosTheta));
 	bias = clamp(bias, 0,0.01);
 
+
+	
 	for (int i=0;i<16;i++){
-		if ( texture2D( shadowMap, ShadowCoord.xy + poissonDisk[i]/700.0 ).z  <  ShadowCoord.z-bias ){
+		if ( texture2D( shadowMap, ShadowCoord.xy + poissonDisk[i]/700.0 ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w ){
 			visibility-=0.05;
 		}
 	}
+
+	// For spot lights, use either one of these lines instead.
+	// if ( texture( shadowMap, (ShadowCoord.xy/ShadowCoord.w) ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
+	// if ( textureProj( shadowMap, ShadowCoord.xyw ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
+
+
 	
 	color = 
 		// Ambiant : simulates indirect lighting
