@@ -73,7 +73,7 @@ int main( void )
 	GLuint depthProgramID = LoadShaders( "DepthRTT.vertexshader", "DepthRTT.fragmentshader" );
 
 	// Get a handle for our "MVP" uniform
-	GLuint depthMatrixID = glGetUniformLocation(depthProgramID, "MVP");
+	GLuint depthMatrixID = glGetUniformLocation(depthProgramID, "depthMVP");
 
 	// Load the texture
 	GLuint Texture = loadDDS("uvmap.DDS");
@@ -85,7 +85,7 @@ int main( void )
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
 	std::vector<glm::vec3> normals;
-	bool res = loadOBJ("room_thickwalls.obj", vertices, uvs, normals);
+	bool res = loadOBJ("room.obj", vertices, uvs, normals);
 
 	std::vector<unsigned short> indices;
 	std::vector<glm::vec3> indexed_vertices;
@@ -126,7 +126,7 @@ int main( void )
 	glGenFramebuffers(1, &FramebufferName);
 	glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
 
-	// Alternative : Depth texture. Slower, but you can sample it later in your shader
+	// Depth texture. Slower than a depth buffer, but you can sample it later in your shader
 	GLuint depthTexture;
 	glGenTextures(1, &depthTexture);
 	glBindTexture(GL_TEXTURE_2D, depthTexture);
@@ -136,7 +136,6 @@ int main( void )
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-	// Depth texture alternative : 
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTexture, 0);
 
 
@@ -169,7 +168,7 @@ int main( void )
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_quad_vertex_buffer_data), g_quad_vertex_buffer_data, GL_STATIC_DRAW);
 
 	// Create and compile our GLSL program from the shaders
-	GLuint quad_programID = LoadShaders( "Passthrough.vertexshader", "WobblyTexture.fragmentshader" );
+	GLuint quad_programID = LoadShaders( "Passthrough.vertexshader", "SimpleTexture.fragmentshader" );
 	GLuint texID = glGetUniformLocation(quad_programID, "renderedTexture");
 	GLuint timeID = glGetUniformLocation(quad_programID, "time");
 
@@ -203,23 +202,20 @@ int main( void )
 
 		glm::vec3 lightInvDir = glm::vec3(0.5f,2,2);
 
-		// Compute the MVP matrix from keyboard and mouse input
-		computeMatricesFromInputs();
+		// Compute the MVP matrix from the light's point of view
 		glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10,-10,20);
 		glm::mat4 depthViewMatrix = glm::lookAt(lightInvDir, glm::vec3(0,0,0), glm::vec3(0,1,0));
+		// or, for spot light :
+		//glm::vec3 lightPos(5, 20, 20);
+		//glm::mat4 depthProjectionMatrix = glm::perspective<float>(45.0f, 1.0f, 2.0f, 50.0f);
+		//glm::mat4 depthViewMatrix = glm::lookAt(lightPos, lightPos-lightInvDir, glm::vec3(0,1,0));
+
 		glm::mat4 depthModelMatrix = glm::mat4(1.0);
 		glm::mat4 depthMVP = depthProjectionMatrix * depthViewMatrix * depthModelMatrix;
 
 		// Send our transformation to the currently bound shader, 
 		// in the "MVP" uniform
 		glUniformMatrix4fv(depthMatrixID, 1, GL_FALSE, &depthMVP[0][0]);
-
-
-		// Bind our texture in Texture Unit 0
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, Texture);
-		// Set our "myTextureSampler" sampler to user Texture Unit 0
-		glUniform1i(TextureID, 0);
 
 		// 1rst attribute buffer : vertices
 		glEnableVertexAttribArray(0);
@@ -373,8 +369,9 @@ int main( void )
 		glDisableVertexAttribArray(2);
 
 
-		glViewport(0,0,124,124); // Render on the whole framebuffer, complete from the lower left corner to the upper right
+		glViewport(0,0,512,512); // Render on the whole framebuffer, complete from the lower left corner to the upper right
 
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		// Use our shader
 		glUseProgram(quad_programID);
 
@@ -399,7 +396,7 @@ int main( void )
 		);
 
 		// Draw the triangle !
-		glDrawArrays(GL_TRIANGLES, 0, 6); // From index 0 to 3 -> 1 triangle
+		glDrawArrays(GL_TRIANGLES, 0, 6); // From index 0 to 6 -> 2 triangles
 
 		glDisableVertexAttribArray(0);
 

@@ -1,4 +1,5 @@
 #include <vector>
+#include <cstring>
 
 #include <GL\glew.h>
 

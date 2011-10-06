@@ -22,7 +22,12 @@ set(GLFW_SOURCE
 	glfw-2.7/lib/tga.c 
 	glfw-2.7/lib/thread.c 
 	glfw-2.7/lib/time.c 
-	glfw-2.7/lib/window.c 
+	glfw-2.7/lib/window.c
+)
+
+
+if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+set(GLFW_SOURCE	${GLFW_SOURCE}
 	glfw-2.7/lib/win32/win32_enable.c 
 	glfw-2.7/lib/win32/win32_fullscreen.c 
 	glfw-2.7/lib/win32/win32_glext.c 
@@ -32,6 +37,30 @@ set(GLFW_SOURCE
 	glfw-2.7/lib/win32/win32_time.c 
 	glfw-2.7/lib/win32/win32_window.c 
 )
+elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+set(GLFW_SOURCE	${GLFW_SOURCE}
+	glfw-2.7/lib/win32/x11_enable.c 
+	glfw-2.7/lib/win32/x11_fullscreen.c 
+	glfw-2.7/lib/win32/x11_glext.c 
+	glfw-2.7/lib/win32/x11_init.c 
+	glfw-2.7/lib/win32/x11_joystick.c 
+	glfw-2.7/lib/win32/x11_keysym2unicode.c 
+	glfw-2.7/lib/win32/x11_thread.c 
+	glfw-2.7/lib/win32/x11_time.c 
+	glfw-2.7/lib/win32/x11_window.c
+)
+elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+set(GLFW_SOURCE	${GLFW_SOURCE}
+	glfw-2.7/lib/win32/cocoa_enable.c 
+	glfw-2.7/lib/win32/cocoa_fullscreen.c 
+	glfw-2.7/lib/win32/cocoa_glext.c 
+	glfw-2.7/lib/win32/cocoa_init.c 
+	glfw-2.7/lib/win32/cocoa_joystick.c 
+	glfw-2.7/lib/win32/cocoa_thread.c 
+	glfw-2.7/lib/win32/cocoa_time.c 
+	glfw-2.7/lib/win32/cocoa_window.c 
+)
+endif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 
 set(GLFW_HEADERS
 	glfw-2.7/lib/win32/platform.h
