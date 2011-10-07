@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html><head><title>OpenGL Mathematics</title><meta http-equiv="Content-Language" content="en" /><meta http-equiv="Content-Type" content="application/xhtml+xml; charset=iso-8859-1" /><meta name="copyright" content="G-Truc Creation" /><link href="./common/style.css" rel="stylesheet" media="screen, print, embossed" type="text/css" /><script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-20182250-1']);
+          _gaq.push(['_setDomainName', '.g-truc.net']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script></head><body><table><tr><td class="menu"><div class="menu1"><br /><div><a href="./goodies/logo1920x1200.png"><img class="menu-img" src="./common/logo.png" alt="GLM Logo" /></a></div><br /><div><a class="menu" href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.1.0/glm-0.9.1.0.zip/download">
+			Download GLM 0.9.1.0</a></div></div><br /><div class="menu2"><a href="./index.html">Front page</a></div><div class="menu2"><a href="./download.html">Downloads</a></div><div class="menu2"><a href="http://www.opengl.org/sdk/libs/GLM/">OpenGL SDK page</a></div><br /><div class="menu2"><a href="./glm-0.9.1.pdf">GLM Manual</a></div><div class="menu2"><a href="./api-0.9.1/index.html">GLM API</a></div><div class="menu2"><a href="./code.html">Code samples</a></div><div class="menu2"><a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.10.6.clean.pdf">GLSL Specification</a></div><div class="menu2"><a href="http://www.opengl.org/discussion_boards/ubbthreads.php?ubb=postlist&amp;Board=10&amp;page=1">OpenGL.org Toolkits forum</a></div><br /><div class="menu2"><a href="https://sourceforge.net/apps/trac/ogl-math/newticket">Report a bug</a></div><div class="menu2"><a href="https://sourceforge.net/projects/ogl-math/">SourceForge page</a></div><div class="menu2"><a href="http://www.g-truc.net/project-0016.html#menu">G-Truc Creation page</a></div><div class="menu2"><a href="http://ogl-math.git.sourceforge.net/git/gitweb.cgi?p=ogl-math/ogl-math;a=summary">Browse Git repository</a></div><div class="menu2"><a href="http://ogl-math.git.sourceforge.net/git/gitweb.cgi?p=ogl-math/ogl-math;a=snapshot;h=HEAD;sf=tgz">Source snapshot</a></div><br /><br /><div class="menu2"><a href="http://www.g-truc.net"><img class="menu-img" src="./common/g-truc.png" alt="G-Truc" /></a></div><br /></td><td class="page"><div class="title1"><img src="./common/title.png" alt="OpenGL Mathematics" /></div><div class="title3">GLSL + Optional features = OpenGL Mathematics (GLM).<br />A C++ mathematics library for 3D graphics.<br /></div><br /><br /><p>
+			OpenGL Mathematics (GLM) is a header only C++ mathematics library for graphics software 
+			based on the <a href="http://www.opengl.org/documentation/glsl/">OpenGL Shading Language (GLSL)</a> specification.
+		</p><p>
+			GLM provides classes and functions designed and 
+			implemented with the same naming conventions 
+			and functionalities than GLSL so that 
+			when a programmer knows GLSL, he knows GLM as well which makes it really easy to use.
+		</p><p>
+			This project isn't limited by GLSL features. 
+			An extension system, based on the GLSL extension conventions, 
+			provides extended capabilities: matrix transformations, 
+			quaternions, half-based types, random numbers, etc...
+		</p><p>
+			This library works perfectly with OpenGL but it also ensures interoperability with other third party libraries and SDKs. It is a good candidate for software rendering (Raytracing / Rasterisation), image processing, physic simulations and any context that requires a simple and convenient mathematics library.
+		</p><div xmlns="http://www.w3.org/1999/xhtml"><span class="list">GLM is written as a platform independent library with no dependence and officially supports the following compilers:</span><ul><li><a xmlns="" href="http://http://gcc.gnu.org/">GCC</a> 3.4 and higher</li><li><a xmlns="" href="http://llvm.org/">LLVM</a> 2.3 through GCC 4.2 front-end and higher</li><li><a xmlns="" href="http://msdn.microsoft.com/en-us/visualc/default">Visual C++</a> 2005 and higher</li><li>Any C++ compiler following C++98 norm</li></ul></div><p>
+			The source code is under the <a href="./copying.txt">MIT license</a>.
+		</p><p>
+			Thanks for contributing to the project by <a href="https://sourceforge.net/apps/trac/ogl-math/newticket">submitting tickets</a> for bug reports and feature requests. (SF.net account required).
+			Any feedback is welcome at glm@g-truc.net.
+		</p><br /><div><h3>03/03/2011 - GLM 0.9.1.0 final released</h3><div><p>
+			  Finally, GLM 0.9.1 branch is reaching the status of stable with
+			  <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.1.0/glm-0.9.1.0.zip/download">GLM 0.9.1.0</a>.
+		  </p><p>
+			  From GLM 0.9.1 beta, mainly bugs has been fixed. GLM has evolved on many sides since GLM 0.9.0:
+			  Improved documentation (manual and doxygen), better test framework, simplified setup/options/configration of GLM and new experimental SIMD API.
+		  </p><p>
+			  GLM 0.9.1.0 is not 100% backward compatile with 
+			  <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.0.8/glm-0.9.0.8.zip/download">GLM 0.9.0.8</a>
+			  but mainly advanced usages should be affected by the differencies.
+			  Have a look at the <a href="http://glm.g-truc.net/glm-0.9.1.pdf">GLM manual</a> for more information on how to use GLM 0.9.1.
+		  </p>Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.1.0/glm-0.9.1.0.zip/download">GLM 0.9.1.0 (zip)</a><br />Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.1.0/glm-0.9.1.0.7z/download">GLM 0.9.1.0 (7z)</a><br />Link: <a href="http://glm.g-truc.net/glm-0.9.1.pdf">GLM 0.9.1 manual</a><br />Link: <a href="https://sourceforge.net/apps/trac/ogl-math/newticket">Submit a bug report</a><br /></div><br /></div><div><h3>13/02/2011 - GLM 0.9.0.8 and GLM 0.9.1 beta released</h3><div><p>
+			The stable version, GLM 0.9.0.8, adds the operator * for quaternion products and deprecated the cross function previously used for the same purpose.
+			Also, it clarifies that GLM is a header only library when a user try to build it. Once more, there is nothing to build.
+		</p><p>
+			The development version, GLM 0.9.1 beta, provides an improved <a href="http://glm.g-truc.net/html-0.9.1/index.html">API documentation</a> by 
+			<a href="http://www.opengl.org/discussion_boards/ubbthreads.php?ubb=showprofile&amp;User=23530">Alfonse Reinheart</a>,
+			author of <a href="http://www.arcsynthesis.org/gltut/">a great OpenGL tutorial</a> which uses GLM. 
+			This version also improves the SIMD extensions and it fixes many bugs.
+		</p>Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.1.B/glm-0.9.1.B.zip/download">GLM 0.9.1.B (zip)</a><br />Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.1.B/glm-0.9.1.B.7z/download">GLM 0.9.1.B (7z)</a><br />Link: <a href="http://glm.g-truc.net/glm-0.9.1.pdf">GLM 0.9.1 manual</a><br />Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.0.8/glm-0.9.0.8.zip/download">GLM 0.9.0.8 (zip)</a><br />Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.0.8/glm-0.9.0.8.7z/download">GLM 0.9.0.8 (7z)</a><br />Link: <a href="http://glm.g-truc.net/glm-0.9.0.pdf">GLM 0.9.0 manual</a><br />Link: <a href="https://sourceforge.net/apps/trac/ogl-math/newticket">Submit a bug report</a><br /></div><br /></div><div><h3>31/01/2011 - GLM 0.9.1 alpha released</h3><div><p>
+        This new version of GLM is bringing a lot of improvements and maybe too many considering the development time it has required:
+        API exposing SIMD implementation but also some new, safe and feature complet swizzling functions and a new setup API.
+        All this is described in the largely updated <a href="http://glm.g-truc.net/glm-0.9.1.pdf">GLM manual</a>.
+      </p><p>
+        With the new setup system, GLM detects automatically the compiler settings to adapt its implementation to the flag set at build time.
+        It will automatically enable C++0x features, SSE optimizations and the display configuration informations at build-time.
+        The automatic setup can be overdrive by the GLM user.
+      </p><p>
+        The SIMD API maintly focus on vec4 and mat4 implementations that are embodied by the types <span xmlns="http://www.w3.org/1999/xhtml" class="codeword">simdVec4</span> and <span xmlns="http://www.w3.org/1999/xhtml" class="codeword">simdMat4</span>.
+        The implemention cover most of the common functions, the geometry functions and the matrix functions as described in the GLSL specifications.
+        Because it is hight inefficient to access individual components of a SIMD register, the <span xmlns="http://www.w3.org/1999/xhtml" class="codeword">simdVec4</span> doesn't allow it.
+        To reflect this constraint, the <span xmlns="http://www.w3.org/1999/xhtml" class="codeword">simdVec4</span> has to be converted to <span xmlns="http://www.w3.org/1999/xhtml" class="codeword">vec4</span> first which would be effectively handle
+        by the compiler thank to the function <span xmlns="http://www.w3.org/1999/xhtml" class="codeword">simdCast</span>.
+        Furthermore, GLM provides some specials functions like simdDot4 that returns a <span xmlns="http://www.w3.org/1999/xhtml" class="codeword">simdVec4</span> instead of a float
+        with the duplicated dot product value in each components
+        and ensure that no unnecessary component manipulations are performed (typically <span xmlns="http://www.w3.org/1999/xhtml" class="codeword">__m128</span> to <span xmlns="http://www.w3.org/1999/xhtml" class="codeword">float</span>
+        and <span xmlns="http://www.w3.org/1999/xhtml" class="codeword">float</span> to <span xmlns="http://www.w3.org/1999/xhtml" class="codeword">__m128</span>).
+        This implementation can probably be improve in many ways so don't hesitate to send me some feedbacks.
+      </p><p>
+        GLM 0.9.1 is not 100% backward compatible with GLM 0.9.0 but mostly advanced usages should be concerned by this compatibility issues.
+      </p></div><br /></div><div><h3>30/01/2011 - GLM 0.9.0.7 released</h3><div><p>
+        GLM 0.9.0.7 provides 2 main changes: GLSL 4.10 packing functions but also == and != operators for every types.
+      </p>Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.0.7/glm-0.9.0.7.zip/download">GLM 0.9.0.7 (zip, 1.4 MB)</a><br />Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.0.7/glm-0.9.0.7.7z/download">GLM 0.9.0.7 (7z, 832 KB)</a><br />Link: <a href="https://sourceforge.net/apps/trac/ogl-math/newticket">Submit a bug report</a><br /></div><br /></div><div><h3>21/12/2010 - GLM 0.9.0.6 released</h3><div><p>
+        GLM 0.9.0.6 is a new update of GLM built over GLM's user bug reports.
+        It mainly fixes issues regarding non-squared matrices but also provides multiple extensions corrections as well.
+      </p><p>
+        I expect to release GLM 0.9.1.0 in Junuary but I might continue to update GLM 0.9.0.X as there are minor incompatibilities.
+      </p>Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.0.6/glm-0.9.0.6.zip/download">GLM 0.9.0.6 (zip, 2.2 MB)</a><br />Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.0.6/glm-0.9.0.6.7z/download">GLM 0.9.0.6 (7z, 1.6 MB)</a><br />Link: <a href="https://sourceforge.net/apps/trac/ogl-math/newticket">Submit a bug report</a><br /></div><br /></div><div><h3>01/11/2010 - GLM 0.9.0.5 released</h3><div><p>
+        GLM 0.9.0.5 fixes the usual set of bugs, some allowing a better <a href="http://clang.llvm.org/cxx_status.html">Clang</a> support.
+      </p>Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.0.5/glm-0.9.0.5.zip/download">GLM 0.9.0.5 (zip, 2.2 MB)</a><br />Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.0.5/glm-0.9.0.5.7z/download">GLM 0.9.0.5 (7z, 1.6 MB)</a><br />Link: <a href="https://sourceforge.net/apps/trac/ogl-math/newticket">Submit a bug report</a><br /></div><br /></div><div><h3>04/10/2010 - GLM 0.9.0.4 released</h3><div><p>
+        GLM 0.9.0.4 revision mainly fixes bugs.
+        It also contains a contribution by Arnaud Masserann, a autoexp.dat file to make GLM looks nicer in Visual Studio debugger.
+        To take advantage of this file, edit ${VISUALSTUDIO_DIRECTORY}/common7/packages/debugger/autoexp.dat file and add the content of the file util/autoexp.txt
+        included in GLM 0.9.0.4.
+      </p>Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.0.4/glm-0.9.0.4.zip/download">GLM 0.9.0.4 (zip, 1.5 MB)</a><br />Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.0.4/glm-0.9.0.4.7z/download">GLM 0.9.0.4 (7z, 1.2 MB)</a><br />Link: <a href="https://sourceforge.net/apps/trac/ogl-math/newticket">Submit a bug report</a><br /></div><br /></div><div><h3>26/08/2010 - GLM 0.9.0.3 released</h3><div><p>
+        GLM 0.9.0.3 fixes major issues on non-squared matrices.
+      </p>Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.0.3/glm-0.9.0.3.zip/download">GLM 0.9.0.3 (zip, 1.2 MB)</a><br />Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.0.3/glm-0.9.0.3.7z/download">GLM 0.9.0.3 (7z, 684 KB)</a><br />Link: <a href="https://sourceforge.net/apps/trac/ogl-math/newticket">Submit a bug report</a><br /></div><br /></div><div><h3>08/07/2010 - GLM 0.9.0.2 released</h3><div><p>
+        Second update of GLM 0.9.0 with more bug fixes.
+        It also contains a new extension called GLM_GTX_int_10_10_10_2 to use GLM with OpenGL and
+        <a href="http://www.opengl.org/registry/specs/ARB/vertex_type_2_10_10_10_rev.txt">GL_ARB_vertex_type_2_10_10_10_rev</a>.
+      </p>Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.0.2/glm-0.9.0.2.zip/download">GLM 0.9.0.2 (zip, 809 KB)</a><br />Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.0.2/glm-0.9.0.2.7z/download">GLM 0.9.0.2 (7z, 651 KB)</a><br />Link: <a href="https://sourceforge.net/apps/trac/ogl-math/newticket">Submit a bug report</a><br /></div><br /></div><div><h3>21/06/2010 - GLM 0.9.0.1 released</h3><div><p>
+        This revision only fixes few extensions bugs.
+      </p>Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.0.1/glm-0.9.0.1.zip/download">GLM 0.9.0.1 (zip, 714 KB)</a><br />Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.0.1/glm-0.9.0.1.7z/download">GLM 0.9.0.1 (7z, 556 KB)</a><br />Link: <a href="https://sourceforge.net/apps/trac/ogl-math/newticket">Submit a bug report</a><br /></div><br /></div><div><h3>25/05/2010 - GLM 0.9.0.0 released</h3><div><p>
+        GLM 0.9.0.0 is finally available! It brings various API changes from GLM 0.8.4.X branch which makes it not backward compatible.
+        GLM is now compatible with Objective C++ to be used for MacOS X and iPhone projects.
+      </p><p>
+        To continue making GLM a better library, 2 mailing lists have been created for users and developers.
+      </p>Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.0.0/glm-0.9.0.0.zip/download">GLM 0.9.0.0 (zip, 1.0 MB)</a><br />Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.0.0/glm-0.9.0.0.7z/download">GLM 0.9.0.0 (7z, 514 KB)</a><br />Mailing list: <a href="https://lists.sourceforge.net/lists/listinfo/ogl-math-users">Register to GLM mailing list for users</a><br />Mailing list: <a href="https://lists.sourceforge.net/lists/listinfo/ogl-math-devel">Register to GLM mailing list for developers</a><br />Link: <a href="https://sourceforge.net/apps/trac/ogl-math/newticket">Submit a bug report</a><br /></div><br /></div><div><h3>30/04/2010 - GLM 0.9 Beta 2 released</h3><div><p>
+        GLM 0.9 Beta 2 is available and should be the last development release of GLM 0.9.
+      </p><p>
+        The code has been moved from a SVN to Git repository which branching efficiency allowed to remove all the experimental code from this release.
+      </p><p>
+        Various bug fixes and manual updates have been done too.
+      </p>Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.B.2/glm-0.9.B.2.zip/download">GLM 0.9.B.2 (zip, 1.07 MB)</a><br />Download: <a href="https://sourceforge.net/projects/ogl-math/files/glm-0.9.B.2/glm-0.9.B.2.7z/download">GLM 0.9.B.2 (7z, 555 KB)</a><br /></div><br /></div><div><h3>03/04/2010 - GLM 0.9 Beta 1 released</h3><div><p>
+        A new development version of GLM 0.9 is available.
+      </p><p>
+        This version is based on GLSL 4.0 and supports the new common and integer functions.
+        Also a long and frequently asked feature has been implemented: inplicit conversions.
+        However, the rules defining implicit conversions by GLSL 4.0 are quite weaked and can't really be apply in C++.
+      </p><p>
+        Reaching the beta status, this new features close the feature list of GLM 0.9.
+        Further development releases may happen before the final release.
+      </p>Download: <a href="https://sourceforge.net/projects/glf/files/glm/glm-0.9.B.1/glm-0.9.B.1.zip/download">GLM 0.9.B.1 (zip, 964 KB)</a><br />Download: <a href="https://sourceforge.net/projects/glf/files/glm/glm-0.9.B.1/glm-0.9.B.1.7z/download">GLM 0.9.B.1 (7z, 414 KB)</a><br /></div><br /></div><div><h3>20/02/2010 - GLM 0.9 Alpha 2 released</h3><div><p>
+        This update fixes some problem of Alpha 1 but also brings some improvements in case of errors when using GLM to provide more relevant messages.
+      </p>Download: <a href="https://sourceforge.net/projects/glf/files/glm/glm-0.9.A.2/glm-0.9.A.2.zip/download">GLM 0.9.A.2 (zip, 1.3 MB)</a><br />Download: <a href="https://sourceforge.net/projects/glf/files/glm/glm-0.9.A.2/glm-0.9.A.2.7z/download">GLM 0.9.A.2 (7z, 726 KB)</a><br /></div><br /></div><div><h3>09/02/2010 - GLM 0.9 Alpha 1 released</h3><div><p>
+        First step until a major release for GLM with this first alpha of GLM 0.9.
+      </p><p>
+        This version brings a large internal redesign to improve the library reliability and optimized some parts.
+        It removed the deprecated features and API which implies that GLM 0.9 isn't backward compatible.
+      </p><p>
+        For most users the build issues when upgrading to GLM 0.9 should be reduced especially if they follow the deprecation policy.
+      </p><p>
+        This release is still UNSTABLE and not recommanded for commertial products.
+      </p>Download: <a href="https://sourceforge.net/projects/glf/files/glm/glm-0.9.A.1/glm-0.9.A.1.zip/download">GLM 0.9.A.1 (zip, 950 KB)</a><br />Download: <a href="https://sourceforge.net/projects/glf/files/glm/glm-0.9.A.1/glm-0.9.A.1.7z/download">GLM 0.9.A.1 (7z, 391 KB)</a><br />Link: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>25/01/2010 - GLM 0.8.4.4 released</h3><div><p>
+        This update just removes some warnings
+      </p><p>
+        By the way, if you have questions about GLM, a good place for those is the <a href="http://www.opengl.org/discussion_boards/ubbthreads.php?ubb=postlist&amp;Board=10&amp;page=1">OpenGL.org Toolkits forum</a>.
+      </p>Download: <a href="https://sourceforge.net/projects/glf/files/glm/glm-0.8.4.4/glm-0.8.4.4.zip/download">GLM 0.8.4.4 (zip, 1.1 MB)</a><br />Download: <a href="https://sourceforge.net/projects/glf/files/glm/glm-0.8.4.4/glm-0.8.4.4.7z/download">GLM 0.8.4.4 (7z, 479 KB)</a><br />Link: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>16/11/2009 - GLM 0.8.4.3 released</h3><div><p>
+        This version fixed half scalars and half vectors arithmetics.
+        This is a really slow practice that should be avoid.
+        Half floating point value should be use only to store GPU data.
+        GPUs have native support for half values, not x86 CPUs.
+      </p>Download: <a href="https://sourceforge.net/projects/glf/files/glm/glm-0.8.4.3/glm-0.8.4.3.zip/download">GLM 0.8.4.3 (zip, 1.1 MB)</a><br />Download: <a href="https://sourceforge.net/projects/glf/files/glm/glm-0.8.4.3/glm-0.8.4.3.7z/download">GLM 0.8.4.3 (7z, 463 KB)</a><br />Link: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>19/10/2009 - GLM 0.8.4.2 released</h3><div><p>
+        This version is a really minor updates, fixing single issue with half float types.
+      </p>Download: <a href="https://sourceforge.net/projects/glf/files/glm/glm-0.8.4.2/glm-0.8.4.2.zip/download">GLM 0.8.4.2 (zip, 1.1 MB)</a><br />Download: <a href="https://sourceforge.net/projects/glf/files/glm/glm-0.8.4.2/glm-0.8.4.2.7z/download">GLM 0.8.4.2 (7z, 443 KB)</a><br />Link: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>05/10/2009 - GLM 0.8.4.1 released</h3><div><p>
+        This version fixes few bugs and provides an major update of the manual thanks to Damian Trebilco.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.4.1.zip?download">GLM 0.8.4.1 (zip, 1.1 MB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.4.1.7z?download">GLM 0.8.4.1 (7z, 443 KB)</a><br />Link: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>16/09/2009 - GLM 0.8.4.0 released</h3><div><p>
+        This new version mainly adds support for Visual Studio 2010 and GCC 4.4. It also provides various code optimization, bug fixes and an extension.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.4.0.zip?download">GLM 0.8.4.0 (zip, 1.1 MB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.4.0.7z?download">GLM 0.8.4.0 (7z, 439 KB)</a><br />Link: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>11/08/2009 - GLM 0.8.3.5 released</h3><div><p>
+        Fixed extension bugs introduced by core update.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.3.5.zip?download">GLM 0.8.3.5 (zip, 971 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.3.5.7z?download">GLM 0.8.3.5 (7z, 405 KB)</a><br />Link: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>10/08/2009 - GLM 0.8.3.4 released</h3><div><p>
+        Fixed varius bugs. Move determinant fonction to core following GLSL 1.5 specification.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.3.4.zip?download">GLM 0.8.3.4 (zip, 971 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.3.4.7z?download">GLM 0.8.3.4 (7z, 405 KB)</a><br />Link: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>25/06/2009 - GLM 0.8.3.3 released</h3><div><p>
+        Fixed varius bugs.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.3.3.zip?download">GLM 0.8.3.3 (zip, 971 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.3.3.7z?download">GLM 0.8.3.3 (7z, 405 KB)</a><br />Link: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>04/06/2009 - GLM 0.8.3.2 released</h3><div><p>
+        Add GLM_GTC_quaternion and GLM_GTC_type_precision extensions both subset of GLM_GTX_quaternion and GLM_GTX_number_precision
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.3.2.zip?download">GLM 0.8.3.2 (zip, 971 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.3.2.7z?download">GLM 0.8.3.2 (7z, 405 KB)</a><br />Link: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>21/05/2009 - GLM 0.8.3.1 released</h3><div><p>
+        The old way to use extensions have been fixed and GLM_GTX_bit extension gets updated with more functions to manipulate bit fields.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.3.1.zip?download">GLM 0.8.3.1 (zip, 954 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.3.1.7z?download">GLM 0.8.3.1 (7z, 402 KB)</a><br />Link: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>06/05/2009 - GLM 0.8.3.0 released</h3><div><p>
+        This version brings to main changed: Stable extensions and a new extension system.
+      </p><p>
+        The first stable GLM extensions are: GLM_GTC_double_float and GLM_GTC_half_float for higher and lower vectors and matrices floating point precision. GLM_GTC_matrix_operation provides determinant and inverse matrix calculation. GLM_GTC_matrix_transform allows to build scale, rotate and translate matrices and GLM_GTC_matrix_projection provides varius functions to build projection matrices. Few stable extensions yet but the number is going to grow with the next release!
+      </p><p>
+        Both GLM 0.8.2.x extensions use method are deprecated (but still working) and replace by a new one. If you wnat to use GLM_GTC_half_float just include "glm/gtc/half_float.hpp" and it is going to be included in GLM namespace.
+      </p><p>
+        Finally, quite some file have been renamed, using "hpp" instead of ".h". Old file have been deprecated but are still available so that GLM 0.8.3.0 is fully compatible with GLM 0.8.2.x.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.3.0.zip?download">GLM 0.8.3.0 (zip, 896 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.3.0.7z?download">GLM 0.8.3.0 (7z, 359 KB)</a><br />Link: <a href="./code.html">Code samples page</a><br />Link: <a href="./glm-manual.pdf">Manual</a><br />Link: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>01/04/2009 - GLM 0.8.2.3 released</h3><div>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.2.3.zip?download">GLM 0.8.2.3 (zip, 963 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.2.3.7z?download">GLM 0.8.2.3 (7z, 381 KB)</a><br />Link: <a href="./glm-manual.pdf">Manual</a><br />Link: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>13/02/2009 - GLM 0.8.2.1 released</h3><div><p>
+        A new release is available and inogurate a patch number. The goal of this patch number is to release faster fixes from bug reports.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.2.1.zip?download">GLM 0.8.2.1 (zip, 963 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.2.1.7z?download">GLM 0.8.2.1 (7z, 381 KB)</a><br />Link: <a href="./glm-manual.pdf">Manual</a><br />Link: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>21/01/2009 - GLM 0.8.2 released</h3><div><p>
+        This release only fixes bugs. Left sided swizzle operators, quaternion operators, vectors access operators for the main onces.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.2.zip?download">GLM 0.8.2 (zip, 963 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.2.7z?download">GLM 0.8.2 (7z, 381 KB)</a><br />Link: <a href="./glm-manual.pdf">Manual</a><br />Link: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>19/11/2008 - GLM current developments</h3><div><p>
+        Some artifacts have been added to the tracker to give a picture of what you could expect for the next releases.
+      </p><p>
+        If you need something else you can add some artifacts to the tracker. Any comment on added entries is welcome.
+      </p><p>
+        Furthermore, no more release of GLM 0.7.x will be done. Please upgrade to GLM 0.8.1.
+      </p><p>
+        Finally, a pack of programmable oriented OpenGL samples using GLM is under development and planed to be release in December.
+      </p>Link: <a href="https://sourceforge.net/tracker2/?group_id=129808&amp;atid=1126032">Tracker</a><br /></div><br /></div><div><h3>30/10/2008 - GLM 0.8.1 released</h3><div><p>
+        GLM 0.8.1 is released. This new version mainly fixes 64 bit integers with GCC and various bugs.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.1.zip?download">GLM 0.8.1 (zip, 938 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.1.7z?download">GLM 0.8.1 (7z, 372 KB)</a><br />Link: <a href="./glm-manual.pdf">GLM 0.8.1 Manual</a><br />Link: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>23/10/2008 - GLM 0.8.0 final released</h3><div><p>
+        GLM 0.8.0 is released. This new version is now based on GLSL 1.30 specification which provided new functions and precision qualifiers.
+      </p><p>
+        Beyond this, lot of changes have been done to make GLM easier to use, easier to develop, more reliable, more conform to C++ ISO98 standard and GLSL specifications.
+      </p><p>
+        It involves that GLM 0.8.x is not backward compatible with GLM 0.7.x... However, an application port from GLM 0.7.x to GLM 0.8.x isn't a huge work and actually for some, it won&#8217;t be work at all.
+      </p><p>
+        On GLM core side, based on GLSL features, vector types can't be automatically cast to pointer anymore for code safety purposes. Vector constructors require a single scalar parameter of the exact number of components.
+      </p><p>
+        On GLM extension side, the mechanism to use them has changed. The old [__]***GTX way doesn't exist anymore. Have a look on the manual for more information.
+      </p><p>
+        Have a look on the manual and the changelog for more information. Don't forget to send your <a href="./about.html">feedback</a> and enjoy!
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.0.zip?download">GLM 0.8.0 (zip, 936 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.0.7z?download">GLM 0.8.0 (7z, 370 KB)</a><br />Link: <a href="./glm-manual.pdf">GLM 0.8.0 Manual</a><br />Link: <a href="./changelog.html">Full changelog</a><br />Link: <a href="http://www.ozone3d.net/smf/index.php/topic,1682.0.html">Post a comment</a><br /></div><br /></div><div><h3>22/10/2008 - A Humus demo to feature GLM 0.8.0</h3><div><p>
+        Ambient aperture lighting <a href="http://www.humus.name">Humus</a> demo have been updated to use GLM as math library.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/AmbientApertureLighting.zip?download">Updated demo + all sources (zip, 2.38 MB)</a><br />Download: <a href="http://www.humus.name/3D/AmbientApertureLighting.zip">Original demo (zip, 1.40 MB)</a><br />Link: <a href="http://www.ozone3d.net/smf/index.php/topic,1681.0.html">Post a comment</a><br /></div><br /></div><div><h3>18/10/2008 - Webside updated</h3><div><p>
+        As you can see the website get a little update to prepare GLM 0.8.0 final release.
+      </p><p>
+        GLM 0.8.0 final should be release during the week.
+      </p></div><br /></div><div><h3>10/10/2008 - GLM 0.8.0 beta 3 released</h3><div><p>
+        This release fixes some bugs and add few features though extensions. The development is now based on <a href="http://www.cmake.org">CMake</a> to make easier cross platform tests and project management.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.0-beta3.zip?download">GLM 0.8.0 Beta 3 (zip, 819 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.0-beta3.7z?download">GLM 0.8.0 Beta 3 (7z, 345 KB)</a><br />Link: <a href="./changelog.html">Full changelog</a><br />Link: <a href="http://www.ozone3d.net/smf/index.php/topic,1639.0.html">Post a comment</a><br /></div><br /></div><div><h3>04/10/2008 - GLM 0.8.0 beta 2 released</h3><div><p>
+        This release mainly improves half float vectors support. By default the low precission vectors are based on float numbers not on half numbers
+      </p><p>
+        It also provides new setup options. GLM_USE_ONLY_XYZW to disable multiple names to access to a single vector component. GLM_USE_ANONYMOUS_UNION to allow multiple component names on half vectors with Visual C++.
+      </p><p>
+        Various bugs and updates of extensions have been done too. Final release is coming...
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.0-beta2.zip?download">GLM 0.8.0 Beta 2 (zip, 798 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.0-beta2.7z?download">GLM 0.8.0 Beta 2 (7z, 327 KB)</a><br />Link: <a href="./changelog.html">Full changelog</a><br />Link: <a href="http://www.ozone3d.net/smf/index.php/topic,1639.0.html">Post a comment</a><br /></div><br /></div><div><h3>26/09/2008 - GLM 0.8.0 beta 1 released</h3><div><p>
+        GLM have been updated to support GLSL 1.30. API documentation had significant improvements to make easier finding of GLSL functions and types.
+      </p><p>
+        GLM 0.8.x is NOT backward compatible with GLM 0.7.x. Upgrade to GLM 0.8.x could involve build errors for the following cases: A lot of improvements have been made to increase the conformance with GLSL specification. Lot of GLSL 1.30 features were already exposed in extensions that have been deleted. The extension syntaxe based on ARB convension is no long used.
+      </p><p>
+        Due to the number of changes GLM 0.8.0 is release as beta first. The final release is schedule for october.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.0-beta1.zip?download">GLM 0.8.0 Beta 1 (zip, 786 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.8.0-beta1.7z?download">GLM 0.8.0 Beta 1 (7z, 321 KB)</a><br />Link: <a href="./changelog.html">Full changelog</a><br />Link: <a href="http://www.ozone3d.net/smf/index.php/topic,1639.0.html">Post a comment</a><br /></div><br /></div><div><h3>08/08/2008 - GLM 0.7.6 released</h3><div><p>
+        GLM 0.7.6 provides a better C++ conformance so that you can build GLM with &#8211;pedantic G++ parameter or without Visual Studio extensions. To make GLM more reliable, BOOST_STATIC_ASSERT are used according developer wishes.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.7.6.zip?download">GLM 0.7.6 (zip, 907 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.7.6.7z?download">GLM 0.7.6 (7z, 387 KB)</a><br />Link: <a href="./changelog.html">Full changelog</a><br />Link: <a href="./glm-manual.pdf">Manual</a><br /></div><br /></div><div><h3>05/07/2008 - GLM 0.7.5 released</h3><div><p>
+        GLM 0.7.5 is available and introduces a new build messsage system to get information of GLM build configuration with Visual Studio. This mechanism is documented in section 6 of GLM manual. Also, GLM can be built with GCC pedantic options.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.7.5.zip?download">GLM 0.7.5 (zip, 852 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.7.5.7z?download">GLM 0.7.5 (7z, 366 KB)</a><br />Link: <a href="./changelog.html">Full changelog</a><br />Link: <a href="./glm-manual.pdf">Manual</a><br /></div><br /></div><div><h3>01/06/2008 - GLM 0.7.4 released</h3><div><p>
+        GLM 0.7.4 introduces a new system to manage external dependencies.
+      </p><p>
+        It allows developing extension using external dependencies like GLEW, Boost, etc. without making required those dependencies for GLM programmer that doesn't need those external dependent extensions.
+      </p><p>
+        The mechanism is described into the updated manual.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.7.4.zip?download">GLM 0.7.4 (zip, 859 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.7.4.7z?download">GLM 0.7.4 (7z, 372 KB)</a><br />Link: <a href="./changelog.html">Full changelog</a><br />Link: <a href="./glm-manual.pdf">Manual</a><br /></div><br /></div><div><h3>24/05/2008 - GLM 0.7.3 released</h3><div><p>
+        GLM 0.7.3 is released. This version fixes few bugs and add few extensions
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.7.3.zip?download">GLM 0.7.3 (zip, 1.8 MB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.7.3.7z?download">GLM 0.7.3 (7z, 635 KB)</a><br />Link: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>27/04/2008 - GLM 0.7.2 released</h3><div><p>
+        GLM 0.7.2 is released. The documentation have been completed again and several issues handle with precompiler options.
+      </p><p>
+        #define GLM_SWIZZLE GLM_SWIZZLE_FUNC allows to use swizzle operators with internal functions. For example, glm::vec3(1, 2, 3).zyx is replaced by glm::vec3(1, 2, 3)._zyx() with this option.
+      </p><p>
+        #define GLM_FORCE_NO_HALF allows to include all extensions (#include "glm/glmext.h") without any support of half-precision floating-point numbers.
+      </p><p>
+        #define GLM_AUTO_CAST GLM_DISABLE allows to disable automatic cast (eg: glLoadMatrixf(glm::mat4(1.0))) which could involve unfortunate issues in some cases.
+      </p><p>
+        More information on these topic are available in GLM manual section 5 "Known issues".
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.7.2.zip?download">GLM 0.7.2 (zip, 1.8 MB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.7.2.7z?download">GLM 0.7.2 (7z, 635 KB)</a><br />Download: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>24/03/2008 - GLM 0.7.1 released</h3><div><p>
+        GLM 0.7.1 is available under MIT license. It fixes bugs with GCC.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.7.1.zip?download">GLM 0.7.1 (zip, 1.8 MB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.7.1.7z?download">GLM 0.7.1 (7z, 635 KB)</a><br />Download: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>22/03/2008 - GLM 0.7.0 released</h3><div><p>
+        GLM 0.7.0 is available under MIT license. LGPL lisence have been discard due to an issue of use for console development. This release contains a lot better documentation based on Doxygen. Lot of bugs have been fixed and the documentation completed. Thanks to all people that has contributed thought bug reports and ideas to make this version a lot better!
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.7.0.zip?download">GLM 0.7.0 (zip, 1.8 MB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.7.0.7z?download">GLM 0.7.0 (7z, 635 KB)</a><br />Download: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>10/12/2007 - GLM 0.6.4 released</h3><div><p>
+        GLM 0.6.4 is available and fixes some swizzle operator issues.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.6.4.zip?download">GLM 0.6.4 (zip, 1.7 MB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.6.4.7z?download">GLM 0.6.4 (7z, 612 KB)</a><br />Download: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>05/11/2007 - GLM 0.6.3 released</h3><div><p>
+        GLM 0.6.3 fixes accesses of matrices and a 3DSMax SDK conflict.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.6.3.zip?download">GLM 0.6.3 (zip, 1.8 MB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.6.3.7z?download">GLM 0.6.3 (7z, 633 KB)</a><br />Download: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>08/10/2007 - GLM 0.6.2 released</h3><div><p>
+        GLM 0.6.2 fixes an error on an extension.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.6.2.zip?download">GLM 0.6.2 (zip, 1.8 MB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.6.2.7z?download">GLM 0.6.2 (7z, 632 KB)</a><br />Download: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>07/10/2007 - GLM 0.6.1 released</h3><div><p>
+        GLM 0.6.1 is a minor update that fix an issue on extension namespace and add two more extensions.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.6.1.zip?download">GLM 0.6.1 (zip, 1.8 MB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.6.1.7z?download">GLM 0.6.1 (7z, 632 KB)</a><br />Download: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>16/09/2007 - GLM 0.6.0 released</h3><div><p>
+        GLM 0.6.0 is available. For this release, work focus on extensions. A new mecanisum allows to integrate GLM extensions as it is actually done for GLSL extension by vendors. Lot of new extensions have been added.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.6.0.zip?download">GLM 0.6.0 (zip, 1.8 MB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.6.0.7z?download">GLM 0.6.0 (7z, 666 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/raytrace-v1.0.exe?download">Raytracer v1.0 (exe)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/raytrace-v1.0.zip?download">Raytracer v1.0 (zip)</a><br />Download: <a href="./changelog.html">Full changelog</a><br /></div><br /></div><div><h3>19/02/2007 - GLM 0.5.1 released</h3><div><p>
+        This release fixes some issues with swizzle operators.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.5.1.zip?download">GLM 0.5.1 (zip, 2.3 MB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.5.1.7z?download">GLM 0.5.1 (7z, 789 KB)</a><br /></div><br /></div><div><h3>26/01/2007 - Cattmull Clark subdivision sample</h3><div><p>
+        A new sample is available. It's an update of Philip Rideout's Catmull Clark subdivision program that uses GLM. Released with pleasant permission of <a href="http://prideout.net">Philip Rideout</a>.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/CatmullClark.zip?download">CatmullClark sample (zip, 605 KB)</a><br /></div><br /></div><div><h3>06/01/2007 - GLM 0.5.0 released</h3><div><p>
+        This release include GLSL 1.2 new feature in the core implementation. Also, it includes swizzle read and write operators and a custom options system to setup GLM.
+      </p><p>
+        It includes some new extensions to extend GLSL features but they remain experimental. The next release should provide the first stable extensions.
+      </p><p>
+        The GLM 0.5.0 packages contain some basic samples and some documentation. The ray tracer sample has been updated to GLM 0.5.0. Except for specific cases, especially with extensions, GLM 0.5 is backward compatible.
+      </p><p>
+        Now, GLM development is taking advantages of <a href="http://www.sf.net">SourceForge.net</a> services: a <a href="https://sourceforge.net/tracker/?group_id=129808&amp;atid=901445">bug tracker system</a> and the development source code is publicly available on <a href="https://svn.sourceforge.net/svnroot/glf">SF.net SVN server</a>.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.5.0.zip?download">GLM 0.5.0 (zip, 2.4 MB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.5.0.7z?download">GLM 0.5.0 (7z, 843 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/raytrace-b3.0.exe?download">Raytracer b3.0 (exe, 751 KB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/raytrace-b3.0.zip?download">Raytracer b3.0 (zip, 1.1 MB)</a><br /></div><br /></div><div><h3>22/05/2006 - GLM 0.4.1 released</h3><div><p>
+        A GLM update is available. It simply includes some examples for a sweet start with GLM.
+      </p><p>
+        The examples show how to use GLM with OpenGL intermediate mode and OpenGL vertex arrays. Also, they show how to use GLM extensions to replace GLU and OpenGL function witch could slightly increase performances by decreasing the number of OpenGL states changes.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.4.1.zip?download">GLM 0.4.1 (zip, 1.6 MB)</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.4.1.7z?download">GLM 0.4.1 (7z, 521 KB)</a><br /></div><br /></div><div><h3>17/05/2006 - GLM 0.4.0 released</h3><div><p>
+        This release introduces first GLSL 1.2 features as planed. Also, various new extensions have been added and updated. Finally, it's not anymore required to include windows.h before glm.h when windows.h is required.
+      </p><p>
+        The number of features of GLM, including extensions, start to really increase the compilation time. That's why it's recommended to use precompiled headers.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.4.0.zip?download">GLM 0.4.0</a><br /></div><br /></div><div><h3>23/04/2006 - Roadmap for the years</h3><div><p>
+        Version 0.4 will complete matrices and vectors operators and will add GLSL 1.2 features. First, conversions simplifications will be integrated. Then, 4 per 3 matrices and outer product will be available from extensions. The transpose function is already available from extension.
+      </p><p>
+        Version 0.5 will integrate GLSL 1.2 features to GLM core.
+      </p><p>
+        Version 0.6 will add swizzle operators in reading and writing. (eg: vec3 v1(1.0, 2.0, 3.0); vec3 v2 = v1.xxx; v1.zyx = v;).
+      </p></div><br /></div><div><h3>22/04/2006 - GLM 0.3.2 released</h3><div><p>
+        This release corrects two main bugs. First, a bug of the imat4 and mat4 division operators and other correct the vectors components access from texture coordinate way.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.3.2.zip?download">GLM 0.3.2</a><br /></div><br /></div><div><h3>28/03/2006 - GLM 0.3.1 released</h3><div><p>
+        This update adds GCC 4.0 support for MacOS X and Linux and GCC 4.1 under Linux. Also, its provides some optimisations.
+      </p><p>
+        Further release will prodive GLSL 1.2 compliances.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.3.1.zip?download">GLM 0.3.1</a><br /></div><br /></div><div><h3>19/02/2006 - GLM 0.3 released</h3><div><p>
+        A new release of GLM is now available. It improves GLSL data type conversion and construction compliance. Also, It's adds extensions like some to manage double-precision and half-precision float numbers. Finally a Doxygen documentation has been added.
+      </p><p>
+        This new release have been tested under Visual C++ 7.1, Visual C++ 8.0, GCC 3.2.3 et GCC 3.4.2.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.3.zip?download">GLM 0.3</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/raytrace-b2.0.zip?download">Raytrace</a><br />Documentation: <a href="../html/index.html">Online documentation</a><br /></div><br /></div><div><h3>06/05/2005 - GLM 0.2 released</h3><div><p>
+        A new release of GLM is now available. A few bugs have been fixed, the portability of GLSL into C++ has been improved, and new experimental extensions have been implemented, enhancing GLSL features.
+      </p><p>
+        Project now supports quaternions, adds new features to handle colors, vectors and matrices. For example, GLM allows base colors changing, vector projected operations, and 2D/3D transforms.
+      </p><p>
+        To demo the features of this new version, a sample program is included. It is a simple Ray Tracer supporting reflected and refracted rays, three lights types (point, directionnal and spot), two objects types (sphere, plan), using all of the GLM possibilities.
+      </p></div><br /></div><div><h3>04/05/2005 - English pages</h3><div><p>
+        The english section of this site is now available.
+      </p></div><br /></div><div><h3>21/02/2005 - GLM 0.1 is available</h3><div><p>
+        This is the first public availability of GLM. This library supports part of GLSL specifications : All vectors and matrices types, and all the operators and associated functions.
+      </p><p>
+        For now, there isn't detailed documentation, but you can freely have a look on GLSL specifications. Consider any incoherence with GLM as an error. Keep in mind the library is included in the namespace "glm".
+      </p><p>
+        This project is multi platform and was successfully tested under Visual C++ 7.1, MinGW 3.4 and GCC 3.4.
+      </p>Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.1-ur.zip?download">GLM 0.1 User Release</a><br />Download: <a href="http://prdownloads.sourceforge.net/glf/glm-0.1-uc.zip?download">GLM 0.1 Contributor Release</a><br />Documentation: <a href="http://oss.sgi.com/projects/ogl-sample/registry/ARB/GLSLangSpec.Full.1.10.59.pdf">GLSL 1.10.59 specifications</a><br /></div><br /></div><div class="title3">Copyright © 2005 - 2011<a href="http://www.g-truc.net">G-Truc Creation</a></div></td></tr></table></body></html>
