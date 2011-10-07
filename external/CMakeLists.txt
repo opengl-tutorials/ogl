@@ -1,13 +1,6 @@
-add_definitions(
+ add_definitions(
 	-DGLEW_STATIC
 	-D_CRT_SECURE_NO_WARNINGS
-)
-
-include_directories(
-	glfw-2.7/lib/win32/
-	glfw-2.7/lib/
-	glfw-2.7/include/
-	glew-1.5.8/include/
 )
 
 set(GLFW_SOURCE	
@@ -39,33 +32,65 @@ set(GLFW_SOURCE	${GLFW_SOURCE}
 )
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 set(GLFW_SOURCE	${GLFW_SOURCE}
-	glfw-2.7/lib/win32/x11_enable.c 
-	glfw-2.7/lib/win32/x11_fullscreen.c 
-	glfw-2.7/lib/win32/x11_glext.c 
-	glfw-2.7/lib/win32/x11_init.c 
-	glfw-2.7/lib/win32/x11_joystick.c 
-	glfw-2.7/lib/win32/x11_keysym2unicode.c 
-	glfw-2.7/lib/win32/x11_thread.c 
-	glfw-2.7/lib/win32/x11_time.c 
-	glfw-2.7/lib/win32/x11_window.c
+	glfw-2.7/lib/x11/x11_enable.c 
+	glfw-2.7/lib/x11/x11_fullscreen.c 
+	glfw-2.7/lib/x11/x11_glext.c 
+	glfw-2.7/lib/x11/x11_init.c 
+	glfw-2.7/lib/x11/x11_joystick.c 
+	glfw-2.7/lib/x11/x11_keysym2unicode.c 
+	glfw-2.7/lib/x11/x11_thread.c 
+	glfw-2.7/lib/x11/x11_time.c 
+	glfw-2.7/lib/x11/x11_window.c
 )
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 set(GLFW_SOURCE	${GLFW_SOURCE}
-	glfw-2.7/lib/win32/cocoa_enable.c 
-	glfw-2.7/lib/win32/cocoa_fullscreen.c 
-	glfw-2.7/lib/win32/cocoa_glext.c 
-	glfw-2.7/lib/win32/cocoa_init.c 
-	glfw-2.7/lib/win32/cocoa_joystick.c 
-	glfw-2.7/lib/win32/cocoa_thread.c 
-	glfw-2.7/lib/win32/cocoa_time.c 
-	glfw-2.7/lib/win32/cocoa_window.c 
+	glfw-2.7/lib/cocoa/cocoa_enable.c 
+	glfw-2.7/lib/cocoa/cocoa_fullscreen.c 
+	glfw-2.7/lib/cocoa/cocoa_glext.c 
+	glfw-2.7/lib/cocoa/cocoa_init.c 
+	glfw-2.7/lib/cocoa/cocoa_joystick.c 
+	glfw-2.7/lib/cocoa/cocoa_thread.c 
+	glfw-2.7/lib/cocoa/cocoa_time.c 
+	glfw-2.7/lib/cocoa/cocoa_window.c 
 )
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 
+
+if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 set(GLFW_HEADERS
 	glfw-2.7/lib/win32/platform.h
 	glfw-2.7/lib/internal.h
 )
+include_directories(
+	glfw-2.7/lib/win32/
+	glfw-2.7/lib/
+	glfw-2.7/include/
+	glew-1.5.8/include/
+)
+elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+set(GLFW_HEADERS
+	glfw-2.7/lib/x11/platform.h
+	glfw-2.7/lib/internal.h
+)
+include_directories(
+	glfw-2.7/lib/x11/
+	glfw-2.7/lib/
+	glfw-2.7/include/
+	glew-1.5.8/include/
+)
+elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+set(GLFW_HEADERS
+	glfw-2.7/lib/cocoa/platform.h
+	glfw-2.7/lib/internal.h
+)
+include_directories(
+	glfw-2.7/lib/cocoa/
+	glfw-2.7/lib/
+	glfw-2.7/include/
+	glew-1.5.8/include/
+)
+endif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+
 
 add_library( GLFW_27 STATIC
 	${GLFW_SOURCE}

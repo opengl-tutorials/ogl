@@ -2,7 +2,7 @@
 cmake_minimum_required (VERSION 2.6)
 project (Tutorials)
 
-find_package(OpenGL)
+find_package(OpenGL REQUIRED)
 
 # Compile external dependencies 
 add_subdirectory (external)
@@ -284,6 +284,7 @@ add_executable(tutorial15_lightmaps
 	common/texture.cpp
 	common/texture.hpp
 	common/objloader.cpp
+
 	common/objloader.hpp
 	common/vboindexer.cpp
 	common/vboindexer.hpp
