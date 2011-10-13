@@ -5,8 +5,17 @@
 // Include GLEW
 #include <GL/glew.h>
 
+#define __USE_SDL_PLEASE
+
+// *NEW - Use SDL rather than glfw as a compile-time switch
+#ifdef __USE_SDL_PLEASE
+// Include SDL
+#	include <SDL/SDL.h>
+#	include <common/sdlapp.hpp>
+#else
 // Include GLFW
-#include <GL/glfw.h>
+#	include <GL/glfw.h>
+#endif
 
 // Include GLM
 #include <glm/glm.hpp>
@@ -17,39 +26,19 @@ using namespace glm;
 #include <common/texture.hpp>
 #include <common/controls.hpp>
 
-int main( void )
+#ifndef __USE_SDL_PLEASE
+bool setup_glfw_window( std::string wtitle, int w, int h, int depth, int glVersion[] );
+#endif
+
+int main( int argc, char *argv[] )
 {
-    // Initialise GLFW
-    if( !glfwInit() )
-    {
-        fprintf( stderr, "Failed to initialize GLFW\n" );
-        return -1;
-    }
+	int glVersion[2] = {3, 3};	// Make sure we're requesting OpenGL version 3.3
 
-    glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
-    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
-    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
-	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    // Open a window and create its OpenGL context
-    if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
-    {
-        fprintf( stderr, "Failed to open GLFW window\n" );
-        glfwTerminate();
-        return -1;
-    }
-
-	// Initialize GLEW
-	if (glewInit() != GLEW_OK) {
-		fprintf(stderr, "Failed to initialize GLEW\n");
-		return -1;
-	}
-
-	glfwSetWindowTitle( "Tutorial 06" );
-
-	// Ensure we can capture the escape key being pressed below
-    glfwEnable( GLFW_STICKY_KEYS );
-	glfwSetMousePos(1024/2, 768/2);
+#ifdef __USE_SDL_PLEASE
+	SDLApp app( "Tutorial 06", 1024, 768, 32, glVersion, true, false, false );
+#else
+	setup_glfw_window( "Tutorial 06", 1024, 768, 32, glVersion );
+#endif
 
 	// Dark blue background
 	glClearColor(0.0f, 0.0f, 0.3f, 0.0f);
@@ -178,7 +167,11 @@ int main( void )
 		glUseProgram(programID);
 
 		// Compute the MVP matrix from keyboard and mouse input
+#ifdef __USE_SDL_PLEASE
+		computeMatricesFromInputs( app );
+#else
 		computeMatricesFromInputs();
+#endif
 		glm::mat4 ProjectionMatrix = getProjectionMatrix();
 		glm::mat4 ViewMatrix = getViewMatrix();
 		glm::mat4 ModelMatrix = glm::mat4(1.0);
@@ -224,12 +217,20 @@ int main( void )
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 
+#ifdef __USE_SDL_PLEASE
+		// *New: Gather and process input
+		app.handleInput( );
+		
+		//*New: Swap buffers (The SDLApp way)
+		app.glSwap( );
+#else
         // Swap buffers
         glfwSwapBuffers();
 
     } // Check if the ESC key was pressed or the window was closed
     while( glfwGetKey( GLFW_KEY_ESC ) != GLFW_PRESS &&
            glfwGetWindowParam( GLFW_OPENED ) );
+#endif
 
  	// Cleanup VBO and shader
 	glDeleteBuffers(1, &vertexbuffer);
@@ -243,3 +244,40 @@ int main( void )
     return 0;
 }
 
+#ifndef __USE_SDL_PLEASE
+bool setup_glfw_window( std::string wtitle, int w, int h, int depth, int glVersion[] ) {
+   // Initialise GLFW
+    if( !glfwInit() )
+    {
+        fprintf( stderr, "Failed to initialize GLFW\n" );
+        return false;
+    }
+
+    glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
+    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, glVersion[0]);
+    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, glVersion[1]);
+	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    // Open a window and create its OpenGL context
+    if( !glfwOpenWindow( w, h, 0, 0, 0, 0, depth, 0, GLFW_WINDOW ) )
+    {
+        fprintf( stderr, "Failed to open GLFW window\n" );
+        glfwTerminate();
+        return false;
+    }
+
+	// Initialize GLEW
+	if (glewInit() != GLEW_OK) {
+		fprintf(stderr, "Failed to initialize GLEW\n");
+		return false;
+	}
+
+	glfwSetWindowTitle( wtitle.c_str() );
+
+	// Ensure we can capture the escape key being pressed below
+    glfwEnable( GLFW_STICKY_KEYS );
+	glfwSetMousePos(w/2, h/2);
+	
+	return true;
+}
+#endif
