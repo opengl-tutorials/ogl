@@ -15,7 +15,7 @@ layout(location = 0) out vec3 color;
 uniform sampler2D myTextureSampler;
 uniform mat4 MV;
 uniform vec3 LightPosition_worldspace;
-uniform sampler2D shadowMap;
+uniform sampler2DShadow shadowMap;
 
 vec2 poissonDisk[16] = vec2[]( 
    vec2( -0.94201624, -0.39906216 ), 
@@ -35,6 +35,21 @@ vec2 poissonDisk[16] = vec2[](
    vec2( 0.19984126, 0.78641367 ), 
    vec2( 0.14383161, -0.14100790 ) 
 );
+
+float rnd(vec2 x)
+{
+    int n = int(x.x * 40.0 + x.y * 6400.0);
+    n = (n << 13) ^ n;
+    return 1.0 - float( (n * (n * n * 15731 + 789221) + 
+             1376312589) & 0x7fffffff) / 1073741824.0;
+}
+float rnd3(vec3 x)
+{
+    int n = int(x.x * 40.0 + x.y * 6400.0 + x.z * 7357324.0);
+    n = (n << 13) ^ n;
+    return 1.0 - float( (n * (n * n * 15731 + 789221) + 
+             1376312589) & 0x7fffffff) / 1073741824.0;
+}
 
 void main(){
 
@@ -81,11 +96,16 @@ void main(){
 	bias = clamp(bias, 0,0.01);
 
 
-	
-	for (int i=0;i<16;i++){
-		if ( texture2D( shadowMap, ShadowCoord.xy + poissonDisk[i]/700.0 ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w ){
-			visibility-=0.05;
-		}
+	// Manual 4-tap PCF
+	//for (int i=0;i<4;i++){
+	//	if ( texture2D( shadowMap, ShadowCoord.xy + poissonDisk[i]/700.0 ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w ){
+	//		visibility-=0.2;
+	//	}
+	//}
+
+	for (int i=0;i<4;i++){
+		int index = int(gl_FragCoord.x+gl_FragCoord.y+6873*i)%16;
+		visibility -= 0.2*(1.0-texture( shadowMap, vec3(ShadowCoord.xy + poissonDisk[index]/700.0,  (ShadowCoord.z-bias)/ShadowCoord.w) ));
 	}
 
 	// For spot lights, use either one of these lines instead.
@@ -101,5 +121,9 @@ void main(){
 		visibility * MaterialDiffuseColor * LightColor * LightPower * cosTheta+
 		// Specular : reflective highlight, like a mirror
 		visibility * MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5);
+		
+	//float r = rnd(gl_FragCoord.xy);
+	//float r3 = rnd3(Position_worldspace);
+	//color = vec3(r,r,r);
 
 }

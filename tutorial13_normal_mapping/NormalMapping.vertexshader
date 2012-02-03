@@ -13,9 +13,8 @@ out vec3 Position_worldspace;
 out vec3 EyeDirection_cameraspace;
 out vec3 LightDirection_cameraspace;
 
-out vec3 o_vertexNormal_modelspace;
-out vec3 o_vertexTangent_modelspace;
-out vec3 o_vertexBitangent_modelspace;
+out vec3 LightDirection_tangentspace;
+out vec3 EyeDirection_tangentspace;
 
 // Values that stay constant for the whole mesh.
 uniform mat4 MVP;
@@ -41,14 +40,23 @@ void main(){
 	vec3 LightPosition_cameraspace = ( V * vec4(LightPosition_worldspace,1)).xyz;
 	LightDirection_cameraspace = LightPosition_cameraspace + EyeDirection_cameraspace;
 	
-	// Normal of the the vertex, in camera space
-//	Normal_cameraspace = ( V * M * vec4(vertexNormal_modelspace,0)).xyz; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
-	
 	// UV of the vertex. No special space for this one.
 	UV = vertexUV;
 	
-	o_vertexNormal_modelspace = normalize(vertexNormal_modelspace);
-	o_vertexTangent_modelspace = normalize(vertexTangent_modelspace);
-	o_vertexBitangent_modelspace = normalize(vertexBitangent_modelspace);
+	// model to camera = ModelView
+	vec3 vertexTangent_cameraspace = MV3x3 * vertexTangent_modelspace;
+	vec3 vertexBitangent_cameraspace = MV3x3 * vertexBitangent_modelspace;
+	vec3 vertexNormal_cameraspace = MV3x3 * vertexNormal_modelspace;
+	
+	mat3 TBN = transpose(mat3(
+		vertexTangent_cameraspace,
+		vertexBitangent_cameraspace,
+		vertexNormal_cameraspace	
+	)); // You can use dot products instead of building this matrix and transposing it. See References for details.
+
+	LightDirection_tangentspace = TBN * LightDirection_cameraspace;
+	EyeDirection_tangentspace =  TBN * EyeDirection_cameraspace;
+	
+	
 }
 
