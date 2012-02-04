@@ -16,7 +16,6 @@ using namespace glm;
 
 int main( void )
 {
-	getchar();
     // Initialise GLFW
     if( !glfwInit() )
     {

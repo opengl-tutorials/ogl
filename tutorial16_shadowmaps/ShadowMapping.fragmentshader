@@ -36,19 +36,11 @@ vec2 poissonDisk[16] = vec2[](
    vec2( 0.14383161, -0.14100790 ) 
 );
 
-float rnd(vec2 x)
-{
-    int n = int(x.x * 40.0 + x.y * 6400.0);
-    n = (n << 13) ^ n;
-    return 1.0 - float( (n * (n * n * 15731 + 789221) + 
-             1376312589) & 0x7fffffff) / 1073741824.0;
-}
-float rnd3(vec3 x)
-{
-    int n = int(x.x * 40.0 + x.y * 6400.0 + x.z * 7357324.0);
-    n = (n << 13) ^ n;
-    return 1.0 - float( (n * (n * n * 15731 + 789221) + 
-             1376312589) & 0x7fffffff) / 1073741824.0;
+// Returns a random number based on a vec3 and an int.
+float random(vec3 seed, int i){
+	vec4 seed4 = vec4(seed,i);
+	float dot_product = dot(seed4, vec4(12.9898,78.233,45.164,94.673));
+	return fract(sin(dot_product) * 43758.5453);
 }
 
 void main(){
@@ -95,24 +87,27 @@ void main(){
 	float bias = 0.005*tan(acos(cosTheta));
 	bias = clamp(bias, 0,0.01);
 
-
-	// Manual 4-tap PCF
-	//for (int i=0;i<4;i++){
-	//	if ( texture2D( shadowMap, ShadowCoord.xy + poissonDisk[i]/700.0 ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w ){
-	//		visibility-=0.2;
-	//	}
-	//}
-
+	// Sample the shadow map 4 times
 	for (int i=0;i<4;i++){
-		int index = int(gl_FragCoord.x+gl_FragCoord.y+6873*i)%16;
+		// use either :
+		//  - Always the same samples.
+		//    Gives a fixed pattern in the shadow, but no noise
+		// int index = i;
+		//  - A random sample, based on the pixel's screen location. 
+		//    No banding, but the shadow moves with the camera, which looks weird.
+		int index = int(16.0*random(gl_FragCoord.xyy, i))%16;
+		//  - A random sample, based on the pixel's position in world space.
+		//    The position is rounded to the millimeter to avoid too much aliasing
+		//int index = int(16.0*random(floor(Position_worldspace.xyz*1000.0), i))%16;
+		
+		// being fully in the shadow will eat up 4*0.2 = 0.8
+		// 0.2 potentially remain, which is quite dark.
 		visibility -= 0.2*(1.0-texture( shadowMap, vec3(ShadowCoord.xy + poissonDisk[index]/700.0,  (ShadowCoord.z-bias)/ShadowCoord.w) ));
 	}
 
 	// For spot lights, use either one of these lines instead.
 	// if ( texture( shadowMap, (ShadowCoord.xy/ShadowCoord.w) ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 	// if ( textureProj( shadowMap, ShadowCoord.xyw ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
-
-
 	
 	color = 
 		// Ambiant : simulates indirect lighting
@@ -121,7 +116,8 @@ void main(){
 		visibility * MaterialDiffuseColor * LightColor * LightPower * cosTheta+
 		// Specular : reflective highlight, like a mirror
 		visibility * MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5);
-		
+	
+	
 	//float r = rnd(gl_FragCoord.xy);
 	//float r3 = rnd3(Position_worldspace);
 	//color = vec3(r,r,r);

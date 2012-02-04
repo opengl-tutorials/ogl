@@ -310,7 +310,7 @@ int main( void )
 		// normals
 		glColor3f(0,0,1);
 		glBegin(GL_LINES);
-		for (int i=0; i<indices.size(); i++){
+		for (unsigned int i=0; i<indices.size(); i++){
 			glm::vec3 p = indexed_vertices[indices[i]];
 			glVertex3fv(&p.x);
 			glm::vec3 o = glm::normalize(indexed_normals[indices[i]]);
@@ -321,7 +321,7 @@ int main( void )
 		// tangents
 		glColor3f(1,0,0);
 		glBegin(GL_LINES);
-		for (int i=0; i<indices.size(); i++){
+		for (unsigned int i=0; i<indices.size(); i++){
 			glm::vec3 p = indexed_vertices[indices[i]];
 			glVertex3fv(&p.x);
 			glm::vec3 o = glm::normalize(indexed_tangents[indices[i]]);
@@ -332,7 +332,7 @@ int main( void )
 		// bitangents
 		glColor3f(0,1,0);
 		glBegin(GL_LINES);
-		for (int i=0; i<indices.size(); i++){
+		for (unsigned int i=0; i<indices.size(); i++){
 			glm::vec3 p = indexed_vertices[indices[i]];
 			glVertex3fv(&p.x);
 			glm::vec3 o = glm::normalize(indexed_bitangents[indices[i]]);
