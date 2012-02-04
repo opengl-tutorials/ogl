@@ -13,7 +13,7 @@ void computeTangentBasis(
 	std::vector<glm::vec3> & bitangents
 ){
 
-	for ( int i=0; i<vertices.size(); i+=3 ){
+	for (unsigned int i=0; i<vertices.size(); i+=3 ){
 
 		// Shortcuts for vertices
 		glm::vec3 & v0 = vertices[i+0];
@@ -51,7 +51,7 @@ void computeTangentBasis(
 	}
 
 	// See "Going Further"
-	for ( int i=0; i<vertices.size(); i+=1 )
+	for (unsigned int i=0; i<vertices.size(); i+=1 )
     {
         glm::vec3 & n = normals[i];
         glm::vec3 & t = tangents[i];
