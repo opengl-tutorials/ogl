@@ -26,8 +26,7 @@ int main( void )
 
     glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
-    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
-	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
 
     // Open a window and create its OpenGL context
     if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
@@ -65,6 +64,10 @@ int main( void )
 
 	// Get a handle for our "MVP" uniform
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
+
+	// Get a handle for our buffers
+	GLuint vertexPosition_modelspaceID = glGetAttribLocation(programID, "vertexPosition_modelspace");
+	GLuint vertexColorID = glGetAttribLocation(programID, "vertexColor");
 
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
     glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
@@ -186,27 +189,27 @@ int main( void )
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 		glVertexAttribPointer(
-			0,                  // attribute. No particular reason for 0, but must match the layout in the shader.
-			3,                  // size
-			GL_FLOAT,           // type
-			GL_FALSE,           // normalized?
-			0,                  // stride
-			(void*)0            // array buffer offset
+			vertexPosition_modelspaceID, // The attribute we want to configure
+			3,                           // size
+			GL_FLOAT,                    // type
+			GL_FALSE,                    // normalized?
+			0,                           // stride
+			(void*)0                     // array buffer offset
 		);
 
 		// 2nd attribute buffer : colors
 		glEnableVertexAttribArray(1);
 		glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 		glVertexAttribPointer(
-			1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-			3,                                // size
-			GL_FLOAT,                         // type
-			GL_FALSE,                         // normalized?
-			0,                                // stride
-			(void*)0                          // array buffer offset
+			vertexColorID,               // The attribute we want to configure
+			3,                           // size
+			GL_FLOAT,                    // type
+			GL_FALSE,                    // normalized?
+			0,                           // stride
+			(void*)0                     // array buffer offset
 		);
 
-		// Draw the triangle !
+		// Draw the triangleS !
 		glDrawArrays(GL_TRIANGLES, 0, 12*3); // From index 0 to 12*3 -> 12 triangles
 
 		glDisableVertexAttribArray(0);
