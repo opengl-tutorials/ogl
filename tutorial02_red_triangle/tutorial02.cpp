@@ -25,8 +25,7 @@ int main( void )
 
     glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
-    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
-	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
 
     // Open a window and create its OpenGL context
     if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
@@ -57,13 +56,14 @@ int main( void )
 	// Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders( "SimpleVertexShader.vertexshader", "SimpleFragmentShader.fragmentshader" );
 
+	// Get a handle for our buffers
+	GLuint vertexPosition_modelspaceID = glGetAttribLocation(programID, "vertexPosition_modelspace");
 
 	static const GLfloat g_vertex_buffer_data[] = { 
 		-1.0f, -1.0f, 0.0f,
 		 1.0f, -1.0f, 0.0f,
 		 0.0f,  1.0f, 0.0f,
 	};
-	//static const GLushort g_element_buffer_data[] = { 0, 1, 2 };
 
 	GLuint vertexbuffer;
 	glGenBuffers(1, &vertexbuffer);
@@ -82,7 +82,7 @@ int main( void )
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 		glVertexAttribPointer(
-			0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+			vertexPosition_modelspaceID, // The attribute we want to configure
 			3,                  // size
 			GL_FLOAT,           // type
 			GL_FALSE,           // normalized?
