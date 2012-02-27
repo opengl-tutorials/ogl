@@ -143,6 +143,8 @@ int main( void )
 		 
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTexture, 0);
 
+	// No color output in the bound framebuffer, only depth.
+	glDrawBuffer(GL_NONE);
 
 	// Set the list of draw buffers.
 	GLenum DrawBuffers[1] = {GL_DEPTH_ATTACHMENT};
@@ -237,31 +239,7 @@ int main( void )
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 		glVertexAttribPointer(
-			vertexPosition_modelspaceID,  // The attribute we want to configure
-			3,                            // size
-			GL_FLOAT,                     // type
-			GL_FALSE,                     // normalized?
-			0,                            // stride
-			(void*)0                      // array buffer offset
-		);
-
-		// 2nd attribute buffer : UVs
-		glEnableVertexAttribArray(1);
-		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-		glVertexAttribPointer(
-			vertexUVID,                   // The attribute we want to configure
-			2,                            // size : U+V => 2
-			GL_FLOAT,                     // type
-			GL_FALSE,                     // normalized?
-			0,                            // stride
-			(void*)0                      // array buffer offset
-		);
-
-		// 3rd attribute buffer : normals
-		glEnableVertexAttribArray(2);
-		glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-		glVertexAttribPointer(
-			vertexNormal_modelspaceID,    // The attribute we want to configure
+			depth_vertexPosition_modelspaceID,  // The attribute we want to configure
 			3,                            // size
 			GL_FLOAT,                     // type
 			GL_FALSE,                     // normalized?
@@ -281,8 +259,6 @@ int main( void )
 		);
 
 		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(2);
 
 
 
