@@ -1,7 +1,7 @@
-#version 330 core
+#version 140
 
 // Ouput data
-layout(location = 0) out float fragmentdepth;
+out float fragmentdepth;
 
 
 void main(){

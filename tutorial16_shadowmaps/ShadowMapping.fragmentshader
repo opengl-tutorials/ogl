@@ -1,4 +1,4 @@
-#version 330 core
+#version 140
 
 // Interpolated values from the vertex shaders
 in vec2 UV;
@@ -9,7 +9,7 @@ in vec3 LightDirection_cameraspace;
 in vec4 ShadowCoord;
 
 // Ouput data
-layout(location = 0) out vec3 color;
+out vec3 color;
 
 // Values that stay constant for the whole mesh.
 uniform sampler2D myTextureSampler;
