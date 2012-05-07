@@ -173,8 +173,8 @@ int main( void )
 
 
 	// Set the list of draw buffers.
-	GLenum DrawBuffers[2] = {GL_COLOR_ATTACHMENT0,GL_DEPTH_ATTACHMENT};
-	glDrawBuffers(2, DrawBuffers); // "1" is the size of DrawBuffers
+	GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+	glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
 
 	// Always check that our framebuffer is ok
 	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -308,7 +308,7 @@ int main( void )
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, renderedTexture);
 		// Set our "renderedTexture" sampler to user Texture Unit 0
-		glUniform1i(renderedTexture, 0);
+		glUniform1i(texID, 0);
 
 		glUniform1f(timeID, (float)(glfwGetTime()*10.0f) );
 
