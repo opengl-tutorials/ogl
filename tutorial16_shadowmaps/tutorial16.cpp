@@ -58,11 +58,12 @@ int main( void )
 
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
+
 	// Accept fragment if it closer to the camera than the former one
 	glDepthFunc(GL_LESS); 
 
 	// Cull triangles which normal is not towards the camera
-	//glEnable(GL_CULL_FACE);
+	glEnable(GL_CULL_FACE);
 
 	GLuint VertexArrayID;
 	glGenVertexArrays(1, &VertexArrayID);
@@ -87,7 +88,7 @@ int main( void )
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
 	std::vector<glm::vec3> normals;
-	bool res = loadOBJ("room.obj", vertices, uvs, normals);
+	bool res = loadOBJ("room_thickwalls.obj", vertices, uvs, normals);
 
 	std::vector<unsigned short> indices;
 	std::vector<glm::vec3> indexed_vertices;
@@ -212,6 +213,12 @@ int main( void )
 		glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
 		glViewport(0,0,1024,1024); // Render on the whole framebuffer, complete from the lower left corner to the upper right
 
+		// We don't use bias in the shader, but instead we draw back faces, 
+		// which are already separated from the front faces by a small distance 
+		// (if your geometry is made this way)
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_FRONT); // Cull front-facing triangles -> draw only back-facing triangles
+
 		// Clear the screen
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -266,6 +273,8 @@ int main( void )
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the lower left corner to the upper right
 
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK); // Cull back-facing triangles -> draw only front-facing triangles
 
 		// Clear the screen
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
