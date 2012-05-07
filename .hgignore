@@ -1,0 +1,10 @@
+syntax: glob
+
+*.dll
+*.exe
+build/*
+*.bak
+Thumbs.db
+glob:OpenGL-tutorial_v*
+relre:.*\.blend.+
+glob:*.mtl

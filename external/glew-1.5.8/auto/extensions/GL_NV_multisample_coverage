@@ -1,0 +1,5 @@
+GL_NV_multisample_coverage
+http://www.opengl.org/registry/specs/NV/multisample_coverage.txt
+GL_NV_multisample_coverage
+	GL_COVERAGE_SAMPLES_NV 0x80A9
+	GL_COLOR_SAMPLES_NV 0x8E20

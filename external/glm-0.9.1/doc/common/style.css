@@ -1,0 +1,298 @@
+body
+{
+	font-family: Lucida Grande, Verdana, Geneva, Arial, sans-serif;
+	font-size: 12px;
+	background-color:#000000;
+	margin:0px;
+	padding:0px;
+	width:100%;
+}
+
+table
+{
+	background-color:#ffffff;
+	width:1000px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+ul
+{
+	padding:0px;
+	margin:0px;
+}
+
+table.principale
+{
+	background-color:#ff8000;
+	border-style:none;
+	border-width:0px;
+	border-spacing:0px;
+	margin: 0px;
+	padding: 0px;
+	width:100%;
+}
+
+tr.principale
+{
+	background-color:#ff8000;
+	border-style:none;
+	border-width:0px;
+	border-spacing:0px;
+	margin: 0px;
+	padding: 0px;	
+}
+
+div.title1
+{
+    text-align:center;
+    font-size:48px;
+    border-style:solid;
+    border-width:0px;
+    color:#000000;
+}
+
+div.title2
+{
+    text-align:left;
+    font-size:20px;
+    font-weight:bold;
+    color:#000000;
+}
+
+div.title3
+{
+    text-align:center;
+    font-size:16px;
+    border-style:none;
+    border-width:1px;
+}
+
+h3
+{
+	font-family:Century;
+    text-align:left;
+    font-size:16px;
+    font-weight:bolder;
+    color:#FF8000;
+}
+
+div.title-date
+{
+    text-align:right;
+    font-size:16px;
+    font-weight:bolder;
+    color:#FF8000;
+}
+
+div.menu1
+{
+    text-align:center;
+    font-size:12px;
+    font-weight:bolder;
+	padding:16px;
+}
+
+div.menu2
+{
+    text-align:center;
+    font-size:12px;
+}
+
+div.news-separator
+{
+	text-align:center;
+	color:#FF8000;
+}
+
+div.email
+{
+	text-align:center;
+}
+
+div.image
+{
+	text-align:right;
+}
+
+img.menu-img
+{
+    text-align:center;
+    font-size:16px;
+    border-color:#000000;
+    border-style:solid;
+    border-width:0px;    
+}
+
+div.paragraph
+{
+    /*text-indent:32px;   */
+    text-align:justify;
+}
+
+div.include
+{
+	color:#0000FF;
+}
+
+spam.key
+{
+	color:#0000FF;
+}
+
+div.comment
+{
+	color:#008000;
+}
+
+td.page
+{
+    vertical-align:top;
+	padding-right: 32px;
+	padding-left: 32px;
+	padding-bottom: 0px;
+	padding-top: 0px;
+	width:100%;
+}
+
+td.menu
+{
+    vertical-align:top;
+    text-align:right;
+    border-width:0px;
+    border-right-style:solid;
+    border-color:#000000;
+    width:160px;
+	padding-right: 0px;
+	padding-left: 0px;
+	padding-bottom: 0px;
+	padding-top: 0px;
+}
+/*
+a.menu
+{
+    color:#FF8000;
+    font-weight:bolder;   
+}
+*/
+a.menu
+{
+    color:#000000;    
+}
+
+a
+{
+    color:#000000;    
+}
+
+div.issue-content
+{
+    text-indent:32px;   
+}
+
+div.issue-title
+{
+    font-weight:bold;    
+}
+
+span.progword
+{
+	color:#000000;
+	font-family:"Courier New";
+	font-size:11px;	
+}
+
+span.bold
+{
+	font-weight:bold;	
+}
+
+span.code-title
+{
+	padding-left:0px;
+	color:#803300;
+}
+
+span.code-line-content
+{
+	display:inline;
+	color:#000000;
+	border-left-style:solid;
+	border-left-width:1px;
+	border-left-color:#ffdac1;
+	margin-left:0px;
+	padding-left:8px;
+}
+
+ul.code-list
+{
+	border-style:solid;
+	border-width:1px;
+	border-color:#ffdac1;
+	color:#803300;
+	margin-bottom:16px;
+	margin-left:0px;
+	margin-right:0px;
+}
+
+li
+{
+	list-style-position:inside;
+	padding-left:8px;
+}
+
+li.code-line
+{
+	color:#008080;
+	font-family:"Courier New";
+	font-size:11px;
+	clear:both;
+	width:100%;
+	list-style-position:inside;
+	list-style-type:decimal-leading-zero;
+	margin:0px;
+	padding:0px;
+	padding-left:0px;
+}
+
+li.code-line:after
+{
+	clear:both;
+}
+
+span.code-line-content
+{
+	display:inline;
+	color:#000000;
+	border-left-style:solid;
+	border-left-width:1px;
+	border-left-color:#ffdac1;
+	margin-left:0px;
+	padding-left:8px;
+}
+
+span.userword
+{
+	color:#ff8000;	
+}
+
+span.keyword
+{
+	color:#0000ff;
+}
+
+span.comment
+{
+	color:#008000;
+}
+
+span.string
+{
+	color:#800000;
+}
+
+span.codeword
+{
+	color:#000000;
+	font-family:"Courier New";
+}
