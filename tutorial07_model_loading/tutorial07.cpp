@@ -30,7 +30,8 @@ int main( void )
 
     glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
-    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
+    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
+	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Open a window and create its OpenGL context
     if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
@@ -72,10 +73,6 @@ int main( void )
 
 	// Get a handle for our "MVP" uniform
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
-
-	// Get a handle for our buffers
-	GLuint vertexPosition_modelspaceID = glGetAttribLocation(programID, "vertexPosition_modelspace");
-	GLuint vertexUVID = glGetAttribLocation(programID, "vertexUV");
 
 	// Load the texture
 	GLuint Texture = loadDDS("uvmap.DDS");
@@ -130,27 +127,27 @@ int main( void )
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 		glVertexAttribPointer(
-			vertexPosition_modelspaceID,  // The attribute we want to configure
-			3,                            // size
-			GL_FLOAT,                     // type
-			GL_FALSE,                     // normalized?
-			0,                            // stride
-			(void*)0                      // array buffer offset
+			0,                  // attribute
+			3,                  // size
+			GL_FLOAT,           // type
+			GL_FALSE,           // normalized?
+			0,                  // stride
+			(void*)0            // array buffer offset
 		);
 
 		// 2nd attribute buffer : UVs
 		glEnableVertexAttribArray(1);
 		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 		glVertexAttribPointer(
-			vertexUVID,                   // The attribute we want to configure
-			2,                            // size : U+V => 2
-			GL_FLOAT,                     // type
-			GL_FALSE,                     // normalized?
-			0,                            // stride
-			(void*)0                      // array buffer offset
+			1,                                // attribute
+			2,                                // size
+			GL_FLOAT,                         // type
+			GL_FALSE,                         // normalized?
+			0,                                // stride
+			(void*)0                          // array buffer offset
 		);
 
-		// Draw the triangles !
+		// Draw the triangle !
 		glDrawArrays(GL_TRIANGLES, 0, vertices.size() );
 
 		glDisableVertexAttribArray(0);
