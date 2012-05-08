@@ -102,9 +102,9 @@ int main( void )
 	glBufferData(GL_ARRAY_BUFFER, indexed_vertices.size() * sizeof(glm::vec3), &indexed_vertices[0], GL_STATIC_DRAW);
 
 	GLuint uvbuffer;
-    glGenBuffers(1, &uvbuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-    glBufferData(GL_ARRAY_BUFFER, indexed_uvs.size() * sizeof(glm::vec2), &indexed_uvs[0], GL_STATIC_DRAW);
+	glGenBuffers(1, &uvbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
+	glBufferData(GL_ARRAY_BUFFER, indexed_uvs.size() * sizeof(glm::vec2), &indexed_uvs[0], GL_STATIC_DRAW);
 
 	GLuint normalbuffer;
 	glGenBuffers(1, &normalbuffer);
@@ -384,12 +384,12 @@ int main( void )
 		glDisableVertexAttribArray(0);
 
 
-        // Swap buffers
-        glfwSwapBuffers();
+		// Swap buffers
+		glfwSwapBuffers();
 
-    } // Check if the ESC key was pressed or the window was closed
-    while( glfwGetKey( GLFW_KEY_ESC ) != GLFW_PRESS &&
-           glfwGetWindowParam( GLFW_OPENED ) );
+	} // Check if the ESC key was pressed or the window was closed
+	while( glfwGetKey( GLFW_KEY_ESC ) != GLFW_PRESS &&
+		   glfwGetWindowParam( GLFW_OPENED ) );
 
 	// Cleanup VBO and shader
 	glDeleteBuffers(1, &vertexbuffer);

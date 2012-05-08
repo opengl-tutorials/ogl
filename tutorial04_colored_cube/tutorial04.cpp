@@ -17,25 +17,25 @@ using namespace glm;
 
 int main( void )
 {
-    // Initialise GLFW
-    if( !glfwInit() )
-    {
-        fprintf( stderr, "Failed to initialize GLFW\n" );
-        return -1;
-    }
+	// Initialise GLFW
+	if( !glfwInit() )
+	{
+		fprintf( stderr, "Failed to initialize GLFW\n" );
+		return -1;
+	}
 
-    glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
-    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
-    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
+	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
 	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    // Open a window and create its OpenGL context
-    if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
-    {
-        fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
-        glfwTerminate();
-        return -1;
-    }
+	// Open a window and create its OpenGL context
+	if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
+	{
+		fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
+		glfwTerminate();
+		return -1;
+	}
 
 	// Initialize GLEW
 	if (glewInit() != GLEW_OK) {
@@ -46,7 +46,7 @@ int main( void )
 	glfwSetWindowTitle( "Tutorial 04" );
 
 	// Ensure we can capture the escape key being pressed below
-    glfwEnable( GLFW_STICKY_KEYS );
+	glfwEnable( GLFW_STICKY_KEYS );
 
 	// Dark blue background
 	glClearColor(0.0f, 0.0f, 0.3f, 0.0f);
@@ -67,7 +67,7 @@ int main( void )
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
 
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-    glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+	glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 	// Camera matrix
 	glm::mat4 View       = glm::lookAt(
 								glm::vec3(4,3,-3), // Camera is at (4,3,-3), in World Space
@@ -166,9 +166,9 @@ int main( void )
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 
 	GLuint colorbuffer;
-    glGenBuffers(1, &colorbuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
+	glGenBuffers(1, &colorbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
 
 	do{
 
@@ -212,12 +212,12 @@ int main( void )
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 
-        // Swap buffers
-        glfwSwapBuffers();
+		// Swap buffers
+		glfwSwapBuffers();
 
-    } // Check if the ESC key was pressed or the window was closed
-    while( glfwGetKey( GLFW_KEY_ESC ) != GLFW_PRESS &&
-           glfwGetWindowParam( GLFW_OPENED ) );
+	} // Check if the ESC key was pressed or the window was closed
+	while( glfwGetKey( GLFW_KEY_ESC ) != GLFW_PRESS &&
+		   glfwGetWindowParam( GLFW_OPENED ) );
 
 	// Cleanup VBO and shader
 	glDeleteBuffers(1, &vertexbuffer);
@@ -225,8 +225,8 @@ int main( void )
 	glDeleteProgram(programID);
 
 	// Close OpenGL window and terminate GLFW
-    glfwTerminate();
+	glfwTerminate();
 
-    return 0;
+	return 0;
 }
 
