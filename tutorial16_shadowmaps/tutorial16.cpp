@@ -136,7 +136,6 @@ int main( void )
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	//glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_TEXTURE_MODE, GL_INTENSITY);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
 		 
@@ -353,9 +352,11 @@ int main( void )
 		glDisableVertexAttribArray(2);
 
 
-		glViewport(0,0,512,512); // Render on the whole framebuffer, complete from the lower left corner to the upper right
+		// Optionally render the shadowmap (for debug only)
 
-		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		// Render only on a corner of the window (or we we won't see the real rendering...)
+		glViewport(0,0,512,512);
+
 		// Use our shader
 		glUseProgram(quad_programID);
 
@@ -380,6 +381,7 @@ int main( void )
 		);
 
 		// Draw the triangle !
+		// You have to disable GL_COMPARE_R_TO_TEXTURE above in order to see anything !
 		//glDrawArrays(GL_TRIANGLES, 0, 6); // From index 0 to 6 -> 2 triangles
 		glDisableVertexAttribArray(0);
 
