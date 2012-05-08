@@ -23,24 +23,24 @@ using namespace glm;
 
 int main( void )
 {
-    // Initialise GLFW
-    if( !glfwInit() )
-    {
-        fprintf( stderr, "Failed to initialize GLFW\n" );
-        return -1;
-    }
+	// Initialise GLFW
+	if( !glfwInit() )
+	{
+		fprintf( stderr, "Failed to initialize GLFW\n" );
+		return -1;
+	}
 
-    glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
-    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 2);
-    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
+	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 2);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
 
-    // Open a window and create its OpenGL context
-    if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
-    {
-        fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
-        glfwTerminate();
-        return -1;
-    }
+	// Open a window and create its OpenGL context
+	if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
+	{
+		fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
+		glfwTerminate();
+		return -1;
+	}
 
 	// Initialize GLEW
 	if (glewInit() != GLEW_OK) {
@@ -51,7 +51,7 @@ int main( void )
 	glfwSetWindowTitle( "Tutorial 11" );
 
 	// Ensure we can capture the escape key being pressed below
-    glfwEnable( GLFW_STICKY_KEYS );
+	glfwEnable( GLFW_STICKY_KEYS );
 	glfwSetMousePos(1024/2, 768/2);
 
 	// Dark blue background
@@ -108,14 +108,14 @@ int main( void )
 	glBufferData(GL_ARRAY_BUFFER, indexed_vertices.size() * sizeof(glm::vec3), &indexed_vertices[0], GL_STATIC_DRAW);
 
 	GLuint uvbuffer;
-    glGenBuffers(1, &uvbuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-    glBufferData(GL_ARRAY_BUFFER, indexed_uvs.size() * sizeof(glm::vec2), &indexed_uvs[0], GL_STATIC_DRAW);
+	glGenBuffers(1, &uvbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
+	glBufferData(GL_ARRAY_BUFFER, indexed_uvs.size() * sizeof(glm::vec2), &indexed_uvs[0], GL_STATIC_DRAW);
 
 	GLuint normalbuffer;
-    glGenBuffers(1, &normalbuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-    glBufferData(GL_ARRAY_BUFFER, indexed_normals.size() * sizeof(glm::vec3), &indexed_normals[0], GL_STATIC_DRAW);
+	glGenBuffers(1, &normalbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
+	glBufferData(GL_ARRAY_BUFFER, indexed_normals.size() * sizeof(glm::vec3), &indexed_normals[0], GL_STATIC_DRAW);
 
 	// Generate a buffer for the indices as well
 	GLuint elementbuffer;
@@ -229,12 +229,12 @@ int main( void )
 		sprintf(text,"%.2f sec", glfwGetTime() );
 		printText2D(text, 10, 500, 60);
 
-        // Swap buffers
-        glfwSwapBuffers();
+		// Swap buffers
+		glfwSwapBuffers();
 
-    } // Check if the ESC key was pressed or the window was closed
-    while( glfwGetKey( GLFW_KEY_ESC ) != GLFW_PRESS &&
-           glfwGetWindowParam( GLFW_OPENED ) );
+	} // Check if the ESC key was pressed or the window was closed
+	while( glfwGetKey( GLFW_KEY_ESC ) != GLFW_PRESS &&
+		   glfwGetWindowParam( GLFW_OPENED ) );
 
 	// Cleanup VBO, shader and texture
 	glDeleteBuffers(1, &vertexbuffer);
@@ -246,9 +246,9 @@ int main( void )
 	// Delete the text's VBO, the shader and the texture
 	cleanupText2D();
 
-    // Close OpenGL window and terminate GLFW
-    glfwTerminate();
+	// Close OpenGL window and terminate GLFW
+	glfwTerminate();
 
-    return 0;
+	return 0;
 }
 

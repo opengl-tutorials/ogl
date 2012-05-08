@@ -52,20 +52,20 @@ void computeTangentBasis(
 
 	// See "Going Further"
 	for (unsigned int i=0; i<vertices.size(); i+=1 )
-    {
-        glm::vec3 & n = normals[i];
-        glm::vec3 & t = tangents[i];
-        glm::vec3 & b = bitangents[i];
-        
-        // Gram-Schmidt orthogonalize
+	{
+		glm::vec3 & n = normals[i];
+		glm::vec3 & t = tangents[i];
+		glm::vec3 & b = bitangents[i];
+		
+		// Gram-Schmidt orthogonalize
 		t = glm::normalize(t - n * glm::dot(n, t));
-        
-        // Calculate handedness
+		
+		// Calculate handedness
 		if (glm::dot(glm::cross(n, t), b) < 0.0f){
 			t = t * -1.0f;
 		}
 
-    }
+	}
 
 
 }
