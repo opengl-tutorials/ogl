@@ -1,12 +1,12 @@
-#version 140
+#version 120
 
 // Ouput data
-out vec3 color;
+//out vec3 color;
 
 void main()
 {
 
-	// Output color = red 
-	color = vec3(1,0,0);
+	// Output color = red, full opacity
+	gl_FragColor = vec4(1,0,0, 1);
 
 }

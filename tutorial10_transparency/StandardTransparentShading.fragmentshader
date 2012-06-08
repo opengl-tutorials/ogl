@@ -1,14 +1,11 @@
-#version 140
+#version 120
 
 // Interpolated values from the vertex shaders
-in vec2 UV;
-in vec3 Position_worldspace;
-in vec3 Normal_cameraspace;
-in vec3 EyeDirection_cameraspace;
-in vec3 LightDirection_cameraspace;
-
-// Ouput data
-out vec4 color;
+varying vec2 UV;
+varying vec3 Position_worldspace;
+varying vec3 Normal_cameraspace;
+varying vec3 EyeDirection_cameraspace;
+varying vec3 LightDirection_cameraspace;
 
 // Values that stay constant for the whole mesh.
 uniform sampler2D myTextureSampler;
@@ -51,7 +48,7 @@ void main(){
 	//  - Looking elsewhere -> < 1
 	float cosAlpha = clamp( dot( E,R ), 0,1 );
 	
-	color.rgb = 
+	gl_FragColor.rgb = 
 		// Ambiant : simulates indirect lighting
 		MaterialAmbiantColor +
 		// Diffuse : "color" of the object
@@ -59,5 +56,5 @@ void main(){
 		// Specular : reflective highlight, like a mirror
 		MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance*distance);
 
-	color.a = 0.3;
+	gl_FragColor.a = 0.3;
 }

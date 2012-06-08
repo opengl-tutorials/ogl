@@ -65,10 +65,6 @@ int main( void )
 	// Cull triangles which normal is not towards the camera
 	glEnable(GL_CULL_FACE);
 
-	GLuint VertexArrayID;
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
-
 	// Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders( "NormalMapping.vertexshader", "NormalMapping.fragmentshader" );
 
@@ -216,6 +212,7 @@ int main( void )
 		glBindTexture(GL_TEXTURE_2D, SpecularTexture);
 		// Set our "Normal	TextureSampler" sampler to user Texture Unit 0
 		glUniform1i(SpecularTextureID, 2);
+
 
 		// 1rst attribute buffer : vertices
 		glEnableVertexAttribArray(0);
