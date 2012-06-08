@@ -182,10 +182,6 @@ int main( void )
 
 	
 	// The fullscreen quad's FBO
-	GLuint quad_VertexArrayID;
-	glGenVertexArrays(1, &quad_VertexArrayID);
-	glBindVertexArray(quad_VertexArrayID);
-
 	static const GLfloat g_quad_vertex_buffer_data[] = { 
 		-1.0f, -1.0f, 0.0f,
 		 1.0f, -1.0f, 0.0f,
@@ -341,6 +337,7 @@ int main( void )
 	glDeleteBuffers(1, &vertexbuffer);
 	glDeleteBuffers(1, &uvbuffer);
 	glDeleteBuffers(1, &normalbuffer);
+	glDeleteBuffers(1, &elementbuffer);
 	glDeleteProgram(programID);
 	glDeleteTextures(1, &TextureID);
 
@@ -348,7 +345,7 @@ int main( void )
 	glDeleteTextures(1, &renderedTexture);
 	glDeleteRenderbuffers(1, &depthrenderbuffer);
 	glDeleteBuffers(1, &quad_vertexbuffer);
-	glDeleteVertexArrays(1, &quad_VertexArrayID);
+	glDeleteVertexArrays(1, &VertexArrayID);
 
 
 	// Close OpenGL window and terminate GLFW

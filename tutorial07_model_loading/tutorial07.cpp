@@ -165,6 +165,7 @@ int main( void )
 	glDeleteBuffers(1, &uvbuffer);
 	glDeleteProgram(programID);
 	glDeleteTextures(1, &TextureID);
+	glDeleteVertexArrays(1, &VertexArrayID);
 
 	// Close OpenGL window and terminate GLFW
 	glfwTerminate();
