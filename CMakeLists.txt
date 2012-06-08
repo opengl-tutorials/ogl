@@ -332,3 +332,5 @@ add_custom_command(
    TARGET playground POST_BUILD
    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/playground${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/playground/"
 )
+
+SOURCE_GROUP(common REGULAR_EXPRESSION ".*/common/.*" )
