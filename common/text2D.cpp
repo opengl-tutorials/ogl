@@ -118,8 +118,9 @@ void printText2D(const char * text, int x, int y, int size){
 
 void cleanupText2D(){
 
-	// Delete buffer
+	// Delete buffers
 	glDeleteBuffers(1, &Text2DVertexBufferID);
+	glDeleteBuffers(1, &Text2DUVBufferID);
 
 	// Delete texture
 	glDeleteTextures(1, &Text2DTextureID);

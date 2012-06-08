@@ -406,8 +406,11 @@ int main( void )
 	glDeleteBuffers(1, &vertexbuffer);
 	glDeleteBuffers(1, &uvbuffer);
 	glDeleteBuffers(1, &normalbuffer);
+	glDeleteBuffers(1, &elementbuffer);
 	glDeleteProgram(programID);
-	glDeleteTextures(1, &TextureID);
+	glDeleteProgram(depthProgramID);
+	glDeleteProgram(quad_programID);
+	glDeleteTextures(1, &Texture);
 
 	glDeleteFramebuffers(1, &FramebufferName);
 	glDeleteTextures(1, &depthTexture);
