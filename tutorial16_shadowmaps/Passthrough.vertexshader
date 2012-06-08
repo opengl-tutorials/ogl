@@ -1,10 +1,10 @@
 #version 120
 
 // Input vertex data, different for all executions of this shader.
-in vec3 vertexPosition_modelspace;
+attribute vec3 vertexPosition_modelspace;
 
 // Output data ; will be interpolated for each fragment.
-out vec2 UV;
+varying vec2 UV;
 
 void main(){
 	gl_Position =  vec4(vertexPosition_modelspace,1);
