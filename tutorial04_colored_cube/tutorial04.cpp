@@ -55,10 +55,6 @@ int main( void )
 	// Accept fragment if it closer to the camera than the former one
 	glDepthFunc(GL_LESS); 
 
-	GLuint VertexArrayID;
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
-
 	// Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders( "TransformVertexShader.vertexshader", "ColorFragmentShader.fragmentshader" );
 
@@ -69,7 +65,7 @@ int main( void )
 	GLuint vertexPosition_modelspaceID = glGetAttribLocation(programID, "vertexPosition_modelspace");
 	GLuint vertexColorID = glGetAttribLocation(programID, "vertexColor");
 
-	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
+	// Projection matrix : 45Â° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 	glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 	// Camera matrix
 	glm::mat4 View       = glm::lookAt(

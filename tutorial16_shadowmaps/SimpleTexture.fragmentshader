@@ -1,7 +1,4 @@
-#version 140
-
-// Ouput data
-out vec4 color;
+#version 120
 
 uniform sampler2D texture;
 

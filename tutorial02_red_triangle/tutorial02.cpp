@@ -16,6 +16,7 @@ using namespace glm;
 
 int main( void )
 {
+	
 	// Initialise GLFW
 	if( !glfwInit() )
 	{
@@ -48,10 +49,6 @@ int main( void )
 
 	// Dark blue background
 	glClearColor(0.0f, 0.0f, 0.3f, 0.0f);
-
-	GLuint VertexArrayID;
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
 
 	// Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders( "SimpleVertexShader.vertexshader", "SimpleFragmentShader.fragmentshader" );

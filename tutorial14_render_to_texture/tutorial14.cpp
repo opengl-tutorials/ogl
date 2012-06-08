@@ -64,10 +64,6 @@ int main( void )
 	// Cull triangles which normal is not towards the camera
 	glEnable(GL_CULL_FACE);
 
-	GLuint VertexArrayID;
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
-
 	// Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders( "StandardShadingRTT.vertexshader", "StandardShadingRTT.fragmentshader" );
 
@@ -185,12 +181,6 @@ int main( void )
 	// Always check that our framebuffer is ok
 	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		return false;
-
-	
-	// The fullscreen quad's FBO
-	GLuint quad_VertexArrayID;
-	glGenVertexArrays(1, &quad_VertexArrayID);
-	glBindVertexArray(quad_VertexArrayID);
 
 	static const GLfloat g_quad_vertex_buffer_data[] = { 
 		-1.0f, -1.0f, 0.0f,
@@ -355,7 +345,6 @@ int main( void )
 	glDeleteTextures(1, &renderedTexture);
 	glDeleteRenderbuffers(1, &depthrenderbuffer);
 	glDeleteBuffers(1, &quad_vertexbuffer);
-	glDeleteVertexArrays(1, &quad_VertexArrayID);
 
 
 	// Close OpenGL window and terminate GLFW

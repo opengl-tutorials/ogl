@@ -46,11 +46,12 @@ void computeMatricesFromInputs(){
 	glfwGetMousePos(&xpos, &ypos);
 
 	// Reset mouse position for next frame
-	glfwSetMousePos(1024/2, 768/2);
+	// EDIT : Doesn't work on Mac OS, hence the code below is a bit different from the website's
+	//glfwSetMousePos(1024/2, 768/2);
 
 	// Compute new orientation
-	horizontalAngle += mouseSpeed * float(1024/2 - xpos );
-	verticalAngle   += mouseSpeed * float( 768/2 - ypos );
+	horizontalAngle = 3.14f + mouseSpeed * float(1024/2 - xpos );
+	verticalAngle   = mouseSpeed * float( 768/2 - ypos );
 
 	// Direction : Spherical coordinates to Cartesian coordinates conversion
 	glm::vec3 direction(
@@ -88,7 +89,7 @@ void computeMatricesFromInputs(){
 
 	float FoV = initialFoV - 5 * glfwGetMouseWheel();
 
-	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
+	// Projection matrix : 45Â° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 	ProjectionMatrix = glm::perspective(FoV, 4.0f / 3.0f, 0.1f, 100.0f);
 	// Camera matrix
 	ViewMatrix       = glm::lookAt(
