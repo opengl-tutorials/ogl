@@ -78,6 +78,16 @@ include_directories(
 	glfw-2.7.2/include/
 	glew-1.5.8/include/
 )
+set(OPENGL_LIBRARY
+	${OPENGL_LIBRARY}
+	-lGL -lGLU -lXext -lX11
+	${CMAKE_DL_LIBS}
+)
+#Since there is no easy wat to choose between _GLFW_HAS_GLXGETPROCADDRESS, _GLFW_HAS_GLXGETPROCADDRESSARB, _GLFW_HAS_GLXGETPROCADDRESSEXT and _GLFW_HAS_DLOPEN,
+#I force the latter, which as least should exist (and work?) everywhere.
+add_definitions(
+	-D_GLFW_HAS_DLOPEN
+)
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 set(GLFW_HEADERS
 	glfw-2.7.2/lib/cocoa/platform.h
