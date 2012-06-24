@@ -44,14 +44,14 @@ set(GLFW_SOURCE	${GLFW_SOURCE}
 )
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 set(GLFW_SOURCE	${GLFW_SOURCE}
-	glfw-2.7.2/lib/cocoa/cocoa_enable.c 
-	glfw-2.7.2/lib/cocoa/cocoa_fullscreen.c 
-	glfw-2.7.2/lib/cocoa/cocoa_glext.c 
-	glfw-2.7.2/lib/cocoa/cocoa_init.c 
-	glfw-2.7.2/lib/cocoa/cocoa_joystick.c 
+	glfw-2.7.2/lib/cocoa/cocoa_enable.m 
+	glfw-2.7.2/lib/cocoa/cocoa_fullscreen.m 
+	glfw-2.7.2/lib/cocoa/cocoa_glext.m 
+	glfw-2.7.2/lib/cocoa/cocoa_init.m 
+	glfw-2.7.2/lib/cocoa/cocoa_joystick.m 
 	glfw-2.7.2/lib/cocoa/cocoa_thread.c 
-	glfw-2.7.2/lib/cocoa/cocoa_time.c 
-	glfw-2.7.2/lib/cocoa/cocoa_window.c 
+	glfw-2.7.2/lib/cocoa/cocoa_time.m 
+	glfw-2.7.2/lib/cocoa/cocoa_window.m 
 )
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 
@@ -99,6 +99,8 @@ include_directories(
 	glfw-2.7.2/include/
 	glew-1.5.8/include/
 )
+SET(EXTRA_LIBS "-framework Cocoa -framework OpenGL")
+
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 
 
@@ -128,5 +130,6 @@ add_library( GLEW_158 STATIC
 
 target_link_libraries(GLEW_158
 	${OPENGL_LIBRARY}
+	${EXTRA_LIBS}
 )
 
