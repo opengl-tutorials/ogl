@@ -8,6 +8,7 @@ find_package(OpenGL REQUIRED)
 add_subdirectory (external)
 
 include_directories(
+	external/AntTweakBar-1.15/include/
 	external/glfw-2.7.2/include/
 	external/glm-0.9.1/
 	external/glew-1.5.8/include/
@@ -18,9 +19,13 @@ set(ALL_LIBS
 	${OPENGL_LIBRARY}
 	GLFW_272
 	GLEW_158
+	ANTTWEAKBAR_151_OGLCORE_GLFW
 )
 
 add_definitions(
+	-DTW_STATIC
+	-DTW_NO_LIB_PRAGMA
+	-DTW_NO_DIRECT3D
 	-DGLEW_STATIC
 	-D_CRT_SECURE_NO_WARNINGS
 )
@@ -317,6 +322,28 @@ target_link_libraries(tutorial16_shadowmaps
 add_custom_command(
    TARGET tutorial16_shadowmaps POST_BUILD
    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial16_shadowmaps${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial16_shadowmaps/"
+)
+
+# Tutorial 17
+add_executable(tutorial17_rotations
+	tutorial17_rotations/tutorial17.cpp
+	common/shader.cpp
+	common/shader.hpp
+	common/controls.cpp
+	common/controls.hpp
+	common/texture.cpp
+	common/texture.hpp
+	common/objloader.cpp
+	common/objloader.hpp
+	common/vboindexer.cpp
+	common/vboindexer.hpp
+)
+target_link_libraries(tutorial17_rotations
+	${ALL_LIBS}
+)
+add_custom_command(
+   TARGET tutorial17_rotations POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial17_rotations${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial17_rotations/"
 )
 
 # User playground
