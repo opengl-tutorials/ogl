@@ -1,7 +1,13 @@
 add_definitions(
+	-DTW_STATIC
+	-DTW_NO_LIB_PRAGMA
+	-DTW_NO_DIRECT3D
 	-DGLEW_STATIC
 	-D_CRT_SECURE_NO_WARNINGS
 )
+
+### GLFW ###
+
 
 set(GLFW_SOURCE	
 	glfw-2.7.2/lib/enable.c 
@@ -113,7 +119,7 @@ target_link_libraries(GLFW_272
 	${OPENGL_LIBRARY}
 )
 
-
+### GLEW ###
 
 set(GLEW_SOURCE
 	glew-1.5.8/src/glew.c
@@ -131,5 +137,50 @@ add_library( GLEW_158 STATIC
 target_link_libraries(GLEW_158
 	${OPENGL_LIBRARY}
 	${EXTRA_LIBS}
+)
+
+
+### ANTTWEAKBAR ###
+
+set(ANTTWEAKBAR_SOURCE
+	AntTweakBar-1.15/src/LoadOGL.cpp
+	AntTweakBar-1.15/src/LoadOGLCore.cpp
+	AntTweakBar-1.15/src/TwColors.cpp
+	AntTweakBar-1.15/src/TwBar.cpp
+	AntTweakBar-1.15/src/TwEventGLFW.c
+	AntTweakBar-1.15/src/TwFonts.cpp
+	AntTweakBar-1.15/src/TwMgr.cpp
+	AntTweakBar-1.15/src/TwOpenGL.cpp
+	AntTweakBar-1.15/src/TwOpenGLCore.cpp
+	AntTweakBar-1.15/src/TwPrecomp.cpp
+)
+
+set(ANTTWEAKBAR_HEADERS
+	AntTweakBar-1.15/src/AntPerfTimer.h
+	AntTweakBar-1.15/src/LoadOGL.h
+	AntTweakBar-1.15/src/LoadOGLCore.h
+	AntTweakBar-1.15/src/MiniGLFW.h
+	AntTweakBar-1.15/src/resource.h
+	AntTweakBar-1.15/src/TwBar.h
+	AntTweakBar-1.15/src/TwColors.h
+	AntTweakBar-1.15/src/TwFonts.h
+	AntTweakBar-1.15/src/TwGraph.h
+	AntTweakBar-1.15/src/TwMgr.h
+	AntTweakBar-1.15/src/TwOpenGL.h
+	AntTweakBar-1.15/src/TwOpenGLCore.h
+	AntTweakBar-1.15/src/TwPrecomp.h
+)
+
+include_directories(
+	AntTweakBar-1.15/include/
+)
+
+add_library( ANTTWEAKBAR_151_OGLCORE_GLFW STATIC
+	${ANTTWEAKBAR_SOURCE}
+	${ANTTWEAKBAR_HEADERS}
+)
+
+target_link_libraries(ANTTWEAKBAR_151_OGLCORE_GLFW
+	${OPENGL_LIBRARY}
 )
 
