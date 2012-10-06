@@ -111,6 +111,8 @@ int main( void )
 		printf("The OpenGL implementation provides debug output. Let's use it !\n");
 		glDebugMessageCallbackARB(&DebugOutputCallback, NULL);
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB); 
+	}else{
+		printf("ARB_debug_output unavailable. You have to use glGetError() and/or gDebugger to catch mistakes.\n");
 	}
 
 
