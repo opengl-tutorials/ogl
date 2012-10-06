@@ -344,6 +344,30 @@ add_custom_command(
 )
 create_target_launcher(tutorial15_lightmaps WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/tutorial15_lightmaps/")
 
+# Tutorial 16, simple version
+add_executable(tutorial16_shadowmaps_simple
+	tutorial16_shadowmaps/tutorial16_SimpleVersion.cpp
+	common/shader.cpp
+	common/shader.hpp
+	common/controls.cpp
+	common/controls.hpp
+	common/texture.cpp
+	common/texture.hpp
+	common/objloader.cpp
+	common/objloader.hpp
+	common/vboindexer.cpp
+	common/vboindexer.hpp
+)
+target_link_libraries(tutorial16_shadowmaps_simple
+	${ALL_LIBS}
+)
+add_custom_command(
+   TARGET tutorial16_shadowmaps_simple POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial16_shadowmaps${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial16_shadowmaps/"
+)
+create_target_launcher(tutorial16_shadowmaps_simple WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/tutorial16_shadowmaps/")
+
+
 # Tutorial 16
 add_executable(tutorial16_shadowmaps
 	tutorial16_shadowmaps/tutorial16.cpp
