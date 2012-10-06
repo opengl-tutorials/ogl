@@ -243,6 +243,29 @@ add_custom_command(
 )
 create_target_launcher(tutorial11_2d_fonts WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/tutorial11_2d_fonts/")
 
+# Tutorial 12
+add_executable(tutorial12_extensions
+	tutorial12_extensions/tutorial12.cpp
+	common/shader.cpp
+	common/shader.hpp
+	common/controls.cpp
+	common/controls.hpp
+	common/texture.cpp
+	common/texture.hpp
+	common/objloader.cpp
+	common/objloader.hpp
+	common/vboindexer.cpp
+	common/vboindexer.hpp
+)
+target_link_libraries(tutorial12_extensions
+	${ALL_LIBS}
+)
+add_custom_command(
+   TARGET tutorial12_extensions POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial12_extensions${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial12_extensions/"
+)
+create_target_launcher(tutorial12_extensions WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/tutorial12_extensions/")
+
 # Tutorial 13
 add_executable(tutorial13_normal_mapping
 	tutorial13_normal_mapping/tutorial13.cpp
