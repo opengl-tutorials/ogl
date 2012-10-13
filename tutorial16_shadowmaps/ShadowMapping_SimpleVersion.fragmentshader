@@ -16,7 +16,7 @@ void main(){
 	// Material properties
 	vec3 MaterialDiffuseColor = texture2D( myTextureSampler, UV ).rgb;
 
-	float visibility = texture( shadowMap, vec3(ShadowCoord.xy, (ShadowCoord.z)/ShadowCoord.w) );
+	float visibility = shadow2D( shadowMap, vec3(ShadowCoord.xy, (ShadowCoord.z)/ShadowCoord.w) ).r;
 
 	gl_FragColor.rgb = visibility * MaterialDiffuseColor * LightColor;
 

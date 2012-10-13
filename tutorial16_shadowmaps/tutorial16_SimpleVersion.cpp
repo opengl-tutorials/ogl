@@ -136,18 +136,13 @@ int main( void )
 
 	// No color output in the bound framebuffer, only depth.
 	glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
 
 	// Always check that our framebuffer is ok
 	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		return false;
 
 	
-	// The fullscreen quad's FBO
-	// For debug only
-	GLuint quad_VertexArrayID;
-	glGenVertexArrays(1, &quad_VertexArrayID);
-	glBindVertexArray(quad_VertexArrayID);
-
 	static const GLfloat g_quad_vertex_buffer_data[] = { 
 		-1.0f, -1.0f, 0.0f,
 		 1.0f, -1.0f, 0.0f,
@@ -392,7 +387,6 @@ int main( void )
 	glDeleteFramebuffers(1, &FramebufferName);
 	glDeleteTextures(1, &depthTexture);
 	glDeleteBuffers(1, &quad_vertexbuffer);
-	glDeleteVertexArrays(1, &quad_VertexArrayID);
 
 
 	// Close OpenGL window and terminate GLFW
