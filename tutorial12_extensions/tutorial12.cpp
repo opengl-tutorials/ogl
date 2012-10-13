@@ -72,9 +72,8 @@ int main( void )
 	}
 
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
-	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 2);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
 
 	// ARB_debug_output is a bit special, 
 	// it requires creating the OpenGL context
@@ -134,10 +133,6 @@ int main( void )
 	// Cull triangles which normal is not towards the camera
 	glEnable(GL_CULL_FACE_MODE); // SHOULD BE GL_CULL_FACE ! WILL TRIGGER AN ERROR MESSAGE !
 
-	GLuint VertexArrayID;
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
-
 	// Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders( "StandardShading.vertexshader", "StandardShading_WithSyntaxErrors.fragmentshader" );
 
@@ -145,6 +140,11 @@ int main( void )
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
 	GLuint ViewMatrixID = glGetUniformLocation(programID, "V");
 	GLuint ModelMatrixID = glGetUniformLocation(programID, "M");
+
+	// Get a handle for our buffers
+	GLuint vertexPosition_modelspaceID = glGetAttribLocation(programID, "vertexPosition_modelspace");
+	GLuint vertexUVID = glGetAttribLocation(programID, "vertexUV");
+	GLuint vertexNormal_modelspaceID = glGetAttribLocation(programID, "vertexNormal_modelspace");
 
 	// Load the texture
 	GLuint Texture = loadDDS("uvmap.DDS");
@@ -239,36 +239,36 @@ int main( void )
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 		glVertexAttribPointer(
-			0,                  // attribute
-			3,                  // size
-			GL_FLOAT,           // type
-			GL_FALSE,           // normalized?
-			0,                  // stride
-			(void*)0            // array buffer offset
+			vertexPosition_modelspaceID,  // The attribute we want to configure
+			3,                            // size
+			GL_FLOAT,                     // type
+			GL_FALSE,                     // normalized?
+			0,                            // stride
+			(void*)0                      // array buffer offset
 		);
 
 		// 2nd attribute buffer : UVs
 		glEnableVertexAttribArray(1);
 		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 		glVertexAttribPointer(
-			1,                                // attribute
-			2,                                // size
-			GL_FLOAT,                         // type
-			GL_FALSE,                         // normalized?
-			0,                                // stride
-			(void*)0                          // array buffer offset
+			vertexUVID,                   // The attribute we want to configure
+			2,                            // size : U+V => 2
+			GL_FLOAT,                     // type
+			GL_FALSE,                     // normalized?
+			0,                            // stride
+			(void*)0                      // array buffer offset
 		);
 
 		// 3rd attribute buffer : normals
 		glEnableVertexAttribArray(2);
 		glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
 		glVertexAttribPointer(
-			2,                                // attribute
-			3,                                // size
-			GL_FLOAT,                         // type
-			GL_FALSE,                         // normalized?
-			0,                                // stride
-			(void*)0                          // array buffer offset
+			vertexNormal_modelspaceID,    // The attribute we want to configure
+			3,                            // size
+			GL_FLOAT,                     // type
+			GL_FALSE,                     // normalized?
+			0,                            // stride
+			(void*)0                      // array buffer offset
 		);
 
 		// Index buffer
@@ -300,7 +300,6 @@ int main( void )
 	glDeleteBuffers(1, &elementbuffer);
 	glDeleteProgram(programID);
 	glDeleteTextures(1, &Texture);
-	glDeleteVertexArrays(1, &VertexArrayID);
 
 	// Close OpenGL window and terminate GLFW
 	glfwTerminate();

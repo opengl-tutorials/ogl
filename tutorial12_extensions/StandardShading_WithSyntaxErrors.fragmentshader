@@ -1,17 +1,14 @@
-#version 330 core
+#version 120
 
 // a big syntax error to demonstrate the point...
-HELLO WORLD
+// HELLO WORLD // In 2.1 this actually crashes the program later on...
 
 // Interpolated values from the vertex shaders
-in vec2 UV;
-in vec3 Position_worldspace;
-in vec3 Normal_cameraspace;
-in vec3 EyeDirection_cameraspace;
-in vec3 LightDirection_cameraspace;
-
-// Ouput data
-out vec3 color;
+varying vec2 UV;
+varying vec3 Position_worldspace;
+varying vec3 Normal_cameraspace;
+varying vec3 EyeDirection_cameraspace;
+varying vec3 LightDirection_cameraspace;
 
 // Values that stay constant for the whole mesh.
 uniform sampler2D myTextureSampler;
@@ -54,7 +51,7 @@ void main(){
 	//  - Looking elsewhere -> < 1
 	float cosAlpha = clamp( dot( E,R ), 0,1 );
 	
-	color = 
+	gl_FragColor.rgb = 
 		// Ambiant : simulates indirect lighting
 		MaterialAmbiantColor +
 		// Diffuse : "color" of the object
