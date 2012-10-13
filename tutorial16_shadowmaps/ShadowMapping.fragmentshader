@@ -14,6 +14,7 @@ uniform mat4 MV;
 uniform vec3 LightPosition_worldspace;
 uniform sampler2DShadow shadowMap;
 
+/* Arrays are not supported in 2.1
 vec2 poissonDisk[16] = vec2[]( 
    vec2( -0.94201624, -0.39906216 ), 
    vec2( 0.94558609, -0.76890725 ), 
@@ -32,6 +33,7 @@ vec2 poissonDisk[16] = vec2[](
    vec2( 0.19984126, 0.78641367 ), 
    vec2( 0.14383161, -0.14100790 ) 
 );
+*/
 
 // Returns a random number based on a vec3 and an int.
 float random(vec3 seed, int i){
@@ -99,7 +101,7 @@ void main(){
 		
 		// being fully in the shadow will eat up 4*0.2 = 0.8
 		// 0.2 potentially remain, which is quite dark.
-		visibility -= 0.2*(1.0-shadow2D( shadowMap, vec3(ShadowCoord.xy + poissonDisk[index]/700.0 ,  (ShadowCoord.z-bias)/ShadowCoord.w )).r);
+		visibility -= 0.2*(1.0-shadow2D( shadowMap, vec3(ShadowCoord.xy /*+ poissonDisk[index]/700.0*/ ,  (ShadowCoord.z-bias)/ShadowCoord.w )).r);
 	}
 
 	// For spot lights, use either one of these lines instead.
