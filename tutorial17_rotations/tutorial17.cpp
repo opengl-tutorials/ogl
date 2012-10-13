@@ -59,7 +59,7 @@ int main( void )
 	}
 
 	// Initialize the GUI
-	TwInit(TW_OPENGL_CORE, NULL);
+	TwInit(TW_OPENGL, NULL);
 	TwWindowSize(1024, 768);
 	TwBar * EulerGUI = TwNewBar("Euler settings");
 	TwBar * QuaternionGUI = TwNewBar("Quaternion settings");
