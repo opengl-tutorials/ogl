@@ -95,6 +95,7 @@ set(OPENGL_LIBRARY
 add_definitions(
 	-D_GLFW_HAS_DLOPEN
 )
+add_definitions(-D_UNIX)
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 set(GLFW_HEADERS
 	glfw-2.7.6/lib/cocoa/platform.h
