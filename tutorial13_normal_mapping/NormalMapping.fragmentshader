@@ -30,7 +30,7 @@ void main(){
 	
 	// Material properties
 	vec3 MaterialDiffuseColor = texture2D( DiffuseTextureSampler, UV ).rgb;
-	vec3 MaterialAmbiantColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
+	vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
 	vec3 MaterialSpecularColor = texture2D( SpecularTextureSampler, UV ).rgb * 0.3;
 
 	// Local normal, in tangent space. V tex coordinate is inverted because normal map is in TGA (not in DDS) for better quality
@@ -61,8 +61,8 @@ void main(){
 	float cosAlpha = clamp( dot( E,R ), 0,1 );
 	
 	color = 
-		// Ambiant : simulates indirect lighting
-		MaterialAmbiantColor +
+		// Ambient : simulates indirect lighting
+		MaterialAmbientColor +
 		// Diffuse : "color" of the object
 		MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) +
 		// Specular : reflective highlight, like a mirror
