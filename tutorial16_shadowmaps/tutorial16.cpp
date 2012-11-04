@@ -382,7 +382,7 @@ int main( void )
 
 		// Draw the triangle !
 		// You have to disable GL_COMPARE_R_TO_TEXTURE above in order to see anything !
-		//glDrawArrays(GL_TRIANGLES, 0, 6); // From index 0 to 6 -> 2 triangles
+		//glDrawArrays(GL_TRIANGLES, 0, 6); // 2*3 indices starting at 0 -> 2 triangles
 		glDisableVertexAttribArray(0);
 
 

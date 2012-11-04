@@ -21,14 +21,14 @@ GLuint loadBMP_custom(const char * imagepath){
 
 	// Open the file
 	FILE * file = fopen(imagepath,"rb");
-	if (!file)							    {printf("Image could not be opened\n"); return 0;}
+	if (!file)							    {printf("%s could not be opened. Are you in the right directory ? Don't forget to read the FAQ !\n", imagepath); return 0;}
 
 	// Read the header, i.e. the 54 first bytes
 
 	// If less than 54 byes are read, problem
 	if ( fread(header, 1, 54, file)!=54 ){ 
 		printf("Not a correct BMP file\n");
-		return false;
+		return 0;
 	}
 	// A BMP files always begins with "BM"
 	if ( header[0]!='B' || header[1]!='M' ){
@@ -67,6 +67,9 @@ GLuint loadBMP_custom(const char * imagepath){
 
 	// Give the image to OpenGL
 	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+
+	// OpenGL has now copied the data. Free our own version
+	delete [] data;
 
 	// Poor filtering, or ...
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
