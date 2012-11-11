@@ -136,7 +136,7 @@ int main( void )
 
 	// No color output in the bound framebuffer, only depth.
 	glDrawBuffer(GL_NONE);
-    glReadBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
 
 	// Always check that our framebuffer is ok
 	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -224,7 +224,7 @@ int main( void )
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 		glVertexAttribPointer(
-			vertexPosition_modelspaceID,  // The attribute we want to configure
+			depth_vertexPosition_modelspaceID,  // The attribute we want to configure
 			3,                  // size
 			GL_FLOAT,           // type
 			GL_FALSE,           // normalized?

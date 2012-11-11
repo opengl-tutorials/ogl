@@ -77,9 +77,6 @@ int main( void )
 	// Load the texture
 	GLuint Texture = loadDDS("uvmap.DDS");
 	
-	// Get a handle for our "myTextureSampler" uniform
-	GLuint TextureID  = glGetUniformLocation(depthProgramID, "myTextureSampler");
-
 	// Read our .obj file
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
@@ -144,7 +141,7 @@ int main( void )
 	glReadBuffer(GL_NONE);
 
 	// Always check that our framebuffer is ok
-    GLuint error = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	GLuint error = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		return false;
 
@@ -165,8 +162,7 @@ int main( void )
 
 	// Create and compile our GLSL program from the shaders
 	GLuint quad_programID = LoadShaders( "Passthrough.vertexshader", "SimpleTexture.fragmentshader" );
-	GLuint texID = glGetUniformLocation(quad_programID, "renderedTexture");
-	GLuint timeID = glGetUniformLocation(quad_programID, "time");
+	GLuint texID = glGetUniformLocation(quad_programID, "texture");
 
 	// Get a handle for our buffers
 	GLuint quad_vertexPosition_modelspaceID = glGetAttribLocation(quad_programID, "vertexPosition_modelspace");
@@ -176,6 +172,9 @@ int main( void )
 
 	// Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders( "ShadowMapping.vertexshader", "ShadowMapping.fragmentshader" );
+
+	// Get a handle for our "myTextureSampler" uniform
+	GLuint TextureID  = glGetUniformLocation(programID, "myTextureSampler");
 
 	// Get a handle for our "MVP" uniform
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
@@ -233,7 +232,7 @@ int main( void )
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 		glVertexAttribPointer(
-			vertexPosition_modelspaceID,  // The attribute we want to configure
+			depth_vertexPosition_modelspaceID,  // The attribute we want to configure
 			3,                  // size
 			GL_FLOAT,           // type
 			GL_FALSE,           // normalized?
@@ -371,8 +370,6 @@ int main( void )
 		// Set our "renderedTexture" sampler to user Texture Unit 0
 		glUniform1i(texID, 0);
 
-		glUniform1f(timeID, (float)(glfwGetTime()*10.0f) );
-
 		// 1rst attribute buffer : vertices
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, quad_vertexbuffer);
@@ -387,7 +384,7 @@ int main( void )
 
 		// Draw the triangles !
 		// You have to disable GL_COMPARE_R_TO_TEXTURE above in order to see anything !
-		//glDrawArrays(GL_TRIANGLES, 0, 6); // From index 0 to 6 -> 2 triangles
+		//glDrawArrays(GL_TRIANGLES, 0, 6); // 2*3 indices starting at 0 -> 2 triangles
 		glDisableVertexAttribArray(0);
 
 
