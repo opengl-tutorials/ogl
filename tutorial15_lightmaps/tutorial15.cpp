@@ -147,7 +147,7 @@ int main( void )
 			(void*)0                          // array buffer offset
 		);
 
-		// Draw the triangle !
+		// Draw the triangles !
 		glDrawArrays(GL_TRIANGLES, 0, vertices.size() );
 
 		glDisableVertexAttribArray(0);
