@@ -79,9 +79,6 @@ int main( void )
 	// Load the texture
 	GLuint Texture = loadDDS("uvmap.DDS");
 	
-	// Get a handle for our "myTextureSampler" uniform
-	GLuint TextureID  = glGetUniformLocation(depthProgramID, "myTextureSampler");
-
 	// Read our .obj file
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
@@ -149,7 +146,7 @@ int main( void )
 		return false;
 
 	
-	// The fullscreen quad's FBO
+	// The quad's FBO. Used only for visualizing the shadowmap.
 	GLuint quad_VertexArrayID;
 	glGenVertexArrays(1, &quad_VertexArrayID);
 	glBindVertexArray(quad_VertexArrayID);
@@ -170,12 +167,14 @@ int main( void )
 
 	// Create and compile our GLSL program from the shaders
 	GLuint quad_programID = LoadShaders( "Passthrough.vertexshader", "SimpleTexture.fragmentshader" );
-	GLuint texID = glGetUniformLocation(quad_programID, "renderedTexture");
-	GLuint timeID = glGetUniformLocation(quad_programID, "time");
+	GLuint texID = glGetUniformLocation(quad_programID, "texture");
 
 
 	// Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders( "ShadowMapping.vertexshader", "ShadowMapping.fragmentshader" );
+
+	// Get a handle for our "myTextureSampler" uniform
+	GLuint TextureID  = glGetUniformLocation(programID, "myTextureSampler");
 
 	// Get a handle for our "MVP" uniform
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
@@ -365,8 +364,6 @@ int main( void )
 		glBindTexture(GL_TEXTURE_2D, depthTexture);
 		// Set our "renderedTexture" sampler to user Texture Unit 0
 		glUniform1i(texID, 0);
-
-		glUniform1f(timeID, (float)(glfwGetTime()*10.0f) );
 
 		// 1rst attribute buffer : vertices
 		glEnableVertexAttribArray(0);
