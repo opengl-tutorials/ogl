@@ -139,7 +139,7 @@ int main( void )
 	// "Bind" the newly created texture : all future texture functions will modify this texture
 	glBindTexture(GL_TEXTURE_2D, renderedTexture);
 
-	// Give an empty image to OpenGL ( the last "0" )
+	// Give an empty image to OpenGL ( the last "0" means "empty" )
 	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, 1024, 768, 0,GL_RGB, GL_UNSIGNED_BYTE, 0);
 
 	// Poor filtering
@@ -320,7 +320,7 @@ int main( void )
 			(void*)0            // array buffer offset
 		);
 
-		// Draw the triangle !
+		// Draw the triangles !
 		glDrawArrays(GL_TRIANGLES, 0, 6); // 2*3 indices starting at 0 -> 2 triangles
 
 		glDisableVertexAttribArray(0);
