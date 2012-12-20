@@ -736,7 +736,7 @@ void ANT_CALL CQuaternionExt::SummaryCB(char *_SummaryString, size_t _SummaryMax
     if( ext )
     {
         if( ext->m_AAMode )
-            _snprintf(_SummaryString, _SummaryMaxLength, "V={%.2f,%.2f,%.2f} A=%.0f°", ext->Vx, ext->Vy, ext->Vz, ext->Angle);
+            _snprintf(_SummaryString, _SummaryMaxLength, "V={%.2f,%.2f,%.2f} A=%.0f° ", ext->Vx, ext->Vy, ext->Vz, ext->Angle);
         else if( ext->m_IsDir )
         {
             //float d[] = {1, 0, 0};
