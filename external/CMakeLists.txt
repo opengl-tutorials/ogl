@@ -186,7 +186,17 @@ set(ANTTWEAKBAR_SOURCE
 include_directories(
 	${CMAKE_SOURCE_DIR}/external/AntTweakBar-1.15/src/
 )
-else(${CMAKE_SYSTEM_NAME} MATCHES "Darwin") # Windows/Linux : Just add files
+add_definitions(
+	-D_MACOSX
+)
+elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+add_definitions(
+	-D_UNIX
+)
+elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+add_definitions(
+	-D_WINDOWS
+)
 
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 

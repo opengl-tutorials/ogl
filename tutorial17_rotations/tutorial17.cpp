@@ -13,7 +13,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/euler_angles.hpp>
+#include <glm/gtx/norm.hpp>
 using namespace glm;
 
 // Include AntTweakBar
@@ -27,12 +29,134 @@ using namespace glm;
 #include <common/vboindexer.hpp>
 
 
-vec3 gEulerRotation;
-quat gQuaternion;
-bool gNormalizeQuaternion;
+vec3 gPosition1(-1.5f, 0.0f, 0.0f);
+vec3 gOrientation1;
+ 
+vec3 gPosition2( 1.5f, 0.0f, 0.0f);
+quat gOrientation2;
+ 
+bool gLookAtOther = true;
+ 
+quat RotationBetweenVectors(vec3 start, vec3 dest){
+	start = normalize(start);
+	dest = normalize(dest);
+ 
+	float cosTheta = dot(start, dest);
+	vec3 rotationAxis;
+	
+	if (cosTheta < -1 + 0.001f){
+		// special case when vectors in opposite directions :
+		// there is no "ideal" rotation axis
+		// So guess one; any will do as long as it's perpendicular to start
+		// This implementation favors a rotation around the Up axis,
+		// since it's often what you want to do.
+		rotationAxis = cross(vec3(0.0f, 0.0f, 1.0f), start);
+		if (length2(rotationAxis) < 0.01 ) // bad luck, they were parallel, try again!
+			rotationAxis = cross(vec3(1.0f, 0.0f, 0.0f), start);
+		
+		rotationAxis = normalize(rotationAxis);
+		return angleAxis(180.0f, rotationAxis);
+	}
+ 
+	// Implementation from Stan Melax's Game Programming Gems 1 article
+	rotationAxis = cross(start, dest);
+ 
+	float s = sqrt( (1+cosTheta)*2 );
+	float invs = 1 / s;
+ 
+	return quat(
+		s * 0.5f, 
+		rotationAxis.x * invs,
+		rotationAxis.y * invs,
+		rotationAxis.z * invs
+	);
+ 
+ 
+}
+ 
+ 
+quat LookAt(vec3 direction, vec3 desiredUp){
+	// Recompute desiredUp so that it's perpendicular to the direction
+	vec3 right = cross(direction, desiredUp);
+	desiredUp = cross(right, direction);
+ 
+	// Find the rotation between the front of the object (that we assume towards +Z,
+	// but this depends on your model) and the desired direction
+	quat rot1 = RotationBetweenVectors(vec3(0.0f, 0.0f, 1.0f), direction);
+	// Because of the 1rst rotation, the up is probably completely screwed up. 
+	// Find the rotation between the "up" of the rotated object, and the desired up
+	vec3 newUp = rot1 * vec3(0.0f, 1.0f, 0.0f);
+	quat rot2 = RotationBetweenVectors(newUp, desiredUp);
+ 
+	// Apply them
+	return rot2 * rot1; // remember, in reverse order.
+}
+
+quat RotateTowards(quat q1, quat q2, float maxAngle){
+ 
+	if( maxAngle < 0.001f ){
+		// No rotation allowed. Prevent dividing by 0 later.
+		return q1;
+	}
+ 
+	float cosTheta = dot(q1, q2);
+	
+	// q1 and q2 are already equal.
+	// Force q2 just to be sure
+	if(cosTheta > 0.9999f){
+		return q2;
+	}
+ 
+	if (cosTheta < 0){
+		q1 = q1*-1.0f;
+		cosTheta *= -1.0f;
+	}
+ 
+	float angle = acos(cosTheta);
+	
+	// If there is only a 2° difference, and we are allowed 5°,
+	// then we arrived.
+	if (angle < maxAngle){
+		return q2;
+	}
+ 
+	float fT = maxAngle / angle;
+	angle = maxAngle;
+ 
+	quat res = (sin((1.0f - fT) * angle) * q1 + sin(fT * angle) * q2) / sin(angle);
+	res = normalize(res);
+	return res;
+ 
+}
 
 int main( void )
 {
+ 
+	glm::vec3 Xpos(+1.0f,  0.0f,  0.0f);
+	glm::vec3 Ypos( 0.0f, +1.0f,  0.0f);
+	glm::vec3 Zpos( 0.0f,  0.0f, +1.0f);
+	glm::vec3 Xneg(-1.0f,  0.0f,  0.0f);
+	glm::vec3 Yneg( 0.0f, -1.0f,  0.0f);
+	glm::vec3 Zneg( 0.0f,  0.0f, -1.0f);
+ 
+	// Testing standard, easy case
+	// Must be 90° rotation on X : 0.7 0 0 0.7
+	quat X90rot = RotationBetweenVectors(Ypos, Zpos);
+ 
+	// Testing with v1 = v2
+	// Must be identity : 0 0 0 1
+	quat id = RotationBetweenVectors(Xpos, Xpos);
+ 
+	// Testing with v1 = -v2
+	// Must be 180° on +/-Y axis : 0 +/-1 0 0
+	quat Y180rot = RotationBetweenVectors(Xpos, Xneg);
+ 
+	// Testing with v1 = -v2, but with a "bad first guess"
+	// Must be 180° on +/-Y axis : 0 +/-1 0 0
+	quat X180rot = RotationBetweenVectors(Zpos, Zneg);
+ 
+	//RotateTowards
+ 
 	// Initialise GLFW
 	if( !glfwInit() )
 	{
@@ -65,12 +189,15 @@ int main( void )
 	TwBar * QuaternionGUI = TwNewBar("Quaternion settings");
 	TwSetParam(QuaternionGUI, NULL, "position", TW_PARAM_CSTRING, 1, "808 16");
 
-	TwAddVarRW(EulerGUI, "Euler X", TW_TYPE_FLOAT, &gEulerRotation.x, "step=0.01");
-	TwAddVarRW(EulerGUI, "Euler Y", TW_TYPE_FLOAT, &gEulerRotation.y, "step=0.01");
-	TwAddVarRW(EulerGUI, "Euler Z", TW_TYPE_FLOAT, &gEulerRotation.z, "step=0.01");
+	TwAddVarRW(EulerGUI, "Euler X", TW_TYPE_FLOAT, &gOrientation1.x, "step=0.01");
+	TwAddVarRW(EulerGUI, "Euler Y", TW_TYPE_FLOAT, &gOrientation1.y, "step=0.01");
+	TwAddVarRW(EulerGUI, "Euler Z", TW_TYPE_FLOAT, &gOrientation1.z, "step=0.01");
+	TwAddVarRW(EulerGUI, "Pos X"  , TW_TYPE_FLOAT, &gPosition1.x, "step=0.1");
+	TwAddVarRW(EulerGUI, "Pos Y"  , TW_TYPE_FLOAT, &gPosition1.y, "step=0.1");
+	TwAddVarRW(EulerGUI, "Pos Z"  , TW_TYPE_FLOAT, &gPosition1.z, "step=0.1");
 
-	TwAddVarRW(QuaternionGUI, "Quaternion", TW_TYPE_QUAT4F, &gQuaternion, "showval=true open=true ");
-	TwAddVarRW(QuaternionGUI, "Normalize", TW_TYPE_BOOL8, &gNormalizeQuaternion, "help='Will renormalize the quaternion each frame so that the quaternion is always valid'");
+	TwAddVarRW(QuaternionGUI, "Quaternion", TW_TYPE_QUAT4F, &gOrientation2, "showval=true open=true ");
+	TwAddVarRW(QuaternionGUI, "Use LookAt", TW_TYPE_BOOL8 , &gLookAtOther, "help='Look at the other monkey ?'");
 
 	// Set GLFW event callbacks. I removed glfwSetWindowSizeCallback for conciseness
 	glfwSetMouseButtonCallback((GLFWmousebuttonfun)TwEventMouseButtonGLFW); // - Directly redirect GLFW mouse button events to AntTweakBar
@@ -158,12 +285,15 @@ int main( void )
 
 	// For speed computation
 	double lastTime = glfwGetTime();
+	double lastFrameTime = lastTime;
 	int nbFrames = 0;
 
 	do{
 
 		// Measure speed
 		double currentTime = glfwGetTime();
+		float deltaTime = (float)(currentTime - lastFrameTime); 
+		lastFrameTime = currentTime;
 		nbFrames++;
 		if ( currentTime - lastTime >= 1.0 ){ // If last prinf() was more than 1sec ago
 			// printf and reset
@@ -235,9 +365,13 @@ int main( void )
 
 		{ // Euler
 
-			glm::mat4 RotationMatrix = glm::gtx::euler_angles::eulerAngleYXZ(gEulerRotation.y, gEulerRotation.x, gEulerRotation.z);
-			glm::mat4 TranslationMatrix = glm::gtc::matrix_transform::translate(mat4(), vec3(-1.5f, 0.0f, 0.0f)); // A bit to the left
-			glm::mat4 ScalingMatrix = glm::gtc::matrix_transform::scale(mat4(), vec3(1.0f, 1.0f, 1.0f));
+			// As an example, rotate arount the vertical axis at 180°/sec
+			gOrientation1.y += 3.14159f/2.0f * deltaTime;
+ 
+			// Build the model matrix
+			glm::mat4 RotationMatrix = eulerAngleYXZ(gOrientation1.y, gOrientation1.x, gOrientation1.z);
+			glm::mat4 TranslationMatrix = translate(mat4(), gPosition1); // A bit to the left
+			glm::mat4 ScalingMatrix = scale(mat4(), vec3(1.0f, 1.0f, 1.0f));
 			glm::mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScalingMatrix;
 
 			glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -261,11 +395,21 @@ int main( void )
 		}
 		{ // Quaternion
 
-			gQuaternion = normalize(gQuaternion);
+			// It the box is checked...
+			if (gLookAtOther){
+				vec3 desiredDir = gPosition1-gPosition2;
+				vec3 desiredUp = vec3(0.0f, 1.0f, 0.0f); // +Y
 
-			glm::mat4 RotationMatrix = glm::gtc::quaternion::mat4_cast(gQuaternion);
-			glm::mat4 TranslationMatrix = glm::gtc::matrix_transform::translate(mat4(), vec3(1.5f, 0.0f, 0.0f)); // A bit to the right
-			glm::mat4 ScalingMatrix = glm::gtc::matrix_transform::scale(mat4(), vec3(1.0f, 1.0f, 1.0f));
+				// Compute the desired orientation
+				quat targetOrientation = normalize(LookAt(desiredDir, desiredUp));
+ 
+				// And interpolate
+				gOrientation2 = RotateTowards(gOrientation2, targetOrientation, 1.0f*deltaTime);
+			}
+ 
+			glm::mat4 RotationMatrix = mat4_cast(gOrientation2);
+			glm::mat4 TranslationMatrix = translate(mat4(), gPosition2); // A bit to the right
+			glm::mat4 ScalingMatrix = scale(mat4(), vec3(1.0f, 1.0f, 1.0f));
 			glm::mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScalingMatrix;
 
 			glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
