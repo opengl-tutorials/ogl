@@ -28,7 +28,7 @@ using namespace glm;
 #include <common/objloader.hpp>
 #include <common/vboindexer.hpp>
  
- 
+
 vec3 gPosition1(-1.5f, 0.0f, 0.0f);
 vec3 gOrientation1;
  
@@ -51,11 +51,11 @@ quat RotationBetweenVectors(vec3 start, vec3 dest){
 		// This implementation favors a rotation around the Up axis,
 		// since it's often what you want to do.
 		rotationAxis = cross(vec3(0.0f, 0.0f, 1.0f), start);
-		if (gtx::norm::length2(rotationAxis) < 0.01 ) // bad luck, they were parallel, try again!
+		if (length2(rotationAxis) < 0.01 ) // bad luck, they were parallel, try again!
 			rotationAxis = cross(vec3(1.0f, 0.0f, 0.0f), start);
 		
 		rotationAxis = normalize(rotationAxis);
-		return gtx::quaternion::angleAxis(180.0f, rotationAxis);
+		return angleAxis(180.0f, rotationAxis);
 	}
  
 	// Implementation from Stan Melax's Game Programming Gems 1 article
@@ -91,16 +91,7 @@ quat LookAt(vec3 direction, vec3 desiredUp){
 	// Apply them
 	return rot2 * rot1; // remember, in reverse order.
 }
- 
-quat operator+(quat const & q1, quat const & q2){
-	return quat(
-		q1.w + q2.w,
-		q1.x + q2.x,
-		q1.y + q2.y,
-		q1.z + q2.z
-	);
-}
- 
+
 quat RotateTowards(quat q1, quat q2, float maxAngle){
  
 	if( maxAngle < 0.001f ){
@@ -301,7 +292,7 @@ int main( void )
  
 		// Measure speed
 		double currentTime = glfwGetTime();
-		float deltaTime = currentTime - lastFrameTime; 
+		float deltaTime = (float)(currentTime - lastFrameTime); 
 		lastFrameTime = currentTime;
 		nbFrames++;
 		if ( currentTime - lastTime >= 1.0 ){ // If last prinf() was more than 1sec ago
@@ -378,9 +369,9 @@ int main( void )
 			gOrientation1.y += 3.14159f/2.0f * deltaTime;
  
 			// Build the model matrix
-			glm::mat4 RotationMatrix = glm::gtx::euler_angles::eulerAngleYXZ(gOrientation1.y, gOrientation1.x, gOrientation1.z);
-			glm::mat4 TranslationMatrix = glm::gtc::matrix_transform::translate(mat4(), gPosition1); // A bit to the left
-			glm::mat4 ScalingMatrix = glm::gtc::matrix_transform::scale(mat4(), vec3(1.0f, 1.0f, 1.0f));
+			glm::mat4 RotationMatrix = eulerAngleYXZ(gOrientation1.y, gOrientation1.x, gOrientation1.z);
+			glm::mat4 TranslationMatrix = translate(mat4(), gPosition1); // A bit to the left
+			glm::mat4 ScalingMatrix = scale(mat4(), vec3(1.0f, 1.0f, 1.0f));
 			glm::mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScalingMatrix;
  
 			glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -416,9 +407,9 @@ int main( void )
 				gOrientation2 = RotateTowards(gOrientation2, targetOrientation, 1.0f*deltaTime);
 			}
  
-			glm::mat4 RotationMatrix = glm::gtc::quaternion::mat4_cast(gOrientation2);
-			glm::mat4 TranslationMatrix = glm::gtc::matrix_transform::translate(mat4(), gPosition2); // A bit to the right
-			glm::mat4 ScalingMatrix = glm::gtc::matrix_transform::scale(mat4(), vec3(1.0f, 1.0f, 1.0f));
+			glm::mat4 RotationMatrix = mat4_cast(gOrientation2);
+			glm::mat4 TranslationMatrix = translate(mat4(), gPosition2); // A bit to the right
+			glm::mat4 ScalingMatrix = scale(mat4(), vec3(1.0f, 1.0f, 1.0f));
 			glm::mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScalingMatrix;
  
 			glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
