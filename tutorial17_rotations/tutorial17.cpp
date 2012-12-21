@@ -49,8 +49,9 @@ int main( void )
 	}
  
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 2);
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
+	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
  
 	// Open a window and create its OpenGL context
 	if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
@@ -67,7 +68,7 @@ int main( void )
 	}
  
 	// Initialize the GUI
-	TwInit(TW_OPENGL, NULL);
+	TwInit(TW_OPENGL_CORE, NULL);
 	TwWindowSize(1024, 768);
 	TwBar * EulerGUI = TwNewBar("Euler settings");
 	TwBar * QuaternionGUI = TwNewBar("Quaternion settings");
