@@ -28,7 +28,6 @@ set(ALL_LIBS
 	${OPENGL_LIBRARY}
 	GLFW_276
 	GLEW_158
-	ANTTWEAKBAR_151_OGLCORE_GLFW
 )
 
 add_definitions(
@@ -379,9 +378,12 @@ add_executable(tutorial17_rotations
 	common/objloader.hpp
 	common/vboindexer.cpp
 	common/vboindexer.hpp
+	common/quaternion_utils.cpp
+	common/quaternion_utils.hpp
 )
 target_link_libraries(tutorial17_rotations
 	${ALL_LIBS}
+	ANTTWEAKBAR_151_OGLCORE_GLFW
 )
 # Xcode and Visual working directories
 set_target_properties(tutorial17_rotations PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tutorial17_rotations/")
