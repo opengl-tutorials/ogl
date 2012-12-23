@@ -52,6 +52,10 @@ quat RotationBetweenVectors(vec3 start, vec3 dest){
 // This assumes that at rest, the object faces +Z.
 // Beware, the first parameter is a direction, not the target point !
 quat LookAt(vec3 direction, vec3 desiredUp){
+
+	if (length2(direction) < 0.0001f )
+		return quat();
+
 	// Recompute desiredUp so that it's perpendicular to the direction
 	// You can skip that part if you really want to force desiredUp
 	vec3 right = cross(direction, desiredUp);
