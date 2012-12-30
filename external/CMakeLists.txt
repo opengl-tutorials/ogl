@@ -72,7 +72,7 @@ include_directories(
 	glfw-2.7.6/lib/win32/
 	glfw-2.7.6/lib/
 	glfw-2.7.6/include/
-	glew-1.5.8/include/
+	glew-1.9.0/include/
 )
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 set(GLFW_HEADERS
@@ -83,7 +83,7 @@ include_directories(
 	glfw-2.7.6/lib/x11/
 	glfw-2.7.6/lib/
 	glfw-2.7.6/include/
-	glew-1.5.8/include/
+	glew-1.9.0/include/
 )
 set(OPENGL_LIBRARY
 	${OPENGL_LIBRARY}
@@ -106,7 +106,7 @@ include_directories(
 	glfw-2.7.6/lib/cocoa/
 	glfw-2.7.6/lib/
 	glfw-2.7.6/include/
-	glew-1.5.8/include/
+	glew-1.9.0/include/
 )
 SET(EXTRA_LIBS "-framework Cocoa -framework OpenGL -framework IOKit -framework Foundation -framework AppKit")
 add_definitions(-D_MACOSX -ObjC++)
@@ -125,19 +125,19 @@ target_link_libraries(GLFW_276
 ### GLEW ###
 
 set(GLEW_SOURCE
-	glew-1.5.8/src/glew.c
+	glew-1.9.0/src/glew.c
 )
 
 set(GLEW_HEADERS
 )
 
 
-add_library( GLEW_158 STATIC
+add_library( GLEW_190 STATIC
 	${GLEW_SOURCE}
 	${GLEW_INCLUDE}
 )
 
-target_link_libraries(GLEW_158
+target_link_libraries(GLEW_190
 	${OPENGL_LIBRARY}
 	${EXTRA_LIBS}
 )
