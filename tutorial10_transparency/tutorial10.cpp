@@ -43,6 +43,7 @@ int main( void )
 	}
 
 	// Initialize GLEW
+	glewExperimental = true; // Needed for core profile
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
 		return -1;
