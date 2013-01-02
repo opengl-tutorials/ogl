@@ -10,6 +10,14 @@ import sys
 CMakePath = r'C:\Program Files (x86)\CMake 2.8\bin\cmake.exe'
 VisualStudio10Path = r'C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com'
 
+def SetCMakePath(path):
+	global CMakePath
+	CMakePath = path
+	
+def SetVisualStudio10Path(path):
+	global VisualStudio10Path
+	CMakePath = path
+
 tests = [
 	('../tutorial02_red_triangle/tutorial02_red_triangle'             , '../tutorial02_red_triangle/tutorial02.cpp'             , '../tutorial02_red_triangle/screenshots/ref.png'       ),
 	('../tutorial03_matrices/tutorial03_matrices'                     , '../tutorial03_matrices/tutorial03.cpp'                 , '../tutorial03_matrices/screenshots/ref.png'           ),
