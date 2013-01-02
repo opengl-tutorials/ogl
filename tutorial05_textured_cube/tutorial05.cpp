@@ -51,7 +51,7 @@ int main( void )
 	glfwEnable( GLFW_STICKY_KEYS );
 
 	// Dark blue background
-	glClearColor(0.0f, 0.0f, 0.3f, 0.0f);
+	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
