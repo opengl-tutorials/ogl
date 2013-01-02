@@ -21,7 +21,7 @@ tests = [
 	('../tutorial09_vbo_indexing/tutorial09_vbo_indexing'             , '../tutorial09_vbo_indexing/tutorial09.cpp'             , '../tutorial09_vbo_indexing/screenshots/ref.png'       ),
 	('../tutorial10_transparency/tutorial10_transparency'             , '../tutorial10_transparency/tutorial10.cpp'             , '../tutorial10_transparency/screenshots/ref.png'       ),
 	('../tutorial11_2d_fonts/tutorial11_2d_fonts'                     , '../tutorial11_2d_fonts/tutorial11.cpp'                 , '../tutorial11_2d_fonts/screenshots/ref.png'           ),
-	('../tutorial12_extensions/tutorial12_extensions'                 , '../tutorial12_extensions/tutorial12.cpp'               , '../tutorial12_extensions/screenshots/ref.png'         ),
+	('../tutorial13_normal_mapping/tutorial13_normal_mapping'         , '../tutorial13_normal_mapping/tutorial13.cpp'           , '../tutorial13_normal_mapping/screenshots/ref.png'     ),
 	('../tutorial14_render_to_texture/tutorial14_render_to_texture'   , '../tutorial14_render_to_texture/tutorial14.cpp'        , '../tutorial14_render_to_texture/screenshots/ref.png'  ),
 	('../tutorial15_lightmaps/tutorial15_lightmaps'                   , '../tutorial15_lightmaps/tutorial15.cpp'                , '../tutorial15_lightmaps/screenshots/ref.png'          ),
 	('../tutorial16_shadowmaps/tutorial16_shadowmaps_simple'          , '../tutorial16_shadowmaps/tutorial16_SimpleVersion.cpp' , '../tutorial16_shadowmaps/screenshots/refsimple.png'   ),
@@ -39,7 +39,7 @@ def RemoveFiles(paths):
 	
 def Clean():
 
-	if "fast" in sys.argv:
+	if "noclean" in sys.argv:
 		return
 
 	dirs = glob.glob('./build_*');
@@ -183,12 +183,12 @@ if "simplerun" in sys.argv:
 
 # Clean()
 
-HgUpdate33()
-PatchAll()
-Build_VC10_32()
-OptimusForceNVIDIA()
-RunAll()
+# HgUpdate33()
+# PatchAll()
+# Build_VC10_32()
+# OptimusForceNVIDIA()
+# RunAll()
 
-Clean()
+# Clean()
 
 #Clean()
