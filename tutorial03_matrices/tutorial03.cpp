@@ -48,7 +48,7 @@ int main( void )
 	glfwEnable( GLFW_STICKY_KEYS );
 
 	// Dark blue background
-	glClearColor(0.0f, 0.0f, 0.3f, 0.0f);
+	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 
 	// Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders( "SimpleTransform.vertexshader", "SingleColor.fragmentshader" );
