@@ -316,10 +316,6 @@ add_executable(tutorial15_lightmaps
 target_link_libraries(tutorial15_lightmaps
 	${ALL_LIBS}
 )
-add_custom_command(
-   TARGET tutorial15_lightmaps POST_BUILD
-   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial15_lightmaps${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial15_lightmaps/"
-)
 # Xcode and Visual working directories
 set_target_properties(tutorial15_lightmaps PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tutorial15_lightmaps/")
 create_target_launcher(tutorial15_lightmaps WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/tutorial15_lightmaps/")
