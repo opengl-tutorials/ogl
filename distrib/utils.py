@@ -3,7 +3,7 @@ import os
 import glob
 import shutil
 from PIL import Image
-import numpy
+#import numpy
 import subprocess
 import sys
 
@@ -173,6 +173,14 @@ def OptimusForceNVIDIA():
 	print "Forcing NVidia GPU (on Optimus system)..."
 	subprocess.call(["selectoptimus.exe", "NVIDIA"])
 
+def Package(path):
+	print "Packaging into " + path + " ..."
+	cwd = os.getcwd()
+	os.chdir("..");
+	os.system('hg archive --exclude .hg* --exclude distrib* '+path)
+	os.chdir(cwd);
+	
+	
 if "simplerun" in sys.argv:
 	RunAll()
 	exit()
