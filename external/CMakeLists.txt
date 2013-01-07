@@ -49,7 +49,7 @@ set(GLFW_SOURCE	${GLFW_SOURCE}
 	glfw-2.7.6/lib/x11/x11_window.c
 )
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-set(GLFW_SOURCE	${GLFW_SOURCE}
+set(GLFW_OBJC_SOURCE
 	glfw-2.7.6/lib/cocoa/cocoa_enable.m 
 	glfw-2.7.6/lib/cocoa/cocoa_fullscreen.m 
 	glfw-2.7.6/lib/cocoa/cocoa_glext.m 
@@ -59,6 +59,11 @@ set(GLFW_SOURCE	${GLFW_SOURCE}
 	glfw-2.7.6/lib/cocoa/cocoa_time.m 
 	glfw-2.7.6/lib/cocoa/cocoa_window.m 
 )
+set_source_files_properties(${GLFW_OBJC_SOURCE} 
+	PROPERTIES COMPILE_FLAGS "-x objective-c++") #-fobjc-exceptions
+
+set(GLFW_SOURCE	${GLFW_SOURCE} ${GLFW_OBJC_SOURCE})
+
 #add_definitions(-D_MACOSX)
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 
