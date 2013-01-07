@@ -59,10 +59,11 @@ set(GLFW_OBJC_SOURCE
 	glfw-2.7.6/lib/cocoa/cocoa_time.m 
 	glfw-2.7.6/lib/cocoa/cocoa_window.m 
 )
-set_source_files_properties(${GLFW_OBJC_SOURCE} 
-	PROPERTIES COMPILE_FLAGS "-x objective-c++") #-fobjc-exceptions
-
 set(GLFW_SOURCE	${GLFW_SOURCE} ${GLFW_OBJC_SOURCE})
+
+set_source_files_properties(${GLFW_SOURCE} 
+	PROPERTIES COMPILE_FLAGS "-x objective-c") #-fobjc-exceptions
+
 
 #add_definitions(-D_MACOSX)
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
