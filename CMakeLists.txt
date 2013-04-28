@@ -19,7 +19,7 @@ endif(INCLUDE_DISTRIB)
 
 
 include_directories(
-	external/AntTweakBar-1.15/include/
+	external/AntTweakBar-1.16/include/
 	external/glfw-2.7.6/include/
 	external/glm-0.9.4.0/
 	external/glew-1.9.0/include/
@@ -381,7 +381,7 @@ add_executable(tutorial17_rotations
 )
 target_link_libraries(tutorial17_rotations
 	${ALL_LIBS}
-	ANTTWEAKBAR_151_OGLCORE_GLFW
+	ANTTWEAKBAR_116_OGLCORE_GLFW
 )
 # Xcode and Visual working directories
 set_target_properties(tutorial17_rotations PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tutorial17_rotations/")
