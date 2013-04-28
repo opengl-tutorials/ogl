@@ -6,9 +6,11 @@ from PIL import Image
 import subprocess
 import sys
 import math
+from time import sleep
 
 CMakePath = r'C:\Program Files (x86)\CMake 2.8\bin\cmake.exe'
 VisualStudio10Path = r'C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com'
+CodeBlocksPath = r'C:\Program Files (x86)\CodeBlocks\codeblocks.exe'
 
 def SetCMakePath(path):
 	global CMakePath
@@ -97,6 +99,29 @@ def Build_VC10_64():
 		subprocess.call( [CMakePath, '-G', 'Visual Studio 10 Win64', '-D', 'INCLUDE_DISTRIB:bool=true', '../../'], stdout=fnull, stderr=fnull )
 		print "Compiling everything..."
 		subprocess.call( [VisualStudio10Path, '/build', 'RelWithDebInfo', 'Tutorials.sln'], stdout=fnull, stderr=fnull )
+	os.chdir("..")
+	
+def Build_CodeBlocks():
+	print "Building with Code::Blocks, ?? bits"
+	global CMakePath
+	global CodeBlocksPath
+	if os.path.exists("build_CodeBlocks") == False: 
+		os.makedirs("build_CodeBlocks")
+	os.chdir("build_CodeBlocks")
+	if os.path.exists("codeblocks.log"):
+		os.remove("codeblocks.log")
+	with open(os.devnull, "w") as fnull:
+		print "Running CMake..."
+		subprocess.call( [CMakePath, '-G', 'CodeBlocks - MinGW Makefiles', '-D', 'INCLUDE_DISTRIB:bool=true', '../../'], stdout=fnull, stderr=fnull )
+		print "Compiling everything..."
+		subprocess.call( [CodeBlocksPath, '--build', '--target=all', '--log-to-file', 'Tutorials.cbp'], stdout=fnull, stderr=fnull )
+		while not os.path.exists("codeblocks.log"):
+			sleep(0.5) # Not started yet
+		while not "No tasks" in subprocess.check_output( ['tasklist', '/FI', 'IMAGENAME eq codeblocks.exe'], stderr=fnull ):
+			sleep(0.5) # Still running
+	if os.path.exists("tutorial01_first_window.exe") == False:
+		print "This exceeds theshold ! Go fix your code."
+		raise Exception()
 	os.chdir("..")
 	
 def Build_GCC_native():
@@ -234,5 +259,7 @@ if "simplerun" in sys.argv:
 # RunAll()
 
 # Clean()
+
+# Build_CodeBlocks()
 
 #Clean()
