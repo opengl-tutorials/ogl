@@ -152,16 +152,16 @@ target_link_libraries(GLEW_190
 ### ANTTWEAKBAR ###
 
 set(ANTTWEAKBAR_SOURCE
-	AntTweakBar-1.15/src/LoadOGL.cpp
-	AntTweakBar-1.15/src/LoadOGLCore.cpp
-	AntTweakBar-1.15/src/TwColors.cpp
-	AntTweakBar-1.15/src/TwBar.cpp
-	AntTweakBar-1.15/src/TwEventGLFW.c
-	AntTweakBar-1.15/src/TwFonts.cpp
-	AntTweakBar-1.15/src/TwMgr.cpp
-	AntTweakBar-1.15/src/TwOpenGL.cpp
-	AntTweakBar-1.15/src/TwOpenGLCore.cpp
-	AntTweakBar-1.15/src/TwPrecomp.cpp
+	AntTweakBar-1.16/src/LoadOGL.cpp
+	AntTweakBar-1.16/src/LoadOGLCore.cpp
+	AntTweakBar-1.16/src/TwColors.cpp
+	AntTweakBar-1.16/src/TwBar.cpp
+	AntTweakBar-1.16/src/TwEventGLFW.c
+	AntTweakBar-1.16/src/TwFonts.cpp
+	AntTweakBar-1.16/src/TwMgr.cpp
+	AntTweakBar-1.16/src/TwOpenGL.cpp
+	AntTweakBar-1.16/src/TwOpenGLCore.cpp
+	AntTweakBar-1.16/src/TwPrecomp.cpp
 )
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin") # If on Xcode, rename files to .mm
@@ -208,31 +208,31 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 
 set(ANTTWEAKBAR_HEADERS
-	AntTweakBar-1.15/src/AntPerfTimer.h
-	AntTweakBar-1.15/src/LoadOGL.h
-	AntTweakBar-1.15/src/LoadOGLCore.h
-	AntTweakBar-1.15/src/MiniGLFW.h
-	AntTweakBar-1.15/src/resource.h
-	AntTweakBar-1.15/src/TwBar.h
-	AntTweakBar-1.15/src/TwColors.h
-	AntTweakBar-1.15/src/TwFonts.h
-	AntTweakBar-1.15/src/TwGraph.h
-	AntTweakBar-1.15/src/TwMgr.h
-	AntTweakBar-1.15/src/TwOpenGL.h
-	AntTweakBar-1.15/src/TwOpenGLCore.h
-	AntTweakBar-1.15/src/TwPrecomp.h
+	AntTweakBar-1.16/src/AntPerfTimer.h
+	AntTweakBar-1.16/src/LoadOGL.h
+	AntTweakBar-1.16/src/LoadOGLCore.h
+	AntTweakBar-1.16/src/MiniGLFW.h
+	AntTweakBar-1.16/src/resource.h
+	AntTweakBar-1.16/src/TwBar.h
+	AntTweakBar-1.16/src/TwColors.h
+	AntTweakBar-1.16/src/TwFonts.h
+	AntTweakBar-1.16/src/TwGraph.h
+	AntTweakBar-1.16/src/TwMgr.h
+	AntTweakBar-1.16/src/TwOpenGL.h
+	AntTweakBar-1.16/src/TwOpenGLCore.h
+	AntTweakBar-1.16/src/TwPrecomp.h
 )
 
 include_directories(
-	AntTweakBar-1.15/include/
+	AntTweakBar-1.16/include/
 )
 
-add_library( ANTTWEAKBAR_151_OGLCORE_GLFW STATIC
+add_library( ANTTWEAKBAR_116_OGLCORE_GLFW STATIC
 	${ANTTWEAKBAR_SOURCE}
 	${ANTTWEAKBAR_HEADERS}
 )
 
-target_link_libraries(ANTTWEAKBAR_151_OGLCORE_GLFW
+target_link_libraries(ANTTWEAKBAR_116_OGLCORE_GLFW
 	${OPENGL_LIBRARY}
 )
 
