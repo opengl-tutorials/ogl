@@ -217,7 +217,6 @@ ANT_GL_CORE_DECL(void, glGetVertexAttribPointerv, (GLuint index, GLenum pname, G
 ANT_GL_CORE_DECL(GLboolean, glIsProgram, (GLuint program))
 ANT_GL_CORE_DECL(GLboolean, glIsShader, (GLuint shader))
 ANT_GL_CORE_DECL(void, glLinkProgram, (GLuint program))
-ANT_GL_CORE_DECL(void, glShaderSource, (GLuint shader, GLsizei count, const GLchar* *string, const GLint *length))
 #if defined(ANT_OSX) && (MAC_OS_X_VERSION_MAX_ALLOWED >= 1080)
 // Mac OSX 10.8 SDK from March 2013 redefines this OpenGL call: glShaderSource
 // if it doesn't compile, please update XCode.
