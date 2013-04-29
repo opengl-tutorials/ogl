@@ -190,7 +190,7 @@ set(ANTTWEAKBAR_SOURCE
 	${CMAKE_BINARY_DIR}/external/AntTweakBar-ObjectiveC/TwPrecomp.mm
 )
 include_directories(
-	${CMAKE_SOURCE_DIR}/external/AntTweakBar-1.15/src/
+	${CMAKE_SOURCE_DIR}/external/AntTweakBar-1.16/src/
 )
 add_definitions(
 	-D_MACOSX
