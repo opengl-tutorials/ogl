@@ -100,7 +100,7 @@ bool loadOBJ(
 }
 
 
-
+#ifdef USE_ASSIMP
 
 // Include AssImp
 #include <assimp/Importer.hpp>      // C++ importer interface
@@ -158,3 +158,5 @@ bool loadAssImp(
 	// The "scene" pointer will be deleted automatically by "importer"
 
 }
+
+#endif
