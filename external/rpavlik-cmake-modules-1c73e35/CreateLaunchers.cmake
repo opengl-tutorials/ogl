@@ -59,6 +59,9 @@ macro(_launcher_system_settings)
 	else()
 		set(BITS 32)
 	endif()
+	if("${CMAKE_GENERATOR}" MATCHES "64")
+		set(BITS 64)
+	endif()
 
 	if(WIN32)
 		# Find user and system name
