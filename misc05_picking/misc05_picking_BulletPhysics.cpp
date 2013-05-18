@@ -120,7 +120,7 @@ int main( void )
 	std::string message;
 	TwAddVarRW(GUI, "Last picked object", TW_TYPE_STDSTRING, &message, NULL);
 
-	glfwSetWindowTitle( "Misc 05 - Simple but slow version" );
+	glfwSetWindowTitle( "Misc 05 - Bullet version" );
 
 	// Ensure we can capture the escape key being pressed below
 	glfwEnable( GLFW_STICKY_KEYS );
@@ -143,15 +143,12 @@ int main( void )
 
 	// Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders( "StandardShading.vertexshader", "StandardShading.fragmentshader" );
-	GLuint pickingProgramID = LoadShaders( "Picking.vertexshader", "Picking.fragmentshader" );
-
 
 
 	// Get a handle for our "MVP" uniform
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
 	GLuint ViewMatrixID = glGetUniformLocation(programID, "V");
 	GLuint ModelMatrixID = glGetUniformLocation(programID, "M");
-	GLuint PickingMatrixID = glGetUniformLocation(pickingProgramID, "MVP");
 
 	// Load the texture
 	GLuint Texture = loadDDS("uvmap.DDS");
@@ -206,11 +203,6 @@ int main( void )
 	}
 
 
-
-
-	// Get a handle for our "pickingColorID" uniform
-	GLuint pickingColorID = glGetUniformLocation(pickingProgramID, "PickingColor");
-
 	// Get a handle for our "LightPosition" uniform
 	glUseProgram(programID);
 	GLuint LightID = glGetUniformLocation(programID, "LightPosition_worldspace");
@@ -241,8 +233,8 @@ int main( void )
 	std::vector<btRigidBody*> rigidbodies;
 
 	// In this example, all monkeys will use the same collision shape : 
-	// A box of 1m*1m*1m (0.5 is the half-extent !)
-	btCollisionShape* boxCollisionShape = new btBoxShape(btVector3(0.5f, 0.5f, 0.5f));
+	// A box of 2m*2m*2m (1.0 is the half-extent !)
+	btCollisionShape* boxCollisionShape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
 
 	for(int i=0; i<100; i++){
 
