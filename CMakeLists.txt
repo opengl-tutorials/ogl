@@ -23,6 +23,8 @@ include_directories(
 	external/glfw-2.7.6/include/
 	external/glm-0.9.4.0/
 	external/glew-1.9.0/include/
+	external/assimp-3.0.1270/include/
+	external/bullet-2.81-rev2613/src/
 	.
 )
 
@@ -182,6 +184,27 @@ target_link_libraries(tutorial09_vbo_indexing
 # Xcode and Visual working directories
 set_target_properties(tutorial09_vbo_indexing PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tutorial09_vbo_indexing/")
 create_target_launcher(tutorial09_vbo_indexing WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/tutorial09_vbo_indexing/")
+
+# Tutorial 9 - AssImp model loading
+add_executable(tutorial09_AssImp
+	tutorial09_vbo_indexing/tutorial09_AssImp.cpp
+	common/shader.cpp
+	common/shader.hpp
+	common/controls.cpp
+	common/controls.hpp
+	common/texture.cpp
+	common/texture.hpp
+	common/objloader.cpp
+	common/objloader.hpp
+)
+target_link_libraries(tutorial09_AssImp
+	${ALL_LIBS}
+	assimp
+)
+set_target_properties(tutorial09_AssImp PROPERTIES COMPILE_DEFINITIONS "USE_ASSIMP")
+# Xcode and Visual working directories
+set_target_properties(tutorial09_AssImp PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tutorial09_vbo_indexing/")
+create_target_launcher(tutorial09_AssImp WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/tutorial09_vbo_indexing/")
 
 # Tutorial 10
 add_executable(tutorial10_transparency
@@ -400,6 +423,89 @@ target_link_libraries(playground
 set_target_properties(playground PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/playground/")
 create_target_launcher(playground WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/playground/")
 
+
+
+# Misc 5, with glReadPixels
+add_executable(misc05_picking_slow_easy
+	misc05_picking/misc05_picking_slow_easy.cpp
+	common/shader.cpp
+	common/shader.hpp
+	common/controls.cpp
+	common/controls.hpp
+	common/texture.cpp
+	common/texture.hpp
+	common/objloader.cpp
+	common/objloader.hpp
+	common/vboindexer.cpp
+	common/vboindexer.hpp
+)
+target_link_libraries(misc05_picking_slow_easy
+	${ALL_LIBS}
+	ANTTWEAKBAR_116_OGLCORE_GLFW
+)
+# Xcode and Visual working directories
+set_target_properties(misc05_picking_slow_easy PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/misc05_picking/")
+create_target_launcher(misc05_picking_slow_easy WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/misc05_picking/")
+
+# Misc 5, with custom ray-box intersection
+add_executable(misc05_picking_custom
+	misc05_picking/misc05_picking_custom.cpp
+	common/shader.cpp
+	common/shader.hpp
+	common/controls.cpp
+	common/controls.hpp
+	common/texture.cpp
+	common/texture.hpp
+	common/objloader.cpp
+	common/objloader.hpp
+	common/vboindexer.cpp
+	common/vboindexer.hpp
+)
+target_link_libraries(misc05_picking_custom
+	${ALL_LIBS}
+	ANTTWEAKBAR_116_OGLCORE_GLFW
+)
+# Xcode and Visual working directories
+set_target_properties(misc05_picking_custom PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/misc05_picking/")
+create_target_launcher(misc05_picking_custom WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/misc05_picking/")
+
+# Misc 5, with Bullet Physics
+add_executable(misc05_picking_BulletPhysics
+	misc05_picking/misc05_picking_BulletPhysics.cpp
+	common/shader.cpp
+	common/shader.hpp
+	common/controls.cpp
+	common/controls.hpp
+	common/texture.cpp
+	common/texture.hpp
+	common/objloader.cpp
+	common/objloader.hpp
+	common/vboindexer.cpp
+	common/vboindexer.hpp
+)
+target_link_libraries(misc05_picking_BulletPhysics
+	${ALL_LIBS}
+	ANTTWEAKBAR_116_OGLCORE_GLFW
+        BulletDynamics
+        BulletCollision
+        LinearMath
+)
+# Xcode and Visual working directories
+set_target_properties(misc05_picking_BulletPhysics PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/misc05_picking/")
+create_target_launcher(misc05_picking_BulletPhysics WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/misc05_picking/")
+
+
+
+
+
+
+
+
+
+
+
+
+
 SOURCE_GROUP(common REGULAR_EXPRESSION ".*/common/.*" )
 
 
@@ -439,6 +545,10 @@ add_custom_command(
 add_custom_command(
    TARGET tutorial09_vbo_indexing POST_BUILD
    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial09_vbo_indexing${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial09_vbo_indexing/"
+)
+add_custom_command(
+   TARGET tutorial09_AssImp POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial09_AssImp${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial09_vbo_indexing/"
 )
 add_custom_command(
    TARGET tutorial10_transparency POST_BUILD
@@ -483,6 +593,18 @@ add_custom_command(
 add_custom_command(
    TARGET playground POST_BUILD
    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/playground${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/playground/"
+)
+add_custom_command(
+   TARGET misc05_picking_slow_easy POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/misc05_picking_slow_easy${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/misc05_picking/"
+)
+add_custom_command(
+   TARGET misc05_picking_custom POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/misc05_picking_custom${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/misc05_picking/"
+)
+add_custom_command(
+   TARGET misc05_picking_BulletPhysics POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/misc05_picking_BulletPhysics${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/misc05_picking/"
 )
 
 elseif (${CMAKE_GENERATOR} MATCHES "Xcode" )
