@@ -486,9 +486,9 @@ add_executable(misc05_picking_BulletPhysics
 target_link_libraries(misc05_picking_BulletPhysics
 	${ALL_LIBS}
 	ANTTWEAKBAR_116_OGLCORE_GLFW
-	LinearMath
-	BulletCollision
-	BulletDynamics
+        BulletDynamics
+        BulletCollision
+        LinearMath
 )
 # Xcode and Visual working directories
 set_target_properties(misc05_picking_BulletPhysics PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/misc05_picking/")
