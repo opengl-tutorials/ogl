@@ -20,15 +20,11 @@ using namespace glm;
 // Include AntTweakBar
 #include <AntTweakBar.h>
 
-// Include Bullet
-#include <btBulletDynamicsCommon.h>
-
 #include <common/shader.hpp>
 #include <common/texture.hpp>
 #include <common/controls.hpp>
 #include <common/objloader.hpp>
 #include <common/vboindexer.hpp>
-
 
 void ScreenPosToWorldRay(
 	int mouseX, int mouseY,             // Mouse position, in pixels, from bottom-left corner of the window
@@ -83,6 +79,122 @@ void ScreenPosToWorldRay(
 }
 
 
+bool TestRayOBBIntersection(
+	glm::vec3 ray_origin,        // Ray origin, in world space
+	glm::vec3 ray_direction,     // Ray direction (NOT target position!), in world space. Must be normalize()'d.
+	glm::vec3 aabb_min,          // Minimum X,Y,Z coords of the mesh when not transformed at all.
+	glm::vec3 aabb_max,          // Maximum X,Y,Z coords. Often aabb_min*-1 if your mesh is centered, but it's not always the case.
+	glm::mat4 ModelMatrix,       // Transformation applied to the mesh (which will thus be also applied to its bounding box)
+	float& intersection_distance // Output : distance between ray_origin and the intersection with the OBB
+){
+	
+	// Intersection method from Real-Time Rendering and Essential Mathematics for Games
+	
+	float tMin = 0.0f;
+	float tMax = 100000.0f;
+
+	glm::vec3 OBBposition_worldspace(ModelMatrix[3].x, ModelMatrix[3].y, ModelMatrix[3].z);
+
+	glm::vec3 delta = OBBposition_worldspace - ray_origin;
+
+	// Test intersection with the 2 planes perpendicular to the OBB's X axis
+	{
+		glm::vec3 xaxis(ModelMatrix[0].x, ModelMatrix[0].y, ModelMatrix[0].z);
+		float e = glm::dot(xaxis, delta);
+		float f = glm::dot(ray_direction, xaxis);
+
+		if ( fabs(f) > 0.001f ){ // Standard case
+
+			float t1 = (e+aabb_min.x)/f; // Intersection with the "left" plane
+			float t2 = (e+aabb_max.x)/f; // Intersection with the "right" plane
+			// t1 and t2 now contain distances betwen ray origin and ray-plane intersections
+
+			// We want t1 to represent the nearest intersection, 
+			// so if it's not the case, invert t1 and t2
+			if (t1>t2){
+				float w=t1;t1=t2;t2=w; // swap t1 and t2
+			}
+
+			// tMax is the nearest "far" intersection (amongst the X,Y and Z planes pairs)
+			if ( t2 < tMax )
+				tMax = t2;
+			// tMin is the farthest "near" intersection (amongst the X,Y and Z planes pairs)
+			if ( t1 > tMin )
+				tMin = t1;
+
+			// And here's the trick :
+			// If "far" is closer than "near", then there is NO intersection.
+			// See the images in the tutorials for the visual explanation.
+			if (tMax < tMin )
+				return false;
+
+		}else{ // Rare case : the ray is almost parallel to the planes, so they don't have any "intersection"
+			if(-e+aabb_min.x > 0.0f || -e+aabb_max.x < 0.0f)
+				return false;
+		}
+	}
+
+
+	// Test intersection with the 2 planes perpendicular to the OBB's Y axis
+	// Exactly the same thing than above.
+	{
+		glm::vec3 yaxis(ModelMatrix[1].x, ModelMatrix[1].y, ModelMatrix[1].z);
+		float e = glm::dot(yaxis, delta);
+		float f = glm::dot(ray_direction, yaxis);
+
+		if ( fabs(f) > 0.001f ){
+
+			float t1 = (e+aabb_min.y)/f;
+			float t2 = (e+aabb_max.y)/f;
+
+			if (t1>t2){float w=t1;t1=t2;t2=w;}
+
+			if ( t2 < tMax )
+				tMax = t2;
+			if ( t1 > tMin )
+				tMin = t1;
+			if (tMin > tMax)
+				return false;
+
+		}else{
+			if(-e+aabb_min.y > 0.0f || -e+aabb_max.y < 0.0f)
+				return false;
+		}
+	}
+
+
+	// Test intersection with the 2 planes perpendicular to the OBB's Z axis
+	// Exactly the same thing than above.
+	{
+		glm::vec3 zaxis(ModelMatrix[2].x, ModelMatrix[2].y, ModelMatrix[2].z);
+		float e = glm::dot(zaxis, delta);
+		float f = glm::dot(ray_direction, zaxis);
+
+		if ( fabs(f) > 0.001f ){
+
+			float t1 = (e+aabb_min.z)/f;
+			float t2 = (e+aabb_max.z)/f;
+
+			if (t1>t2){float w=t1;t1=t2;t2=w;}
+
+			if ( t2 < tMax )
+				tMax = t2;
+			if ( t1 > tMin )
+				tMin = t1;
+			if (tMin > tMax)
+				return false;
+
+		}else{
+			if(-e+aabb_min.z > 0.0f || -e+aabb_max.z < 0.0f)
+				return false;
+		}
+	}
+
+	intersection_distance = tMin;
+	return true;
+
+}
+
 int main( void )
 {
 	// Initialise GLFW
@@ -95,7 +207,7 @@ int main( void )
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
-	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Open a window and create its OpenGL context
 	if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
@@ -120,7 +232,7 @@ int main( void )
 	std::string message;
 	TwAddVarRW(GUI, "Last picked object", TW_TYPE_STDSTRING, &message, NULL);
 
-	glfwSetWindowTitle( "Misc 05 - Simple but slow version" );
+	glfwSetWindowTitle( "Misc 05 - version with custom Ray-OBB code" );
 
 	// Ensure we can capture the escape key being pressed below
 	glfwEnable( GLFW_STICKY_KEYS );
@@ -143,15 +255,12 @@ int main( void )
 
 	// Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders( "StandardShading.vertexshader", "StandardShading.fragmentshader" );
-	GLuint pickingProgramID = LoadShaders( "Picking.vertexshader", "Picking.fragmentshader" );
-
 
 
 	// Get a handle for our "MVP" uniform
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
 	GLuint ViewMatrixID = glGetUniformLocation(programID, "V");
 	GLuint ModelMatrixID = glGetUniformLocation(programID, "M");
-	GLuint PickingMatrixID = glGetUniformLocation(pickingProgramID, "MVP");
 
 	// Load the texture
 	GLuint Texture = loadDDS("uvmap.DDS");
@@ -201,85 +310,20 @@ int main( void )
 	std::vector<glm::quat> orientations(100);
 	for(int i=0; i<100; i++){
 		positions[i] = glm::vec3(rand()%20-10, rand()%20-10, rand()%20-10);
-		orientations[i] = glm::normalize(glm::quat(glm::vec3(rand()%360, rand()%360, rand()%360)));
-		
+		orientations[i] = glm::quat(glm::vec3(rand()%360, rand()%360, rand()%360));
 	}
 
 
-
-
-	// Get a handle for our "pickingColorID" uniform
-	GLuint pickingColorID = glGetUniformLocation(pickingProgramID, "PickingColor");
 
 	// Get a handle for our "LightPosition" uniform
 	glUseProgram(programID);
 	GLuint LightID = glGetUniformLocation(programID, "LightPosition_worldspace");
-
-
-
-	// Initialize Bullet. This strictly follows http://bulletphysics.org/mediawiki-1.5.8/index.php/Hello_World, 
-	// even though we won't use most of this stuff.
-
-   // Build the broadphase
-	btBroadphaseInterface* broadphase = new btDbvtBroadphase();
- 
-	// Set up the collision configuration and dispatcher
-	btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
-	btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
- 
-	// The actual physics solver
-	btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
- 
-	// The world.
-	btDiscreteDynamicsWorld* dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
-	dynamicsWorld->setGravity(btVector3(0,-9.81f,0));
-
-
-	
- 
-
-	std::vector<btRigidBody*> rigidbodies;
-
-	// In this example, all monkeys will use the same collision shape : 
-	// A box of 1m*1m*1m (0.5 is the half-extent !)
-	btCollisionShape* boxCollisionShape = new btBoxShape(btVector3(0.5f, 0.5f, 0.5f));
-
-	for(int i=0; i<100; i++){
-
-		btDefaultMotionState* motionstate = new btDefaultMotionState(btTransform(
-			btQuaternion(orientations[i].x, orientations[i].y, orientations[i].z, orientations[i].w), 
-			btVector3(positions[i].x, positions[i].y, positions[i].z)
-		));
-
-		btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
-			0,                  // mass, in kg. 0 -> Static object, will never move.
-			motionstate,
-			boxCollisionShape,  // collision shape of body
-			btVector3(0,0,0)    // local inertia
-		);
-		btRigidBody *rigidBody = new btRigidBody(rigidBodyCI);
-
-		rigidbodies.push_back(rigidBody);
-		dynamicsWorld->addRigidBody(rigidBody);
-
-		// Small hack : store the mesh's index "i" in Bullet's User Pointer.
-		// Will be used to know which object is picked. 
-		// A real program would probably pass a "MyGameObjectPointer" instead.
-		rigidBody->setUserPointer((void*)i);
-
-	}
-
 
 	// For speed computation
 	double lastTime = glfwGetTime();
 	int nbFrames = 0;
 
 	do{
-
-		btVector3 p0 = rigidbodies[0]->getCenterOfMassPosition();
-		glm::vec3 v0 = positions[0];
-		//printf("p0 : %f %f %f, v0 : %f %f %f\n", p0.x(), p0.y(), p0.z(), v0.x, v0.y, v0.z);
-
 
 		// Measure speed
 		double currentTime = glfwGetTime();
@@ -290,11 +334,6 @@ int main( void )
 			nbFrames = 0;
 			lastTime += 1.0;
 		}
-		float deltaTime = currentTime - lastTime;
-
-		// Step the simulation? In this example this won't do anything, 
-		// since all the monkeys are static (mass = 0).
-		dynamicsWorld->stepSimulation(deltaTime, 7);
 
 
 		// Compute the MVP matrix from keyboard and mouse input
@@ -304,34 +343,58 @@ int main( void )
 
 
 
-
 		// PICKING IS DONE HERE
 		// (Instead of picking each frame if the mouse button is down, 
 		// you should probably only check if the mouse button was just released)
 		if (glfwGetMouseButton(GLFW_MOUSE_BUTTON_LEFT)){
-
-
-			glm::vec3 out_origin;
-			glm::vec3 out_direction;
+			
+			glm::vec3 ray_origin;
+			glm::vec3 ray_direction;
 			ScreenPosToWorldRay(
 				1024/2, 768/2,
 				1024, 768, 
 				ViewMatrix, 
 				ProjectionMatrix, 
-				out_origin, 
-				out_direction
+				ray_origin, 
+				ray_direction
 			);	
 			
-			out_direction = out_direction*1000.0f;
+			//ray_direction = ray_direction*20.0f;
 
-			btCollisionWorld::ClosestRayResultCallback RayCallback(btVector3(out_origin.x, out_origin.y, out_origin.z), btVector3(out_direction.x, out_direction.y, out_direction.z));
-			dynamicsWorld->rayTest(btVector3(out_origin.x, out_origin.y, out_origin.z), btVector3(out_direction.x, out_direction.y, out_direction.z), RayCallback);
-			if(RayCallback.hasHit()) {
-				std::ostringstream oss;
-				oss << "mesh " << (int)RayCallback.m_collisionObject->getUserPointer();
-				message = oss.str();
-			}else{
-				message = "background";
+			message = "background";
+
+			// Test each each Oriented Bounding Box (OBB).
+			// A physics engine can be much smarter than this, 
+			// because it already has some spatial partitionning structure, 
+			// like Binary Space Partitionning Tree (BSP-Tree),
+			// Bounding Volume Hierarchy (BVH) or other.
+			for(int i=0; i<100; i++){
+
+				float intersection_distance; // Output of TestRayOBBIntersection()
+				glm::vec3 aabb_min(-1.0f, -1.0f, -1.0f);
+				glm::vec3 aabb_max( 1.0f,  1.0f,  1.0f);
+
+				// The ModelMatrix transforms :
+				// - the mesh to its desired position and orientation
+				// - but also the AABB (defined with aabb_min and aabb_max) into an OBB
+				glm::mat4 RotationMatrix = glm::toMat4(orientations[i]);
+				glm::mat4 TranslationMatrix = translate(mat4(), positions[i]);
+				glm::mat4 ModelMatrix = TranslationMatrix * RotationMatrix;
+
+
+				if ( TestRayOBBIntersection(
+					ray_origin, 
+					ray_direction, 
+					aabb_min, 
+					aabb_max,
+					ModelMatrix,
+					intersection_distance)
+				){
+					std::ostringstream oss;
+					oss << "mesh " << i;
+					message = oss.str();
+					break;
+				}
 			}
 
 
@@ -429,8 +492,6 @@ int main( void )
 		// Draw GUI
 		TwDraw();
 
-
-
 		// Swap buffers
 		glfwSwapBuffers();
 
@@ -450,59 +511,6 @@ int main( void )
 	// Close OpenGL window and terminate GLFW
 	glfwTerminate();
 
-	// Clean up behind ourselves like good little programmers
-
-	for(int i=0; i<rigidbodies.size(); i++){
-		dynamicsWorld->removeRigidBody(rigidbodies[i]);
-		delete rigidbodies[i]->getMotionState();
-		delete rigidbodies[i];
-	}
-	delete boxCollisionShape;
-
-	delete dynamicsWorld;
-	delete solver;
-	delete collisionConfiguration;
-	delete dispatcher;
-	delete broadphase;
-
 	return 0;
 }
 
-//// Helper class; draws the world as seen by Bullet.
-//// This is very handy to see it Bullet's world matches yours.
-//// This example uses the old OpenGL API for simplicity, 
-//// so you'll have to remplace GLFW_OPENGL_CORE_PROFILE by
-//// GLFW_OPENGL_COMPAT_PROFILE in glfwOpenWindowHint()
-//// How to use this class :
-//// Declare an instance of the class :
-//// BulletDebugDrawer_DeprecatedOpenGL mydebugdrawer;
-//// dynamicsWorld->setDebugDrawer(&mydebugdrawer);
-//// Each frame, call it :
-//// mydebugdrawer.SetMatrices(ViewMatrix, ProjectionMatrix);
-//// dynamicsWorld->debugDrawWorld();
-//
-//class BulletDebugDrawer_DeprecatedOpenGL : public btIDebugDraw{
-//public:
-//	void SetMatrices(glm::mat4 pViewMatrix, glm::mat4 pProjectionMatrix){
-//		glUseProgram(0); // Use Fixed-function pipeline (no shaders)
-//		glMatrixMode(GL_MODELVIEW);
-//		glLoadMatrixf(&pViewMatrix[0][0]);
-//		glMatrixMode(GL_PROJECTION);
-//		glLoadMatrixf(&pProjectionMatrix[0][0]);
-//	}
-//	virtual void drawLine(const btVector3& from,const btVector3& to,const btVector3& color){
-//		glColor3f(color.x(), color.y(), color.z());
-//		glBegin(GL_LINES);
-//			glVertex3f(from.x(), from.y(), from.z());
-//			glVertex3f(to.x(), to.y(), to.z());
-//		glEnd();
-//	}
-//	virtual void drawContactPoint(const btVector3 &,const btVector3 &,btScalar,int,const btVector3 &){}
-//	virtual void reportErrorWarning(const char *){}
-//	virtual void draw3dText(const btVector3 &,const char *){}
-//	virtual void setDebugMode(int p){
-//		m = p;
-//	}
-//	int getDebugMode(void) const {return 3;}
-//	int m;
-//};
