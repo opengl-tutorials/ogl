@@ -323,7 +323,7 @@ int main( void )
 			dynamicsWorld->rayTest(btVector3(out_origin.x, out_origin.y, out_origin.z), btVector3(out_direction.x, out_direction.y, out_direction.z), RayCallback);
 			if(RayCallback.hasHit()) {
 				std::ostringstream oss;
-				oss << "mesh " << (int)RayCallback.m_collisionObject->getUserPointer();
+				oss << "mesh " << (size_t)RayCallback.m_collisionObject->getUserPointer();
 				message = oss.str();
 			}else{
 				message = "background";
