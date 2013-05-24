@@ -206,6 +206,27 @@ set_target_properties(tutorial09_AssImp PROPERTIES COMPILE_DEFINITIONS "USE_ASSI
 set_target_properties(tutorial09_AssImp PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tutorial09_vbo_indexing/")
 create_target_launcher(tutorial09_AssImp WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/tutorial09_vbo_indexing/")
 
+# Tutorial 9 - several objects
+add_executable(tutorial09_several_objects
+	tutorial09_vbo_indexing/tutorial09_several_objects.cpp
+	common/shader.cpp
+	common/shader.hpp
+	common/controls.cpp
+	common/controls.hpp
+	common/texture.cpp
+	common/texture.hpp
+	common/objloader.cpp
+	common/objloader.hpp
+	common/vboindexer.cpp
+	common/vboindexer.hpp
+)
+target_link_libraries(tutorial09_several_objects
+	${ALL_LIBS}
+)
+# Xcode and Visual working directories
+set_target_properties(tutorial09_several_objects PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tutorial09_vbo_indexing/")
+create_target_launcher(tutorial09_several_objects WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/tutorial09_vbo_indexing/")
+
 # Tutorial 10
 add_executable(tutorial10_transparency
 	tutorial10_transparency/tutorial10.cpp
@@ -549,6 +570,10 @@ add_custom_command(
 add_custom_command(
    TARGET tutorial09_AssImp POST_BUILD
    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial09_AssImp${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial09_vbo_indexing/"
+)
+add_custom_command(
+   TARGET tutorial09_several_objects POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial09_several_objects${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial09_vbo_indexing/"
 )
 add_custom_command(
    TARGET tutorial10_transparency POST_BUILD
