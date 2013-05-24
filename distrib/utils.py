@@ -23,6 +23,10 @@ def SetVisualStudio10Path(path):
 tests = [
 	('../tutorial16_shadowmaps/tutorial16_shadowmaps'                 , '../tutorial16_shadowmaps/tutorial16.cpp'               , '../tutorial16_shadowmaps/screenshots/ref.png'                    ),
 	('../tutorial14_render_to_texture/tutorial14_render_to_texture'   , '../tutorial14_render_to_texture/tutorial14.cpp'        , '../tutorial14_render_to_texture/screenshots/wavvy.png'           ),
+	('../misc05_picking/misc05_picking_slow_easy'                     , '../misc05_picking/misc05_picking_slow_easy.cpp'        , '../misc05_picking/screenshots/ref.png'                           ),
+	('../misc05_picking/misc05_picking_custom'                        , '../misc05_picking/misc05_picking_custom.cpp'           , '../misc05_picking/screenshots/ref.png'                           ),
+	('../misc05_picking/misc05_picking_BulletPhysics'                 , '../misc05_picking/misc05_picking_BulletPhysics.cpp'    , '../misc05_picking/screenshots/ref.png'                           ),
+	('../tutorial09_vbo_indexing/tutorial09_AssImp'                   , '../tutorial09_vbo_indexing/tutorial09_AssImp.cpp'      , '../tutorial09_vbo_indexing/screenshots/ref.png'                  ),
 	('../tutorial02_red_triangle/tutorial02_red_triangle'             , '../tutorial02_red_triangle/tutorial02.cpp'             , '../tutorial02_red_triangle/screenshots/red_triangle.png'         ),
 	('../tutorial03_matrices/tutorial03_matrices'                     , '../tutorial03_matrices/tutorial03.cpp'                 , '../tutorial03_matrices/screenshots/perspective_red_triangle.png' ),
 	('../tutorial04_colored_cube/tutorial04_colored_cube'             , '../tutorial04_colored_cube/tutorial04.cpp'             , '../tutorial04_colored_cube/screenshots/one_color_per_vertex.png' ),
