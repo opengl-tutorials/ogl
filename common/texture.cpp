@@ -25,7 +25,7 @@ GLuint loadBMP_custom(const char * imagepath){
 
 	// Read the header, i.e. the 54 first bytes
 
-	// If less than 54 byes are read, problem
+	// If less than 54 bytes are read, problem
 	if ( fread(header, 1, 54, file)!=54 ){ 
 		printf("Not a correct BMP file\n");
 		return 0;
