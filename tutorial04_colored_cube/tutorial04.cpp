@@ -182,7 +182,7 @@ int main( void )
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 
 		// 1rst attribute buffer : vertices
-		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(vertexPosition_modelspaceID);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 		glVertexAttribPointer(
 			vertexPosition_modelspaceID, // The attribute we want to configure
@@ -194,7 +194,7 @@ int main( void )
 		);
 
 		// 2nd attribute buffer : colors
-		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(vertexColorID);
 		glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 		glVertexAttribPointer(
 			vertexColorID,               // The attribute we want to configure
@@ -208,8 +208,8 @@ int main( void )
 		// Draw the triangleS !
 		glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
 
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(vertexPosition_modelspaceID);
+		glDisableVertexAttribArray(vertexColorID);
 
 		// Swap buffers
 		glfwSwapBuffers();

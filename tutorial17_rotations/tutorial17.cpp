@@ -207,7 +207,7 @@ int main( void )
 		glUniform1i(TextureID, 0);
 
 		// 1rst attribute buffer : vertices
-		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(vertexPosition_modelspaceID);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 		glVertexAttribPointer(
 			vertexPosition_modelspaceID,  // The attribute we want to configure
@@ -219,7 +219,7 @@ int main( void )
 		);
 
 		// 2nd attribute buffer : UVs
-		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(vertexUVID);
 		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 		glVertexAttribPointer(
 			vertexUVID,                   // The attribute we want to configure
@@ -231,7 +231,7 @@ int main( void )
 		);
 
 		// 3rd attribute buffer : normals
-		glEnableVertexAttribArray(2);
+		glEnableVertexAttribArray(vertexNormal_modelspaceID);
 		glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
 		glVertexAttribPointer(
 			vertexNormal_modelspaceID,    // The attribute we want to configure
@@ -315,9 +315,9 @@ int main( void )
 			);
 		}
 
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(2);
+		glDisableVertexAttribArray(vertexPosition_modelspaceID);
+		glDisableVertexAttribArray(vertexUVID);
+		glDisableVertexAttribArray(vertexNormal_modelspaceID);
 
 		// Draw GUI
 		TwDraw();
