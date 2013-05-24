@@ -32,6 +32,8 @@ void callGlfwOpenWindowHint(int target, int hint){
 	if ( target == GLFW_FSAA_SAMPLES )
 		return; // Disable MSAA when testing, since this is the biggest source of errors
 	glfwOpenWindowHint(target, hint);
+	
+	srand(42); // Always use the same seed
 }
 
 
