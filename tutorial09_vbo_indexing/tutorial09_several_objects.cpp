@@ -30,20 +30,18 @@ int main( void )
 	}
 
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
-	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 2);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
 
 	// Open a window and create its OpenGL context
 	if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
 	{
-		fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
+		fprintf( stderr, "Failed to open GLFW window.\n" );
 		glfwTerminate();
 		return -1;
 	}
 
 	// Initialize GLEW
-	glewExperimental = true; // Needed for core profile
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
 		return -1;
@@ -66,10 +64,6 @@ int main( void )
 	// Cull triangles which normal is not towards the camera
 	glEnable(GL_CULL_FACE);
 
-	GLuint VertexArrayID;
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
-
 	// Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders( "StandardShading.vertexshader", "StandardShading.fragmentshader" );
 
@@ -77,6 +71,11 @@ int main( void )
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
 	GLuint ViewMatrixID = glGetUniformLocation(programID, "V");
 	GLuint ModelMatrixID = glGetUniformLocation(programID, "M");
+
+	// Get a handle for our buffers
+	GLuint vertexPosition_modelspaceID = glGetAttribLocation(programID, "vertexPosition_modelspace");
+	GLuint vertexUVID = glGetAttribLocation(programID, "vertexUV");
+	GLuint vertexNormal_modelspaceID = glGetAttribLocation(programID, "vertexNormal_modelspace");
 
 	// Load the texture
 	GLuint Texture = loadDDS("uvmap.DDS");
@@ -174,10 +173,10 @@ int main( void )
 		glUniform1i(TextureID, 0);
 
 		// 1rst attribute buffer : vertices
-		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(vertexPosition_modelspaceID);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 		glVertexAttribPointer(
-			0,                  // attribute
+			vertexPosition_modelspaceID, // The attribute we want to configure
 			3,                  // size
 			GL_FLOAT,           // type
 			GL_FALSE,           // normalized?
@@ -186,11 +185,11 @@ int main( void )
 		);
 
 		// 2nd attribute buffer : UVs
-		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(vertexUVID);
 		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 		glVertexAttribPointer(
-			1,                                // attribute
-			2,                                // size
+			vertexUVID,                       // The attribute we want to configure
+			2,                                // size : U+V => 2
 			GL_FLOAT,                         // type
 			GL_FALSE,                         // normalized?
 			0,                                // stride
@@ -198,10 +197,10 @@ int main( void )
 		);
 
 		// 3rd attribute buffer : normals
-		glEnableVertexAttribArray(2);
+		glEnableVertexAttribArray(vertexNormal_modelspaceID);
 		glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
 		glVertexAttribPointer(
-			2,                                // attribute
+			vertexNormal_modelspaceID,        // The attribute we want to configure
 			3,                                // size
 			GL_FLOAT,                         // type
 			GL_FALSE,                         // normalized?
@@ -259,19 +258,19 @@ int main( void )
 		// The rest is exactly the same as the first object
 		
 		// 1rst attribute buffer : vertices
-		glEnableVertexAttribArray(0);
+		//glEnableVertexAttribArray(vertexPosition_modelspaceID); // Already enabled
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+		glVertexAttribPointer(vertexPosition_modelspaceID, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 		// 2nd attribute buffer : UVs
-		glEnableVertexAttribArray(1);
+		//glEnableVertexAttribArray(vertexUVID); // Already enabled
 		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+		glVertexAttribPointer(vertexUVID, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 		// 3rd attribute buffer : normals
-		glEnableVertexAttribArray(2);
+		//glEnableVertexAttribArray(vertexNormal_modelspaceID); // Already enabled
 		glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+		glVertexAttribPointer(vertexNormal_modelspaceID, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 		// Index buffer
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
@@ -285,9 +284,9 @@ int main( void )
 
 
 
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(2);
+		glDisableVertexAttribArray(vertexPosition_modelspaceID);
+		glDisableVertexAttribArray(vertexUVID);
+		glDisableVertexAttribArray(vertexNormal_modelspaceID);
 
 		// Swap buffers
 		glfwSwapBuffers();
@@ -303,7 +302,6 @@ int main( void )
 	glDeleteBuffers(1, &elementbuffer);
 	glDeleteProgram(programID);
 	glDeleteTextures(1, &Texture);
-	glDeleteVertexArrays(1, &VertexArrayID);
 
 	// Close OpenGL window and terminate GLFW
 	glfwTerminate();

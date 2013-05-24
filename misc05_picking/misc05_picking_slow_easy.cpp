@@ -192,7 +192,7 @@ int main( void )
 			glUseProgram(pickingProgramID);
 
 			// Only the positions are needed (not the UVs and normals)
-			glEnableVertexAttribArray(0);
+			glEnableVertexAttribArray(vertexPickingPosition_modelspaceID);
 
 			// Draw the 100 monkeys, each with a slighly different color
 			for(int i=0; i<100; i++){
@@ -240,7 +240,7 @@ int main( void )
 
 			}
 
-			glDisableVertexAttribArray(0);
+			glDisableVertexAttribArray(vertexPickingPosition_modelspaceID);
 
 
 			// Wait until all the pending drawing commands are really done.
@@ -291,9 +291,9 @@ int main( void )
 		// Use our shader
 		glUseProgram(programID);
 
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(2);
+		glEnableVertexAttribArray(vertexPosition_modelspaceID);
+		glEnableVertexAttribArray(vertexUVID);
+		glEnableVertexAttribArray(vertexNormal_modelspaceID);
 
 		for(int i=0; i<100; i++){
 
@@ -366,9 +366,9 @@ int main( void )
 
 		}
 
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(2);
+		glDisableVertexAttribArray(vertexPosition_modelspaceID);
+		glDisableVertexAttribArray(vertexUVID);
+		glDisableVertexAttribArray(vertexNormal_modelspaceID);
 
 		// Draw GUI
 		TwDraw();

@@ -94,12 +94,12 @@ void printText2D(const char * text, int x, int y, int size){
 	glUniform1i(Text2DUniformID, 0);
 
 	// 1rst attribute buffer : vertices
-	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(vertexPosition_screenspaceID);
 	glBindBuffer(GL_ARRAY_BUFFER, Text2DVertexBufferID);
 	glVertexAttribPointer(vertexPosition_screenspaceID, 2, GL_FLOAT, GL_FALSE, 0, (void*)0 );
 
 	// 2nd attribute buffer : UVs
-	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(vertexUVID);
 	glBindBuffer(GL_ARRAY_BUFFER, Text2DUVBufferID);
 	glVertexAttribPointer(vertexUVID, 2, GL_FLOAT, GL_FALSE, 0, (void*)0 );
 
@@ -111,8 +111,8 @@ void printText2D(const char * text, int x, int y, int size){
 
 	glDisable(GL_BLEND);
 
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(vertexPosition_screenspaceID);
+	glDisableVertexAttribArray(vertexUVID);
 
 }
 

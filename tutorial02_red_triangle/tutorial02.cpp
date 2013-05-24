@@ -76,7 +76,7 @@ int main( void )
 		glUseProgram(programID);
 
 		// 1rst attribute buffer : vertices
-		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(vertexPosition_modelspaceID);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 		glVertexAttribPointer(
 			vertexPosition_modelspaceID, // The attribute we want to configure
@@ -90,7 +90,7 @@ int main( void )
 		// Draw the triangle !
 		glDrawArrays(GL_TRIANGLES, 0, 3); // 3 indices starting at 0 -> 1 triangle
 
-		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(vertexPosition_modelspaceID);
 
 		// Swap buffers
 		glfwSwapBuffers();
