@@ -221,7 +221,7 @@ int main( void )
 		glUniformMatrix4fv(depthMatrixID, 1, GL_FALSE, &depthMVP[0][0]);
 
 		// 1rst attribute buffer : vertices
-		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(depth_vertexPosition_modelspaceID);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 		glVertexAttribPointer(
 			depth_vertexPosition_modelspaceID,  // The attribute we want to configure
@@ -243,7 +243,7 @@ int main( void )
 			(void*)0           // element array buffer offset
 		);
 
-		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(depth_vertexPosition_modelspaceID);
 
 
 
@@ -295,7 +295,7 @@ int main( void )
 		glUniform1i(ShadowMapID, 1);
 
 		// 1rst attribute buffer : vertices
-		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(vertexPosition_modelspaceID);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 		glVertexAttribPointer(
 			vertexPosition_modelspaceID,  // The attribute we want to configure
@@ -307,7 +307,7 @@ int main( void )
 		);
 
 		// 2nd attribute buffer : UVs
-		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(vertexUVID);
 		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 		glVertexAttribPointer(
 			vertexUVID,                   // The attribute we want to configure
@@ -329,9 +329,8 @@ int main( void )
 			(void*)0           // element array buffer offset
 		);
 
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(2);
+		glDisableVertexAttribArray(vertexPosition_modelspaceID);
+		glDisableVertexAttribArray(vertexUVID);
 
 
 		// Optionally render the shadowmap (for debug only)
@@ -351,7 +350,7 @@ int main( void )
 		glUniform1f(timeID, (float)(glfwGetTime()*10.0f) );
 
 		// 1rst attribute buffer : vertices
-		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(quad_vertexPosition_modelspaceID);
 		glBindBuffer(GL_ARRAY_BUFFER, quad_vertexbuffer);
 		glVertexAttribPointer(
 			quad_vertexPosition_modelspaceID, // attribute
@@ -365,7 +364,7 @@ int main( void )
 		// Draw the triangles !
 		// You have to disable GL_COMPARE_R_TO_TEXTURE above in order to see anything !
 		//glDrawArrays(GL_TRIANGLES, 0, 6); // From index 0 to 6 -> 2 triangles
-		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(quad_vertexPosition_modelspaceID);
 
 
 		// Swap buffers

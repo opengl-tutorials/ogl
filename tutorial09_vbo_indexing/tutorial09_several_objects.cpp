@@ -173,7 +173,7 @@ int main( void )
 		glUniform1i(TextureID, 0);
 
 		// 1rst attribute buffer : vertices
-		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(vertexPosition_modelspaceID);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 		glVertexAttribPointer(
 			vertexPosition_modelspaceID, // The attribute we want to configure
@@ -185,7 +185,7 @@ int main( void )
 		);
 
 		// 2nd attribute buffer : UVs
-		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(vertexUVID);
 		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 		glVertexAttribPointer(
 			vertexUVID,                       // The attribute we want to configure
@@ -197,7 +197,7 @@ int main( void )
 		);
 
 		// 3rd attribute buffer : normals
-		glEnableVertexAttribArray(2);
+		glEnableVertexAttribArray(vertexNormal_modelspaceID);
 		glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
 		glVertexAttribPointer(
 			vertexNormal_modelspaceID,        // The attribute we want to configure
@@ -258,17 +258,17 @@ int main( void )
 		// The rest is exactly the same as the first object
 		
 		// 1rst attribute buffer : vertices
-		glEnableVertexAttribArray(0);
+		//glEnableVertexAttribArray(vertexPosition_modelspaceID); // Already enabled
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 		glVertexAttribPointer(vertexPosition_modelspaceID, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 		// 2nd attribute buffer : UVs
-		glEnableVertexAttribArray(1);
+		//glEnableVertexAttribArray(vertexUVID); // Already enabled
 		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 		glVertexAttribPointer(vertexUVID, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 		// 3rd attribute buffer : normals
-		glEnableVertexAttribArray(2);
+		//glEnableVertexAttribArray(vertexNormal_modelspaceID); // Already enabled
 		glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
 		glVertexAttribPointer(vertexNormal_modelspaceID, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
@@ -284,9 +284,9 @@ int main( void )
 
 
 
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(2);
+		glDisableVertexAttribArray(vertexPosition_modelspaceID);
+		glDisableVertexAttribArray(vertexUVID);
+		glDisableVertexAttribArray(vertexNormal_modelspaceID);
 
 		// Swap buffers
 		glfwSwapBuffers();
