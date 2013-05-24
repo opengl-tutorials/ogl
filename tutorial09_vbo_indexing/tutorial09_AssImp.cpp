@@ -9,6 +9,7 @@
 // Include GLFW
 #include <GL/glfw.h>
 
+
 // Include GLM
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -30,9 +31,8 @@ int main( void )
 	}
 
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
-	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 2);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
 
 	// Open a window and create its OpenGL context
 	if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
@@ -43,7 +43,6 @@ int main( void )
 	}
 
 	// Initialize GLEW
-	glewExperimental = true; // Needed for core profile
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
 		return -1;
@@ -65,10 +64,6 @@ int main( void )
 
 	// Cull triangles which normal is not towards the camera
 	glEnable(GL_CULL_FACE);
-
-	GLuint VertexArrayID;
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
 
 	// Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders( "StandardShading.vertexshader", "StandardShading.fragmentshader" );
@@ -171,7 +166,7 @@ int main( void )
 		glEnableVertexAttribArray(vertexPosition_modelspaceID);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 		glVertexAttribPointer(
-			0,                  // attribute
+			vertexPosition_modelspaceID, // attribute
 			3,                  // size
 			GL_FLOAT,           // type
 			GL_FALSE,           // normalized?
@@ -183,7 +178,7 @@ int main( void )
 		glEnableVertexAttribArray(vertexUVID);
 		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 		glVertexAttribPointer(
-			1,                                // attribute
+			vertexUVID,                       // attribute
 			2,                                // size
 			GL_FLOAT,                         // type
 			GL_FALSE,                         // normalized?
@@ -195,7 +190,7 @@ int main( void )
 		glEnableVertexAttribArray(vertexNormal_modelspaceID);
 		glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
 		glVertexAttribPointer(
-			2,                                // attribute
+			vertexNormal_modelspaceID,        // attribute
 			3,                                // size
 			GL_FLOAT,                         // type
 			GL_FALSE,                         // normalized?
@@ -232,7 +227,6 @@ int main( void )
 	glDeleteBuffers(1, &elementbuffer);
 	glDeleteProgram(programID);
 	glDeleteTextures(1, &Texture);
-	glDeleteVertexArrays(1, &VertexArrayID);
 
 	// Close OpenGL window and terminate GLFW
 	glfwTerminate();
