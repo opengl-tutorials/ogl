@@ -62,7 +62,7 @@ def Clean():
 		exes = glob.glob('../tutorial*/*.exe');
 	else:
 		exes = glob.glob('../tutorial*/*');
-		exes = [exe for exe in exes if os.access(exe, os.X_OK)]
+		exes = [exe for exe in exes if os.access(exe, os.X_OK) and not os.path.isdir(exe)]
 	RemoveDirs(dirs);
 	RemoveFiles(exes);
 
