@@ -1,0 +1,10 @@
+#version 120
+
+// Values that stay constant for the whole mesh.
+uniform vec4 PickingColor;
+
+void main(){
+	
+	gl_FragColor = PickingColor;
+
+}
