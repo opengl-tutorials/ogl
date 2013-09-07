@@ -192,6 +192,11 @@ GLuint loadDDS(const char * imagepath){
 		offset += size; 
 		width  /= 2; 
 		height /= 2; 
+
+		// Deal with Non-Power-Of-Two textures. This code is not included in the webpage to reduce clutter.
+		if(width < 1) width = 1;
+		if(height < 1) height = 1;
+
 	} 
 
 	free(buffer); 
