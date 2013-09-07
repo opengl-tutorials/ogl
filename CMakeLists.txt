@@ -608,6 +608,46 @@ create_target_launcher(misc05_picking_BulletPhysics WORKING_DIRECTORY "${CMAKE_C
 
 
 
+add_executable(tutorial18_billboards
+	tutorial18_billboards_and_particles/tutorial18_billboards.cpp
+	common/shader.cpp
+	common/shader.hpp
+	common/texture.cpp
+	common/texture.hpp
+	common/controls.cpp
+	common/controls.hpp
+	tutorial18_billboards_and_particles/Particle.fragmentshader
+	tutorial18_billboards_and_particles/Particle.vertexshader
+)
+
+target_link_libraries(tutorial18_billboards
+	${ALL_LIBS}
+)
+
+# Xcode and Visual working directories
+set_target_properties(tutorial18_billboards PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tutorial18_billboards_and_particles/")
+create_target_launcher(tutorial18_billboards WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/tutorial18_billboards_and_particles/")
+
+add_executable(tutorial18_particles
+	tutorial18_billboards_and_particles/tutorial18_particles.cpp
+	common/shader.cpp
+	common/shader.hpp
+	common/texture.cpp
+	common/texture.hpp
+	common/controls.cpp
+	common/controls.hpp
+	tutorial18_billboards_and_particles/Particle.fragmentshader
+	tutorial18_billboards_and_particles/Particle.vertexshader
+)
+
+target_link_libraries(tutorial18_particles
+	${ALL_LIBS}
+)
+
+# Xcode and Visual working directories
+set_target_properties(tutorial18_particles PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tutorial18_billboards_and_particles/")
+create_target_launcher(tutorial18_particles WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/tutorial18_billboards_and_particles/")
+
 
 
 
