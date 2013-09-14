@@ -616,8 +616,8 @@ add_executable(tutorial18_billboards
 	common/texture.hpp
 	common/controls.cpp
 	common/controls.hpp
-	tutorial18_billboards_and_particles/Particle.fragmentshader
-	tutorial18_billboards_and_particles/Particle.vertexshader
+	tutorial18_billboards_and_particles/Billboard.fragmentshader
+	tutorial18_billboards_and_particles/Billboard.vertexshader
 )
 
 target_link_libraries(tutorial18_billboards
