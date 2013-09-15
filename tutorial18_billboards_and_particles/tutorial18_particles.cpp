@@ -26,7 +26,7 @@ struct Particle{
 	float life; // Remaining life of the particle. if <0 : dead and unused.
 	float cameradistance; // *Squared* distance to the camera. if dead : -1.0f
 
-	bool operator<(Particle& that){
+	bool operator<(const Particle& that) const {
 		// Sort in reverse order : far particles drawn first.
 		return this->cameradistance > that.cameradistance;
 	}
@@ -72,9 +72,8 @@ int main( void )
 
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
 	glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE,GL_TRUE);
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
-	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 2);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
 
 	// Open a window and create its OpenGL context
 	if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
@@ -87,11 +86,16 @@ int main( void )
 	glfwSwapInterval(1);
 
 	// Initialize GLEW
-	glewExperimental = true; // Needed for core profile
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
 		return -1;
 	}
+    
+    if (!GLEW_ARB_draw_instanced){
+        fprintf(stderr, "Your GPU does not support instancing !");
+        getchar();
+        return -1;
+    }
 
 	glfwSetWindowTitle( "Tutorial 18 - Particules" );
 
@@ -106,10 +110,6 @@ int main( void )
 	// Accept fragment if it closer to the camera than the former one
 	glDepthFunc(GL_LESS);
 
-	GLuint VertexArrayID;
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
-
 
 	// Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders( "Particle.vertexshader", "Particle.fragmentshader" );
@@ -122,6 +122,10 @@ int main( void )
 	// fragment shader
 	GLuint TextureID  = glGetUniformLocation(programID, "myTextureSampler");
 
+	// Get a handle for our buffers
+	GLuint squareVerticesID = glGetAttribLocation(programID, "squareVertices");
+	GLuint xyzsID = glGetAttribLocation(programID, "xyzs");
+	GLuint colorID = glGetAttribLocation(programID, "color");   
 	
 	static GLfloat* g_particule_position_size_data = new GLfloat[MaxParticles * 4];
 	static GLubyte* g_particule_color_data         = new GLubyte[MaxParticles * 4];
@@ -305,11 +309,12 @@ int main( void )
 
 		glUniformMatrix4fv(ViewProjMatrixID, 1, GL_FALSE, &ViewProjectionMatrix[0][0]);
 
+        
 		// 1rst attribute buffer : vertices
-		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(squareVerticesID);
 		glBindBuffer(GL_ARRAY_BUFFER, billboard_vertex_buffer);
 		glVertexAttribPointer(
-			0,                  // attribute. No particular reason for 0, but must match the layout in the shader.
+			squareVerticesID,                  // attribute. No particular reason for 0, but must match the layout in the shader.
 			3,                  // size
 			GL_FLOAT,           // type
 			GL_FALSE,           // normalized?
@@ -318,10 +323,10 @@ int main( void )
 		);
 		
 		// 2nd attribute buffer : positions of particles' centers
-		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(xyzsID);
 		glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
 		glVertexAttribPointer(
-			1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+			xyzsID,                                // attribute. No particular reason for 1, but must match the layout in the shader.
 			4,                                // size : x + y + z + size => 4
 			GL_FLOAT,                         // type
 			GL_FALSE,                         // normalized?
@@ -330,10 +335,10 @@ int main( void )
 		);
 
 		// 3rd attribute buffer : particles' colors
-		glEnableVertexAttribArray(2);
+		glEnableVertexAttribArray(colorID);
 		glBindBuffer(GL_ARRAY_BUFFER, particles_color_buffer);
 		glVertexAttribPointer(
-			2,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+			colorID,                                // attribute. No particular reason for 1, but must match the layout in the shader.
 			4,                                // size : r + g + b + a => 4
 			GL_UNSIGNED_BYTE,                 // type
 			GL_TRUE,                          // normalized?    *** YES, this means that the unsigned char[4] will be accessible with a vec4 (floats) in the shader ***
@@ -345,9 +350,9 @@ int main( void )
 		// The first parameter is the attribute buffer we're talking about.
 		// The second parameter is the "rate at which generic vertex attributes advance when rendering multiple instances"
 		// http://www.opengl.org/sdk/docs/man/xhtml/glVertexAttribDivisor.xml
-		glVertexAttribDivisor(0, 0); // particles vertices : always reuse the same 4 vertices -> 0
-		glVertexAttribDivisor(1, 1); // positions : one per quad (its center)                 -> 1
-		glVertexAttribDivisor(2, 1); // color : one per quad                                  -> 1
+		glVertexAttribDivisor(squareVerticesID, 0); // particles vertices : always reuse the same 4 vertices -> 0
+		glVertexAttribDivisor(xyzsID, 1); // positions : one per quad (its center)                 -> 1
+		glVertexAttribDivisor(colorID, 1); // color : one per quad                                  -> 1
 
 		// Draw the particules !
 		// This draws many times a small triangle_strip (which looks like a quad).
@@ -356,9 +361,9 @@ int main( void )
 		// but faster.
 		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticlesCount);
 
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(2);
+		glDisableVertexAttribArray(squareVerticesID);
+		glDisableVertexAttribArray(xyzsID);
+		glDisableVertexAttribArray(colorID);
 
 		// Swap buffers
 		glfwSwapBuffers();
@@ -375,7 +380,6 @@ int main( void )
 	glDeleteBuffers(1, &billboard_vertex_buffer);
 	glDeleteProgram(programID);
 	glDeleteTextures(1, &TextureID);
-	glDeleteVertexArrays(1, &VertexArrayID);
 	
 
 	// Close OpenGL window and terminate GLFW
