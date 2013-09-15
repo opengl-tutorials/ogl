@@ -91,7 +91,7 @@ int main( void )
 		return -1;
 	}
     
-    if (!GLEW_ARB_draw_instanced){
+    if (!GLEW_ARB_draw_instanced || !GLEW_ARB_instanced_arrays){
         fprintf(stderr, "Your GPU does not support instancing !");
         getchar();
         return -1;
@@ -350,16 +350,16 @@ int main( void )
 		// The first parameter is the attribute buffer we're talking about.
 		// The second parameter is the "rate at which generic vertex attributes advance when rendering multiple instances"
 		// http://www.opengl.org/sdk/docs/man/xhtml/glVertexAttribDivisor.xml
-		glVertexAttribDivisor(squareVerticesID, 0); // particles vertices : always reuse the same 4 vertices -> 0
-		glVertexAttribDivisor(xyzsID, 1); // positions : one per quad (its center)                 -> 1
-		glVertexAttribDivisor(colorID, 1); // color : one per quad                                  -> 1
+		glVertexAttribDivisorARB(squareVerticesID, 0); // particles vertices : always reuse the same 4 vertices -> 0
+		glVertexAttribDivisorARB(xyzsID, 1); // positions : one per quad (its center)                 -> 1
+		glVertexAttribDivisorARB(colorID, 1); // color : one per quad                                  -> 1
 
 		// Draw the particules !
 		// This draws many times a small triangle_strip (which looks like a quad).
 		// This is equivalent to :
 		// for(i in ParticlesCount) : glDrawArrays(GL_TRIANGLE_STRIP, 0, 4), 
 		// but faster.
-		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticlesCount);
+		glDrawArraysInstancedARB(GL_TRIANGLE_STRIP, 0, 4, ParticlesCount);
 
 		glDisableVertexAttribArray(squareVerticesID);
 		glDisableVertexAttribArray(xyzsID);
