@@ -37,10 +37,12 @@ tests = [
 	('../tutorial09_vbo_indexing/tutorial09_vbo_indexing'             , '../tutorial09_vbo_indexing/tutorial09.cpp'             , '../tutorial09_vbo_indexing/screenshots/ref.png'                  ),
 	('../tutorial10_transparency/tutorial10_transparency'             , '../tutorial10_transparency/tutorial10.cpp'             , '../tutorial10_transparency/screenshots/ref.png'                  ),
 	('../tutorial11_2d_fonts/tutorial11_2d_fonts'                     , '../tutorial11_2d_fonts/tutorial11.cpp'                 , '../tutorial11_2d_fonts/screenshots/clock.png'                    ),
-	('../tutorial13_normal_mapping/tutorial13_normal_mapping'         , '../tutorial13_normal_mapping/tutorial13.cpp'           , '../tutorial13_normal_mapping/screenshots/ref.png'               ),
+	('../tutorial13_normal_mapping/tutorial13_normal_mapping'         , '../tutorial13_normal_mapping/tutorial13.cpp'           , '../tutorial13_normal_mapping/screenshots/ref.png'                ),
 	('../tutorial15_lightmaps/tutorial15_lightmaps'                   , '../tutorial15_lightmaps/tutorial15.cpp'                , '../tutorial15_lightmaps/screenshots/ref.png'                     ),
 	('../tutorial16_shadowmaps/tutorial16_shadowmaps_simple'          , '../tutorial16_shadowmaps/tutorial16_SimpleVersion.cpp' , '../tutorial16_shadowmaps/screenshots/refsimple.png'              ),
-	('../tutorial17_rotations/tutorial17_rotations'                   , '../tutorial17_rotations/tutorial17.cpp'                , '../tutorial17_rotations/screenshots/ref.png'                    )
+	('../tutorial17_rotations/tutorial17_rotations'                   , '../tutorial17_rotations/tutorial17.cpp'                , '../tutorial17_rotations/screenshots/ref.png'                     ),
+	('../tutorial18_billboards_and_particles/tutorial18_billboards'   , '../tutorial18_billboards_and_particles/tutorial18_billboards.cpp' , '../tutorial18_billboards_and_particles/screenshots/ref1.png' ),
+	('../tutorial18_billboards_and_particles/tutorial18_particles'    , '../tutorial18_billboards_and_particles/tutorial18_particles.cpp'  , '../tutorial18_billboards_and_particles/screenshots/ref2.png' )
 ]
 
 def RemoveDirs(paths):
