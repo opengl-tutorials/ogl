@@ -34,6 +34,7 @@ bool loadOBJ(
 	FILE * file = fopen(path, "r");
 	if( file == NULL ){
 		printf("Impossible to open the file ! Are you in the right path ? See Tutorial 1 for details\n");
+		getchar();
 		return false;
 	}
 
@@ -129,6 +130,7 @@ bool loadAssImp(
 	const aiScene* scene = importer.ReadFile(path, 0/*aiProcess_JoinIdenticalVertices | aiProcess_SortByPType*/);
 	if( !scene) {
 		fprintf( stderr, importer.GetErrorString());
+		getchar();
 		return false;
 	}
 	const aiMesh* mesh = scene->mMeshes[0]; // In this simple example code we always use the 1rst mesh (in OBJ files there is often only one anyway)
