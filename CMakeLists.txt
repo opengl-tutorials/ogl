@@ -33,7 +33,7 @@ endif(INCLUDE_DISTRIB)
 
 include_directories(
 	external/AntTweakBar-1.16/include/
-	external/glfw-2.7.6/include/
+	external/glfw-3.0.3/include/GLFW/
 	external/glm-0.9.4.0/
 	external/glew-1.9.0/include/
 	external/assimp-3.0.1270/include/
@@ -43,7 +43,7 @@ include_directories(
 
 set(ALL_LIBS
 	${OPENGL_LIBRARY}
-	GLFW_276
+	GLFW_303
 	GLEW_190
 )
 
@@ -746,6 +746,14 @@ add_custom_command(
 add_custom_command(
    TARGET tutorial17_rotations POST_BUILD
    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial17_rotations${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial17_rotations/"
+)
+add_custom_command(
+   TARGET tutorial18_billboards POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial18_billboards${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial18_billboards_and_particles/"
+)
+add_custom_command(
+   TARGET tutorial18_particles POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/tutorial18_particles${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/tutorial18_billboards_and_particles/"
 )
 add_custom_command(
    TARGET playground POST_BUILD
