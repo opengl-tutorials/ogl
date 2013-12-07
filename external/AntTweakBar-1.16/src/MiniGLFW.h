@@ -22,7 +22,6 @@
 extern "C" {
 #endif
 
-
 // Key and button state/action definitions
 #define GLFW_RELEASE          0
 #define GLFW_PRESS            1

@@ -21,7 +21,7 @@ unsigned int Text2DUniformID;
 void initText2D(const char * texturePath){
 
 	// Initialize texture
-	Text2DTextureID = loadTGA_glfw(texturePath);
+	Text2DTextureID = loadDDS(texturePath);
 
 	// Initialize VBO
 	glGenBuffers(1, &Text2DVertexBufferID);
@@ -61,10 +61,10 @@ void printText2D(const char * text, int x, int y, int size){
 		float uv_x = (character%16)/16.0f;
 		float uv_y = (character/16)/16.0f;
 
-		glm::vec2 uv_up_left    = glm::vec2( uv_x           , 1.0f - uv_y );
-		glm::vec2 uv_up_right   = glm::vec2( uv_x+1.0f/16.0f, 1.0f - uv_y );
-		glm::vec2 uv_down_right = glm::vec2( uv_x+1.0f/16.0f, 1.0f - (uv_y + 1.0f/16.0f) );
-		glm::vec2 uv_down_left  = glm::vec2( uv_x           , 1.0f - (uv_y + 1.0f/16.0f) );
+		glm::vec2 uv_up_left    = glm::vec2( uv_x           , uv_y );
+		glm::vec2 uv_up_right   = glm::vec2( uv_x+1.0f/16.0f, uv_y );
+		glm::vec2 uv_down_right = glm::vec2( uv_x+1.0f/16.0f, (uv_y + 1.0f/16.0f) );
+		glm::vec2 uv_down_left  = glm::vec2( uv_x           , (uv_y + 1.0f/16.0f) );
 		UVs.push_back(uv_up_left   );
 		UVs.push_back(uv_down_left );
 		UVs.push_back(uv_up_right  );
