@@ -45,41 +45,41 @@ if (APPLE)
     set_source_files_properties(${glfw_SOURCES} PROPERTIES LANGUAGE C)
 endif()
 
-add_library(glfw ${glfw_SOURCES} ${glfw_HEADERS})
-set_target_properties(glfw PROPERTIES OUTPUT_NAME "${GLFW_LIB_NAME}")
+add_library(GLFW_303 ${glfw_SOURCES} ${glfw_HEADERS})
+set_target_properties(GLFW_303 PROPERTIES OUTPUT_NAME "${GLFW_LIB_NAME}")
 
 if (BUILD_SHARED_LIBS)
     # Include version information in the output
-    set_target_properties(glfw PROPERTIES VERSION ${GLFW_VERSION})
+    set_target_properties(GLFW_303 PROPERTIES VERSION ${GLFW_VERSION})
     if (UNIX)
-        set_target_properties(glfw PROPERTIES SOVERSION ${GLFW_VERSION_MAJOR})
+        set_target_properties(GLFW_303 PROPERTIES SOVERSION ${GLFW_VERSION_MAJOR})
     endif()
 
     if (WIN32)
         # The GLFW DLL needs a special compile-time macro and import library name
-        set_target_properties(glfw PROPERTIES PREFIX "" IMPORT_PREFIX "")
+        set_target_properties(GLFW_303 PROPERTIES PREFIX "" IMPORT_PREFIX "")
 
         if (MINGW)
-            set_target_properties(glfw PROPERTIES IMPORT_SUFFIX "dll.a")
+            set_target_properties(GLFW_303 PROPERTIES IMPORT_SUFFIX "dll.a")
         else()
-            set_target_properties(glfw PROPERTIES IMPORT_SUFFIX "dll.lib")
+            set_target_properties(GLFW_303 PROPERTIES IMPORT_SUFFIX "dll.lib")
         endif()
     elseif (APPLE)
         # Append -fno-common to the compile flags to work around a bug in
         # Apple's GCC
-        get_target_property(glfw_CFLAGS glfw COMPILE_FLAGS)
+        get_target_property(glfw_CFLAGS GLFW_303 COMPILE_FLAGS)
         if (NOT glfw_CFLAGS)
             set(glfw_CFLAGS "")
         endif()
-        set_target_properties(glfw PROPERTIES
+        set_target_properties(GLFW_303 PROPERTIES
                               COMPILE_FLAGS "${glfw_CFLAGS} -fno-common")
     endif()
 
-    target_link_libraries(glfw ${glfw_LIBRARIES})
-    target_link_libraries(glfw LINK_INTERFACE_LIBRARIES)
+    target_link_libraries(GLFW_303 ${glfw_LIBRARIES})
+    target_link_libraries(GLFW_303 LINK_INTERFACE_LIBRARIES)
 endif()
 
 if (GLFW_INSTALL)
-    install(TARGETS glfw EXPORT glfwTargets DESTINATION lib${LIB_SUFFIX})
+    install(TARGETS GLFW_303 EXPORT glfwTargets DESTINATION lib${LIB_SUFFIX})
 endif()
 

@@ -33,7 +33,7 @@ endif(INCLUDE_DISTRIB)
 
 include_directories(
 	external/AntTweakBar-1.16/include/
-	external/glfw-2.7.6/include/
+	external/glfw-3.0.3/include/GLFW/
 	external/glm-0.9.4.0/
 	external/glew-1.9.0/include/
 	external/assimp-3.0.1270/include/
@@ -43,7 +43,7 @@ include_directories(
 
 set(ALL_LIBS
 	${OPENGL_LIBRARY}
-	GLFW_276
+	GLFW_303
 	GLEW_190
 )
 

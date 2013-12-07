@@ -19,7 +19,7 @@
 #include <AntTweakBar.h>
 
 
-int TW_CALL TwEventMouseButtonGLFW(int glfwButton, int glfwAction)
+int TW_CALL TwEventMouseButtonGLFW(GLFWwindow * glfwWindow, int glfwButton, int glfwAction, int glfwModifierKeys)
 {
     int handled = 0;
     TwMouseAction action = (glfwAction==GLFW_PRESS) ? TW_MOUSE_PRESSED : TW_MOUSE_RELEASED;
@@ -189,10 +189,19 @@ int TW_CALL TwEventCharGLFW(int glfwChar, int glfwAction)
     return 0;
 }
 
+int TW_CALL TwEventMousePosGLFW(GLFWwindow * glfwWindow, double xpos, double ypos){
+	return TwMouseMotion((int)xpos, (int)ypos);
+}
+
+int TW_CALL TwEventMouseWheelGLFW(GLFWwindow * glfwWindow, double xoffset, double yoffset){
+	return TwMouseWheel((int)yoffset);
+}
+
+
 // functions with __cdecl calling convension
 TW_API int TW_CDECL_CALL TwEventMouseButtonGLFWcdecl(int glfwButton, int glfwAction)
 {
-    return TwEventMouseButtonGLFW(glfwButton, glfwAction);
+    return TwEventMouseButtonGLFW(NULL, glfwButton, glfwAction, 0);
 }
 TW_API int TW_CDECL_CALL TwEventKeyGLFWcdecl(int glfwKey, int glfwAction)
 {
