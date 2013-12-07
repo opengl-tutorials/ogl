@@ -7,7 +7,8 @@
 #include <GL/glew.h>
 
 // Include GLFW
-#include <GL/glfw.h>
+#include <glfw3.h>
+GLFWwindow* window;
 
 // Include GLM
 #include <glm/glm.hpp>
@@ -48,17 +49,18 @@ int main( void )
 		return -1;
 	}
 
-	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 2);
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
+	glfwWindowHint(GLFW_SAMPLES, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
 	// Open a window and create its OpenGL context
-	if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
-	{
+	window = glfwCreateWindow( 1024, 768, "Tutorial 17 - Rotations", NULL, NULL);
+	if( window == NULL ){
 		fprintf( stderr, "Failed to open GLFW window.\n" );
 		glfwTerminate();
 		return -1;
 	}
+	glfwMakeContextCurrent(window);
 
 	// Initialize GLEW
 	if (glewInit() != GLEW_OK) {
@@ -85,19 +87,16 @@ int main( void )
 	TwAddVarRW(QuaternionGUI, "Use LookAt", TW_TYPE_BOOL8 , &gLookAtOther, "help='Look at the other monkey ?'");
 
 	// Set GLFW event callbacks. I removed glfwSetWindowSizeCallback for conciseness
-	glfwSetMouseButtonCallback((GLFWmousebuttonfun)TwEventMouseButtonGLFW); // - Directly redirect GLFW mouse button events to AntTweakBar
-	glfwSetMousePosCallback((GLFWmouseposfun)TwEventMousePosGLFW);          // - Directly redirect GLFW mouse position events to AntTweakBar
-	glfwSetMouseWheelCallback((GLFWmousewheelfun)TwEventMouseWheelGLFW);    // - Directly redirect GLFW mouse wheel events to AntTweakBar
-	glfwSetKeyCallback((GLFWkeyfun)TwEventKeyGLFW);                         // - Directly redirect GLFW key events to AntTweakBar
-	glfwSetCharCallback((GLFWcharfun)TwEventCharGLFW);                      // - Directly redirect GLFW char events to AntTweakBar
+	glfwSetMouseButtonCallback(window, (GLFWmousebuttonfun)TwEventMouseButtonGLFW); // - Directly redirect GLFW mouse button events to AntTweakBar
+	glfwSetCursorPosCallback(window, (GLFWcursorposfun)TwEventMousePosGLFW);          // - Directly redirect GLFW mouse position events to AntTweakBar
+	glfwSetScrollCallback(window, (GLFWscrollfun)TwEventMouseWheelGLFW);    // - Directly redirect GLFW mouse wheel events to AntTweakBar
+	glfwSetKeyCallback(window, (GLFWkeyfun)TwEventKeyGLFW);                         // - Directly redirect GLFW key events to AntTweakBar
+	glfwSetCharCallback(window, (GLFWcharfun)TwEventCharGLFW);                      // - Directly redirect GLFW char events to AntTweakBar
 
-
-
-	glfwSetWindowTitle( "Tutorial 17" );
 
 	// Ensure we can capture the escape key being pressed below
-	glfwEnable( GLFW_STICKY_KEYS );
-	glfwSetMousePos(1024/2, 768/2);
+	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+	glfwSetCursorPos(window, 1024/2, 768/2);
 
 	// Dark blue background
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
@@ -323,11 +322,12 @@ int main( void )
 		TwDraw();
 
 		// Swap buffers
-		glfwSwapBuffers();
+		glfwSwapBuffers(window);
+		glfwPollEvents();
 
 	} // Check if the ESC key was pressed or the window was closed
-	while( glfwGetKey( GLFW_KEY_ESC ) != GLFW_PRESS &&
-		   glfwGetWindowParam( GLFW_OPENED ) );
+	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
+		   glfwWindowShouldClose(window) == 0 );
 
 	// Cleanup VBO and shader
 	glDeleteBuffers(1, &vertexbuffer);
