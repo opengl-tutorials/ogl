@@ -41,6 +41,7 @@ int main( void )
 		glfwTerminate();
 		return -1;
 	}
+	glfwMakeContextCurrent(window);
 
 	// Initialize GLEW
 	if (glewInit() != GLEW_OK) {
