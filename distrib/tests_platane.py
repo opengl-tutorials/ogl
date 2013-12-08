@@ -5,7 +5,7 @@ Clean()
 
 HgUpdate21()
 PatchAll()
-Build_VC10_64()
+Build_VC11Express_64()
 OptimusForceIntel()
 RunAll()
 OptimusForceNVIDIA()
@@ -15,7 +15,7 @@ Clean()
 
 HgUpdate33()
 PatchAll()
-Build_VC10_64()
+Build_VC11Express_64()
 OptimusForceNVIDIA()
 RunAll()
 

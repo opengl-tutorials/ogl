@@ -10,6 +10,7 @@ from time import sleep
 
 CMakePath = r'C:\Program Files (x86)\CMake 2.8\bin\cmake.exe'
 VisualStudio10Path = r'C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com'
+VisualStudio11ExpressPath = r'C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\WDExpress.exe'
 CodeBlocksPath = r'C:\Program Files (x86)\CodeBlocks\codeblocks.exe'
 
 def SetCMakePath(path):
@@ -18,6 +19,10 @@ def SetCMakePath(path):
 	
 def SetVisualStudio10Path(path):
 	global VisualStudio10Path
+	CMakePath = path
+	
+def SetVisualStudio11ExpressPath(path):
+	global VisualStudio11ExpressPath
 	CMakePath = path
 
 tests = [
@@ -106,6 +111,36 @@ def Build_VC10_64():
 		print "Compiling everything..."
 		subprocess.call( [VisualStudio10Path, '/build', 'RelWithDebInfo', 'Tutorials.sln'], stdout=fnull, stderr=fnull )
 	os.chdir("..")
+
+	
+def Build_VC11Express_32():
+	print "Building with Visual Studio 11 Express Desktop, 32 bits"
+	global CMakePath
+	global VisualStudio11ExpressPath
+	if os.path.exists("build_VC11_32") == False: 
+		os.makedirs("build_VC110_32")
+	os.chdir("build_VC11_32")
+	with open(os.devnull, "w") as fnull:
+		print "Running CMake..."
+		subprocess.call( [CMakePath, '-G', 'Visual Studio 11', '-D', 'INCLUDE_DISTRIB:bool=true', '../../'], stdout=fnull, stderr=fnull )
+		print "Compiling everything..."
+		subprocess.call( [VisualStudio11ExpressPath, '/build', 'RelWithDebInfo', 'Tutorials.sln'], stdout=fnull, stderr=fnull )
+	os.chdir("..")
+
+def Build_VC11Express_64():
+	print "Building with Visual Studio 11 Express Desktop, 64 bits"
+	global CMakePath
+	global VisualStudio11ExpressPath
+	if os.path.exists("build_VC11_64") == False: 
+		os.makedirs("build_VC11_64")
+	os.chdir("build_VC10_64")
+	with open(os.devnull, "w") as fnull:
+		print "Running CMake..."
+		subprocess.call( [CMakePath, '-G', 'Visual Studio 11 Win64', '-D', 'INCLUDE_DISTRIB:bool=true', '../../'], stdout=fnull, stderr=fnull )
+		print "Compiling everything..."
+		subprocess.call( [VisualStudio11ExpressPath, '/build', 'RelWithDebInfo', 'Tutorials.sln'], stdout=fnull, stderr=fnull )
+	os.chdir("..")
+
 	
 def Build_CodeBlocks():
 	print "Building with Code::Blocks, ?? bits"
