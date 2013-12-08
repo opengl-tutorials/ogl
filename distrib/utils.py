@@ -76,7 +76,7 @@ def Clean():
 
 def InsertScreenshotCode(path):
 	for line in fileinput.input(path, inplace = 1): # Does a list of files, and writes redirects STDOUT to the file in question
-		print line.replace("#include <GL/glfw.h>", "#include <GL/glfw.h>\n#include \"distrib/screenshot.h\" // added by insertscreenshot.py; should NOT be committed !"),
+		print line.replace("#include <glfw3.h>", "#include <glfw3.h>\n#include \"distrib/screenshot.h\" // added by insertscreenshot.py; should NOT be committed !"),
 	  
 def HgUpdate21():
 	os.system('hg update --clean "2.1 branch"')
