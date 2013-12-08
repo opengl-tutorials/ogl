@@ -28,15 +28,15 @@ double Zero(){
 	return 0.0;
 }
 
-void callGlfwOpenWindowHint(int target, int hint){
-	if ( target == GLFW_FSAA_SAMPLES )
+void callGlfwWindowHint(int target, int hint){
+	if ( target == GLFW_SAMPLES )
 		return; // Disable MSAA when testing, since this is the biggest source of errors
-	glfwOpenWindowHint(target, hint);
+	glfwWindowHint(target, hint);
 	
 	srand(42); // Always use the same seed
 }
 
 
-#define glfwSwapBuffers() TakeScreenshot(); break;
+#define glfwSwapBuffers(a) TakeScreenshot(); break;
 #define glfwGetTime() Zero()
-#define glfwOpenWindowHint(a,b) callGlfwOpenWindowHint(a,b)
+#define glfwWindowHint(a,b) callGlfwWindowHint(a,b)
