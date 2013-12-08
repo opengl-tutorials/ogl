@@ -37,9 +37,9 @@ int main( void )
 	}
 
 	glfwWindowHint(GLFW_SAMPLES, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+
 
 	// Open a window and create its OpenGL context
 	window = glfwCreateWindow( 1024, 768, "Misc 05 - Simple but slow version", NULL, NULL);
@@ -48,17 +48,15 @@ int main( void )
 		glfwTerminate();
 		return -1;
 	}
-	glfwMakeContextCurrent(window);
 
 	// Initialize GLEW
-	glewExperimental = true; // Needed for core profile
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
 		return -1;
 	}
 
 	// Initialize the GUI
-	TwInit(TW_OPENGL_CORE, NULL);
+	TwInit(TW_OPENGL, NULL);
 	TwWindowSize(1024, 768);
 	TwBar * GUI = TwNewBar("Picking");
 	TwSetParam(GUI, NULL, "refresh", TW_PARAM_CSTRING, 1, "0.1");
@@ -80,10 +78,6 @@ int main( void )
 	// Cull triangles which normal is not towards the camera
 	glEnable(GL_CULL_FACE);
 
-	GLuint VertexArrayID;
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
-
 	// Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders( "StandardShading.vertexshader", "StandardShading.fragmentshader" );
 	GLuint pickingProgramID = LoadShaders( "Picking.vertexshader", "Picking.fragmentshader" );
@@ -95,6 +89,12 @@ int main( void )
 	GLuint ViewMatrixID = glGetUniformLocation(programID, "V");
 	GLuint ModelMatrixID = glGetUniformLocation(programID, "M");
 	GLuint PickingMatrixID = glGetUniformLocation(pickingProgramID, "MVP");
+
+	// Get a handle for our buffers
+	GLuint vertexPosition_modelspaceID = glGetAttribLocation(programID, "vertexPosition_modelspace");
+	GLuint vertexUVID = glGetAttribLocation(programID, "vertexUV");
+	GLuint vertexNormal_modelspaceID = glGetAttribLocation(programID, "vertexNormal_modelspace");
+	GLuint vertexPickingPosition_modelspaceID = glGetAttribLocation(pickingProgramID, "vertexPosition_modelspace");
 
 	// Load the texture
 	GLuint Texture = loadDDS("uvmap.DDS");
@@ -192,7 +192,7 @@ int main( void )
 			glUseProgram(pickingProgramID);
 
 			// Only the positions are needed (not the UVs and normals)
-			glEnableVertexAttribArray(0);
+			glEnableVertexAttribArray(vertexPickingPosition_modelspaceID);
 
 			// Draw the 100 monkeys, each with a slighly different color
 			for(int i=0; i<100; i++){
@@ -219,12 +219,12 @@ int main( void )
 				// 1rst attribute buffer : vertices
 				glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 				glVertexAttribPointer(
-					0,                  // attribute
-					3,                  // size
-					GL_FLOAT,           // type
-					GL_FALSE,           // normalized?
-					0,                  // stride
-					(void*)0            // array buffer offset
+					vertexPickingPosition_modelspaceID,  // attribute
+					3,                            // size
+					GL_FLOAT,                     // type
+					GL_FALSE,                     // normalized?
+					0,                            // stride
+					(void*)0                      // array buffer offset
 				);
 
 				// Index buffer
@@ -240,7 +240,7 @@ int main( void )
 
 			}
 
-			glDisableVertexAttribArray(0);
+			glDisableVertexAttribArray(vertexPickingPosition_modelspaceID);
 
 
 			// Wait until all the pending drawing commands are really done.
@@ -275,7 +275,7 @@ int main( void )
 			}
 
 			// Uncomment these lines to see the picking shader in effect
-			//glfwSwapBuffers(window);
+			//glfwSwapBuffers();
 			//continue; // skips the normal rendering
 
 
@@ -291,9 +291,9 @@ int main( void )
 		// Use our shader
 		glUseProgram(programID);
 
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(2);
+		glEnableVertexAttribArray(vertexPosition_modelspaceID);
+		glEnableVertexAttribArray(vertexUVID);
+		glEnableVertexAttribArray(vertexNormal_modelspaceID);
 
 		for(int i=0; i<100; i++){
 
@@ -322,18 +322,18 @@ int main( void )
 			// 1rst attribute buffer : vertices
 			glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 			glVertexAttribPointer(
-				0,                  // attribute
-				3,                  // size
-				GL_FLOAT,           // type
-				GL_FALSE,           // normalized?
-				0,                  // stride
-				(void*)0            // array buffer offset
+				vertexPosition_modelspaceID, // attribute
+				3,                           // size
+				GL_FLOAT,                    // type
+				GL_FALSE,                    // normalized?
+				0,                           // stride
+				(void*)0                     // array buffer offset
 			);
 
 			// 2nd attribute buffer : UVs
 			glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 			glVertexAttribPointer(
-				1,                                // attribute
+				vertexUVID,                       // attribute
 				2,                                // size
 				GL_FLOAT,                         // type
 				GL_FALSE,                         // normalized?
@@ -344,7 +344,7 @@ int main( void )
 			// 3rd attribute buffer : normals
 			glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
 			glVertexAttribPointer(
-				2,                                // attribute
+				vertexNormal_modelspaceID,        // attribute
 				3,                                // size
 				GL_FLOAT,                         // type
 				GL_FALSE,                         // normalized?
@@ -366,9 +366,9 @@ int main( void )
 
 		}
 
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(2);
+		glDisableVertexAttribArray(vertexPosition_modelspaceID);
+		glDisableVertexAttribArray(vertexUVID);
+		glDisableVertexAttribArray(vertexNormal_modelspaceID);
 
 		// Draw GUI
 		TwDraw();
@@ -388,7 +388,6 @@ int main( void )
 	glDeleteBuffers(1, &elementbuffer);
 	glDeleteProgram(programID);
 	glDeleteTextures(1, &Texture);
-	glDeleteVertexArrays(1, &VertexArrayID);
 
 	// Close OpenGL window and terminate GLFW
 	glfwTerminate();
