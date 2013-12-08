@@ -31,21 +31,19 @@ int main( void )
 	}
 
 	glfwWindowHint(GLFW_SAMPLES, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
 	// Open a window and create its OpenGL context
 	window = glfwCreateWindow( 1024, 768, "Tutorial 16 - Shadows, Simple version", NULL, NULL);
 	if( window == NULL ){
-		fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
+		fprintf( stderr, "Failed to open GLFW window.\n" );
 		glfwTerminate();
 		return -1;
 	}
 	glfwMakeContextCurrent(window);
 
 	// Initialize GLEW
-	glewExperimental = true; // Needed for core profile
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
 		return -1;
@@ -67,19 +65,21 @@ int main( void )
 	// Cull triangles which normal is not towards the camera
 	glEnable(GL_CULL_FACE);
 
-	GLuint VertexArrayID;
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
-
 	// Create and compile our GLSL program from the shaders
 	GLuint depthProgramID = LoadShaders( "DepthRTT.vertexshader", "DepthRTT.fragmentshader" );
 
 	// Get a handle for our "MVP" uniform
 	GLuint depthMatrixID = glGetUniformLocation(depthProgramID, "depthMVP");
 
+	// Get a handle for our buffers
+	GLuint depth_vertexPosition_modelspaceID = glGetAttribLocation(depthProgramID, "vertexPosition_modelspace");
+
 	// Load the texture
 	GLuint Texture = loadDDS("uvmap.DDS");
 	
+	// Get a handle for our "myTextureSampler" uniform
+	GLuint TextureID  = glGetUniformLocation(depthProgramID, "myTextureSampler");
+
 	// Read our .obj file
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
@@ -103,11 +103,6 @@ int main( void )
 	glGenBuffers(1, &uvbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 	glBufferData(GL_ARRAY_BUFFER, indexed_uvs.size() * sizeof(glm::vec2), &indexed_uvs[0], GL_STATIC_DRAW);
-
-	GLuint normalbuffer;
-	glGenBuffers(1, &normalbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-	glBufferData(GL_ARRAY_BUFFER, indexed_normals.size() * sizeof(glm::vec3), &indexed_normals[0], GL_STATIC_DRAW);
 
 	// Generate a buffer for the indices as well
 	GLuint elementbuffer;
@@ -137,26 +132,59 @@ int main( void )
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
 		 
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTexture, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTexture, 0);
 
 	// No color output in the bound framebuffer, only depth.
 	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
 
 	// Always check that our framebuffer is ok
 	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		return false;
 
+	
+	static const GLfloat g_quad_vertex_buffer_data[] = { 
+		-1.0f, -1.0f, 0.0f,
+		 1.0f, -1.0f, 0.0f,
+		-1.0f,  1.0f, 0.0f,
+		-1.0f,  1.0f, 0.0f,
+		 1.0f, -1.0f, 0.0f,
+		 1.0f,  1.0f, 0.0f,
+	};
+
+	GLuint quad_vertexbuffer;
+	glGenBuffers(1, &quad_vertexbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, quad_vertexbuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_quad_vertex_buffer_data), g_quad_vertex_buffer_data, GL_STATIC_DRAW);
+
+	// Create and compile our GLSL program from the shaders
+	GLuint quad_programID = LoadShaders( "Passthrough.vertexshader", "SimpleTexture.fragmentshader" );
+	GLuint texID = glGetUniformLocation(quad_programID, "renderedTexture");
+	GLuint timeID = glGetUniformLocation(quad_programID, "time");
+
+	// Get a handle for our buffers
+	GLuint quad_vertexPosition_modelspaceID = glGetAttribLocation(quad_programID, "vertexPosition_modelspace");
+
+
+
+
 	// Create and compile our GLSL program from the shaders
 	GLuint programID = LoadShaders( "ShadowMapping_SimpleVersion.vertexshader", "ShadowMapping_SimpleVersion.fragmentshader" );
-
-	// Get a handle for our "myTextureSampler" uniform
-	GLuint TextureID  = glGetUniformLocation(programID, "myTextureSampler");
 
 	// Get a handle for our "MVP" uniform
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
 	GLuint DepthBiasID = glGetUniformLocation(programID, "DepthBiasMVP");
 	GLuint ShadowMapID = glGetUniformLocation(programID, "shadowMap");
-		
+	
+	// Get a handle for our buffers
+	GLuint vertexPosition_modelspaceID = glGetAttribLocation(programID, "vertexPosition_modelspace");
+	GLuint vertexUVID = glGetAttribLocation(programID, "vertexUV");
+
+	// Get a handle for our "LightPosition" uniform
+	GLuint lightInvDirID = glGetUniformLocation(programID, "LightInvDirection_worldspace");
+
+
+	
 	do{
 
 		// Render to our framebuffer
@@ -193,10 +221,10 @@ int main( void )
 		glUniformMatrix4fv(depthMatrixID, 1, GL_FALSE, &depthMVP[0][0]);
 
 		// 1rst attribute buffer : vertices
-		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(depth_vertexPosition_modelspaceID);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 		glVertexAttribPointer(
-			0,  // The attribute we want to configure
+			depth_vertexPosition_modelspaceID,  // The attribute we want to configure
 			3,                  // size
 			GL_FLOAT,           // type
 			GL_FALSE,           // normalized?
@@ -215,7 +243,7 @@ int main( void )
 			(void*)0           // element array buffer offset
 		);
 
-		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(depth_vertexPosition_modelspaceID);
 
 
 
@@ -254,6 +282,8 @@ int main( void )
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(DepthBiasID, 1, GL_FALSE, &depthBiasMVP[0][0]);
 
+		glUniform3f(lightInvDirID, lightInvDir.x, lightInvDir.y, lightInvDir.z);
+
 		// Bind our texture in Texture Unit 0
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, Texture);
@@ -265,39 +295,27 @@ int main( void )
 		glUniform1i(ShadowMapID, 1);
 
 		// 1rst attribute buffer : vertices
-		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(vertexPosition_modelspaceID);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 		glVertexAttribPointer(
-			0,                  // attribute
-			3,                  // size
-			GL_FLOAT,           // type
-			GL_FALSE,           // normalized?
-			0,                  // stride
-			(void*)0            // array buffer offset
+			vertexPosition_modelspaceID,  // The attribute we want to configure
+			3,                            // size
+			GL_FLOAT,                     // type
+			GL_FALSE,                     // normalized?
+			0,                            // stride
+			(void*)0                      // array buffer offset
 		);
 
 		// 2nd attribute buffer : UVs
-		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(vertexUVID);
 		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 		glVertexAttribPointer(
-			1,                                // attribute
-			2,                                // size
-			GL_FLOAT,                         // type
-			GL_FALSE,                         // normalized?
-			0,                                // stride
-			(void*)0                          // array buffer offset
-		);
-
-		// 3rd attribute buffer : normals
-		glEnableVertexAttribArray(2);
-		glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-		glVertexAttribPointer(
-			2,                                // attribute
-			3,                                // size
-			GL_FLOAT,                         // type
-			GL_FALSE,                         // normalized?
-			0,                                // stride
-			(void*)0                          // array buffer offset
+			vertexUVID,                   // The attribute we want to configure
+			2,                            // size : U+V => 2
+			GL_FLOAT,                     // type
+			GL_FALSE,                     // normalized?
+			0,                            // stride
+			(void*)0                      // array buffer offset
 		);
 
 		// Index buffer
@@ -311,9 +329,42 @@ int main( void )
 			(void*)0           // element array buffer offset
 		);
 
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(2);
+		glDisableVertexAttribArray(vertexPosition_modelspaceID);
+		glDisableVertexAttribArray(vertexUVID);
+
+
+		// Optionally render the shadowmap (for debug only)
+
+		// Render only on a corner of the window (or we we won't see the real rendering...)
+		glViewport(0,0,512,512);
+
+		// Use our shader
+		glUseProgram(quad_programID);
+
+		// Bind our texture in Texture Unit 0
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, depthTexture);
+		// Set our "renderedTexture" sampler to user Texture Unit 0
+		glUniform1i(texID, 0);
+
+		glUniform1f(timeID, (float)(glfwGetTime()*10.0f) );
+
+		// 1rst attribute buffer : vertices
+		glEnableVertexAttribArray(quad_vertexPosition_modelspaceID);
+		glBindBuffer(GL_ARRAY_BUFFER, quad_vertexbuffer);
+		glVertexAttribPointer(
+			quad_vertexPosition_modelspaceID, // attribute
+			3,                                // size
+			GL_FLOAT,                         // type
+			GL_FALSE,                         // normalized?
+			0,                                // stride
+			(void*)0                          // array buffer offset
+		);
+
+		// Draw the triangles !
+		// You have to disable GL_COMPARE_R_TO_TEXTURE above in order to see anything !
+		//glDrawArrays(GL_TRIANGLES, 0, 6); // From index 0 to 6 -> 2 triangles
+		glDisableVertexAttribArray(quad_vertexPosition_modelspaceID);
 
 
 		// Swap buffers
@@ -327,14 +378,15 @@ int main( void )
 	// Cleanup VBO and shader
 	glDeleteBuffers(1, &vertexbuffer);
 	glDeleteBuffers(1, &uvbuffer);
-	glDeleteBuffers(1, &normalbuffer);
 	glDeleteBuffers(1, &elementbuffer);
 	glDeleteProgram(programID);
 	glDeleteProgram(depthProgramID);
+	glDeleteProgram(quad_programID);
 	glDeleteTextures(1, &Texture);
 
 	glDeleteFramebuffers(1, &FramebufferName);
 	glDeleteTextures(1, &depthTexture);
+	glDeleteBuffers(1, &quad_vertexbuffer);
 
 
 	// Close OpenGL window and terminate GLFW
