@@ -133,7 +133,7 @@ def Build_VC11Express_64():
 	global VisualStudio11ExpressPath
 	if os.path.exists("build_VC11_64") == False: 
 		os.makedirs("build_VC11_64")
-	os.chdir("build_VC10_64")
+	os.chdir("build_VC11_64")
 	with open(os.devnull, "w") as fnull:
 		print "Running CMake..."
 		subprocess.call( [CMakePath, '-G', 'Visual Studio 11 Win64', '-D', 'INCLUDE_DISTRIB:bool=true', '../../'], stdout=fnull, stderr=fnull )
