@@ -25,6 +25,7 @@ set(OPENGL_LIBRARY
 	${OPENGL_LIBRARY}
 	-lGL -lGLU -lXrandr -lXext -lX11 -lrt
 	${CMAKE_DL_LIBS}
+	${GLFW_LIBRARIES}
 )
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
