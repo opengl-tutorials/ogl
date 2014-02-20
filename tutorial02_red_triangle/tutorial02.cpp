@@ -100,11 +100,13 @@ int main( void )
 	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
 		   glfwWindowShouldClose(window) == 0 );
 
-	// Close OpenGL window and terminate GLFW
-	glfwTerminate();
 
 	// Cleanup VBO
 	glDeleteBuffers(1, &vertexbuffer);
+	glDeleteProgram(programID);
+
+	// Close OpenGL window and terminate GLFW
+	glfwTerminate();
 
 	return 0;
 }
