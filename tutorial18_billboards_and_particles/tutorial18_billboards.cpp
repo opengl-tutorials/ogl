@@ -224,9 +224,12 @@ int main( void )
 	// Cleanup VBO and shader
 	glDeleteBuffers(1, &billboard_vertex_buffer);
 	glDeleteProgram(programID);
-	glDeleteTextures(1, &TextureID);
-
-
+	glDeleteTextures(1, &Texture);
+#ifdef DRAW_CUBE
+	glDeleteProgram(cubeProgramID);
+	glDeleteVertexArrays(1, &cubevertexbuffer);
+	glDeleteVertexArrays(1, &cubecolorbuffer);
+#endif
 	// Close OpenGL window and terminate GLFW
 	glfwTerminate();
 

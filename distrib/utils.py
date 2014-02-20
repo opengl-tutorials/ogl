@@ -114,7 +114,7 @@ def Build_VC10_64():
 
 	
 def Build_VC11Express_32():
-	print "Building with Visual Studio 11 Express Desktop, 32 bits"
+	print "Building with Visual Studio 12 Express Desktop, 32 bits"
 	global CMakePath
 	global VisualStudio11ExpressPath
 	if os.path.exists("build_VC11_32") == False: 
