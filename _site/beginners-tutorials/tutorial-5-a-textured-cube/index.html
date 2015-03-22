@@ -1,0 +1,321 @@
+<p>In this tutorial, you will learn :</p>
+<ul>
+<li>What are UV coordinates</li>
+<li>How to load textures yourself</li>
+<li>How to use them in OpenGL</li>
+<li>What is filtering and mipmapping, and how to use them</li>
+<li>How to load texture more robustly with GLFW</li>
+<li>What is the alpha channel</li><br />
+</ul>
+<p>&lt;/p&gt;</p>
+<h1>About UV coordinates</h1>
+<p><br />
+When texturing a mesh, you need a way to tell to OpenGL which part of the image has to be used for each triangle. This is done with UV coordinates.&lt;/p&gt;</p>
+<p>Each vertex has, on top of its position, a couple of floats, U and V. These coordinates are used to access the texture, in the following way :</p>
+<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/UVintro.png"><img class="alignnone size-full wp-image-116" title="UVintro" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/UVintro.png" width="662" height="337" /></a></p>
+<p>Notice how the texture is distorted on the triangle.</p>
+<p>&nbsp;</p>
+<h1>Loading .BMP images yourself</h1>
+<p><br />
+Knowing the BMP file format is not crucial : plenty of libraries can do it for you. But it’s very simple and can help you understand how things work under the hood. So we’ll write a BMP file loader from scratch, so that you know how it works, <span style="text-decoration: underline;">and never use it again</span>.&lt;/p&gt;</p>
+<p>Here is the declaration of the loading function :</p>
+<pre class="brush: cpp">GLuint loadBMP_custom(const char * imagepath);</pre>
+<p><br />
+so it’s used like this :&lt;/p&gt;
+&lt;pre class="brush: cpp"&gt;GLuint image = loadBMP_custom(“./my_texture.bmp”);&lt;/pre&gt;<br />
+Let’s see how to read a BMP file, then.&lt;/p&gt;</p>
+<p>First, we'll need some data. These variable will be set when reading the file.</p>
+<pre class="brush: cpp">// Data read from the header of the BMP file<br />
+unsigned char header[54]; // Each BMP file begins by a 54-bytes header<br />
+unsigned int dataPos;     // Position in the file where the actual data begins<br />
+unsigned int width, height;<br />
+unsigned int imageSize;   // = width*height*3<br />
+// Actual RGB data<br />
+unsigned char * data;</pre>
+<p><br />
+We now have to actually open the file&lt;/p&gt;
+&lt;pre class="brush: cpp"&gt;// Open the file<br />
+FILE * file = fopen(imagepath,”rb”);<br />
+if (!file)							    {printf(“Image could not be opened\n”); return 0;}&lt;/pre&gt;<br />
+The first thing in the file is a 54-bytes header. It contains information such as “Is this file really a BMP file?”, the size of the image, the number of bits per pixel, etc. So let’s read this header :&lt;/p&gt;
+&lt;pre class="brush: cpp"&gt;if ( fread(header, 1, 54, file)!=54 ){ // If not 54 bytes read : problem<br />
+    printf(“Not a correct BMP file\n”);<br />
+    return false;<br />
+}&lt;/pre&gt;<br />
+The header always begins by BM. As a matter of fact, here’s what you get when you open a .BMP file in a hexadecimal editor :&lt;/p&gt;</p>
+<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/hexbmp.png"><img class="alignnone size-full wp-image-662" title="hexbmp" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/hexbmp.png" width="541" height="128" /></a></p>
+<p>So we have to check that the two first bytes are really 'B' and 'M' :</p>
+<pre class="brush: cpp">if ( header[0]!='B' || header[1]!='M' ){<br />
+    printf("Not a correct BMP file\n");<br />
+    return 0;<br />
+}</pre>
+<p><br />
+Now we can read the size of the image, the location of the data in the file, etc :&lt;/p&gt;
+&lt;pre class="brush: cpp"&gt;// Read ints from the byte array<br />
+dataPos    = <em>(int</em>)&amp;(header[0x0A]);<br />
+imageSize  = <em>(int</em>)&amp;(header[0x22]);<br />
+width      = <em>(int</em>)&amp;(header[0x12]);<br />
+height     = <em>(int</em>)&amp;(header[0x16]);&lt;/pre&gt;<br />
+We have to make up some info if it’s missing :&lt;/p&gt;
+&lt;pre class="brush: cpp"&gt;// Some BMP files are misformatted, guess missing information<br />
+if (imageSize==0)    imageSize=width<em>height</em>3; // 3 : one byte for each Red, Green and Blue component<br />
+if (dataPos==0)      dataPos=54; // The BMP header is done that way&lt;/pre&gt;<br />
+Now that we know the size of the image, we can allocate some memory to read the image into, and read :&lt;/p&gt;
+&lt;pre class="brush: cpp"&gt;// Create a buffer<br />
+data = new unsigned char [imageSize];&lt;/p&gt;</p>
+<p>// Read the actual data from the file into the buffer<br />
+fread(data,1,imageSize,file);</p>
+<p>//Everything is in memory now, the file can be closed<br />
+fclose(file);<br />
+We arrive now at the real OpenGL part. Creating textures is very similar to creating vertex buffers : Create a texture, bind it, fill it, and configure it.</p>
+<p>In glTexImage2D, the GL_RGB indicates that we are talking about a 3-component color, and GL_BGR says how exactly it is represented in RAM. As a matter of fact, BMP does not store Red-&gt;Green-&gt;Blue but Blue-&gt;Green-&gt;Red, so we have to tell it to OpenGL.</p>
+<pre class="brush: cpp">// Create one OpenGL texture<br />
+GLuint textureID;<br />
+glGenTextures(1, &amp;textureID);
+<p>// "Bind" the newly created texture : all future texture functions will modify this texture<br />
+glBindTexture(GL_TEXTURE_2D, textureID);</p>
+<p>// Give the image to OpenGL<br />
+glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);</p>
+<p>glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);<br />
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);<br />
+We'll explain those last two lines later. Meanwhile, on the C++-side, you can use your new function to load a texture :</p>
+<pre class="brush: cpp">GLuint Texture = loadBMP_custom("uvtemplate.bmp");</pre><br />
+Another very important point :<strong> use power-of-two textures !</strong>
+<ul>
+<li>good : 128*128*, 256*256, 1024*1024, 2*2...</li>
+<li>bad : 127*128, 3*5, ...</li>
+<li>okay but weird : 128*256</li><br />
+</ul>
+<h1>Using the texture in OpenGL</h1><br />
+We'll have a look at the fragment shader first. Most of it is straightforward :
+<pre class="brush: fs">#version 330 core
+<p>// Interpolated values from the vertex shaders<br />
+in vec2 UV;</p>
+<p>// Ouput data<br />
+out vec3 color;</p>
+<p>// Values that stay constant for the whole mesh.<br />
+uniform sampler2D myTextureSampler;</p>
+<p>void main(){</p>
+<p>    // Output color = color of the texture at the specified UV<br />
+    color = texture( myTextureSampler, UV ).rgb;<br />
+}<br />
+Three things :</p>
+<ul>
+<li>The fragment shader needs UV coordinates. Seems fair.</li>
+<li>It also needs a "sampler2D" in order to know which texture to access (you can access several texture in the same shader)</li>
+<li>Finally, accessing a texture is done with texture(), which gives back a (R,G,B,A) vec4. We'll see about the A shortly.</li><br />
+</ul><br />
+The vertex shader is simple too, you just have to pass the UVs to the fragment shader :
+<pre class="brush: vs">#version 330 core
+<p>// Input vertex data, different for all executions of this shader.<br />
+layout(location = 0) in vec3 vertexPosition_modelspace;<br />
+layout(location = 1) in vec2 vertexUV;</p>
+<p>// Output data ; will be interpolated for each fragment.<br />
+out vec2 UV;</p>
+<p>// Values that stay constant for the whole mesh.<br />
+uniform mat4 MVP;</p>
+<p>void main(){</p>
+<p>    // Output position of the vertex, in clip space : MVP * position<br />
+    gl_Position =&nbsp; MVP * vec4(vertexPosition_modelspace,1);</p>
+<p>    // UV of the vertex. No special space for this one.<br />
+    UV = vertexUV;<br />
+}<br />
+Remember "layout(location = 1) in vec2 vertexUV" from Tutorial 4 ? Well, we'll have to do the exact same thing here, but instead of giving a buffer (R,G,B) triplets, we'll give a buffer of (U,V) pairs.</p>
+<pre class="brush: cpp">// Two UV coordinatesfor each vertex. They were created with Blender. You'll learn shortly how to do this yourself.<br />
+static const GLfloat g_uv_buffer_data[] = {<br />
+    0.000059f, 1.0f-0.000004f,<br />
+    0.000103f, 1.0f-0.336048f,<br />
+    0.335973f, 1.0f-0.335903f,<br />
+    1.000023f, 1.0f-0.000013f,<br />
+    0.667979f, 1.0f-0.335851f,<br />
+    0.999958f, 1.0f-0.336064f,<br />
+    0.667979f, 1.0f-0.335851f,<br />
+    0.336024f, 1.0f-0.671877f,<br />
+    0.667969f, 1.0f-0.671889f,<br />
+    1.000023f, 1.0f-0.000013f,<br />
+    0.668104f, 1.0f-0.000013f,<br />
+    0.667979f, 1.0f-0.335851f,<br />
+    0.000059f, 1.0f-0.000004f,<br />
+    0.335973f, 1.0f-0.335903f,<br />
+    0.336098f, 1.0f-0.000071f,<br />
+    0.667979f, 1.0f-0.335851f,<br />
+    0.335973f, 1.0f-0.335903f,<br />
+    0.336024f, 1.0f-0.671877f,<br />
+    1.000004f, 1.0f-0.671847f,<br />
+    0.999958f, 1.0f-0.336064f,<br />
+    0.667979f, 1.0f-0.335851f,<br />
+    0.668104f, 1.0f-0.000013f,<br />
+    0.335973f, 1.0f-0.335903f,<br />
+    0.667979f, 1.0f-0.335851f,<br />
+    0.335973f, 1.0f-0.335903f,<br />
+    0.668104f, 1.0f-0.000013f,<br />
+    0.336098f, 1.0f-0.000071f,<br />
+    0.000103f, 1.0f-0.336048f,<br />
+    0.000004f, 1.0f-0.671870f,<br />
+    0.336024f, 1.0f-0.671877f,<br />
+    0.000103f, 1.0f-0.336048f,<br />
+    0.336024f, 1.0f-0.671877f,<br />
+    0.335973f, 1.0f-0.335903f,<br />
+    0.667969f, 1.0f-0.671889f,<br />
+    1.000004f, 1.0f-0.671847f,<br />
+    0.667979f, 1.0f-0.335851f<br />
+};</pre><br />
+The UV coordinates above correspond to the following model :
+<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/uv_mapping_blender.png"><img class="alignnone size-medium wp-image-115" title="uv_mapping_blender" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/uv_mapping_blender-300x222.png" width="300" height="222" /></a></p>
+<p>The rest is obvious. Generate the buffer, bind it, fill it, configure it, and draw the Vertex Buffer as usual. Just be careful to use 2 as the second parameter (size) of glVertexAttribPointer instead of 3.</p>
+<p>This is the result :</p>
+<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/nearfiltering.png"><img class="alignnone size-full wp-image-119" title="nearfiltering" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/nearfiltering.png" width="533" height="557" /></a></p>
+<p>and a zoomed-in version :</p>
+<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/nearfiltering_zoom.png"><img class="alignnone size-full wp-image-120" title="nearfiltering_zoom" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/nearfiltering_zoom.png" width="348" height="340" /></a></p>
+<h1>What is filtering and mipmapping, and how to use them</h1><br />
+As you can see in the screenshot above, the texture quality is not that great. This is because in loadBMP_custom, we wrote :
+<pre class="brush: cpp">glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);<br />
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);</pre><br />
+This means that in our fragment shader, texture() takes the texel that is at the (U,V) coordinates, and continues happily.
+<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/nearest.png"><img class="alignnone size-full wp-image-130" title="nearest" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/nearest.png" width="440" height="240" /></a></p>
+<p>There are several things we can do to improve this.</p>
+<h2>Linear filtering</h2><br />
+With linear filtering, texture() also looks at the other texels around, and mixes the colours according to the distance to each center. This avoids the hard edges seen above.
+<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/linear1.png"><img class="alignnone size-full wp-image-133" title="linear" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/linear1.png" width="440" height="240" /></a></p>
+<p>This is much better, and this is used a lot, but if you want very high quality you can also use anisotropic filtering, which is a bit slower.</p>
+<h2>Anisotropic filtering</h2><br />
+This one approximates the&nbsp; part of the image that is really seen through the fragment. For instance, if the following texture is seen from the side, and a little bit rotated, anisotropic filtering will compute the colour contained in the blue rectangle by taking a fixed number of samples (the "anisotropic level") along its main direction.
+<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/aniso.png"><img class="alignnone size-full wp-image-131" title="aniso" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/aniso.png" width="440" height="240" /></a></p>
+<h2>Mipmaps</h2><br />
+Both linear and anisotropic filtering have a problem. If the texture is seen from far away, mixing only 4 texels won't be enough. Actually, if your 3D model is so far away than it takes only 1 fragment on screen, ALL the texels of the image should be averaged to produce the final color. This is obviously not done for performance reasons. Instead, we introduce MipMaps :
+<p><a href="http://en.wikipedia.org/wiki/File:MipMap_Example_STS101.jpg"><img class="alignnone" title="An original image and its mipmaps. Image by Tokigun under Creative Commons" alt="" src="http://upload.wikimedia.org/wikipedia/commons/5/5c/MipMap_Example_STS101.jpg" width="384" height="256" /></a></p>
+<ul>
+<li>At initialisation tile, you scale down your image by 2, successively, until you only have a 1x1 image (which effectively is the average of all the texels in the image)</li>
+<li>When you draw a mesh, you select which mipmap is the more appropriate to use given how big the texel should be.</li>
+<li>You sample this mipmap with either nearest, linear or anisotropic filtering</li>
+<li>For additional quality, you can also sample two mipmaps and blend the results.</li><br />
+</ul><br />
+Luckily, all this is very simple to do, OpenGL does everything for us provided that you ask him nicely :
+<pre class="brush: cpp">// When MAGnifying the image (no bigger mipmap available), use LINEAR filtering<br />
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);<br />
+// When MINifying the image, use a LINEAR blend of two mipmaps, each filtered LINEARLY too<br />
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);<br />
+// Generate mipmaps, by the way.<br />
+glGenerateMipmap(GL_TEXTURE_2D);</pre>
+<h1>How to load texture with GLFW</h1><br />
+Our loadBMP_custom function is great because we made it ourselves, but using a dedicated library is better. GLFW can do that too (but only for TGA files) :
+<pre class="brush: cpp">GLuint loadTGA_glfw(const char * imagepath){
+<p>    // Create one OpenGL texture<br />
+    GLuint textureID;<br />
+    glGenTextures(1, &amp;textureID);</p>
+<p>    // "Bind" the newly created texture : all future texture functions will modify this texture<br />
+    glBindTexture(GL_TEXTURE_2D, textureID);</p>
+<p>    // Read the file, call glTexImage2D with the right parameters<br />
+    glfwLoadTexture2D(imagepath, 0);</p>
+<p>    // Nice trilinear filtering.<br />
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);<br />
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);<br />
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);<br />
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);<br />
+    glGenerateMipmap(GL_TEXTURE_2D);</p>
+<p>    // Return the ID of the texture we just created<br />
+    return textureID;<br />
+}</p>
+<h1>Compressed Textures</h1><br />
+At this point, you're probably wondering how to load JPEG files instead of TGA.
+<p>Short answer : don't. There's a better option.</p>
+<h2>Creating compressed textures</h2>
+<ul>
+<li>Download <a href="http://developer.amd.com/Resources/archive/ArchivedTools/gpu/compressonator/Pages/default.aspx">The Compressonator</a>, an ATI tool</li>
+<li>Load a Power-Of-Two texture in it</li>
+<li>Compress it in DXT1, DXT3 or in DXT5 (more about the differences between the various formats on <a href="http://en.wikipedia.org/wiki/S3_Texture_Compression">Wikipedia</a>) :</li><br />
+</ul><br />
+<a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/TheCompressonator.png"><img class="alignnone size-full wp-image-358" title="TheCompressonator" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/TheCompressonator.png" width="806" height="688" /></a>
+<ul>
+<li>Generate mipmaps so that you won't have to do it on runtime</li>
+<li>Export it as a .DDS file.</li><br />
+</ul><br />
+At this point, your image is compressed in a format that is directly compatible with the GPU. Whenever calling texture() in a shader, it will uncompress it on-the-fly. This can seem slow, but since it takes a LOT less memory, less data needs to be transferred. But memory transfers are expensive; and texture decompression is free (there is dedicated hardware for that). Typically, using texture compression yields a 20% increase in performance.
+<h2>Using the compressed texture</h2><br />
+Let's see how to load the image. It's very similar to the BMP code, except that the header is organized differently :
+<pre class="brush: cpp">GLuint loadDDS(const char * imagepath){
+<p>&nbsp;&nbsp;&nbsp; unsigned char header[124];</p>
+<p>&nbsp;&nbsp;&nbsp; FILE *fp;</p>
+<p>&nbsp;&nbsp;&nbsp; /* try to open the file */<br />
+&nbsp;&nbsp;&nbsp; fp = fopen(imagepath, "rb");<br />
+&nbsp;&nbsp;&nbsp; if (fp == NULL)<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return 0;</p>
+<p>&nbsp;&nbsp;&nbsp; /* verify the type of file */<br />
+&nbsp;&nbsp;&nbsp; char filecode[4];<br />
+&nbsp;&nbsp;&nbsp; fread(filecode, 1, 4, fp);<br />
+&nbsp;&nbsp;&nbsp; if (strncmp(filecode, "DDS ", 4) != 0) {<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; fclose(fp);<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return 0;<br />
+&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp; /* get the surface desc */<br />
+&nbsp;&nbsp;&nbsp; fread(&amp;header, 124, 1, fp); </p>
+<p>&nbsp;&nbsp;&nbsp; unsigned int height&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = *(unsigned int*)&amp;(header[8 ]);<br />
+&nbsp;&nbsp;&nbsp; unsigned int width&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; = *(unsigned int*)&amp;(header[12]);<br />
+&nbsp;&nbsp;&nbsp; unsigned int linearSize&nbsp;&nbsp;&nbsp; &nbsp;= *(unsigned int*)&amp;(header[16]);<br />
+&nbsp;&nbsp;&nbsp; unsigned int mipMapCount = *(unsigned int*)&amp;(header[24]);<br />
+&nbsp;&nbsp;&nbsp; unsigned int fourCC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = *(unsigned int*)&amp;(header[80]);<br />
+After the header is the actual data : all the mipmap levels, successively. We can read them all in one batch :</p>
+<p>&nbsp;</p>
+<pre class="brush: cpp">&nbsp;&nbsp;&nbsp; unsigned char * buffer;<br />
+&nbsp;&nbsp;&nbsp; unsigned int bufsize;<br />
+&nbsp;&nbsp;&nbsp; /* how big is it going to be including all mipmaps? */<br />
+&nbsp;&nbsp;&nbsp; bufsize = mipMapCount &gt; 1 ? linearSize * 2 : linearSize;<br />
+&nbsp;&nbsp;&nbsp; buffer = (unsigned char*)malloc(bufsize * sizeof(unsigned char));<br />
+&nbsp;&nbsp;&nbsp; fread(buffer, 1, bufsize, fp);<br />
+&nbsp;&nbsp;&nbsp; /* close the file pointer */<br />
+&nbsp;&nbsp;&nbsp; fclose(fp);</pre><br />
+Here we'll deal with 3 different formats : DXT1, DXT3 and DXT5. We need to convert the "fourCC" flag into a value that OpenGL understands.
+<pre class="brush: cpp">&nbsp;&nbsp;&nbsp; unsigned int components&nbsp; = (fourCC == FOURCC_DXT1) ? 3 : 4;<br />
+&nbsp;&nbsp;&nbsp; unsigned int format;<br />
+&nbsp;&nbsp;&nbsp; switch(fourCC)<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp;&nbsp; case FOURCC_DXT1:<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; format = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; break;<br />
+&nbsp;&nbsp;&nbsp; case FOURCC_DXT3:<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; format = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; break;<br />
+&nbsp;&nbsp;&nbsp; case FOURCC_DXT5:<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; break;<br />
+&nbsp;&nbsp;&nbsp; default:<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; free(buffer);<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return 0;<br />
+&nbsp;&nbsp;&nbsp; }</pre><br />
+Creating the texture is done as usual :
+<pre class="brush: cpp">&nbsp;&nbsp;&nbsp; // Create one OpenGL texture<br />
+&nbsp;&nbsp;&nbsp; GLuint textureID;<br />
+&nbsp;&nbsp;&nbsp; glGenTextures(1, &amp;textureID);
+<p>&nbsp;&nbsp;&nbsp; // "Bind" the newly created texture : all future texture functions will modify this texture<br />
+&nbsp;&nbsp;&nbsp; glBindTexture(GL_TEXTURE_2D, textureID);<br />
+And now, we just have to fill each mipmap one after another :</p>
+<pre class="brush: cpp">&nbsp;&nbsp;&nbsp; unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;<br />
+&nbsp;&nbsp;&nbsp; unsigned int offset = 0;
+<p>&nbsp;&nbsp;&nbsp; /* load the mipmaps */<br />
+&nbsp;&nbsp;&nbsp; for (unsigned int level = 0; level &lt; mipMapCount &amp;&amp; (width || height); ++level)<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; unsigned int size = ((width+3)/4)*((height+3)/4)*blockSize;<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; glCompressedTexImage2D(GL_TEXTURE_2D, level, format, width, height,&nbsp;<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 0, size, buffer + offset);</p>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; offset += size;<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; width&nbsp; /= 2;<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; height /= 2;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; free(buffer); </p>
+<p>&nbsp;&nbsp;&nbsp; return textureID;</p>
+<h2>Inversing the UVs</h2><br />
+DXT compression comes from the DirectX world, where the V texture coordinate is inversed compared to OpenGL. So if you use compressed textures, you'll have to use ( coord.u, 1.0-coord.v) to fetch the correct texel. You can do this whenever you want : in your export script, in your loader, in your shader...
+<h1>Conclusion</h1><br />
+You just learnt to create, load and use textures in OpenGL.
+<p>In general, you should only use compressed textures, since they are smaller to store, almost instantaneous to load, and faster to use; the main drawback it that you have to convert your images through The Compressonator.</p>
+<h1>Exercices</h1>
+<ul>
+<li>The DDS loader is implemented in the source code, but not the texture coordinate modification. Change the code at the appropriate place to display the cube correctly.</li>
+<li>Experiment with the various DDS formats. Do they give different result ? Different compression ratios ?</li>
+<li>Try not to generate mipmaps in The Compressonator. What is the result ? Give 3 different ways to fix this.</li><br />
+</ul>
+<h1>References</h1>
+<ul>
+<li><a href="http://www.oldunreal.com/editing/s3tc/ARB_texture_compression.pdf">Using texture compression in OpenGL</a> , S&eacute;bastien Domine, NVIDIA</li><br />
+</ul>
+</pre></pre></pre></pre></pre></pre></pre>

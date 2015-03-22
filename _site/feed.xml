@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Your awesome title</title>
+    <description>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</description>
+    <link>/opengl-tutorials/</link>
+    <atom:link href="/opengl-tutorials/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>License changes</title>
+        <description>&lt;p&gt;Hi,&lt;/p&gt;
+&lt;p&gt;We recently decided to change the license of the tutorials, and this is a good opportunity to break the silence on the RSS feed.&lt;/p&gt;
+&lt;p&gt;We chose the Creative Commons license CC-BY-NC-ND. For those of you who don&#39;t speak legalese, it means :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span style=&quot;line-height: 16px;&quot;&gt;BY : If you quote or use the tutorial&#39;s webpages, you have to say that it comes from opengl-tutorial.org&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;NC : Non-commercial. Basically, you can&#39;t make an e-book out of the tutorials and sell it =)&lt;/li&gt;
+&lt;li&gt;ND : No Derivatives. The rationale is not to block &quot;forks&quot;, but to have word in the decision. For instance, we are currently collaborating with the French site Developpez.com for a french translation. Basically : send us an e-mail !&lt;/li&gt;&lt;br /&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br /&gt;
+These changes only affect the webpages. The source code remains under the WTF Public License. To quote it, you just do what the f*** you want to : create a commercial software from it, buy us a beer, etc :-)&amp;lt;/p&amp;gt;&lt;/p&gt;
+&lt;p&gt;These informations are available on the download page :&amp;nbsp;http://www.opengl-tutorial.org/download/&lt;/p&gt;
+</description>
+        <pubDate>Tue, 18 Feb 2014 09:46:20 +0100</pubDate>
+        <link>/opengl-tutorials/uncategorized/2014/02/18/license-changes/</link>
+        <guid isPermaLink="true">/opengl-tutorials/uncategorized/2014/02/18/license-changes/</guid>
+      </item>
+    
+      <item>
+        <title>Building your own application</title>
+        <description>&lt;p&gt;A new, much requested article is available here :&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.opengl-tutorial.org/miscellaneous/building-your-own-c-application/&quot;&gt;http://www.opengl-tutorial.org/miscellaneous/building-your-own-c-application/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The tutorial&#39;s code use CMake (and a lot of work) to hide the complexity of linking the dependencies, compiling the code, and so on. This makes the entry barrier low, but also makes it complicated to create your own project from scratch. A playground was introduced to mitigate the issue, but this isn&#39;t enough.&lt;/p&gt;
+&lt;p&gt;So this tutorial explains the very basics of C and C++ compilation - just enough to get you up and running, and how to do basic actions usin popular IDEs.&lt;/p&gt;
+&lt;p&gt;It also features a Troobleshooting section in case you have any problem.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 06 Oct 2012 14:10:37 +0200</pubDate>
+        <link>/opengl-tutorials/uncategorized/2012/10/06/building-your-own-application/</link>
+        <guid isPermaLink="true">/opengl-tutorials/uncategorized/2012/10/06/building-your-own-application/</guid>
+      </item>
+    
+      <item>
+        <title>Tutorial 15 published</title>
+        <description>&lt;p&gt;The 15th tutorial has been published. It is a video tutorial which explains how to bake lightmaps in Blender, even if the concept is the same with other modelers.&lt;br /&gt;
+It also features an basic introduction to Blender manipulation &amp;amp; modeling.&lt;/p&gt;
+&lt;p&gt;The Download page and the Google Code project have been updated accordingly; The source code also reflects many of the feedback I received.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 03 Feb 2012 22:59:48 +0100</pubDate>
+        <link>/opengl-tutorials/uncategorized/2012/02/03/tutorial-15-published/</link>
+        <guid isPermaLink="true">/opengl-tutorials/uncategorized/2012/02/03/tutorial-15-published/</guid>
+      </item>
+    
+      <item>
+        <title>Added Tutorials 1 to 14</title>
+        <description>&lt;p&gt;Except the 12th, which will come later&lt;/p&gt;
+</description>
+        <pubDate>Fri, 08 Jul 2011 08:16:12 +0200</pubDate>
+        <link>/opengl-tutorials/uncategorized/2011/07/08/added-tutorials-1-to-14/</link>
+        <guid isPermaLink="true">/opengl-tutorials/uncategorized/2011/07/08/added-tutorials-1-to-14/</guid>
+      </item>
+    
+  </channel>
+</rss>
