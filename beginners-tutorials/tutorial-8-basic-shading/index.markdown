@@ -15,6 +15,7 @@ wordpress_url: http://www.opengl-tutorial.org/?page_id=198
 date: '2011-05-08 19:12:46 +0200'
 date_gmt: '2011-05-08 19:12:46 +0200'
 categories: [tuto]
+order: 80
 tags: []
 ---
 <p>In this 8th tutorial, we will learn how to do some basic shading. This includes :</p>

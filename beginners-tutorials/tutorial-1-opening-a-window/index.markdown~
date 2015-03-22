@@ -14,7 +14,7 @@ wordpress_id: 7
 wordpress_url: http://www.dreamyourgame.com/wordpress/?page_id=7
 date: '2011-04-07 17:54:16 +0200'
 date_gmt: '2011-04-07 17:54:16 +0200'
-categories: []
+categories: [tuto]
 tags: []
 ---
 <h1>Introduction</h1><br />

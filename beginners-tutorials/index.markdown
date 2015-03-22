@@ -19,7 +19,8 @@ tags: []
 ---
 <p>Follow them in the right order !</p>
 <ul class="tuto">
-{% for page in site.pages %}
+{% assign sorted_pages = site.pages | sort:"order" %}
+{% for page in sorted_pages %}
   {% if page.categories contains 'tuto' %}
     <li>
       <a class="page-link" href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>

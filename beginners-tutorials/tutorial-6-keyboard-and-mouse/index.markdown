@@ -15,6 +15,7 @@ wordpress_url: http://www.opengl-tutorial.org/?page_id=170
 date: '2011-05-08 08:26:13 +0200'
 date_gmt: '2011-05-08 08:26:13 +0200'
 categories: [tuto]
+order: 60
 tags: []
 ---
 <p>Welcome for our 6th tutorial !</p>
