@@ -63,3 +63,5 @@
 .highlight .lineno {-webkit-user-select: none;-moz-user-select: none; -o-user-select: none;} 
 .lineno::-moz-selection {background-color: transparent;} /* Mozilla specific */
 .lineno::selection {background-color: transparent;} /* Other major browsers */
+.highlight .lineno { color: #bbb; display:inline-block; padding: 0 5px; border-right:1px solid #bbb; }
+.highlight pre code { display: block; white-space: pre; overflow-x: auto; word-wrap: normal; }

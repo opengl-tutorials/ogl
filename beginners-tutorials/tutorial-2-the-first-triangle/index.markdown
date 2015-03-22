@@ -22,15 +22,15 @@ tags: []
 <p>OpenGL 3 makes it easy to write complicated stuff, but at the expense that drawing a simple triangle is actually quite difficult.</p>
 <p>Don't forget to cut'n paste the code on a regular basis.</p>
 <blockquote><p><span style="color: #ff0000;">If the program crashes at startup, you're probably running from the wrong directory. Read CAREFULLY the first tutorial on how to configure Visual Studio !</span></p></blockquote>
-<h1>The VAO</h1><br />
-I won't dig into details now, but you need to create a Vertex Array Object and set it as the current one :</p>
-{% highlight cpp %}
+<h1>The VAO</h1>
+I won't dig into details now, but you need to create a Vertex Array Object and set it as the current one :
+{% highlight cpp linenos %}
 GLuint VertexArrayID;
 glGenVertexArrays(1, &VertexArrayID);
 glBindVertexArray(VertexArrayID);
-{% endhighlight %}<br />
-Do this once your window is created (= after the OpenGL Context creation) and before any other OpenGL call.</p>
-<p>If you really want to know more about VAOs, there are a few other tutorials out there, but this is not very important.</p>
+{% endhighlight %}
+Do this once your window is created (= after the OpenGL Context creation) and before any other OpenGL call.
+<p>If you really want to know more about VAOs, there are a few other tutorials out there, but this is not very important.
 <h1>Screen Coordinates</h1><br />
 A triangle is defined by three points. When talking about "points" in 3D graphics, we usually use the word "vertex" ( "vertices" on the plural ). A vertex has 3 coordinates : X, Y and Z. You can think about these three coordinates in the following way :</p>
 <ul>
@@ -47,7 +47,7 @@ But here is a better way to visualize this : use the Right Hand Rule</p>
 Having the Z in this direction is weird, so why is it so ? Short answer : because 100 years of Right Hand Rule Math will give you lots of useful tools. The only downside is an unintuitive Z.</p>
 <p>On a side note, notice that you can move your hand freely : your X, Y and Z will be moving, too. More on this later.</p>
 <p>So we need three 3D points in order to make a triangle ; let's go :</p>
-{% highlight cpp %}
+{% highlight cpp linenos %}
 // An array of 3 vectors which represents 3 vertices
 static const GLfloat g_vertex_buffer_data[] = {
    -1.0f, -1.0f, 0.0f,
@@ -60,7 +60,7 @@ The first vertex is (-1,-1,0). This means that <em>unless we transform it in som
 <p>This is something you can't change, it's built in your graphics card. So (-1,-1) is the bottom left corner of your screen. (1,-1) is the bottom right, and (0,1) is the middle top. So this triangle should take most of the screen.</p>
 <h1>Drawing our triangle</h1><br />
 The next step is to give this triangle to OpenGL. We do this by creating a buffer:</p>
-{% highlight cpp %}
+{% highlight cpp linenos %}
 // This will identify our vertex buffer
 GLuint vertexbuffer;
 // Generate 1 buffer, put the resulting identifier in vertexbuffer
@@ -71,7 +71,7 @@ glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);{% endhighlight %}
 This needs to be done only once.</p>
 <p>Now, in our main loop, where we used to draw "nothing", we can draw our magnificent triangle :</p>
-{% highlight cpp %}
+{% highlight cpp linenos %}
 // 1rst attribute buffer : vertices
 glEnableVertexAttribArray(0);
 glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
@@ -97,7 +97,7 @@ In the simplest possible configuration, you will need two shaders : one called V
 <p>Shaders are programmed in a language called GLSL : GL Shader Language, which is part of OpenGL. Unlike C or Java, GLSL has to be compiled at run time, which means that each and every time you launch your application, all your shaders are recompiled.</p>
 <p>The two shaders are usually in separate files. In this example, we have SimpleFragmentShader.fragmentshader and SimpleVertexShader.vertexshader . The extension is irrelevant, it could be .txt or .glsl .</p>
 <p>So here's the code. It's not very important to fully understand it, since you often do this only once in a program, so comments should be enough. Since this function will be used by all other tutorials, it is placed in a separate file : common/loadShader.cpp . Notice that just as buffers, shaders are not directly accessible : we just have an ID. The actual implementation is hidden inside the driver.</p>
-{% highlight cpp %}
+{% highlight cpp linenos %}
 GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path){
   // Create the shaders
   GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
@@ -166,11 +166,11 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 <h2>Our Vertex Shader</h2><br />
 Let's write our vertex shader first.<br />
 The first line tells the compiler that we will use OpenGL 3's syntax.</p>
-{% highlight glsl %}
+{% highlight glsl linenos %}
 #version 330 core
 {% endhighlight %}
 The second line declares the input data :</p>
-{% highlight glsl %}
+{% highlight glsl linenos %}
 layout(location = 0) in vec3 vertexPosition_modelspace;
 {% endhighlight %}<br />
 Let's explain this line in detail :</p>
@@ -182,11 +182,11 @@ Let's explain this line in detail :</p>
 </ul><br />
 &nbsp;</p>
 <p>The function that is called for each vertex is called main, just as in C :</p>
-{% highlight glsl %}
+{% highlight glsl linenos %}
 void main(){
 {% endhighlight %}<br />
 Our main function will merely set the vertex' position to whatever was in the buffer. So if we gave (1,1), the triangle would have one of its vertices at the top right corner of the screen. We'll see in the next tutorial how to do some more interesting computations on the input position.</p>
-{% highlight glsl %}
+{% highlight glsl linenos %}
   gl_Position.xyz = vertexPosition_modelspace;
   gl_Position.w = 1.0;
 }
@@ -194,7 +194,7 @@ Our main function will merely set the vertex' position to whatever was in the bu
 gl_Position is one of the few built-in variables : you <em>have </em>to assign some value to it. Everything else is optional; we'll see what "everything else" means in Tutorial 4.</p>
 <h2>Our Fragment Shader</h2><br />
 For our first fragment shader, we will do something really simple : set the color of each fragment to red. (Remember, there are 4 fragment in a pixel because we use 4x AA)</p>
-{% highlight glsl %}
+{% highlight glsl linenos %}
 #version 330 core
 out vec3 color;
 void main(){
@@ -204,16 +204,16 @@ void main(){
 So yeah, vec3(1,0,0) means red. This is because on computer screens, colour is represented by a Red, Green, and Blue triplet, in this order. So (1,0,0) means Full Red, no green and no blue.</p>
 <h1>Putting it all together</h1><br />
 Before the main loop, call our LoadShaders function :</p>
-{% highlight cpp %}
+{% highlight cpp linenos %}
 // Create and compile our GLSL program from the shaders
 GLuint programID = LoadShaders( "SimpleVertexShader.vertexshader", "SimpleFragmentShader.fragmentshader" );
 {% endhighlight %}<br />
 Now inside the main loop, first clear the screen. This will change the background color to dark blue because of the glClearColor(0.0f, 0.0f, 0.4f, 0.0f) call above the main loop&nbsp;:</p>
-{% highlight cpp %}
+{% highlight cpp linenos %}
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 {% endhighlight %}<br />
 and then tell OpenGL that you want to use your shader :</p>
-{% highlight cpp %}
+{% highlight cpp linenos %}
 // Use our shader
 glUseProgram(programID);
 // Draw triangle...
