@@ -18,12 +18,10 @@ categories: [tuto]
 order: 20
 tags: []
 ---
-<p><!-- Include required JS files --><br />
-<script src="js/shCore.js"></script><!--     At least one brush, here we choose JS. You need to include a brush for every     language you want to highlight --><script src="css/shBrushCpp.js"></script></p>
 <p>This will be another long tutorial.</p>
 <p>OpenGL 3 makes it easy to write complicated stuff, but at the expense that drawing a simple triangle is actually quite difficult.</p>
 <p>Don't forget to cut'n paste the code on a regular basis.</p>
-<blockquote><p><span style="color: #ff0000;">If the program crashes at startup, you're probably running from the wrong directory. Read CAREFULLY the first tutorial on how to configure Visual Studio !</span></blockquote></p>
+<blockquote><p><span style="color: #ff0000;">If the program crashes at startup, you're probably running from the wrong directory. Read CAREFULLY the first tutorial on how to configure Visual Studio !</span></p></blockquote>
 <h1>The VAO</h1><br />
 I won't dig into details now, but you need to create a Vertex Array Object and set it as the current one :</p>
 {% highlight cpp %}
