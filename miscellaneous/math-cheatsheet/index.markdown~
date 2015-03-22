@@ -1,0 +1,75 @@
+---
+layout: page
+status: publish
+published: true
+title: Math Cheatsheet
+author:
+  display_name: Calvin1602
+  login: Calvin1602
+  email: arnaud1602@gmail.com
+  url: ''
+author_login: Calvin1602
+author_email: arnaud1602@gmail.com
+wordpress_id: 209
+wordpress_url: http://www.opengl-tutorial.org/?page_id=209
+date: '2011-05-11 20:04:48 +0200'
+date_gmt: '2011-05-11 20:04:48 +0200'
+categories: []
+tags: []
+---
+<h1>Trigonometry<&#47;h1></p>
+<h2>Pi<&#47;h2><br />
+const float pi = 3.14159265f; &#47;&#47; but an infinity of digits in reality</p>
+<h2>Cosinus &amp; Sinus<&#47;h2><br />
+<img class="alignnone" title="Sine_cosine_one_period" src="http:&#47;&#47;upload.wikimedia.org&#47;wikipedia&#47;commons&#47;thumb&#47;7&#47;71&#47;Sine_cosine_one_period.svg&#47;600px-Sine_cosine_one_period.svg.png" alt="" width="600" height="240" &#47;></p>
+<address>(From http:&#47;&#47;commons.wikimedia.org&#47;wiki&#47;User:Geek3 , under GNU Free Documentation License )<&#47;address></p>
+<h2>Unit circle<&#47;h2><br />
+<a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;05&#47;UnitCircle.png"><img class="alignnone size-full wp-image-213 whiteborder" title="UnitCircle" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;05&#47;UnitCircle.png" alt="" width="300" height="300" &#47;><&#47;a></p>
+<address>( Modified from http:&#47;&#47;en.wikipedia.org&#47;wiki&#47;User:Gustavb under Crative Commons 3.0 )<&#47;address>t is an angle in radians.</p>
+<p>0 radians = 0 degrees</p>
+<p>180 degrees = Pi radians</p>
+<p>360 degrees ( full circle ) = 2*Pi radians</p>
+<p>90 degrees = Pi&#47;2 radians</p>
+<h1>Vectors<&#47;h1><br />
+ALWAYS know in which coordinates your vector is. See section 3 for details.</p>
+<h2>Homogeneous coordinates<&#47;h2><br />
+A 3D vector is (x,y,z), but a homogeneous 3D vector is (x,y,z,w).</p>
+<ul>
+<li>w=0 : it's a direction<&#47;li>
+<li>w=1 : it's a position<&#47;li>
+<li>else : it may still be correct, but you'd better know what you're doing.<&#47;li><br />
+<&#47;ul><br />
+You can only multiply a 4x4 matrix with a homogeneous vector.</p>
+<h2>Length<&#47;h2><br />
+Just like cartesian distance : sqrt( x&sup2; + y&sup2; + z&sup2; ). w doesn't count.</p>
+<h2>Cross product<&#47;h2><br />
+<a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;05&#47;Right_hand_rule_cross_product.png"><img class="alignnone size-full wp-image-211" title="Right_hand_rule_cross_product" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;05&#47;Right_hand_rule_cross_product.png" alt="" width="400" height="353" &#47;><&#47;a></p>
+<address>( Modified from http:&#47;&#47;en.wikipedia.org&#47;wiki&#47;User:Acdx , former image under Creative Commons 3.0 )<&#47;address>The X is the notation for the cross product. length( a x b ) == length(a) * length(b) * sin(&theta;), so you may want to normalize() the result.</p>
+<h2>Dot product<&#47;h2></p>
+<h2><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;05&#47;DotProduct.png"><img class="alignnone size-full wp-image-212 whiteborder" title="DotProduct" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;05&#47;DotProduct.png" alt="" width="500" height="133" &#47;><&#47;a><&#47;h2></p>
+<address>( from http:&#47;&#47;en.wikipedia.org&#47;wiki&#47;File:Dot_Product.svg )<&#47;address>A.B = length(A)*cos(Theta) , but most likely computed as A.x*B.x +A.y*B.y +A.z*B.z</p>
+<h2>Addition and substraction<&#47;h2><br />
+compontent-wise :</p>
+<pre>res.x = A.x + B.x<br />
+res.y = A.y + B.y<br />
+...<&#47;pre><br />
+&nbsp;</p>
+<h2>Multiplication<&#47;h2><br />
+compontent-wise :</p>
+<pre>res.x = A.x * B.x<br />
+res.y = A.y * B.y<br />
+...<&#47;pre></p>
+<h2>Normalization<&#47;h2><br />
+Divide the vector by its length :</p>
+<pre>normalizedVector = vec * ( 1.0f &#47; vec.length() )<&#47;pre></p>
+<h1>Matrices<&#47;h1></p>
+<h2>Matrix-Matrix multiplication<&#47;h2><br />
+example for a translation matrix :</p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;translationExamplePosition1.png"><img class="alignnone size-full wp-image-798" title="translationExamplePosition" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;translationExamplePosition1.png" alt="" width="639" height="82" &#47;><&#47;a></p>
+<p>&nbsp;</p>
+<h2>Matrix-Vector multiplication<&#47;h2><br />
+<a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;MatrixXVect.gif"><img class="alignnone size-full wp-image-64 whiteborder" title="MatrixXVect" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;MatrixXVect.gif" alt="" width="367" height="88" &#47;><&#47;a></p>
+<h1>Usual Transformations<&#47;h1><br />
+<a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;MVP.png"><img class="alignnone size-full wp-image-66 whiteborder" title="MVP" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;MVP.png" alt="" width="300" height="382" &#47;><&#47;a></p>
+<p>... but in your shaders, you can also represent your vectors in tangent space. And in image-space when you do post-effects.</p>
+<div id="_mcePaste" class="mcePaste" style="position: absolute; left: -10000px; top: 1254px; width: 1px; height: 1px; overflow: hidden;">res.x = A.x + B.x<&#47;div></p>

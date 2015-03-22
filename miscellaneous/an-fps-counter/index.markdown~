@@ -1,0 +1,39 @@
+---
+layout: page
+status: publish
+published: true
+title: An FPS counter
+author:
+  display_name: Calvin1602
+  login: Calvin1602
+  email: arnaud1602@gmail.com
+  url: ''
+author_login: Calvin1602
+author_email: arnaud1602@gmail.com
+wordpress_id: 436
+wordpress_url: http://www.opengl-tutorial.org/?page_id=436
+date: '2012-01-28 16:24:41 +0100'
+date_gmt: '2012-01-28 16:24:41 +0100'
+categories: []
+tags: []
+---
+<p>In real-time graphics, it is important to keep an eye on performance. A good practice is to choose a target FPS ( usually 60 or 30 ) and make everything possible to stick to it.</p>
+<p>A FPS counter looks like this :</p>
+<pre> double lastTime = glfwGetTime();<br />
+ int nbFrames = 0;</p>
+<p> do{</p>
+<p>     &#47;&#47; Measure speed<br />
+     double currentTime = glfwGetTime();<br />
+     nbFrames++;<br />
+     if ( currentTime - lastTime >= 1.0 ){ &#47;&#47; If last prinf() was more than 1 sec ago<br />
+         &#47;&#47; printf and reset timer<br />
+         printf("%f ms&#47;frame\n", 1000.0&#47;double(nbFrames));<br />
+         nbFrames = 0;<br />
+         lastTime += 1.0;<br />
+     }</p>
+<p>     ... rest of the main loop<&#47;pre><br />
+There is an odd thing in this code. It displays the time, in milliseconds, needed to draw a frame (averaged on 1 second) instead of how many frame were drawn in the last second.</p>
+<p>This is actually <strong>much better<&#47;strong>. Don't rely on FPS. Never. FramesPerSecond = 1&#47;SecondsPerFrame, so this is an inverse relationship, and we humans suck at understanding this kind of relationship. Let's take an example.</p>
+<p>You write a great rendering function that runs at 1000 FPS ( 1ms&#47;frame ). But you forgot a little computation in a shader, which adds an extra cost of 0.1ms. And bam, 1&#47;0.0011 = 900. You just lost 100FPS. Morality : <strong>never use FPS for performance analysis.<&#47;strong></p>
+<p>If you intend to make a 60fps game, your target will be 16.6666ms ; If you intend to make a 30fps game, your target will be 33.3333ms. That's all you need to know.</p>
+<p>This code is available in all tutorials starting from <a title="Tutorial 9 : VBO Indexing" href="http:&#47;&#47;www.opengl-tutorial.org&#47;intermediate-tutorials&#47;tutorial-9-vbo-indexing&#47;">Tutorial 9 : VBO indexing<&#47;a>; see tutorial09_vbo_indexing&#47;tutorial09.cpp . Other performance tools are available in <a href="http:&#47;&#47;www.opengl-tutorial.org&#47;miscellaneous&#47;useful-tools-links&#47;#header-4">Tools - Debuggers<&#47;a>.</p>

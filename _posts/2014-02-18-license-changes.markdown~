@@ -1,0 +1,30 @@
+---
+layout: post
+status: publish
+published: true
+title: License changes
+author:
+  display_name: Calvin1602
+  login: Calvin1602
+  email: arnaud1602@gmail.com
+  url: ''
+author_login: Calvin1602
+author_email: arnaud1602@gmail.com
+wordpress_id: 1006
+wordpress_url: http://www.opengl-tutorial.org/?p=1006
+date: '2014-02-18 09:46:20 +0100'
+date_gmt: '2014-02-18 09:46:20 +0100'
+categories:
+- Uncategorized
+tags: []
+---
+<p>Hi,</p>
+<p>We recently decided to change the license of the tutorials, and this is a good opportunity to break the silence on the RSS feed.</p>
+<p>We chose the Creative Commons license CC-BY-NC-ND. For those of you who don't speak legalese, it means :</p>
+<ul>
+<li><span style="line-height: 16px;">BY : If you quote or use the tutorial's webpages, you have to say that it comes from opengl-tutorial.org<&#47;span><&#47;li>
+<li>NC : Non-commercial. Basically, you can't make an e-book out of the tutorials and sell it =)<&#47;li>
+<li>ND : No Derivatives. The rationale is not to block "forks", but to have word in the decision. For instance, we are currently collaborating with the French site Developpez.com for a french translation. Basically : send us an e-mail !<&#47;li><br />
+<&#47;ul><br />
+These changes only affect the webpages. The source code remains under the WTF Public License. To quote it, you just do what the f*** you want to : create a commercial software from it, buy us a beer, etc :-)</p>
+<p>These informations are available on the download page :&nbsp;http:&#47;&#47;www.opengl-tutorial.org&#47;download&#47;</p>
