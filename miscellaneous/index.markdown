@@ -1,5 +1,6 @@
 ---
 layout: page
+type: section
 status: publish
 published: true
 title: Miscellaneous
