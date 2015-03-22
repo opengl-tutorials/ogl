@@ -6,6 +6,7 @@ baseurl: "/opengl-tutorials"
 highlighter: pygments
 safe: true
 lsi: false
+source:      .
 
 # Build settings
 markdown: kramdown
