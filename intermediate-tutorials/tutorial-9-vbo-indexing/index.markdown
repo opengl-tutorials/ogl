@@ -14,7 +14,8 @@ wordpress_id: 252
 wordpress_url: http://www.opengl-tutorial.org/?page_id=252
 date: '2011-05-12 19:21:49 +0200'
 date_gmt: '2011-05-12 19:21:49 +0200'
-categories: []
+categories: [tuto]
+order: 10
 tags: []
 ---
 <h1>The principle of indexing</h1><br />

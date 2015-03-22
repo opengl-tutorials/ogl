@@ -14,7 +14,8 @@ wordpress_id: 569
 wordpress_url: http://www.opengl-tutorial.org/?page_id=569
 date: '2012-08-22 14:12:14 +0200'
 date_gmt: '2012-08-22 14:12:14 +0200'
-categories: []
+categories: [tuto]
+order: 90
 tags: []
 ---
 <p>This tutorial goes a bit outside the scope of OpenGL, but nevertheless tackles a very common problem: how to represent rotations ?</p>

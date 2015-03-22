@@ -21,7 +21,7 @@ tags: []
 <ul class="tuto">
 {% assign sorted_pages = site.pages | sort:"order" %}
 {% for page in sorted_pages %}
-  {% if page.categories contains 'tuto' %}
+  {% if page.categories contains 'tuto' and page.url contains 'beginners-tutorials' %}
     <li>
       <a class="page-link" href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
     </li>

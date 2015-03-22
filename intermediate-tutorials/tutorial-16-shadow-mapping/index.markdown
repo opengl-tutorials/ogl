@@ -14,7 +14,8 @@ wordpress_id: 381
 wordpress_url: http://www.opengl-tutorial.org/?page_id=381
 date: '2011-08-17 18:29:32 +0200'
 date_gmt: '2011-08-17 18:29:32 +0200'
-categories: []
+categories: [tuto]
+order: 80
 tags: []
 ---
 <p>In Tutorial 15 we learnt how to create lightmaps, which encompasses static lighting. While it produces very nice shadows, it doesn't deal with animated models.</p>

@@ -14,7 +14,8 @@ wordpress_id: 301
 wordpress_url: http://www.opengl-tutorial.org/?page_id=301
 date: '2011-05-26 06:07:04 +0200'
 date_gmt: '2011-05-26 06:07:04 +0200'
-categories: []
+categories: [tuto]
+order: 50
 tags: []
 ---
 <p>Welcome for our 13th tutorial ! Today we will talk about normal mapping.</p>

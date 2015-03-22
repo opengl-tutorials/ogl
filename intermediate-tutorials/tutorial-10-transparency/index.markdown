@@ -14,7 +14,8 @@ wordpress_id: 281
 wordpress_url: http://www.opengl-tutorial.org/?page_id=281
 date: '2011-05-13 23:00:42 +0200'
 date_gmt: '2011-05-13 23:00:42 +0200'
-categories: []
+categories: [tuto]
+order: 20
 tags: []
 ---
 <h1>The alpha channel</h1><br />

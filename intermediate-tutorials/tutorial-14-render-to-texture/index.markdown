@@ -14,7 +14,8 @@ wordpress_id: 311
 wordpress_url: http://www.opengl-tutorial.org/?page_id=311
 date: '2011-05-26 19:33:15 +0200'
 date_gmt: '2011-05-26 19:33:15 +0200'
-categories: []
+categories: [tuto]
+order: 60
 tags: []
 ---
 <p>Render-To-Texture is a handful method to create a variety of effects. The basic idea is that you render a scene just like you usually do, but this time in a texture that you can reuse later.</p>

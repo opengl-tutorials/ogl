@@ -19,3 +19,13 @@ categories: []
 tags: []
 ---
 <p>Follow them in any order</p>
+<ul class="tuto">
+{% assign sorted_pages = site.pages | sort:"order" %}
+{% for page in sorted_pages %}
+  {% if page.categories contains 'tuto' and page.url contains 'intermediate-tutorials' %}
+    <li>
+      <a class="page-link" href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+    </li>
+  {% endif %}
+{% endfor %}
+</ul>
