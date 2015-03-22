@@ -14,7 +14,7 @@ wordpress_id: 185
 wordpress_url: http://www.opengl-tutorial.org/?page_id=185
 date: '2011-05-08 17:48:12 +0200'
 date_gmt: '2011-05-08 17:48:12 +0200'
-categories: []
+categories: [tuto]
 tags: []
 ---
 <p>Until now, we hardcoded our cube directly in the source code. I'm sure you will agree that this was cumbersome and not very handy.</p>

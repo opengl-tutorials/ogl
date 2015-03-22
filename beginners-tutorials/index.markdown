@@ -1,6 +1,5 @@
 ---
 layout: page
-type: section
 status: publish
 published: true
 title: Basic OpenGL
@@ -15,7 +14,16 @@ wordpress_id: 138
 wordpress_url: http://www.opengl-tutorial.org/?page_id=138
 date: '2011-05-07 10:45:02 +0200'
 date_gmt: '2011-05-07 10:45:02 +0200'
-categories: []
+categories: [section]
 tags: []
 ---
 <p>Follow them in the right order !</p>
+<ul class="tuto">
+{% for page in site.pages %}
+  {% if page.categories contains 'tuto' %}
+    <li>
+      <a class="page-link" href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+    </li>
+  {% endif %}
+{% endfor %}
+</ul>

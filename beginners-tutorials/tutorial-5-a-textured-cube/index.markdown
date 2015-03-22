@@ -14,7 +14,7 @@ wordpress_id: 83
 wordpress_url: http://www.opengl-tutorial.org/?page_id=83
 date: '2011-04-26 07:55:58 +0200'
 date_gmt: '2011-04-26 07:55:58 +0200'
-categories: []
+categories: [tuto]
 tags: []
 ---
 <p>In this tutorial, you will learn :</p>
