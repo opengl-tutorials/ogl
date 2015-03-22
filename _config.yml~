@@ -1,12 +1,15 @@
 # Site settings
-title: Your awesome title
-email: your-email@domain.com
-description: "Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description."
+title: opengl-tutorials
+email: contact@opengl-tutorial.org
+description: "This site is dedicated to tutorials for OpenGL 3.3 and later !<>
+Full source code is available here.
+Feel free to contact us for any question, remark, bug report, or other : contact@opengl-tutorial.org .
+If you enjoy our work, please don’t hesitate to spread the word !"
 baseurl: "/opengl-tutorials"
 highlighter: pygments
 safe: true
 lsi: false
-destination: ./
+source:      .
 
 # Build settings
 markdown: kramdown

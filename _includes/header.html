@@ -17,11 +17,11 @@
         </svg>
       </a>
       <div class="trigger">
-        {% for page in site.pages %}
-          {% if page.type == "section" %}
-            <a class="page-link" href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
-          {% endif %}
-        {% endfor %}
+          <a class="page-link" href="{{site.baseurl}}/">Home</a>
+          <a class="page-link" href="{{site.baseurl}}/beginners-tutorials/">Basic tutorials</a>
+          <a class="page-link" href="{{site.baseurl}}/intermediate-tutorials/">Intermediate tutorials</a>
+          <a class="page-link" href="{{site.baseurl}}/miscellaneous/">Miscellaneous</a>
+          <a class="page-link" href="{{site.baseurl}}/download/">Download</a>
       </div>
     </nav>
 
