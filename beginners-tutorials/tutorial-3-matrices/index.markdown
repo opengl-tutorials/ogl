@@ -18,8 +18,6 @@ categories: [tuto]
 order: 30
 tags: []
 ---
-Tutorial 3 : Matrices
-===
 {:TOC}
 
 > _The engines don't move the ship at all. The ship stays where it is and the engines move the universe around it._
