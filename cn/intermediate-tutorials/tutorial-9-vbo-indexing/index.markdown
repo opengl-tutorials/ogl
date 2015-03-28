@@ -14,7 +14,7 @@ wordpress_id: 1244
 wordpress_url: http://www.opengl-tutorial.org/?page_id=1244
 date: '2014-12-05 13:51:20 +0100'
 date_gmt: '2014-12-05 13:51:20 +0100'
-categories: []
+categories: [tuto]
 tags: []
 ---
 <h1>索引的原理<&#47;h1><br />

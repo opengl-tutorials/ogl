@@ -25,9 +25,9 @@ tags: []
 Our function, located in common/objloader.cpp and declared in common/objloader.hpp, will have the following signature :</p>
 <pre class="brush: cpp">bool loadOBJ(<br />
     const char * path,<br />
-    std::vector < glm::vec3 > &amp; out_vertices,<br />
-    std::vector < glm::vec2 > &amp; out_uvs,<br />
-    std::vector < glm::vec3 > &amp; out_normals<br />
+    std::vector < glm::vec3 > & out_vertices,<br />
+    std::vector < glm::vec2 > & out_uvs,<br />
+    std::vector < glm::vec3 > & out_normals<br />
 )</pre><br />
 We want loadOBJ to read the file "path", write the data in out_vertices/out_uvs/out_normals, and return false if something went wrong. std::vector is the C++ way to declare an array of glm::vec3 which size can be modified at will: it has nothing to do with a mathematical vector. Just an array, really. And finally, the &amp; means that function will be able to modify the std::vectors.</p>
 <h2>Example OBJ file</h2><br />

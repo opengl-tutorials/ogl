@@ -21,10 +21,11 @@ tags: []
 <p>Follow them in any order</p>
 <ul class="tuto">
 {% assign sorted_pages = site.pages | sort:"order" %}
-{% for page in sorted_pages %}
-  {% if page.categories contains 'tuto' and page.url contains 'intermediate-tutorials' %}
+{% for p in sorted_pages %}
+  {% assign splt = p.url | split: page.url %}
+  {% if splt.size == 2 and splt[0] == '' %}
     <li>
-      <a class="page-link" href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+      <a class="page-link" href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a>
     </li>
   {% endif %}
 {% endfor %}

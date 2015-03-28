@@ -16,6 +16,7 @@ date: '2014-12-06 12:52:26 +0100'
 date_gmt: '2014-12-06 12:52:26 +0100'
 categories: []
 tags: []
+order: 70
 ---
 <p>目前为止，我们一直在用硬编码描述立方体。您一定也觉得这是种很笨拙、很麻烦的办法。</p>
 <p>本课将学习从文件中加载3D模型。和加载纹理类似，我们先写一个小的、功能有限的加载器，接着再为大家介绍几个比我们写的更好的、实用的库。</p>
@@ -24,9 +25,9 @@ tags: []
 加载函数在common&#47;objloader.hpp中声明，在common&#47;objloader.cpp中实现。函数原型如下：</p>
 <pre>bool loadOBJ(<br />
     const char * path,<br />
-    std::vector  &amp; out_vertices,<br />
-    std::vector  &amp; out_uvs,<br />
-    std::vector  &amp; out_normals<br />
+    std::vector  & out_vertices,<br />
+    std::vector  & out_uvs,<br />
+    std::vector  & out_normals<br />
 )<&#47;pre><br />
 我们让loadOBJ读取文件路径，把数据写入out_vertices&#47;out_uvs&#47;out_normals。如果出错则返回false。std::vector是C++中的数组，可存放glm::vec3类型的数据，数组大小可任意修改，不过std::vector和数学中的向量（vector）是两码事。其实它只是个数组。最后提一点，符号&amp;意思是这个函数将会直接修改这些数组。</p>
 <h2>OBJ文件示例<&#47;h2><br />

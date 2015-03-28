@@ -16,6 +16,7 @@ date: '2012-11-15 01:43:47 +0100'
 date_gmt: '2012-11-15 01:43:47 +0100'
 categories: []
 tags: []
+language: cn
 ---
 <p>本站致力于为大家提供<strong>OpenGL3.3+教程<&#47;strong>！</p>
 <p>所有源代码可在<a title="Download" href="&#47;?page_id=200">这里<&#47;a>下载。</p>

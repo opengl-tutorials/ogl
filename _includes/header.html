@@ -1,9 +1,11 @@
 <header class="site-header">
 
   <div class="wrap">
-
-    <a class="site-title" href="{{ site.baseurl }}/">{{ site.title }}</a>
-
+{% if page.language %}
+    <a class="site-title" href="{{site.baseurl}}/{{page.language}}/">{{ site.title }}</a>
+{% else %}
+    <a class="site-title" href="{{site.baseurl}}/">{{ site.title }}</a>
+{% endif %}
     <nav class="site-nav">
       <a href="#" class="menu-icon">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -17,11 +19,19 @@
         </svg>
       </a>
       <div class="trigger">
-          <a class="page-link" href="{{site.baseurl}}/">Home</a>
+	{% if page.language %}
+          <a class="page-link" href="{{site.baseurl}}/{{page.language}}/">Home</a>
+          <a class="page-link" href="{{site.baseurl}}/{{page.language}}/beginners-tutorials/">Basic tutorials</a>
+          <a class="page-link" href="{{site.baseurl}}/{{page.language}}/intermediate-tutorials/">Intermediate tutorials</a>
+          <a class="page-link" href="{{site.baseurl}}/{{page.language}}/miscellaneous/">Miscellaneous</a>
+          <a class="page-link" href="{{site.baseurl}}/{{page.language}}/download/">Download</a>
+	{% else %}
+	  <a class="page-link" href="{{site.baseurl}}/">Home</a>
           <a class="page-link" href="{{site.baseurl}}/beginners-tutorials/">Basic tutorials</a>
           <a class="page-link" href="{{site.baseurl}}/intermediate-tutorials/">Intermediate tutorials</a>
           <a class="page-link" href="{{site.baseurl}}/miscellaneous/">Miscellaneous</a>
           <a class="page-link" href="{{site.baseurl}}/download/">Download</a>
+	{% endif %}
       </div>
     </nav>
 
