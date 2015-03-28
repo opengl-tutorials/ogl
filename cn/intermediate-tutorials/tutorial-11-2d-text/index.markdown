@@ -16,6 +16,7 @@ date: '2014-12-06 02:35:35 +0100'
 date_gmt: '2014-12-06 02:35:35 +0100'
 categories: []
 tags: []
+language: cn
 ---
 <p>本课将学习如何在三维场景之上绘制二维文本。本例是一个简单的计时器：</p>
 <p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;05&#47;clock.png"><img class="alignnone size-large wp-image-292" title="clock" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;05&#47;clock-1024x793.png" alt="" width="640" height="495" &#47;><&#47;a></p>

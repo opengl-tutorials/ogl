@@ -17,6 +17,7 @@ date_gmt: '2014-12-04 15:36:26 +0100'
 categories: []
 tags: []
 order: 30
+language: cn
 ---
 <blockquote><em>引擎推动的不是飞船而是宇宙。飞船压根就没动过。<&#47;em><br />
 《飞出个未来》<&#47;blockquote><br />

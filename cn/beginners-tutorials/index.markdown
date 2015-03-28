@@ -16,6 +16,7 @@ date: '2012-11-06 15:38:44 +0100'
 date_gmt: '2012-11-06 15:38:44 +0100'
 categories: []
 tags: []
+language: cn
 ---
 <p>请按课程顺序学习！</p>
 <ul class="tuto">

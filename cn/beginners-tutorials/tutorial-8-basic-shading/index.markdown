@@ -17,6 +17,7 @@ date_gmt: '2014-12-06 13:18:21 +0100'
 categories: []
 tags: []
 order: 80
+language: cn
 ---
 <p>在第八课中，我们将学习基本的着色方法。包括：</p>
 <ul>

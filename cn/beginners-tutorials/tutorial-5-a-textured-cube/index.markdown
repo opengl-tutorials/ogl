@@ -17,6 +17,7 @@ date_gmt: '2014-12-06 10:09:43 +0100'
 categories: []
 tags: []
 order: 50
+language: cn
 ---
 <p>本课学习如下几点：</p>
 <ul>

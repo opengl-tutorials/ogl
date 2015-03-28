@@ -16,6 +16,7 @@ date: '2014-12-05 15:03:48 +0100'
 date_gmt: '2014-12-05 15:03:48 +0100'
 categories: []
 tags: []
+language: cn
 ---
 <h1>alpha通道<&#47;h1><br />
 alpha通道的概念很简单。我们以前的计算结果是RGB值，现在则是RGBA值：</p>

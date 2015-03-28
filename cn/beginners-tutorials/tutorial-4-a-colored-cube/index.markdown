@@ -17,6 +17,7 @@ date_gmt: '2014-12-06 09:46:18 +0100'
 categories: []
 tags: []
 order: 40
+language: cn
 ---
 <p>欢迎来到第四课！您将学到：</p>
 <ul>
