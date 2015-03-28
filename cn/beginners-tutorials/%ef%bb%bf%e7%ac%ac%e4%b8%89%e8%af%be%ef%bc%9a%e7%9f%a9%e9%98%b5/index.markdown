@@ -1,0 +1,235 @@
+---
+layout: page
+status: publish
+published: true
+title: "\uFEFF第三课：矩阵"
+author:
+  display_name: Calvin1602
+  login: Calvin1602
+  email: arnaud1602@gmail.com
+  url: ''
+author_login: Calvin1602
+author_email: arnaud1602@gmail.com
+wordpress_id: 723
+wordpress_url: http://www.opengl-tutorial.org/?page_id=723
+date: '2014-12-04 15:36:26 +0100'
+date_gmt: '2014-12-04 15:36:26 +0100'
+categories: []
+tags: []
+---
+<blockquote><em>引擎推动的不是飞船而是宇宙。飞船压根就没动过。<&#47;em><br />
+《飞出个未来》<&#47;blockquote><br />
+<span style="color: #ff0000">这是所有课程中最重要的一课。至少得看八遍。<&#47;span></p>
+<h1>齐次坐标（Homogeneous coordinates）<&#47;h1><br />
+目前为止，我们仍然把三维顶点视为三元组(x,y,z)。现在引入一个新的分量w，得到向量(x,y,z,w)。请先记住以下两点（稍后我们会给出解释）：</p>
+<ul>
+<li>若w==1，则向量(x, y, z, 1)为空间中的点。<&#47;li>
+<li>若w==0，则向量(x, y, z, 0)为方向。<&#47;li><br />
+<&#47;ul><br />
+（请务必将此牢记在心。）</p>
+<p>二者有什么区别呢？对于旋转，这点区别倒无所谓。当您旋转点和方向时，结果是一样的。但对于平移（将点沿着某个方向移动）情况就不同了。&ldquo;平移一个方向&rdquo;是毫无意义的。</p>
+<p>齐次坐标使得我们可以用同一个公式对点和方向作运算。</p>
+<h1>变换矩阵（Transformation matrices）<&#47;h1></p>
+<h2>矩阵简介<&#47;h2><br />
+简而言之，矩阵就是一个行列数固定的、纵横排列的数表。比如，一个2x3矩阵看起来像这样：</p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;2X3.png"><img class="alignnone size-full wp-image-61 whiteborder" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;2X3.png" alt="" width="68" height="44" &#47;><&#47;a></p>
+<p>三维图形学中我们只用到4x4矩阵，它能对顶点(x,y,z,w)作变换。这一变换是用矩阵左乘顶点来实现的：</p>
+<p style="text-align: left"><strong>矩阵x顶点（记住顺序！！矩阵左乘顶点，顶点用列向量表示）= 变换后的顶点<&#47;strong><&#47;p><br />
+<a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;MatrixXVect.gif"><img class="alignnone size-medium wp-image-64 whiteborder" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;MatrixXVect-300x71.gif" alt="" width="300" height="71" &#47;><&#47;a></p>
+<p>这看上去复杂，实则不然。左手指着a，右手指着x，得到<em>ax<&#47;em>。 左手移向右边一个数b，右手移向下一个数y，得到<em>by<&#47;em>。依次类推，得到<em>cz<&#47;em>、<em>dw<&#47;em>。最后求和ax + by + cz + dw，就得到了新的x！每一行都这么算下去，就得到了新的(x, y, z, w)向量。</p>
+<p>这种重复无聊的计算就让计算机代劳吧。</p>
+<p><strong>用C++，GLM表示：<&#47;strong></p>
+<pre>glm::mat4 myMatrix;<br />
+glm::vec4 myVector;<br />
+&#47;&#47; fill myMatrix and myVector somehow<br />
+glm::vec4 transformedVector = myMatrix * myVector; &#47;&#47; Again, in this order ! this is important.<&#47;pre><br />
+<strong>用GLSL表示：<&#47;strong></p>
+<pre>mat4 myMatrix;<br />
+vec4 myVector;<br />
+&#47;&#47; fill myMatrix and myVector somehow<br />
+vec4 transformedVector = myMatrix * myVector; &#47;&#47; Yeah, it's pretty much the same than GLM<&#47;pre><br />
+（还没把这些代码粘贴到程序里调试吗？赶紧试试！）</p>
+<h2>平移矩阵（Translation matrices）<&#47;h2><br />
+平移矩阵是最简单的变换矩阵。平移矩阵是这样的：</p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;translationMatrix.png"><img class="alignnone size-full wp-image-60 whiteborder" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;translationMatrix.png" alt="" width="103" height="88" &#47;><&#47;a></p>
+<p>其中，X、Y、Z是点的位移增量。</p>
+<p>例如，若想把向量(10, 10, 10, 1)沿X轴方向平移10个单位，可得：</p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;translationExamplePosition1.png"><img class="alignnone  wp-image-97 whiteborder" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;translationExamplePosition1.png" alt="" width="639" height="82" &#47;><&#47;a></p>
+<p>（算算看！一定得亲手算！！）</p>
+<p>这样就得到了齐次向量(20,10,10,1)！记住，末尾的1表示这是一个点，而不是方向。经过变换计算后，点仍然是点，这倒是挺合情合理的。</p>
+<p>下面来看看，对一个代表Z轴负方向的向量作上述平移变换会得到什么结果：</p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;translationExampleDirection1.png"><img class="alignnone  wp-image-96 whiteborder" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;translationExampleDirection1.png" alt="" width="621" height="82" &#47;><&#47;a></p>
+<p>还是原来的(0,0,-1,0)方向，这也很合理，恰好印证了前面的结论：&ldquo;平移一个方向是毫无意义的&rdquo;。</p>
+<p>那怎么用代码表示平移变换呢？</p>
+<p><strong>用C++，GLM表示：<&#47;strong></p>
+<pre>#include  &#47;&#47; after </p>
+<p>glm::mat4 myMatrix = glm::translate(10,0,0);<br />
+glm::vec4 myVector(10,10,10,0);<br />
+glm::vec4 transformedVector = myMatrix * myVector; &#47;&#47; guess the result<&#47;pre><br />
+<strong>用GLSL表示：<&#47;strong>呃，实际中我们几乎不用GLSL计算变换矩阵。大多数情况下在C++代码中用glm::translate()算出矩阵，然后把它传给GLSL。在GLSL中只做一次乘法：</p>
+<pre>vec4 transformedVector = myMatrix * myVector;<&#47;pre></p>
+<h2>单位矩阵（Identity matrix）<&#47;h2><br />
+单位矩阵很特殊，它什么也不做。单位矩阵的身份和自然数&ldquo;1&rdquo;一样基础而重要，因此在这里要特别提及一下。</p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;identityExample.png"><img class="alignnone size-full wp-image-99 whiteborder" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;identityExample.png" alt="" width="742" height="80" &#47;><&#47;a></p>
+<p><strong>用C++表示：<&#47;strong></p>
+<pre>glm::mat4 myIdentityMatrix = glm::mat4(1.0);<&#47;pre></p>
+<h2>缩放矩阵（Scaling matrices）<&#47;h2><br />
+缩放矩阵也很简单：</p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;scalingMatrix.png"><img class="alignnone size-full wp-image-93 whiteborder" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;scalingMatrix.png" alt="" width="98" height="88" &#47;><&#47;a></p>
+<p>例如把一个向量（点或方向皆可）沿各方向放大2倍：</p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;scalingExample.png"><img class="alignnone size-full wp-image-98 whiteborder" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;scalingExample.png" alt="" width="799" height="80" &#47;><&#47;a></p>
+<p>w还是没变。您也许会问：&ldquo;缩放一个向量&rdquo;有什么用？嗯，大多数情况下是没什么用，所以一般不会去缩放向量；但在某些特殊情况下它就派上用场了。（顺便说一下，单位矩阵只是缩放矩阵的一个特例，其(X, Y, Z) = (1, 1, 1)。单位矩阵同时也是旋转矩阵的一个特例，其(X, Y, Z)=(0, 0, 0)）。</p>
+<p><strong>用C++表示：<&#47;strong></p>
+<pre>&#47;&#47; Use #include  and #include<br />
+glm::mat4 myScalingMatrix = glm::scale(2,2,2);<&#47;pre></p>
+<h2>旋转矩阵（Rotation matrices）<&#47;h2><br />
+旋转矩阵比较复杂。这里略过细节，因为日常应用中，您并不需要知道矩阵的内部构造。<br />
+想了解更多，请看<a href="http:&#47;&#47;www.cs.princeton.edu&#47;~gewang&#47;projects&#47;darth&#47;stuff&#47;quat_faq.html">&ldquo;矩阵和四元组常见问题&rdquo;<&#47;a>（这个资源很热门，应该有中文版吧）。</p>
+<p><strong>用C++表示：<&#47;strong></p>
+<pre>&#47;&#47; Use #include  and #include<br />
+glm::vec3 myRotationAxis( ??, ??, ??);<br />
+glm::rotate( angle_in_degrees, myRotationAxis );<&#47;pre></p>
+<h2>累积变换<&#47;h2><br />
+前面已经学习了如何旋转、平移和缩放向量。把这些矩阵相乘就能将它们组合起来，例如：</p>
+<pre>TransformedVector = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalVector;<&#47;pre><br />
+！！！注意！！！这行代码<strong>首先<&#47;strong>执行缩放，<strong>接着<&#47;strong>旋转，<strong>最后<&#47;strong>才是平移。这就是矩阵乘法的工作方式。</p>
+<p>变换的顺序不同，得出的结果也不同。您不妨亲自尝试一下：<br />
+- 向前一步（小心别磕着爱机）然后左转；<br />
+- 左转，然后向前一步</p>
+<p>实际上，上述顺序正是你在变换游戏角色或者其他物体时所需的：先缩放；再调整方向；最后平移。例如，假设有个船的模型（为简化，略去旋转）：</p>
+<ul>
+<ul>
+<li>错误做法：<&#47;li><br />
+<&#47;ul><br />
+<&#47;ul></p>
+<p style="padding-left: 120px">- 按(10, 0, 0)平移船体。船体中心目前距离原点10个单位。<br />
+- 将船体放大2倍。以原点为参照，每个坐标都变成原来的2倍，就出问题了。最后您得到的是一艘放大的船，但其中心位于2*10=20。这并非您预期的结果。<&#47;p></p>
+<ul>
+<ul>
+<li>正确做法：<&#47;li><br />
+<&#47;ul><br />
+<&#47;ul></p>
+<p style="padding-left: 120px">- 将船体放大2倍，得到一艘中心位于原点的大船。<br />
+- 平移船体。船大小不变，移动距离也正确。<&#47;p><br />
+矩阵-矩阵乘法和矩阵-向量乘法类似，所以这里也会省略一些细节，不清楚的读者请移步a href="http:&#47;&#47;www.cs.princeton.edu&#47;~gewang&#47;projects&#47;darth&#47;stuff&#47;quat_faq.html">&ldquo;矩阵和四元组常见问题&rdquo;<&#47;a>。现在，就让计算机来算：</p>
+<p><strong>用C++，GLM表示：<&#47;strong></p>
+<pre>glm::mat4 myModelMatrix = myTranslationMatrix * myRotationMatrix * myScaleMatrix;<br />
+glm::vec4 myTransformedVector = myModelMatrix * myOriginalVector;<&#47;pre><br />
+<strong>用GLSL表示：<&#47;strong></p>
+<pre>mat4 transform = mat2 * mat1;<br />
+vec4 out_vec = transform * in_vec;<&#47;pre></p>
+<h1>模型（Model）、观察（View）和投影（Projection）矩阵<&#47;h1><br />
+<em>在接下来的课程中，我们假定您已知如何绘制Blender经典模型小猴Suzanne。<&#47;em></p>
+<p>利用模型、观察和投影矩阵，可以将变换过程清晰地分解为三个阶段。虽然此法并非必需（前两课我们就没用这个方法嘛），但采用此法较为稳妥。我们将看到，这种公认的方法对变换流程作了清晰的划分。</p>
+<h2>模型矩阵<&#47;h2><br />
+这个三维模型和可爱的红色三角形一样，由一组顶点定义。顶点的XYZ坐标是相对于物体中心定义的：也就是说，若某顶点位于(0,0,0)，则其位于物体的中心。</p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;model.png"><img class="alignnone size-full wp-image-22" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;model.png" alt="" width="960" height="540" &#47;><&#47;a></p>
+<p>我们希望能够移动它，玩家也需要用键鼠控制这个模型。这很简单，只需记住：缩放*旋转*平移就够了。在每一帧中，用算出的这个矩阵去乘（在GLSL中乘，不是在C++中！）所有的顶点，物体就会移动。唯一不动的是世界空间（World Space）的中心。</p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;world.png"><img class="alignnone size-full wp-image-25" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;world.png" alt="" width="960" height="540" &#47;><&#47;a></p>
+<p>现在，物体所有顶点都位于<em>世界空间<&#47;em>。下图中黑色箭头的意思是：<em>从模型空间（Model Space）（顶点都相对于模型的中心定义）变换到世界空间（顶点都相对于世界空间中心定义）。<&#47;em></p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;model_to_world.png"><img class="alignnone size-full wp-image-23" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;model_to_world.png" alt="" width="960" height="540" &#47;><&#47;a></p>
+<p>下图概括了这一过程：</p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;M.png"><img class="alignnone size-full wp-image-63 whiteborder" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;M.png" alt="" width="240" height="148" &#47;><&#47;a></p>
+<h2>观察矩阵<&#47;h2><br />
+这里再引用一下《飞出个未来》：</p>
+<blockquote><p><em>引擎推动的不是飞船而是宇宙。飞船压根就没动过。<&#47;em><&#47;blockquote><br />
+<a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;camera.png"><img class="alignnone size-full wp-image-21" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;camera.png" alt="" width="960" height="540" &#47;><&#47;a></p>
+<p>仔细想想，摄像机的原理也是相通的。如果想换个角度观察一座山，您可以移动摄像机也可以&hellip;&hellip;移动山。后者在实际中不可行，在计算机图形学中却十分方便。</p>
+<p>起初，摄像机位于世界坐标系的原点。移动世界只需乘一个矩阵。假如你想把摄像机向<strong>右<&#47;strong>（X轴正方向）移动3个单位，这和把整个世界（包括网格）向<strong>左<&#47;strong>（X轴负方向）移3个单位是等效的！脑子有点乱？来写代码吧：</p>
+<pre>&#47;&#47; Use #include  and #include<br />
+glm::mat4 ViewMatrix = glm::translate(-3,0,0);<&#47;pre><br />
+下图展示了：<em>从世界空间（顶点都相对于世界空间中心定义）到摄像机空间（Camera Space，顶点都相对于摄像机定义）的变换。<&#47;em></p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;model_to_world_to_camera.png"><img class="alignnone size-full wp-image-24" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;model_to_world_to_camera.png" alt="" width="960" height="540" &#47;><&#47;a></p>
+<p>趁脑袋还没爆炸，来欣赏一下GLM强大的glm::LookAt函数吧：</p>
+<pre>glm::mat4 CameraMatrix = glm::LookAt(<br />
+    cameraPosition, &#47;&#47; the position of your camera, in world space<br />
+    cameraTarget,&nbsp;&nbsp; &#47;&#47; where you want to look at, in world space<br />
+    upVector&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#47;&#47; probably glm::vec3(0,1,0), but (0,-1,0) would make you looking upside-down, which can be great too<br />
+);<&#47;pre><br />
+下图解释了上述变换过程：</p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;MV.png"><img class="alignnone size-full wp-image-65 whiteborder" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;MV.png" alt="" width="240" height="265" &#47;><&#47;a></p>
+<p>好戏还在后头呢。</p>
+<h2>投影矩阵<&#47;h2><br />
+现在，我们处于摄像机空间中。这意味着，经历了这么多变换后，现在一个坐标X==0且Y==0的顶点，应该被画在屏幕的中心。但仅有x、y坐标还不足以确定物体是否应该画在屏幕上：它到摄像机的距离（z）也很重要！两个x、y坐标相同的顶点，z值较大的一个将会最终显示在屏幕上。</p>
+<p>这就是所谓的透视投影（perspective projection）：</p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;model_to_world_to_camera_to_homogeneous.png"><img class="alignnone size-full wp-image-26" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;model_to_world_to_camera_to_homogeneous.png" alt="" width="960" height="540" &#47;><&#47;a></p>
+<p>好在用一个4x4矩阵就能表示这个投影&sup1; :</p>
+<pre>&#47;&#47; Generates a really hard-to-read matrix, but a normal, standard 4x4 matrix nonetheless<br />
+glm::mat4 projectionMatrix = glm::perspective(<br />
+    FoV,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#47;&#47; The horizontal Field of View, in degrees : the amount of "zoom". Think "camera lens". Usually between 90&deg; (extra wide) and 30&deg; (quite zoomed in)<br />
+    4.0f &#47; 3.0f, &#47;&#47; Aspect Ratio. Depends on the size of your window. Notice that 4&#47;3 == 800&#47;600 == 1280&#47;960, sounds familiar ?<br />
+    0.1f,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#47;&#47; Near clipping plane. Keep as big as possible, or you'll get precision issues.<br />
+    100.0f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#47;&#47; Far clipping plane. Keep as little as possible.<br />
+);<&#47;pre><br />
+最后一个变换：</p>
+<p><em>从摄像机空间（顶点都相对于摄像机定义）到齐次坐空间（Homogeneous Space）（顶点都在一个小立方体中定义。立方体内的物体都会在屏幕上显示）的变换。<&#47;em></p>
+<p>最后一幅图示：</p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;MVP.png"><img class="alignnone size-medium wp-image-66 whiteborder" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;MVP-235x300.png" alt="" width="235" height="300" &#47;><&#47;a></p>
+<p>再添几张图，以便大家更好地理解投影变换。投影前，蓝色物体都位于摄像机空间中，红色的东西是摄像机的平截头体（frustum）：这是摄像机实际能看见的区域。</p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;nondeforme.png"><img class="alignnone size-full wp-image-67" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;nondeforme.png" alt="" width="960" height="540" &#47;><&#47;a></p>
+<p>用投影矩阵去乘前面的结果，得到如下效果：</p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;homogeneous.png"><img class="alignnone size-full wp-image-76" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;homogeneous.png" alt="" width="960" height="540" &#47;><&#47;a></p>
+<p>此图中，平截头体变成了一个正方体（每条棱的范围都是-1到1，图不太明显），所有的蓝色物体都经过了相同的变形。因此，离摄像机近的物体就显得大一些，远的显得小一些。这和现实生活一样！</p>
+<p>让我们从平截头体的&ldquo;后面&rdquo;看看它们的模样：</p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;projected1.png"><img class="alignnone size-full wp-image-368 whiteborder" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;projected1.png" alt="" width="602" height="588" &#47;><&#47;a></p>
+<p>这就是您得到的图像！看上去太方方正正了，因此，还需要做一次数学变换使之适合实际的窗口大小。</p>
+<p><a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;final1.png"><img class="alignnone size-full wp-image-367 whiteborder" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;final1.png" alt="" width="640" height="462" &#47;><&#47;a></p>
+<p>这就是实际渲染的图像啦！</p>
+<h2>复合变换：模型观察投影矩阵（MVP）<&#47;h2><br />
+再来一连串深爱已久的标准矩阵乘法：</p>
+<pre>&#47;&#47; C++ : compute the matrix<br />
+glm::mat3 MVPmatrix = projection * view * model; &#47;&#47; Remember : inverted !<&#47;pre></p>
+<pre>&#47;&#47; GLSL : apply it<br />
+transformed_vertex = MVP * in_vertex;<&#47;pre></p>
+<h1>总结<&#47;h1></p>
+<ul>
+<li>第一步：创建模型观察投影（MVP）矩阵。任何要渲染的模型都要做这一步。<&#47;li><br />
+<&#47;ul></p>
+<pre>&#47;&#47; Projection matrix : 45&deg; Field of View, 4:3 ratio, display range : 0.1 unit  100 units<br />
+glm::mat4 Projection = glm::perspective(45.0f, 4.0f &#47; 3.0f, 0.1f, 100.0f);<br />
+&#47;&#47; Camera matrix<br />
+glm::mat4 View&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = glm::lookAt(<br />
+    glm::vec3(4,3,3), &#47;&#47; Camera is at (4,3,3), in World Space<br />
+    glm::vec3(0,0,0), &#47;&#47; and looks at the origin<br />
+    glm::vec3(0,1,0)&nbsp; &#47;&#47; Head is up (set to 0,-1,0 to look upside-down)<br />
+);<br />
+&#47;&#47; Model matrix : an identity matrix (model will be at the origin)<br />
+glm::mat4 Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = glm::mat4(1.0f);&nbsp; &#47;&#47; Changes for each model !<br />
+&#47;&#47; Our ModelViewProjection : multiplication of our 3 matrices<br />
+glm::mat4 MVP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = Projection * View * Model; &#47;&#47; Remember, matrix multiplication is the other way around<&#47;pre></p>
+<ul>
+<li>第二步：把MVP传给GLSL<&#47;li><br />
+<&#47;ul></p>
+<pre>&#47;&#47; Get a handle for our "MVP" uniform.<br />
+&#47;&#47; Only at initialisation time.<br />
+GLuint MatrixID = glGetUniformLocation(programID, "MVP");</p>
+<p>&#47;&#47; Send our transformation to the currently bound shader,<br />
+&#47;&#47; in the "MVP" uniform<br />
+&#47;&#47; For each model you render, since the MVP will be different (at least the M part)<br />
+glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &amp;MVP[0][0]);<&#47;pre></p>
+<ul>
+<li>第三步：在GLSL中用MVP变换顶点<&#47;li><br />
+<&#47;ul></p>
+<pre>in vec3 vertexPosition_modelspace;<br />
+uniform mat4 MVP;</p>
+<p>void main(){</p>
+<p>    &#47;&#47; Output position of the vertex, in clip space : MVP * position<br />
+    vec4 v = vec4(vertexPosition_modelspace,1); &#47;&#47; Transform an homogeneous 4D vector, remember ?<br />
+    gl_Position = MVP * v;<br />
+}<&#47;pre></p>
+<ul>
+<li>搞定！三角形和第二课的一样，仍然在原点(0,0,0)，然而是从点(4,3,3)透视观察的；摄像机的朝上方向为(0,1,0)，视野（field of view）45&deg;。<&#47;li><br />
+<&#47;ul><br />
+<a href="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;perspective_red_triangle.png"><img class="alignnone size-medium wp-image-20" src="http:&#47;&#47;www.opengl-tutorial.org&#47;wp-content&#47;uploads&#47;2011&#47;04&#47;perspective_red_triangle-300x231.png" alt="" width="300" height="231" &#47;><&#47;a></p>
+<p>第6课中你会学到怎样用键鼠动态修改这些值，从而创建一个和游戏中类似的摄像机。但我们会先学给三维模型上色（第4课）、贴纹理（第5课）。</p>
+<h1>练习<&#47;h1></p>
+<ul>
+<li>试着修改glm::perspective<&#47;li>的参数
+<li>试试用正交投影（orthographic projection ）（glm::ortho）替换透视投影<br />
+<&#47;li></p>
+<li>其他不变，把模型矩阵运算的顺序改成平移-旋转-缩放，会有什么变化？如果对一个人物作变换，您觉得什么顺序&ldquo;最好&rdquo;呢？<&#47;li><br />
+<&#47;ul></p>
+<address>附注<&#47;address><br />
+<address>&nbsp;<&#47;address><br />
+<address>&nbsp;<&#47;address><br />
+<address>1 : [...]好在用一个4x4矩阵就能表示这个投影：实际上，这句话并不正确。透视变换不是仿射（affine）的，因此，透视投影无法完全由一个矩阵表示。向量与投影矩阵相乘之后，齐次坐标的每个分量都要除以自身的W（透视除法）。W分量恰好是-Z（投影矩阵会保证这一点）。这样，离原点更远的点，除以了较大的Z值；其X、Y坐标变小，点与点之间变紧密，物体看起来就小了，这才产生了透视效果。<&#47;address></p>
