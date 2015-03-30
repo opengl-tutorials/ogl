@@ -115,7 +115,7 @@ glDisableVertexAttribArray(0);
 
 If you're on lucky, you can see the result (<span style="color: red">**don't panic if you don't**</span>) :
 
-![triangle_no_shader]({{site.baseurl}}/assets/images/tuto-2-first-triangle/triangle_no_shader1.png)!
+[triangle_no_shader]: {{site.baseurl}}/assets/images/tuto-2-first-triangle/triangle_no_shader1.png
 {: height="232px" width="300px"}
 
 Now this is some boring white. Let's see how we can improve it by painting it in red. This is done by using something called shaders.
