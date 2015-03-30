@@ -74,6 +74,7 @@ static const GLfloat g_vertex_buffer_data[] = {
 The first vertex is (-1,-1,0). This means that _unless we transform it in some way_, it will be displayed at (-1,-1) on the screen. What does this mean ? The screen origin is in the middle, X is on the right, as usual, and Y is up. This is what it gives on a wide screen :
 
 ![screenCoordinates]({{site.baseurl}}/assets/images/tuto-2-first-triangle/screenCoordinates.png)!
+{: height="165px" width="300px"}
 
 This is something you can't change, it's built in your graphics card. So (-1,-1) is the bottom left corner of your screen. (1,-1) is the bottom right, and (0,1) is the middle top. So this triangle should take most of the screen.
 
