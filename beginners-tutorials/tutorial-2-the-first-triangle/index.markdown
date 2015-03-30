@@ -115,7 +115,8 @@ glDisableVertexAttribArray(0);
 
 If you're on lucky, you can see the result (<span style="color: red">**don't panic if you don't**</span>) :
 
-<a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/triangle_no_shader1.png"><img class="alignnone size-medium wp-image-858" title="triangle_no_shader" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/triangle_no_shader1-300x232.png" alt="" width="300" height="232" /></a>
+![triangle_no_shader]({{site.baseurl}}/assets/images/tuto-2-first-triangle/triangle_no_shader1.png)!
+{: height="232px" width="300px"}
 
 Now this is some boring white. Let's see how we can improve it by painting it in red. This is done by using something called shaders.
 
@@ -275,6 +276,7 @@ glUseProgram(programID);
 
 ... and presto, here's your red triangle !
 
-<a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/red_triangle.png"><img class="alignnone size-medium wp-image-15" title="red_triangle" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/red_triangle-300x231.png" alt="" width="300" height="231" /></a>
+![red_triangle]({{site.baseurl}}/assets/images/tuto-2-first-triangle/red_triangle.png)!
+{: height="231px" width="300px"}
 
 In the next tutorial we'll learn transformations : How to setup your camera, move your objects, etc.
