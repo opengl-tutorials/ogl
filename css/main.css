@@ -16,7 +16,11 @@ body {
   background-color: #fdfdfd;
 }
 
-h1, h2, h3, h4, h5, h6 { font-size: 100%; font-weight: 400; }
+h1 { font-size: 200%; font-weight: 400; }
+h2 { font-size: 150%; font-weight: 400; }
+h3 { font-size: 130%; font-weight: 400; }
+h4, h5, h6 { font-size: 110%; font-weight: 400; }
+
 
 a         { color: #2a7ae2; text-decoration: none; }
 a:hover   { color: #000; text-decoration: underline; }
@@ -235,6 +239,18 @@ a:visited { color: #205caa; }
   border-radius: 3px;
   font-size: 15px;
 }
+
+.post .highlightglslvs pre,
+.post .highlightglslvs code
+ {
+  background-color: #fee;
+}
+.post .highlightglslfs pre,
+.post .highlightglslfs code
+ {
+  background-color: #efe;
+}
+
 
 .post code { padding: 1px 5px; }
 
