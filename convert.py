@@ -45,13 +45,23 @@ for line in fileinput.FileInput(p,inplace=1):
 
     
     line = line.replace("<pre class=\"brush: cpp\">","{% highlight cpp linenos %}\n")
+    line = line.replace("<pre class=\"brush: cpp;\">","{% highlight cpp linenos %}\n")
     line = line.replace("<pre class=\"brush:cpp\">","{% highlight cpp linenos %}\n")
-    line = line.replace("<pre class=\"brush:vs\">","{% highlight glsl linenos %}\n")
-    line = line.replace("<pre class=\"brush: vs\">","{% highlight glsl linenos %}\n")
-    line = line.replace("<pre class=\"brush:fs\">","{% highlight glsl linenos %}\n")
-    line = line.replace("<pre class=\"brush: fs\">","{% highlight glsl linenos %}\n")
+    line = line.replace("<pre class=\"brush:vs\">","{% highlight glsl linenos cssclass=highlightglslvs %}\n")
+    line = line.replace("<pre class=\"brush: vs\">","{% highlight glsl linenos cssclass=highlightglslvs %}\n")
+    line = line.replace("<pre class=\"brush:fs\">","{% highlight glsl linenos cssclass=highlightglslfs %}\n")
+    line = line.replace("<pre class=\"brush: fs\">","{% highlight glsl linenos cssclass=highlightglslfs %}\n")
+    line = line.replace("<pre class=\"brush:plain\">","{% highlight text linenos %}\n")
+    line = line.replace("<pre class=\"brush: plain\">","{% highlight text linenos %}\n")
+    line = line.replace("<pre class=\"brush:c\">","{% highlight c linenos %}\n")
+    line = line.replace("<pre class=\"brush: c\">","{% highlight c linenos %}\n")
+    line = line.replace("<pre class=\"brush:fs; highlight: [4, 6]\">","{% highlight glsl linenos cssclass=highlightglslfs %}\n")
+    line = line.replace("<pre class=\"brush:fs; highlight: [1,3] \">","{% highlight glsl linenos cssclass=highlightglslfs %}\n")
 	
-    line = line.replace("</pre>","\n{% endhighlight%}")
+    line = line.replace("<pre>","{% highlight text linenos %}\n")
+	
+	
+    line = line.replace("</pre>","\n{% endhighlight %}")
 
 
 	
@@ -72,7 +82,8 @@ for line in fileinput.FileInput(p,inplace=1):
 
 	# image with link
 	#<a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/WorkingDir.png"><img class="size-medium wp-image-546 alignnone" title="WorkingDir" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/WorkingDir-300x211.png" alt="" width="300" height="211" /></a>
-	# <a href="http://www.opengl-tutorial.org/wp-content/uploads/2012/04/StartupProject.png"><img class="size-medium wp-image-544 alignright" title="StartupProject" src="http://www.opengl-tutorial.org/wp-content/uploads/2012/04/StartupProject-185x300.png" alt="" width="185" height="300" /></a>
+	#<a href="http://www.opengl-tutorial.org/wp-content/uploads/2012/04/StartupProject.png"><img class="size-medium wp-image-544 alignright" title="StartupProject" src="http://www.opengl-tutorial.org/wp-content/uploads/2012/04/StartupProject-185x300.png" alt="" width="185" height="300" /></a>
+    #<a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/CMake.png"><img class="alignnone size-medium wp-image-8" title="CMake" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/CMake.png" alt="" width="846" height="392" /></a>
     line = re.sub(r"<a.*?href=\".*?\".*?><img .*?src=\"(.*?)\" alt.*?/></a>", r"![](\1)\n", line)
 
 	
@@ -82,6 +93,8 @@ for line in fileinput.FileInput(p,inplace=1):
 	
 	#image path
 	#http://www.opengl-tutorial.org/wp-content/uploads/2011/04/WorkingDir-300x211.png
+	#http://www.opengl-tutorial.org/wp-content/uploads/2011/04/WorkingDir.png
     line = re.sub(r"\(http://www.opengl-tutorial.org/wp-content/uploads/20[0-9][0-9]/[0-9][0-9]/(.+?)-[0-9]+x[0-9]+(\.[a-zA-Z]+)\)", r"({{site.baseurl}}"+newimagespath+r"\1\2)", line)
- 
+    line = re.sub(r"\(http://www.opengl-tutorial.org/wp-content/uploads/20[0-9][0-9]/[0-9][0-9]/(.+?)(\.[a-zA-Z]+)\)", r"({{site.baseurl}}"+newimagespath+r"\1\2)", line)
+
     print line,
