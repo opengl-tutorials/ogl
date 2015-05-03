@@ -15,6 +15,7 @@ wordpress_url: http://www.opengl-tutorial.org/?page_id=933
 date: '2013-10-15 17:15:15 +0200'
 date_gmt: '2013-10-15 17:15:15 +0200'
 categories: []
+order: 110
 tags: []
 ---
 <p>Billboards are 2D elements incrusted in a 3D world. Not a 2D menu on top of everything else; not a 3D plane around which you can turn; but something in-between, like health bars in many games.</p>

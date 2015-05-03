@@ -15,6 +15,7 @@ wordpress_url: http://www.opengl-tutorial.org/?page_id=951
 date: '2013-10-19 10:52:04 +0200'
 date_gmt: '2013-10-19 10:52:04 +0200'
 categories: []
+order: 120
 tags: []
 ---
 <p>Particles are very similar to 3D billboards. There are two major differences, though :</p>
