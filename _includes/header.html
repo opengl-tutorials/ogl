@@ -1,5 +1,28 @@
 <header class="site-header">
 
+  <script>
+    String.prototype.replaceAt=function(index, character) {
+    return this.substr(0, index) + character + this.substr(index+character.length);
+    }
+    
+    function myFunction() {
+    var x = document.getElementById("myLanguage").value
+    var pageurl = "{{page.url}}"
+    if (pageurl.charAt(3) == '/') {
+      if(x=='en'){
+        pageurl = pageurl.substring(3);
+      } else {
+        pageurl = pageurl.replaceAt(1, x);
+      }
+      window.open ('{{site.baseurl}}' + pageurl,'_self',false);
+    } else { 
+      window.open ('{{site.baseurl}}/' + x + pageurl,'_self',false);
+    }
+    
+    
+    }
+  </script>
+  
   <div class="wrap">
 {% if page.language %}
     <a class="site-title" href="{{site.baseurl}}/{{page.language}}/">{{ site.title }}</a>
@@ -31,7 +54,12 @@
           <a class="page-link" href="{{site.baseurl}}/intermediate-tutorials/">Intermediate tutorials</a>
           <a class="page-link" href="{{site.baseurl}}/miscellaneous/">Miscellaneous</a>
           <a class="page-link" href="{{site.baseurl}}/download/">Download</a>
-	{% endif %}
+	  {% endif %}
+
+	  <select id="myLanguage" onchange="myFunction()">
+	    <option value="en" {% if page.language == 'en' %} selected="1" {% endif %} >English</option>
+	    <option value="cn" {% if page.language == 'cn' %} selected="1" {% endif %} >Chinese</option>
+	  </select>
       </div>
     </nav>
 
