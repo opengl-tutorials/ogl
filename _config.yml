@@ -7,7 +7,8 @@ highlighter: pygments
 safe: true
 lsi: false
 source:      .
-
+languages: [en, cn]
+languages_names: [english, chinese]
 # Build settings
 markdown: kramdown
 permalink: pretty

@@ -57,8 +57,9 @@
 	  {% endif %}
 
 	  <select id="myLanguage" onchange="myFunction()">
-	    <option value="en" {% if page.language == 'en' %} selected="1" {% endif %} >English</option>
-	    <option value="cn" {% if page.language == 'cn' %} selected="1" {% endif %} >Chinese</option>
+	    {% for l in site.languages %}
+	    <option value="{{l}}" {% if page.language == {{l}} %} selected="1" {% endif %} >{{site.languages_names[forloop.index0]}}</option>	    
+	    {% endfor %}
 	  </select>
       </div>
     </nav>
