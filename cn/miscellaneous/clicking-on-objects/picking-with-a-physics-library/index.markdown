@@ -16,6 +16,7 @@ date: '2013-05-18 20:42:49 +0200'
 date_gmt: '2013-05-18 20:42:49 +0200'
 categories: []
 tags: []
+order: 80
 language: cn
 ---
 <p>In this tutorial, we will see the "recommended" way to pick objects in a classical game engine - which might not be your case.</p>

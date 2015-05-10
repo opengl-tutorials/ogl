@@ -16,6 +16,7 @@ date: '2011-05-11 20:04:48 +0200'
 date_gmt: '2011-05-11 20:04:48 +0200'
 categories: []
 tags: []
+order: 20
 language: cn
 ---
 <h1>Trigonometry</h1></p>
