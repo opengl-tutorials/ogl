@@ -15,6 +15,7 @@ wordpress_url: http://www.opengl-tutorial.org/?page_id=587
 date: '2012-10-06 14:03:21 +0200'
 date_gmt: '2012-10-06 14:03:21 +0200'
 categories: []
+order: 50
 tags: []
 ---
 <p>A lot of efforts have been made so that these tutorials are as simple to compile &amp; run as possible. Unfortunately, this also means that CMakes hides how to do that on your own project.</p>

@@ -15,6 +15,7 @@ wordpress_url: http://www.opengl-tutorial.org/?page_id=883
 date: '2013-05-18 20:42:49 +0200'
 date_gmt: '2013-05-18 20:42:49 +0200'
 categories: []
+order: 80
 tags: []
 ---
 <p>In this tutorial, we will see the "recommended" way to pick objects in a classical game engine - which might not be your case.</p>
