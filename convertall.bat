@@ -24,8 +24,10 @@ C:\Python27\python.exe convert.py miscellaneous\clicking-on-objects\picking-with
 C:\Python27\python.exe convert.py miscellaneous\clicking-on-objects\picking-with-custom-ray-obb-function\index.markdown     /assets/images/tuto-picking-obb/
 C:\Python27\python.exe convert.py miscellaneous\clicking-on-objects\picking-with-a-physics-library\index.markdown           /assets/images/tuto-picking-physics-library/
 C:\Python27\python.exe convert.py miscellaneous\faq\index.markdown                                                          /assets/images/faq/
-C:\Python27\python.exe convert.py miscellaneous\math-cheatsheet\index.markdown                                              /assets/images/TODO/
+C:\Python27\python.exe convert.py miscellaneous\math-cheatsheet\index.markdown                                              /assets/images/math-cheatsheet/
 C:\Python27\python.exe convert.py miscellaneous\useful-tools-links\index.markdown                                           /assets/images/TODO/
+
+C:\Python27\python.exe convert.py download/index.markdown                                                                   /assets/images/TODO/
 
 
 

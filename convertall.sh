@@ -24,7 +24,8 @@ python convert.py miscellaneous/clicking-on-objects/picking-with-an-opengl-hack/
 python convert.py miscellaneous/clicking-on-objects/picking-with-custom-ray-obb-function/index.markdown     /assets/images/tuto-picking-obb/
 python convert.py miscellaneous/clicking-on-objects/picking-with-a-physics-library/index.markdown           /assets/images/tuto-picking-physics-library/
 python convert.py miscellaneous/faq/index.markdown                                                          /assets/images/faq/
-python convert.py miscellaneous/math-cheatsheet/index.markdown                                              /assets/images/TODO/
+python convert.py miscellaneous/math-cheatsheet/index.markdown                                              /assets/images/math-cheatsheet/
 python convert.py miscellaneous/useful-tools-links/index.markdown                                           /assets/images/TODO/
 
+python convert.py download/index.markdown                                                                   /assets/images/TODO/
 
