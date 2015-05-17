@@ -12,6 +12,20 @@ newimagespath = sys.argv[2]
 import re
 
 for line in fileinput.FileInput(p,inplace=1):
+
+    # fixing WPML's stupidity
+    line = line.replace("&#47;","/")
+    line = line.replace("&rdquo;", "\"")
+    line = line.replace("&ldquo;", "\"")
+    line = line.replace("&mdash;", "-")
+    line = line.replace("&hellip;", "...")
+    line = line.replace("<!-- Include required JS files -->", "/")
+    line = line.replace("&#47;","/")
+    line = line.replace("<!-- At least one brush, here we choose JS. You need to include a brush for every     language you want to highlight -->", "")
+    line = line.replace(" style=\"text-align: left\"", "")
+    line = line.replace(" style=\"padding-left: 120px\"", "")
+    line = line.replace("<div></div>", "");
+
     line = line.replace("</h1>","\n")
     line = line.replace("<h1>","\n#")
     line = line.replace("</h2>","\n")
@@ -40,8 +54,11 @@ for line in fileinput.FileInput(p,inplace=1):
     
     line = line.replace("<ol>","")
     line = line.replace("</ol>","")
-	
+
     line = line.replace("&amp;","&")
+
+    line = line.replace("<address>", "*")
+    line = line.replace("</address>", "*")
 
     
     line = line.replace("<pre class=\"brush: cpp\">","{% highlight cpp linenos %}\n")
@@ -53,6 +70,7 @@ for line in fileinput.FileInput(p,inplace=1):
     line = line.replace("<pre class=\"brush: fs\">","{% highlight glsl linenos cssclass=highlightglslfs %}\n")
     line = line.replace("<pre class=\"brush:plain\">","{% highlight text linenos %}\n")
     line = line.replace("<pre class=\"brush: plain\">","{% highlight text linenos %}\n")
+    line = line.replace("<pre style=\"background-color: white; color: black;\">","{% highlight text %}\n")
     line = line.replace("<pre class=\"brush:c\">","{% highlight c linenos %}\n")
     line = line.replace("<pre class=\"brush: c\">","{% highlight c linenos %}\n")
     line = line.replace("<pre class=\"brush:fs; highlight: [4, 6]\">","{% highlight glsl linenos cssclass=highlightglslfs %}\n")
