@@ -26,8 +26,8 @@ tags: []
 </ul><br />
 Alternatively, you have access to the latest version of the code on the Mercurial repository :</p>
 <ul>
-<li><a href="http://code.google.com/p/opengl-tutorial-org/source/checkout">Checkout the source on google code</a> (The nodes corresponding to the above zips have tags 0014_33 and 0014_21 respectively)</li>
-<li><a href="http://code.google.com/p/opengl-tutorial-org/source/browse/">Browse the source on google code</a></li><br />
+<li><a href="https://github.com/Whiteseeker/opengl-tutorials">Checkout the source on GitHub</a> (The nodes corresponding to the above zips have tags 0014_33 and 0014_21 respectively)</li>
+<li><a href="https://github.com/Whiteseeker/opengl-tutorials">Browse the source on GitHub</a></li><br />
 </ul><br />
 All the source code on this site (except third-party libraries) is released under the WTFPL Public Licence :</p>
 <pre style="background-color: white; color: black;">           DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE<br />
