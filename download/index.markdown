@@ -6,7 +6,6 @@ published: true
 title: Download
 author:
   display_name: Calvin1602
-  login: Calvin1602
   email: arnaud1602@gmail.com
   url: ''
 author_login: Calvin1602
@@ -22,13 +21,12 @@ tags: []
 <p>You can download the ZIP archive containing the whole set of tutorials here (See the <a title="FAQ" href="http://www.opengl-tutorial.org/miscellaneous/faq/" target="_blank">FAQ</a> for which version to choose):</p>
 <ul>
 <li><a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/OpenGL-tutorial_v0014_33.zip">OpenGL-tutorial_v0014_33</a>&nbsp;The normal version</li>
-<li><a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/OpenGL-tutorial_v0014_21.zip">OpenGL-tutorial_v0014_21</a>&nbsp;The OpenGL 2.1 port</li><br />
-</ul><br />
+<li><a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/OpenGL-tutorial_v0014_21.zip">OpenGL-tutorial_v0014_21</a>&nbsp;The OpenGL 2.1 port</li>
+</ul>
 Alternatively, you have access to the latest version of the code on the Git repository :</p>
 <ul>
 <li><a href="https://github.com/Whiteseeker/opengl-tutorials">Checkout the source on GitHub</a> (The nodes corresponding to the above zips have tags 0014_33 and 0014_21 respectively)</li>
-<br />
-</ul><br />
+</ul>
 All the source code on this site (except third-party libraries) is released under the WTFPL Public Licence :</p>
 <pre style="background-color: white; color: black;">           DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE<br />
                    Version 2, December 2004</p>
