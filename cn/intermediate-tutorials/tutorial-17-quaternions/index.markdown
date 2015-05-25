@@ -17,6 +17,7 @@ date_gmt: '2012-08-22 14:12:14 +0200'
 categories: [tuto]
 order: 90
 tags: []
+language: cn
 ---
 <p>This tutorial goes a bit outside the scope of OpenGL, but nevertheless tackles a very common problem: how to represent rotations ?</p>
 <p>In Tutorial 3 - Matrices, we learnt that matrices are able to rotate a point around a specific axis. While matrices are a neat way to transform vertices, handling matrices is difficult: for instance, getting the rotation axis from the final matrix is quite tricky.</p>

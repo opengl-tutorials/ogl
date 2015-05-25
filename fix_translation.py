@@ -1,6 +1,7 @@
 import os
 import shutil
 from os import walk
+from tempfile import mkstemp
 
 # This cript look for all the "index.markdown" files in the english website, and check if all of them are present in each translation directories
 
@@ -10,6 +11,38 @@ ignored_directories = ["assets", "css"];
 # Get the directory where this python script is stored
 script_directory = os.path.dirname(os.path.abspath(__file__))
 directories = [script_directory]
+
+
+
+def remplaceLanguage( file_path, lang ):
+    print "remplaceLanguage(%s, %s)" % (file_path, lang)
+    markerline = 0;
+
+    #Create temp file
+    fh, abs_path = mkstemp()
+    print "abs_path %s" % abs_path
+    with open(abs_path,"w") as new_file:
+        with open(file_path) as old_file:
+            for line in old_file:
+                if line.startswith("language:"):
+                    new_file.write("language: " + lang)
+                    new_file.write(os.linesep)
+                    markerline = markerline + 1
+                elif line.startswith("---") and markerline == 0:
+                    new_file.write(line)
+                    markerline = markerline + 1
+                elif line.startswith("---") and markerline == 1:
+                    new_file.write("language: " + lang)
+                    new_file.write(os.linesep)
+                    new_file.write(line)
+                    markerline = markerline + 1
+                else:
+                    new_file.write(line)
+    os.close(fh)
+    #Remove original file
+    os.remove(file_path)
+    #Move new file
+    shutil.move(abs_path, file_path)
 
 # 1: We get the list of index.markdown files in the english version of the website
 index_markdown_files = []
@@ -45,6 +78,8 @@ for ln in translation_directories:
         f = os.path.join(f, index_file[len(script_directory)+1:])
         if not os.path.isfile(f):
             missing_index_markdown.append([f, index_file])
+        else:
+            remplaceLanguage(f, ln)
     if len(missing_index_markdown) > 0:
         print "Translation %s miss %d index.markdown file" % (ln, len(missing_index_markdown))
         print "Do you want to add them ?"
@@ -55,5 +90,8 @@ for ln in translation_directories:
                 dirToCreate = os.path.dirname(mf[0])
                 if not os.path.exists(dirToCreate):
                     os.makedirs(dirToCreate)
-                    shutil.copy2(mf[1], mf[0])
+                shutil.copy2(mf[1], mf[0])
+                # In the copied file we need to modify the language: xx to language: 'ln'
+                remplaceLanguage(mf[0], ln)    
+
         

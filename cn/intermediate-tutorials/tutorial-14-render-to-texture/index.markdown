@@ -17,6 +17,7 @@ date_gmt: '2011-05-26 19:33:15 +0200'
 categories: [tuto]
 order: 60
 tags: []
+language: cn
 ---
 <p>Render-To-Texture is a handful method to create a variety of effects. The basic idea is that you render a scene just like you usually do, but this time in a texture that you can reuse later.</p>
 <p>Applications include in-game cameras, post-processing, and as many GFX as you can imagine.</p>

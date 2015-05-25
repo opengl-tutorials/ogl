@@ -17,5 +17,6 @@ date_gmt: '2013-09-07 11:17:18 +0200'
 categories: [tuto]
 order: 100
 tags: []
+language: cn
 ---
 
