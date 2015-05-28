@@ -71,6 +71,7 @@ while len(directories) > 0:
 
 # 2: For each folder in "translation_directories" find if some index.markdown file doesn't exist
 for ln in translation_directories:
+    print "Checking %s translation" % ln
     missing_index_markdown = []
     for index_file in index_markdown_files:
         f = script_directory
