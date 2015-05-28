@@ -5,7 +5,7 @@ from tempfile import mkstemp
 
 # This cript look for all the "index.markdown" files in the english website, and check if all of them are present in each translation directories
 
-translation_directories = ["cn"];
+translation_directories = ["cn", "jp", "ru"];
 ignored_directories = ["assets", "css"];
 
 # Get the directory where this python script is stored

@@ -1,0 +1,22 @@
+---
+layout: page
+status: publish
+published: true
+title: 'Tutorial 18 : Billboards & Particles'
+author:
+  display_name: Calvin1602
+  login: Calvin1602
+  email: arnaud1602@gmail.com
+  url: ''
+author_login: Calvin1602
+author_email: arnaud1602@gmail.com
+wordpress_id: 931
+wordpress_url: http://www.opengl-tutorial.org/?page_id=931
+date: '2013-09-07 11:17:18 +0200'
+date_gmt: '2013-09-07 11:17:18 +0200'
+categories: [tuto]
+order: 100
+tags: []
+language: ru
+---
+
