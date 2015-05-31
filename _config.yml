@@ -2,7 +2,7 @@
 title: opengl-tutorials
 email: contact@opengl-tutorial.org
 description: "This site is dedicated to tutorials for OpenGL 3.3 and later !"
-baseurl: "/opengl-tutorials"
+baseurl: "/ogl"
 highlighter: pygments
 safe: true
 lsi: false
