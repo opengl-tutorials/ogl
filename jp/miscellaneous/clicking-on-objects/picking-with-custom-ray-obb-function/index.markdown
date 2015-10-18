@@ -19,101 +19,154 @@ order: 90
 tags: []
 language: jp
 ---
-<p>This last method is a nice middleground between the "hacky" pure-OpenGL implementation, and having to integrate a fully-featured physics engine just to do raycasts and picking.</p>
-<p>This tutorial uses concepts and functions from the Bullet tutorial, so make sure you read it first.</p>
-<h1>The basic idea</h1><br />
-Instead of relying to Bullet intersect a ray with a <em>Collision Shape</em>, we're going to do this ourselves.</p>
-<p>As we have seen, there are many possible collision shapes. Spheres are very easy to intersect, but for many object, they represent the original mesh very poorly. On the other side, intersecting the ray with each triangle of the original mesh is way to costly. A good middleground are OBB : Oriented Bounding Boxes. There are quite precise (but it depends on your input geometry), and quite cheap to compute.</p>
-<p>An OBB is a box that fits the mesh, and when the mesh is translated or rotated, the same transformation is applied to the box :</p>
-<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2013/05/OBB.png"><img class="alignnone size-full wp-image-894" title="OBB" src="http://www.opengl-tutorial.org/wp-content/uploads/2013/05/OBB.png" alt="" width="582" height="312" /></a></p>
-<h1>Ray-OBB intersection algorithm</h1><br />
-<em>( The algorithm and the pictures are largely inspired from Real-Time Rendering 3. Buy this book ! )</em></p>
-<p>Consider the OBB below. On the X axis, this is delimited by 2 vertical planes, colored in red here. When intersected with the ray (a very simple operation), it gives 2 intersections, one "near" and one "far" :</p>
-<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2013/05/RayObb11.png"><img class="alignnone size-full wp-image-899" title="RayObb1" src="http://www.opengl-tutorial.org/wp-content/uploads/2013/05/RayObb11.png" alt="" width="557" height="537" /></a></p>
-<p>When the ray intersects the 2 others planes that delimit the Y axis (in green), it gives 2 more intersections. Notice how the intersections are ordered : you enter the green area -> you leave the green area -> you enter the red area -> you leave the red area. This means that there is no intersection.</p>
-<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2013/05/RayObb21.png"><img class="alignnone size-full wp-image-900" title="RayObb2" src="http://www.opengl-tutorial.org/wp-content/uploads/2013/05/RayObb21.png" alt="" width="612" height="538" /></a></p>
-<p>&nbsp;</p>
-<p>But if this order changes (you enter the green area -> you enter the red area), then you know there is an intersection !</p>
-<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2013/05/RayOBB31.png"><img class="alignnone size-full wp-image-901" title="RayOBB3" src="http://www.opengl-tutorial.org/wp-content/uploads/2013/05/RayOBB31.png" alt="" width="601" height="544" /></a></p>
-<p>Let's put this in practice.</p>
-<h1>Algorithm implementation</h1><br />
-(full source code is available in Misc05/misc05_picking_custom.cpp)</p>
-<p>Our Ray - OBB intersection function will look like this :</p>
-<pre class="brush:cpp">bool&nbsp;TestRayOBBIntersection(<br />
-	glm::vec3&nbsp;ray_origin,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Ray&nbsp;origin,&nbsp;in&nbsp;world&nbsp;space<br />
-	glm::vec3&nbsp;ray_direction,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Ray&nbsp;direction&nbsp;(NOT&nbsp;target&nbsp;position!),&nbsp;in&nbsp;world&nbsp;space.&nbsp;Must&nbsp;be&nbsp;normalize()'d.<br />
-	glm::vec3&nbsp;aabb_min,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Minimum&nbsp;X,Y,Z&nbsp;coords&nbsp;of&nbsp;the&nbsp;mesh&nbsp;when&nbsp;not&nbsp;transformed&nbsp;at&nbsp;all.<br />
-	glm::vec3&nbsp;aabb_max,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Maximum&nbsp;X,Y,Z&nbsp;coords.&nbsp;Often&nbsp;aabb_min*-1&nbsp;if&nbsp;your&nbsp;mesh&nbsp;is&nbsp;centered,&nbsp;but&nbsp;it's&nbsp;not&nbsp;always&nbsp;the&nbsp;case.<br />
-	glm::mat4&nbsp;ModelMatrix,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Transformation&nbsp;applied&nbsp;to&nbsp;the&nbsp;mesh&nbsp;(which&nbsp;will&nbsp;thus&nbsp;be&nbsp;also&nbsp;applied&nbsp;to&nbsp;its&nbsp;bounding&nbsp;box)<br />
-	float&amp;&nbsp;intersection_distance&nbsp;//&nbsp;Output&nbsp;:&nbsp;distance&nbsp;between&nbsp;ray_origin&nbsp;and&nbsp;the&nbsp;intersection&nbsp;with&nbsp;the&nbsp;OBB<br />
-){</pre><br />
-We begin by nitializing a few variables. tMin is the largest "near" intersection currently found; tMax is the smallest "far" intersection currently found. Delta is used to compute the intersections with the planes.</p>
-<pre class="brush:cpp">float&nbsp;tMin&nbsp;=&nbsp;0.0f;<br />
-float&nbsp;tMax&nbsp;=&nbsp;100000.0f;</p>
-<p>glm::vec3&nbsp;OBBposition_worldspace(ModelMatrix[3].x,&nbsp;ModelMatrix[3].y,&nbsp;ModelMatrix[3].z);</p>
-<p>glm::vec3&nbsp;delta&nbsp;=&nbsp;OBBposition_worldspace&nbsp;-&nbsp;ray_origin;</pre><br />
-Now, let's compute the intersections with the 2 planes that delimit the OBB on the X axis :</p>
-<pre class="brush:cpp">glm::vec3&nbsp;xaxis(ModelMatrix[0].x,&nbsp;ModelMatrix[0].y,&nbsp;ModelMatrix[0].z);<br />
-float&nbsp;e&nbsp;=&nbsp;glm::dot(xaxis,&nbsp;delta);<br />
-float&nbsp;f&nbsp;=&nbsp;glm::dot(ray_direction,&nbsp;xaxis);</p>
-<p>// Beware, don't do the division if f is near 0 ! See full source code for details.<br />
-float&nbsp;t1&nbsp;=&nbsp;(e+aabb_min.x)/f;&nbsp;//&nbsp;Intersection&nbsp;with&nbsp;the&nbsp;"left"&nbsp;plane<br />
-float&nbsp;t2&nbsp;=&nbsp;(e+aabb_max.x)/f;&nbsp;//&nbsp;Intersection&nbsp;with&nbsp;the&nbsp;"right"&nbsp;plane</pre><br />
-t1 and t2 now contain distances betwen ray origin and ray-plane intersections, but we don't know in what order, so we make sure that t1 represents the "near" intersection and t2 the "far" :</p>
-<pre class="brush:cpp">if&nbsp;(t1>t2){ // if wrong order<br />
-	float&nbsp;w=t1;t1=t2;t2=w;&nbsp;//&nbsp;swap&nbsp;t1&nbsp;and&nbsp;t2<br />
-}</pre><br />
-We can update tMin and tMax :</p>
-<pre class="brush:cpp">//&nbsp;tMax&nbsp;is&nbsp;the&nbsp;nearest&nbsp;"far"&nbsp;intersection&nbsp;(amongst&nbsp;the&nbsp;X,Y&nbsp;and&nbsp;Z&nbsp;planes&nbsp;pairs)<br />
-if&nbsp;(&nbsp;t2&nbsp;<&nbsp;tMax&nbsp;)&nbsp;tMax&nbsp;=&nbsp;t2;<br />
-//&nbsp;tMin&nbsp;is&nbsp;the&nbsp;farthest&nbsp;"near"&nbsp;intersection&nbsp;(amongst&nbsp;the&nbsp;X,Y&nbsp;and&nbsp;Z&nbsp;planes&nbsp;pairs)<br />
-if&nbsp;(&nbsp;t1&nbsp;>&nbsp;tMin&nbsp;)&nbsp;tMin&nbsp;=&nbsp;t1;</pre><br />
-And here's the trick : if "far" is closer than "near", then there is NO intersection.</p>
-<pre class="brush:cpp">if&nbsp;(tMax&nbsp;<&nbsp;tMin&nbsp;)<br />
-	return&nbsp;false;</pre><br />
-&nbsp;</p>
-<p>This was for the X axis. On all other axes it's exactly the same !</p>
-<p>&nbsp;</p>
-<h1>Using the algorithm</h1><br />
-The TestRayOBBIntersection() functions enables us to test the intersection with only one OBB, so we have to test them all. In this tutorial, we simply test all boxes one after the other, but if you have many objects, you might need an additional acceleration structure like a Binary Space Partitionning Tree (BSP-Tree) or a Bounding Volume Hierarchy (BVH).</p>
-<pre class="brush:cpp">for(int&nbsp;i=0;&nbsp;i<100;&nbsp;i++){</p>
-<p>	float&nbsp;intersection_distance;&nbsp;//&nbsp;Output&nbsp;of&nbsp;TestRayOBBIntersection()<br />
-	glm::vec3&nbsp;aabb_min(-1.0f,&nbsp;-1.0f,&nbsp;-1.0f);<br />
-	glm::vec3&nbsp;aabb_max(&nbsp;1.0f,&nbsp;&nbsp;1.0f,&nbsp;&nbsp;1.0f);</p>
-<p>	//&nbsp;The&nbsp;ModelMatrix&nbsp;transforms&nbsp;:<br />
-	//&nbsp;-&nbsp;the&nbsp;mesh&nbsp;to&nbsp;its&nbsp;desired&nbsp;position&nbsp;and&nbsp;orientation<br />
-	//&nbsp;-&nbsp;but&nbsp;also&nbsp;the&nbsp;AABB&nbsp;(defined&nbsp;with&nbsp;aabb_min&nbsp;and&nbsp;aabb_max)&nbsp;into&nbsp;an&nbsp;OBB<br />
-	glm::mat4&nbsp;RotationMatrix&nbsp;=&nbsp;glm::toMat4(orientations[i]);<br />
-	glm::mat4&nbsp;TranslationMatrix&nbsp;=&nbsp;translate(mat4(),&nbsp;positions[i]);<br />
-	glm::mat4&nbsp;ModelMatrix&nbsp;=&nbsp;TranslationMatrix&nbsp;*&nbsp;RotationMatrix;</p>
-<p>	if&nbsp;(&nbsp;TestRayOBBIntersection(<br />
-		ray_origin,&nbsp;<br />
-		ray_direction,&nbsp;<br />
-		aabb_min,&nbsp;<br />
-		aabb_max,<br />
-		ModelMatrix,<br />
-		intersection_distance)<br />
-	){<br />
-		std::ostringstream&nbsp;oss;<br />
-		oss&nbsp;<<&nbsp;"mesh&nbsp;"&nbsp;<<&nbsp;i;<br />
-		message&nbsp;=&nbsp;oss.str();<br />
-		break;<br />
-	}<br />
-}</pre><br />
-Note that this algorithm has a problem : it picks the first OBB it finds. But if this OBB is behind another OBB, this is wrong. So you would have to take only the nearest OBB ! Exercise left to the reader...</p>
-<h1>Pros and cons</h1><br />
-Pros :</p>
-<ul>
-<li>Easy</li>
-<li>Low memory requirements (just the OBB's extents)</li>
-<li>Doesn't slows OpenGL down as the 1rst version</li><br />
-</ul><br />
-Cons :</p>
-<ul>
-<li>Slower than a physics engine since there is no acceleration structure</li>
-<li>Might not be precise enough.</li><br />
-</ul><br />
-&nbsp;</p>
-<h1>Final remarks</h1><br />
-There are many other intersection routines available for all sorts of collision shapes; see&nbsp;<a href="http://www.realtimerendering.com/intersections.html">http://www.realtimerendering.com/intersections.html</a> for instance.</p>
-<p>If you need precise intersection, you will have to test ray-triangle intersections. Again, it's not a good idea to check each triangle of each mesh linearly. Another acceleration structure is required.</p>
+
+This last method is a nice middleground between the "hacky" pure-OpenGL implementation, and having to integrate a fully-featured physics engine just to do raycasts and picking.
+
+This tutorial uses concepts and functions from the Bullet tutorial, so make sure you read it first.
+
+#The basic idea
+
+Instead of relying to Bullet intersect a ray with a *Collision Shape*, we're going to do this ourselves.
+
+As we have seen, there are many possible collision shapes. Spheres are very easy to intersect, but for many object, they represent the original mesh very poorly. On the other side, intersecting the ray with each triangle of the original mesh is way to costly. A good middleground are OBB : Oriented Bounding Boxes. There are quite precise (but it depends on your input geometry), and quite cheap to compute.
+
+An OBB is a box that fits the mesh, and when the mesh is translated or rotated, the same transformation is applied to the box :
+
+![]({{site.baseurl}}/assets/images/tuto-picking-obb/OBB.png)
+
+
+#Ray-OBB intersection algorithm
+
+*( The algorithm and the pictures are largely inspired from Real-Time Rendering 3. Buy this book ! )*
+
+Consider the OBB below. On the X axis, this is delimited by 2 vertical planes, colored in red here. When intersected with the ray (a very simple operation), it gives 2 intersections, one "near" and one "far" :
+
+![]({{site.baseurl}}/assets/images/tuto-picking-obb/RayObb11.png)
+
+
+When the ray intersects the 2 others planes that delimit the Y axis (in green), it gives 2 more intersections. Notice how the intersections are ordered : you enter the green area -> you leave the green area -> you enter the red area -> you leave the red area. This means that there is no intersection.
+
+![]({{site.baseurl}}/assets/images/tuto-picking-obb/RayObb21.png)
+
+
+ 
+
+But if this order changes (you enter the green area -> you enter the red area), then you know there is an intersection !
+
+![]({{site.baseurl}}/assets/images/tuto-picking-obb/RayOBB31.png)
+
+
+Let's put this in practice.
+
+#Algorithm implementation
+
+(full source code is available in Misc05/misc05_picking_custom.cpp)
+
+Our Ray - OBB intersection function will look like this :
+{% highlight cpp linenos %}
+bool TestRayOBBIntersection(
+	glm::vec3 ray_origin,        // Ray origin, in world space
+	glm::vec3 ray_direction,     // Ray direction (NOT target position!), in world space. Must be normalize()'d.
+	glm::vec3 aabb_min,          // Minimum X,Y,Z coords of the mesh when not transformed at all.
+	glm::vec3 aabb_max,          // Maximum X,Y,Z coords. Often aabb_min*-1 if your mesh is centered, but it's not always the case.
+	glm::mat4 ModelMatrix,       // Transformation applied to the mesh (which will thus be also applied to its bounding box)
+	float& intersection_distance // Output : distance between ray_origin and the intersection with the OBB
+){
+{% endhighlight %}
+We begin by nitializing a few variables. tMin is the largest "near" intersection currently found; tMax is the smallest "far" intersection currently found. Delta is used to compute the intersections with the planes.
+{% highlight cpp linenos %}
+float tMin = 0.0f;
+float tMax = 100000.0f;
+
+glm::vec3 OBBposition_worldspace(ModelMatrix[3].x, ModelMatrix[3].y, ModelMatrix[3].z);
+
+glm::vec3 delta = OBBposition_worldspace - ray_origin;
+{% endhighlight %}
+Now, let's compute the intersections with the 2 planes that delimit the OBB on the X axis :
+{% highlight cpp linenos %}
+glm::vec3 xaxis(ModelMatrix[0].x, ModelMatrix[0].y, ModelMatrix[0].z);
+float e = glm::dot(xaxis, delta);
+float f = glm::dot(ray_direction, xaxis);
+
+// Beware, don't do the division if f is near 0 ! See full source code for details.
+float t1 = (e+aabb_min.x)/f; // Intersection with the "left" plane
+float t2 = (e+aabb_max.x)/f; // Intersection with the "right" plane
+{% endhighlight %}
+t1 and t2 now contain distances betwen ray origin and ray-plane intersections, but we don't know in what order, so we make sure that t1 represents the "near" intersection and t2 the "far" :
+{% highlight cpp linenos %}
+if (t1>t2){ // if wrong order
+	float w=t1;t1=t2;t2=w; // swap t1 and t2
+}
+{% endhighlight %}
+We can update tMin and tMax :
+{% highlight cpp linenos %}
+// tMax is the nearest "far" intersection (amongst the X,Y and Z planes pairs)
+if ( t2 < tMax ) tMax = t2;
+// tMin is the farthest "near" intersection (amongst the X,Y and Z planes pairs)
+if ( t1 > tMin ) tMin = t1;
+{% endhighlight %}
+And here's the trick : if "far" is closer than "near", then there is NO intersection.
+{% highlight cpp linenos %}
+if (tMax < tMin )
+	return false;
+{% endhighlight %}
+ 
+
+This was for the X axis. On all other axes it's exactly the same !
+
+ 
+
+#Using the algorithm
+
+The TestRayOBBIntersection() functions enables us to test the intersection with only one OBB, so we have to test them all. In this tutorial, we simply test all boxes one after the other, but if you have many objects, you might need an additional acceleration structure like a Binary Space Partitionning Tree (BSP-Tree) or a Bounding Volume Hierarchy (BVH).
+{% highlight cpp linenos %}
+for(int i=0; i<100; i++){
+
+	float intersection_distance; // Output of TestRayOBBIntersection()
+	glm::vec3 aabb_min(-1.0f, -1.0f, -1.0f);
+	glm::vec3 aabb_max( 1.0f,  1.0f,  1.0f);
+
+	// The ModelMatrix transforms :
+	// - the mesh to its desired position and orientation
+	// - but also the AABB (defined with aabb_min and aabb_max) into an OBB
+	glm::mat4 RotationMatrix = glm::toMat4(orientations[i]);
+	glm::mat4 TranslationMatrix = translate(mat4(), positions[i]);
+	glm::mat4 ModelMatrix = TranslationMatrix * RotationMatrix;
+
+	if ( TestRayOBBIntersection(
+		ray_origin, 
+		ray_direction, 
+		aabb_min, 
+		aabb_max,
+		ModelMatrix,
+		intersection_distance)
+	){
+		std::ostringstream oss;
+		oss << "mesh " << i;
+		message = oss.str();
+		break;
+	}
+}
+{% endhighlight %}
+Note that this algorithm has a problem : it picks the first OBB it finds. But if this OBB is behind another OBB, this is wrong. So you would have to take only the nearest OBB ! Exercise left to the reader...
+
+#Pros and cons
+
+Pros :
+
+* Easy
+* Low memory requirements (just the OBB's extents)
+* Doesn't slows OpenGL down as the 1rst version
+
+Cons :
+
+* Slower than a physics engine since there is no acceleration structure
+* Might not be precise enough.
+
+ 
+
+#Final remarks
+
+There are many other intersection routines available for all sorts of collision shapes; see [http://www.realtimerendering.com/intersections.html](http://www.realtimerendering.com/intersections.html) for instance.
+
+If you need precise intersection, you will have to test ray-triangle intersections. Again, it's not a good idea to check each triangle of each mesh linearly. Another acceleration structure is required.

@@ -19,71 +19,113 @@ order: 30
 tags: []
 language: jp
 ---
-<p>In this tutorial, we'll learn to draw 2D text on top of our 3D content. In our case, this will be a simple timer :</p>
-<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/clock.png"><img class="alignnone size-large wp-image-292" title="clock" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/clock-1024x793.png" alt="" width="640" height="495" /></a></p>
-<h1>The API</h1><br />
-We're going to implement this simple interface (in common/text2D.h):</p>
-<pre class="brush:cpp">void initText2D(const char * texturePath);<br />
-void printText2D(const char * text, int x, int y, int size);<br />
-void cleanupText2D();</pre><br />
-In order for the code to work at both 640*480 and 1080p, x and y will be coordinates in [0-800][0-600]. The vertex shader will adapt this to the actual size of the screen.</p>
-<p>See common/text2D.cpp for the complete implementation.</p>
-<h1>The texture</h1><br />
-initText2D simply reads a texture and a couple of shaders. There's nothing fancy about it, but let's look at the texture :</p>
-<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/fontalpha.png"><img class="alignnone size-large wp-image-293" title="fontalpha" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/fontalpha-1024x717.png" alt="" width="640" height="448" /></a></p>
-<p>This texture was generated using <a href="http://www.codehead.co.uk/cbfg/">CBFG</a>, one of the many tools that generate textures from fonts. If was then imported in Paint.NET where I added a red background (for visualisation purposes only : everywhere you see red, it's supposed to be transparent ).</p>
-<p>The goal of printText2D will thus be to generate quads with the appropriate screen position and texture coordinates.</p>
-<h1>Drawing</h1><br />
-We have to fill these buffers :</p>
-<pre class="brush:cpp">std::vector<glm::vec2> vertices;<br />
-std::vector<glm::vec2> UVs;</pre><br />
-For each character, we compute the coordinates of the four vertices that will define the quad, and add the two triangles :</p>
-<pre class="brush:cpp">for ( unsigned int i=0 ; i<length ; i++ ){</p>
-<p>    glm::vec2 vertex_up_left&nbsp;&nbsp;&nbsp; = glm::vec2( x+i*size&nbsp;&nbsp;&nbsp;&nbsp; , y+size );<br />
-    glm::vec2 vertex_up_right&nbsp;&nbsp; = glm::vec2( x+i*size+size, y+size );<br />
-    glm::vec2 vertex_down_right = glm::vec2( x+i*size+size, y&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; );<br />
-    glm::vec2 vertex_down_left&nbsp; = glm::vec2( x+i*size&nbsp;&nbsp;&nbsp;&nbsp; , y&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; );</p>
-<p>    vertices.push_back(vertex_up_left&nbsp;&nbsp; );<br />
-    vertices.push_back(vertex_down_left );<br />
-    vertices.push_back(vertex_up_right&nbsp; );</p>
-<p>    vertices.push_back(vertex_down_right);<br />
-    vertices.push_back(vertex_up_right);<br />
-    vertices.push_back(vertex_down_left);</pre><br />
-Now for the UVs. The upper-left coordinate is computed as follows :</p>
-<pre class="brush:cpp">    char character = text[i];<br />
-    float uv_x = (character%16)/16.0f;<br />
-    float uv_y = (character/16)/16.0f;</pre><br />
-This works ( sort of - see below ) because the <a href="http://www.asciitable.com/">ASCII code for A</a> is 65.</p>
-<p>65%16 = 1, so A is on column #1 (starts at 0 !).</p>
-<p>65/16 = 4, so A is on line #4 ( it's integer division, so it's not 4.0625 as it should be)</p>
-<p>Both are divided by 16.0 to fit in the [0.0 - 1.0] range needed by OpenGL textures.</p>
-<p>And now we just have to do the very same thing than we did, but for the vertices :</p>
-<pre class="brush:cpp">    glm::vec2 uv_up_left&nbsp;&nbsp;&nbsp; = glm::vec2( uv_x&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; , 1.0f - uv_y );<br />
-    glm::vec2 uv_up_right&nbsp;&nbsp; = glm::vec2( uv_x+1.0f/16.0f, 1.0f - uv_y );<br />
-    glm::vec2 uv_down_right = glm::vec2( uv_x+1.0f/16.0f, 1.0f - (uv_y + 1.0f/16.0f) );<br />
-    glm::vec2 uv_down_left&nbsp; = glm::vec2( uv_x&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; , 1.0f - (uv_y + 1.0f/16.0f) );</p>
-<p>    UVs.push_back(uv_up_left&nbsp;&nbsp; );<br />
-    UVs.push_back(uv_down_left );<br />
-    UVs.push_back(uv_up_right&nbsp; );</p>
-<p>    UVs.push_back(uv_down_right);<br />
-    UVs.push_back(uv_up_right);<br />
-    UVs.push_back(uv_down_left);<br />
- }</pre><br />
-The rest is just as usual : bind the buffers, fill them, select the shader program, bind the texture, enable/bind/configure the vertex attributes, enable the blending, and call glDrawArrays. Hooray ! You're done.</p>
-<p>Note a very important thing : the coordinates are generated in the [0,800][0,600] range. In other words, there is NO NEED for a matrix here. The vertex shader simply has to put it in the [-1,1][-1,1] range with very simple math (this could be done in C++ too) :</p>
-<pre class="brush:vs">void main(){</p>
-<p>&nbsp;&nbsp; &nbsp;// Output position of the vertex, in clip space<br />
-&nbsp;&nbsp; &nbsp;// map [0..800][0..600] to [-1..1][-1..1]<br />
-&nbsp;&nbsp; &nbsp;vec2 vertexPosition_homoneneousspace = vertexPosition_screenspace - vec2(400,300); // [0..800][0..600] -> [-400..400][-300..300]<br />
-&nbsp;&nbsp; &nbsp;vertexPosition_homoneneousspace /= vec2(400,300);<br />
-&nbsp;&nbsp; &nbsp;gl_Position =&nbsp; vec4(vertexPosition_homoneneousspace,0,1);</p>
-<p>&nbsp;&nbsp; &nbsp;// UV of the vertex. No special space for this one.<br />
-&nbsp;&nbsp; &nbsp;UV = vertexUV;<br />
-}</pre><br />
-The fragment shader does very little too :</p>
-<pre class="brush:fs">void main(){<br />
-&nbsp;&nbsp; &nbsp;color = texture( myTextureSampler, UV );<br />
-}</pre><br />
-By the way, don't use this code for production, since it only handles the Latin alphabet. Or don't sell anything to India, China, Japan ( or even Germany, since there is no &szlig; on this image ). This texture will mostly work in France (notice the &eacute;, &agrave;, &ccedil;, etc) because it's been generated with my locale. And beware while adapting code from other tutorials of when using libraries, most of them use OpenGL 2, which isn't compatible. Unfortunately I don't know any good-enough library which handles UTF-8.</p>
-<p>By the way, you should read <a href="http://www.joelonsoftware.com/articles/Unicode.html">The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets (No Excuses!)</a> by Joel Spolsky.</p>
-<p>See also <a href="http://www.valvesoftware.com/publications/2007/SIGGRAPH2007_AlphaTestedMagnification.pdf">this Valve article</a> if you need large text.</p>
+
+In this tutorial, we'll learn to draw 2D text on top of our 3D content. In our case, this will be a simple timer :
+
+![]({{site.baseurl}}/assets/images/tuto-11-2d-text/clock.png)
+
+
+#The API
+
+We're going to implement this simple interface (in common/text2D.h):
+{% highlight cpp linenos %}
+void initText2D(const char * texturePath);
+void printText2D(const char * text, int x, int y, int size);
+void cleanupText2D();
+{% endhighlight %}
+In order for the code to work at both 640*480 and 1080p, x and y will be coordinates in [0-800][0-600]. The vertex shader will adapt this to the actual size of the screen.
+
+See common/text2D.cpp for the complete implementation.
+
+#The texture
+
+initText2D simply reads a texture and a couple of shaders. There's nothing fancy about it, but let's look at the texture :
+
+![]({{site.baseurl}}/assets/images/tuto-11-2d-text/fontalpha.png)
+
+
+This texture was generated using [CBFG](http://www.codehead.co.uk/cbfg/), one of the many tools that generate textures from fonts. If was then imported in Paint.NET where I added a red background (for visualisation purposes only : everywhere you see red, it's supposed to be transparent ).
+
+The goal of printText2D will thus be to generate quads with the appropriate screen position and texture coordinates.
+
+#Drawing
+
+We have to fill these buffers :
+{% highlight cpp linenos %}
+std::vector<glm::vec2> vertices;
+std::vector<glm::vec2> UVs;
+{% endhighlight %}
+For each character, we compute the coordinates of the four vertices that will define the quad, and add the two triangles :
+{% highlight cpp linenos %}
+for ( unsigned int i=0 ; i<length ; i++ ){
+
+    glm::vec2 vertex_up_left    = glm::vec2( x+i*size     , y+size );
+    glm::vec2 vertex_up_right   = glm::vec2( x+i*size+size, y+size );
+    glm::vec2 vertex_down_right = glm::vec2( x+i*size+size, y      );
+    glm::vec2 vertex_down_left  = glm::vec2( x+i*size     , y      );
+
+    vertices.push_back(vertex_up_left   );
+    vertices.push_back(vertex_down_left );
+    vertices.push_back(vertex_up_right  );
+
+    vertices.push_back(vertex_down_right);
+    vertices.push_back(vertex_up_right);
+    vertices.push_back(vertex_down_left);
+{% endhighlight %}
+Now for the UVs. The upper-left coordinate is computed as follows :
+{% highlight cpp linenos %}
+    char character = text[i];
+    float uv_x = (character%16)/16.0f;
+    float uv_y = (character/16)/16.0f;
+{% endhighlight %}
+This works ( sort of - see below ) because the [ASCII code for A](http://www.asciitable.com/) is 65.
+
+65%16 = 1, so A is on column #1 (starts at 0 !).
+
+65/16 = 4, so A is on line #4 ( it's integer division, so it's not 4.0625 as it should be)
+
+Both are divided by 16.0 to fit in the [0.0 - 1.0] range needed by OpenGL textures.
+
+And now we just have to do the very same thing than we did, but for the vertices :
+{% highlight cpp linenos %}
+    glm::vec2 uv_up_left    = glm::vec2( uv_x           , 1.0f - uv_y );
+    glm::vec2 uv_up_right   = glm::vec2( uv_x+1.0f/16.0f, 1.0f - uv_y );
+    glm::vec2 uv_down_right = glm::vec2( uv_x+1.0f/16.0f, 1.0f - (uv_y + 1.0f/16.0f) );
+    glm::vec2 uv_down_left  = glm::vec2( uv_x           , 1.0f - (uv_y + 1.0f/16.0f) );
+
+    UVs.push_back(uv_up_left   );
+    UVs.push_back(uv_down_left );
+    UVs.push_back(uv_up_right  );
+
+    UVs.push_back(uv_down_right);
+    UVs.push_back(uv_up_right);
+    UVs.push_back(uv_down_left);
+ }
+{% endhighlight %}
+The rest is just as usual : bind the buffers, fill them, select the shader program, bind the texture, enable/bind/configure the vertex attributes, enable the blending, and call glDrawArrays. Hooray ! You're done.
+
+Note a very important thing : the coordinates are generated in the [0,800][0,600] range. In other words, there is NO NEED for a matrix here. The vertex shader simply has to put it in the [-1,1][-1,1] range with very simple math (this could be done in C++ too) :
+{% highlight glsl linenos cssclass=highlightglslvs %}
+void main(){
+
+    // Output position of the vertex, in clip space
+    // map [0..800][0..600] to [-1..1][-1..1]
+    vec2 vertexPosition_homoneneousspace = vertexPosition_screenspace - vec2(400,300); // [0..800][0..600] -> [-400..400][-300..300]
+    vertexPosition_homoneneousspace /= vec2(400,300);
+    gl_Position =  vec4(vertexPosition_homoneneousspace,0,1);
+
+    // UV of the vertex. No special space for this one.
+    UV = vertexUV;
+}
+{% endhighlight %}
+The fragment shader does very little too :
+{% highlight glsl linenos cssclass=highlightglslfs %}
+void main(){
+    color = texture( myTextureSampler, UV );
+}
+{% endhighlight %}
+By the way, don't use this code for production, since it only handles the Latin alphabet. Or don't sell anything to India, China, Japan ( or even Germany, since there is no &szlig; on this image ). This texture will mostly work in France (notice the &eacute;, &agrave;, &ccedil;, etc) because it's been generated with my locale. And beware while adapting code from other tutorials of when using libraries, most of them use OpenGL 2, which isn't compatible. Unfortunately I don't know any good-enough library which handles UTF-8.
+
+By the way, you should read [The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets (No Excuses!)](http://www.joelonsoftware.com/articles/Unicode.html) by Joel Spolsky.
+
+See also [this Valve article](http://www.valvesoftware.com/publications/2007/SIGGRAPH2007_AlphaTestedMagnification.pdf) if you need large text.

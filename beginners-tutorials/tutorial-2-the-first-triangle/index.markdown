@@ -67,7 +67,7 @@ So we need three 3D points in order to make a triangle ; let's go :
 static const GLfloat g_vertex_buffer_data[] = {
    -1.0f, -1.0f, 0.0f,
    1.0f, -1.0f, 0.0f,
-   0.0f,&nbsp; 1.0f, 0.0f,
+   0.0f,  1.0f, 0.0f,
 };
 {% endhighlight %}
 
@@ -160,7 +160,7 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
   // Compile Vertex Shader
   printf("Compiling shader : %s\n", vertex_file_path);
   char const * VertexSourcePointer = VertexShaderCode.c_str();
-  glShaderSource(VertexShaderID, 1, &amp;VertexSourcePointer , NULL);
+  glShaderSource(VertexShaderID, 1, &VertexSourcePointer , NULL);
   glCompileShader(VertexShaderID);
   // Check Vertex Shader
   glGetShaderiv(VertexShaderID, GL_COMPILE_STATUS, &Result);
@@ -187,9 +187,9 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
   glLinkProgram(ProgramID);
   // Check the program
   glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
-  glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &amp;InfoLogLength);
+  glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
   std::vector<char> ProgramErrorMessage( max(InfoLogLength, int(1)) );
-  glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &amp;ProgramErrorMessage[0]);
+  glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
   fprintf(stdout, "%s\n", &ProgramErrorMessage[0]);
   glDeleteShader(VertexShaderID);
   glDeleteShader(FragmentShaderID);
@@ -215,7 +215,7 @@ layout(location = 0) in vec3 vertexPosition_modelspace;
 Let's explain this line in detail :
 
 - "vec3" is a vector of 3 components in GLSL. It is similar (but different) to the glm::vec3 we used to declare our triangle. The important thing is that if we use 3 components in C++, we use 3 components in GLSL too.
-- "layout(location = 0)" refers to the buffer we use to feed the <em>vertexPosition_modelspace</em> attribute. Each vertex can have numerous attributes : A position, one or several colours, one or several texture coordinates, lots of other things. OpenGL doesn't know what a colour is : it just sees a vec3. So we have to tell him which buffer corresponds to which input. We do that by setting the layout to the same value as the first parameter to glVertexAttribPointer. The value "0" is not important, it could be 12 (but no more than&nbsp;glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &amp;v) ), the important thing is that it's the same number on both sides.
+- "layout(location = 0)" refers to the buffer we use to feed the *vertexPosition_modelspace* attribute. Each vertex can have numerous attributes : A position, one or several colours, one or several texture coordinates, lots of other things. OpenGL doesn't know what a colour is : it just sees a vec3. So we have to tell him which buffer corresponds to which input. We do that by setting the layout to the same value as the first parameter to glVertexAttribPointer. The value "0" is not important, it could be 12 (but no more than glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &v) ), the important thing is that it's the same number on both sides.
 - "vertexPosition_modelspace" could be anything else. It will contain the position of the vertex for each run of the vertex shader.
 - "in" means that this is some input data. Soon we'll see the "out" keyword.
 
@@ -233,7 +233,7 @@ Our main function will merely set the vertex' position to whatever was in the bu
 }
 {% endhighlight %}
 
-gl_Position is one of the few built-in variables : you <em>have </em>to assign some value to it. Everything else is optional; we'll see what "everything else" means in Tutorial 4.
+gl_Position is one of the few built-in variables : you *have *to assign some value to it. Everything else is optional; we'll see what "everything else" means in Tutorial 4.
 
 # Our Fragment Shader
 

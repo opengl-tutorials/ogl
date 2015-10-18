@@ -18,28 +18,47 @@ categories: [tuto]
 order: 70
 tags: []
 ---
-<h1>Introduction</h1><br />
-This a video-only tutorial. It doesn't introduce any new OpenGL-specific technique/syntax, but shows you how to use the techniques you already know to build high-quality shadows.</p>
-<p>This tutorials explains how to build a simple world in Blender, and bake the lightmaps so that you can use them in your application.</p>
-<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/lighmappedroom.png"><img class="alignnone size-large wp-image-345" title="lighmappedroom" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/lighmappedroom-1024x793.png" alt="" width="640" height="495" /></a><br />
-No prior knowledge of Blender is required. I will explain all keyboard shortcuts and everything.</p>
-<h1>A note on lightmaps</h1><br />
-Lightmaps are baked. Once and for all. This means that they are completely static, you can't decide to move the light at runtime. Or even remove it.</p>
-<p>This can still be useful for the sunlight, though, or indoor scenes where you may not break the light bulbs. Mirror Edge, released in 2009, uses them extensively, both indoors and outdoors.</p>
-<p>What's more, it's very easy to setup, and you can't beat the speed.</p>
-<h1>The video</h1><br />
-This is a 1024x768p video, use HD mode...</p>
-<p><iframe src="http://player.vimeo.com/video/24359223?title=0&amp;byline=0&amp;portrait=0" frameborder="0" width="800" height="450"></iframe></p>
-<h1>Addendum</h1><br />
-When rendering it in OpenGL, you might notice some glitches (exaggerated here) :</p>
-<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/positivebias.png"><img class="alignnone size-large wp-image-346" title="positivebias" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/positivebias-1024x793.png" alt="" width="640" height="495" /></a></p>
-<p>This is because of mipmapping, which blends texels together when seen at a distance. Black pixels from the texture's background get mixed with good parts of the lightmap. To avoid this, there are a few things you can do :</p>
-<ul>
-<li>You can ask Blender to generate a margin around the limits of the UV map. This is the "margin" parameter in the "bake" panel. For good results, you may have to go up to a margin of 20 texels.</li>
-<li>You can use a bias in your texture fetch :</li><br />
-</ul></p>
-<pre class="brush:fs">color = texture2D( myTextureSampler, UV, -2.0 ).rgb;</pre><br />
--2 is the bias. You'll have to experiment with this value. The screenshot above was taken with a bias of +2, which means that OpenGL will select two mipmaps above the one it should have taken (so it's 16 times smaller, hence the glitches)</p>
-<ul>
-<li>You can fill the black background in a post-processing step. I'll post more about this later.</li><br />
-</ul></p>
+
+#Introduction
+
+This a video-only tutorial. It doesn't introduce any new OpenGL-specific technique/syntax, but shows you how to use the techniques you already know to build high-quality shadows.
+
+This tutorials explains how to build a simple world in Blender, and bake the lightmaps so that you can use them in your application.
+
+![]({{site.baseurl}}/assets/images/tuto-15-lightmaps/lighmappedroom.png)
+
+No prior knowledge of Blender is required. I will explain all keyboard shortcuts and everything.
+
+#A note on lightmaps
+
+Lightmaps are baked. Once and for all. This means that they are completely static, you can't decide to move the light at runtime. Or even remove it.
+
+This can still be useful for the sunlight, though, or indoor scenes where you may not break the light bulbs. Mirror Edge, released in 2009, uses them extensively, both indoors and outdoors.
+
+What's more, it's very easy to setup, and you can't beat the speed.
+
+#The video
+
+This is a 1024x768p video, use HD mode...
+
+<iframe src="http://player.vimeo.com/video/24359223?title=0&byline=0&portrait=0" frameborder="0" width="800" height="450"></iframe>
+
+#Addendum
+
+When rendering it in OpenGL, you might notice some glitches (exaggerated here) :
+
+![]({{site.baseurl}}/assets/images/tuto-15-lightmaps/positivebias.png)
+
+
+This is because of mipmapping, which blends texels together when seen at a distance. Black pixels from the texture's background get mixed with good parts of the lightmap. To avoid this, there are a few things you can do :
+
+* You can ask Blender to generate a margin around the limits of the UV map. This is the "margin" parameter in the "bake" panel. For good results, you may have to go up to a margin of 20 texels.
+* You can use a bias in your texture fetch :
+
+{% highlight glsl linenos cssclass=highlightglslfs %}
+color = texture2D( myTextureSampler, UV, -2.0 ).rgb;
+{% endhighlight %}
+-2 is the bias. You'll have to experiment with this value. The screenshot above was taken with a bias of +2, which means that OpenGL will select two mipmaps above the one it should have taken (so it's 16 times smaller, hence the glitches)
+
+* You can fill the black background in a post-processing step. I'll post more about this later.
+

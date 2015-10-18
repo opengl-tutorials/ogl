@@ -18,49 +18,83 @@ categories: [tuto]
 order: 10
 tags: []
 ---
-<h1>The principle of indexing</h1><br />
-Until now, when building your VBO, we always duplicated our vertices whenever two triangles shared an edge.</p>
-<p>In this tutorial, we introduce indexing, which enables to reuse the same vertex over and over again. This is done with an <em>index buffer</em>.</p>
-<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/indexing1.png"><img class="alignnone size-full wp-image-267 whiteborder" title="indexing" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/indexing1.png" alt="" width="600" height="375" /></a></p>
-<p>The index buffer contains integers, three for each triangle in the mesh, which reference the various <em>attribute buffers</em> (position, colour, UV coordinates, other UV coordinates, normal, ...). It's a little bit like in the OBJ file format, with one huge difference : there is only ONE index buffer. This means that for a vertex to be shared between two triangles, all attributes must be the same.</p>
-<h1>Shared vs Separate</h1><br />
-Let's take the example of the normals. In this figure, the artist who created these two triangle probably wanted them to represent a smooth surface. We can thus blend the normals of the two triangle into a single vertex normal. For visualization purposes, I added a red line which represents the aspect of the smooth surface.</p>
-<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/goodsmooth.png"><img class="alignnone size-full wp-image-270" title="goodsmooth" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/goodsmooth.png" alt="" width="400" height="239" /></a></p>
-<p>In this second figure however, the artist visibly wanted a "seam", a rough edge. But if we merge the normals, this means that the shader will smoothly interpolate as usual and create a smooth aspect just like before :</p>
-<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/badmooth.png"><img class="alignnone size-full wp-image-269" title="badmooth" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/badmooth.png" alt="" width="400" height="239" /></a></p>
-<p>So in this case it's actually better to have two different normals, one for each vertex. The only way to do this in OpenGL is to duplicate the whole vertex, with its whole set of attributes.</p>
-<p><a href="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/spiky.png"><img class="alignnone size-full wp-image-271" title="spiky" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/spiky.png" alt="" width="399" height="239" /></a></p>
-<h1>Indexed VBO in OpenGL</h1><br />
-Using indexing is very simple. First, you need to create an additional buffer, which you fill with the right indices. The code is the same as before, but now it's an ELEMENT_ARRAY_BUFFER, not an ARRAY_BUFFER.</p>
-<pre class="brush: cpp">std::vector<unsigned int> indices;</p>
-<p>// fill "indices" as needed</p>
-<p>// Generate a buffer for the indices<br />
- GLuint elementbuffer;<br />
- glGenBuffers(1, &amp;elementbuffer);<br />
- glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);<br />
- glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &amp;indices[0], GL_STATIC_DRAW);</pre><br />
-and to draw the mesh, simply replace glDrawArrays by this :</p>
-<pre class="brush: cpp">// Index buffer<br />
- glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);</p>
-<p> // Draw the triangles !<br />
- glDrawElements(<br />
-     GL_TRIANGLES,      // mode<br />
-     indices.size(),    // count<br />
-     GL_UNSIGNED_INT,   // type<br />
-     (void*)0           // element array buffer offset<br />
- );</pre><br />
-(quick note : it's better to use "unsigned short" than "unsigned int", because it takes less memory, which also makes it faster)</p>
-<h1>Filling the index buffer</h1><br />
-Now we actually have a problem. As I said before, OpenGL can only use one index buffer, whereas OBJ (and some other popular 3D formats like Collada) use one index buffer <em>by attribute</em>. Which means that we somehow have to convert from N index buffers to 1 index buffer.</p>
-<p>The algorithm to do this is as follows :</p>
-<pre class="brush: plain">For each input vertex<br />
-    Try to find a similar ( = same for all attributes ) vertex between all those we already output<br />
-    If found :<br />
-        A similar vertex is already in the VBO, use it instead !<br />
-    If not found :<br />
-        No similar vertex found, add it to the VBO</pre><br />
-The actual C++ code can be found in common/vboindexer.cpp. It's heavily commented so if you understand the algorithm above, it should be all right.</p>
-<p>The criterion for similarity is that vertices' position, UVs and normals should be <em></em> equal. You'll have to adapt this if you add more attributes.</p>
-<p>Searching a similar vertex is done with a lame linear search for simplicity. A std::map would be more appropriate for real use.</p>
-<h1>Extra : the FPS counter</h1><br />
-It's not directly related to indexing, but it's a good moment to have a look at <a title="An FPS counter" href="http://www.opengl-tutorial.org/miscellaneous/an-fps-counter/">the FPS counter</a> because we can eventually see the speed improvement of indexing. Other performance tools are available in <a href="http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/#header-4">Tools - Debuggers</a>.</p>
+
+#The principle of indexing
+
+Until now, when building your VBO, we always duplicated our vertices whenever two triangles shared an edge.
+
+In this tutorial, we introduce indexing, which enables to reuse the same vertex over and over again. This is done with an *index buffer*.
+
+![]({{site.baseurl}}/assets/images/tuto-9-vbo-indexing/indexing1.png)
+
+
+The index buffer contains integers, three for each triangle in the mesh, which reference the various *attribute buffers* (position, colour, UV coordinates, other UV coordinates, normal, ...). It's a little bit like in the OBJ file format, with one huge difference : there is only ONE index buffer. This means that for a vertex to be shared between two triangles, all attributes must be the same.
+
+#Shared vs Separate
+
+Let's take the example of the normals. In this figure, the artist who created these two triangle probably wanted them to represent a smooth surface. We can thus blend the normals of the two triangle into a single vertex normal. For visualization purposes, I added a red line which represents the aspect of the smooth surface.
+
+![]({{site.baseurl}}/assets/images/tuto-9-vbo-indexing/goodsmooth.png)
+
+
+In this second figure however, the artist visibly wanted a "seam", a rough edge. But if we merge the normals, this means that the shader will smoothly interpolate as usual and create a smooth aspect just like before :
+
+![]({{site.baseurl}}/assets/images/tuto-9-vbo-indexing/badmooth.png)
+
+
+So in this case it's actually better to have two different normals, one for each vertex. The only way to do this in OpenGL is to duplicate the whole vertex, with its whole set of attributes.
+
+![]({{site.baseurl}}/assets/images/tuto-9-vbo-indexing/spiky.png)
+
+
+#Indexed VBO in OpenGL
+
+Using indexing is very simple. First, you need to create an additional buffer, which you fill with the right indices. The code is the same as before, but now it's an ELEMENT_ARRAY_BUFFER, not an ARRAY_BUFFER.
+{% highlight cpp linenos %}
+std::vector<unsigned int> indices;
+
+// fill "indices" as needed
+
+// Generate a buffer for the indices
+ GLuint elementbuffer;
+ glGenBuffers(1, &elementbuffer);
+ glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
+ glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+{% endhighlight %}
+and to draw the mesh, simply replace glDrawArrays by this :
+{% highlight cpp linenos %}
+// Index buffer
+ glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
+
+ // Draw the triangles !
+ glDrawElements(
+     GL_TRIANGLES,      // mode
+     indices.size(),    // count
+     GL_UNSIGNED_INT,   // type
+     (void*)0           // element array buffer offset
+ );
+{% endhighlight %}
+(quick note : it's better to use "unsigned short" than "unsigned int", because it takes less memory, which also makes it faster)
+
+#Filling the index buffer
+
+Now we actually have a problem. As I said before, OpenGL can only use one index buffer, whereas OBJ (and some other popular 3D formats like Collada) use one index buffer *by attribute*. Which means that we somehow have to convert from N index buffers to 1 index buffer.
+
+The algorithm to do this is as follows :
+{% highlight text linenos %}
+For each input vertex
+    Try to find a similar ( = same for all attributes ) vertex between all those we already output
+    If found :
+        A similar vertex is already in the VBO, use it instead !
+    If not found :
+        No similar vertex found, add it to the VBO
+{% endhighlight %}
+The actual C++ code can be found in common/vboindexer.cpp. It's heavily commented so if you understand the algorithm above, it should be all right.
+
+The criterion for similarity is that vertices' position, UVs and normals should be ** equal. You'll have to adapt this if you add more attributes.
+
+Searching a similar vertex is done with a lame linear search for simplicity. A std::map would be more appropriate for real use.
+
+#Extra : the FPS counter
+
+It's not directly related to indexing, but it's a good moment to have a look at [the FPS counter](http://www.opengl-tutorial.org/miscellaneous/an-fps-counter/) because we can eventually see the speed improvement of indexing. Other performance tools are available in [Tools - Debuggers](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/#header-4).
