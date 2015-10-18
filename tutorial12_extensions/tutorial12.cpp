@@ -69,18 +69,20 @@ int main( void )
 	if( !glfwInit() )
 	{
 		fprintf( stderr, "Failed to initialize GLFW\n" );
+		getchar();
 		return -1;
 	}
 
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// ARB_debug_output is a bit special, 
 	// it requires creating the OpenGL context
 	// with paticular flags.
-	// GLFW expose it this way; if you use SDL, SFML, freeGLUT
+	// GLFW exposes it this way; if you use SDL, SFML, freeGLUT
 	// or other, check the documentation.
 	// If you use custom code, read the spec : 
 	// http://www.opengl.org/registry/specs/ARB/debug_output.txt
@@ -90,6 +92,7 @@ int main( void )
 	window = glfwCreateWindow( 1024, 768, "Tutorial 12 - Extensions", NULL, NULL);
 	if( window == NULL ){
 		fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
+		getchar();
 		glfwTerminate();
 		return -1;
 	}
@@ -99,6 +102,8 @@ int main( void )
 	glewExperimental = true; // Needed for core profile
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
+		getchar();
+		glfwTerminate();
 		return -1;
 	}
 
