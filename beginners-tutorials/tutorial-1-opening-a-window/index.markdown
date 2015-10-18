@@ -40,7 +40,7 @@ If you know about something that looks like glBegin(), forget it. Here you will 
 
 All tutorials can be built on Windows, Linux and Mac. For all these platforms, the procedure is roughly the same :
 
-* **update your drivers** !! doooo it. You've been warned.
+* **Update your drivers** !! doooo it. You've been warned.
 * Download a compiler, if you don't already have one.
 * Install CMake
 * Download the source code of the tutorials
@@ -54,15 +54,15 @@ Detailed procedures will now be given for each platform. Adaptations may be requ
 
  
 
-* Updating your drivers shoud be easy. Just go to NVIDIA's or AMD's website and download the drivers. If unsure about your GPU model : Control Panel -> System and Security -> System -> Device Manager -> Display adapter. If you have an integrated Intel GPU, drivers are usually provided by your OEM (Dell, HP, ...).
-* We suggest using Visual Studio 2010 Express as a compiler. You can download it for free [here](http://www.microsoft.com/express/Downloads/#2010-Visual-CPP). If you prefer using MinGW, we recommend using [Qt Creator](http://qt-project.org/). Install whichever you want. Subsequent steps will be explained with Visual Studio, but should be similar with any other IDE.
+* Updating your drivers should be easy. Just go to NVIDIA's or AMD's website and download the drivers. If unsure about your GPU model : Control Panel -> System and Security -> System -> Device Manager -> Display adapter. If you have an integrated Intel GPU, drivers are usually provided by your OEM (Dell, HP, ...).
+* We suggest using Visual Studio 2015 Express for Desktop as a compiler. You can download it for free [here](https://www.visualstudio.com/en-US/products/visual-studio-express-vs). If you prefer using MinGW, we recommend using [Qt Creator](http://qt-project.org/). Install whichever you want. Subsequent steps will be explained with Visual Studio, but should be similar with any other IDE.
 * Download [CMake ](http://www.cmake.org/cmake/resources/software.html)from here and install it
 * [Download the source code](http://www.opengl-tutorial.org/download/) and unzip it, for instance in C:\Users\XYZ\Projects\OpenGLTutorials\ .
 * Launch CMake. In the first line, navigate to the unzipped folder. If unsure, choose the folder that contains the CMakeLists.txt file. In the second line, enter where you want all the compiler's stuff to live. For instance, you can choose C:\Users\XYZ\Projects\OpenGLTutorials-build-Visual2010-32bits\, or C:\Users\XYZ\Projects\OpenGLTutorials\build\Visual2010-32bits\. Notice that it can be anywhere, not necessarily in the same folder.
 ![]({{site.baseurl}}/assets/images/tuto-1-window/CMake.png)
 
 * Click on the Configure button. Since this is the first time you configure the project, CMake will ask you which compiler you would like to use. Choose wisely depending on step 1. If you have a 64 bit Windows, you can choose 64 bits; if you don't know, choose 32 bits.
-* Click on Configure until all red lines disappear. Click on Generate. Your Visual Studio project is now created. You can forget about CMake; uninstall it if you want.
+* Click on Configure until all red lines disappear. Click on Generate. Your Visual Studio project is now created. You can now forget about CMake.
 * Open C:\Users\XYZ\Projects\OpenGLTutorials-build-Visual2010-32bits\. You will see a Tutorials.sln file : open it with Visual Studio.
 ![]({{site.baseurl}}/assets/images/tuto-1-window/directories.png)
 
@@ -95,7 +95,7 @@ They are so many Linux variants out there that it's impossible to list every pos
  
 
 * Install the latest drivers. We highly recommend the closed-source binary drivers. It's not GNU or whatever, but they work. If your distribution doesn't provide an automatic install, try [Ubuntu's guide](http://help.ubuntu.com/community/BinaryDriverHowto).
-* Install all needed compilers, tools & libs. Complete list is : *cmake make g++ libx11-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxrandr-dev libxext-dev* . Use sudo apt-get install ***** or su && yum install ******.
+* Install all needed compilers, tools & libs. Complete list is : *cmake make g++ libx11-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxrandr-dev libxext-dev libxi-dev* . Use sudo apt-get install ***** or su && yum install ******.
 * [Download the source code](http://www.opengl-tutorial.org/download/) and unzip it, for instance in ~/Projects/OpenGLTutorials/
 * cd in ~/Projects/OpenGLTutorials/ and enter the following commands :
 

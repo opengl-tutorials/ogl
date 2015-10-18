@@ -54,7 +54,7 @@ language: ru
 
 
 * Обновление драйверов должно быть для вас легкой задачей. Все что вам нужно - это просто сходить на сайт NVidia или AMD, скачать оттуда драйверы и установить их. Если вдруг вы не знаете точно модель вашей видеокарты, то вы можете посмотреть ее в свойствах адаптера, для этого перейдите в Панель управления -> Система -> Диспетчер устройств -> Видео адаптер. Если у вас встроенный Intel GPU, то драйверы всегда поставляются в комплекте.
-* Мы предлагаем вам использовать Visual Studio 2010 Express в качестве среды, которую вы можете бесплатно скачать [здесь](http://www.microsoft.com/express/Downloads/#2010-Visual-CPP). Если же вы захотите использовать MinGW, то мы рекомендуем вам [Qt Creator](http://qt-project.org/). В любом случае, устанавливайте то, что вам необходимо и хотя шаги в уроках рассматриваются в Visual Studio, скорее всего различия в других IDE будут минимальны.
+* Мы предлагаем вам использовать Visual Studio 2015 Express for Desktop в качестве среды, которую вы можете бесплатно скачать [здесь](https://www.visualstudio.com/en-US/products/visual-studio-express-vs). Если же вы захотите использовать MinGW, то мы рекомендуем вам [Qt Creator](http://qt-project.org/). В любом случае, устанавливайте то, что вам необходимо и хотя шаги в уроках рассматриваются в Visual Studio, скорее всего различия в других IDE будут минимальны.
 * Скачайте [CMake](http://www.cmake.org/cmake/resources/software.html) и установите его.
 * [Скачайте исходный код](/?page_id=200), распакуйте его к примеру в C:/Users/XYZ/Projects/OpenGLTutorials
 * Запустите CMake. В первом поле укажите путь к распакованной папке. Если сомневаетесь, то это та папка, где находится файл CMakeLists.txt. Во втором поле укажите папку, в которую будут записываться исполняемые файлы, например вы можете указать здесь C:/Users/XYZ/Projects/OpenGLTutorials-build-Visual2010-32bits или что-то подобное. К слову, эта папка может находиться где угодно.[<img title="CMake" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/CMake.png" width="846" height="392" />]({{site.baseurl}}/assets/images/tuto-1-window/CMake.png)
@@ -193,6 +193,7 @@ if( !glfwInit() )
 glfwWindowHint(GLFW_FSAA_SAMPLES, 4); // 4x Сглаживание
 glfwWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3); // Мы хотим использовать OpenGL 3.3
 glfwWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
+glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
 glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // Мы не хотим старый OpenGL
 
 // Открыть окно и создать в нем контекст OpenGL

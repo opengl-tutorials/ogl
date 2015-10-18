@@ -344,7 +344,7 @@ This matrix goes from camera space to tangent space (The same matrix, but with X
 Our normal, in tangent space, is really straightforward to get : it's our texture :
 {% highlight glsl linenos cssclass=highlightglslfs %}
     // Local normal, in tangent space
-    vec3 TextureNormal_tangentspace = normalize(texture2D( NormalTextureSampler, UV ).rgb*2.0 - 1.0);
+    vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, UV ).rgb*2.0 - 1.0);
 {% endhighlight %}
  
 

@@ -55,7 +55,7 @@ OpenGLの世界に飛び込む前に、最初に各チュートリアルで使�
 
 
 * ドライバのアップデートは簡単です。NVIDIAやAMDのウェブサイトに行ってドライバをダウンロードしてください。もしGPUモデルが分からないなら、コントロールパネル&rarr;システムとセキュリティ&rarr;システム&rarr;デバイスマネージャー&rarr;ディスプレイアダプター を確認してください。もしインテル内臓GPUならば、ドライバはOEM(Dell、HP、...)から提供されます。
-* コンパイラとしてはVisual Studio 2010 Expressを使うことを推奨します。[ここから](http://www.visualstudio.com/downloads/download-visual-studio-vs)無料でダウンロードできます。もしMinGWを使いたいなら、[QT Creator](http://qt-project.org/)の使用をお薦めます。 そして、インストールします。これ以降のステップはVisual Studioを使って説明していきます。しかし他のIDEでも同じように進めていけるでしょう。
+* コンパイラとしてはVisual Studio 2010 Express for Desktopを使うことを推奨します。[ここから](https://www.visualstudio.com/en-US/products/visual-studio-express-vs)無料でダウンロードできます。もしMinGWを使いたいなら、[QT Creator](http://qt-project.org/)の使用をお薦めます。 そして、インストールします。これ以降のステップはVisual Studioを使って説明していきます。しかし他のIDEでも同じように進めていけるでしょう。
 * ここから[CMake ](http://www.cmake.org/cmake/resources/software.html)をダウンロードして、インストールしてください。
 * [ソースコードをダウンロードしてください。](/?page_id=200)そして、例えばC:UsersXYZProjectsOpenGLTutorialsなどに解凍してください。
 * CMakeを起動してください。最初の項目には解凍したフォルダを指定してください。もし自信がなければ、CMakeLists.txtがあるフォルダを選んでください。次の項目にはコンパイラに関するものを置く場所を指定してください。例えば、次のように選択できます。C:UsersXYZProjectsOpenGLTutorials-build-Visual2010-32bits やC:UsersXYZProjectsOpenGLTutorialsbuildVisual2010-32bits です。ただし、必ずしも同じフォルダでなくても大丈夫です。

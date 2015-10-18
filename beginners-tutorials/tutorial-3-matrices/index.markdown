@@ -102,7 +102,7 @@ So, how does this translate to code ?
 
 **In C++, with GLM:**
 {% highlight cpp linenos %}
-#include <glm/transform.hpp> // after <glm/glm.hpp>
+#include <glm/gtx/transform.hpp> // after <glm/glm.hpp>
  
 glm::mat4 myMatrix = glm::translate(10.0f, 0.0f, 0.0f);
 glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);
@@ -266,7 +266,7 @@ Let's see what it looks like from the "behind" the frustum :
 
 [![](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/projected1.png "projected")](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/projected1.png)
 
-Here you get your image ! It's just a little bit too square, so another mathematical transformation is applied to fit this to the actual window size :
+Here you get your image ! It's just a little bit too square, so another mathematical transformation is applied (this one is automatic, you don't have to do it yourself in the shader) to fit this to the actual window size :
 
 [![](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/final1.png "final")](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/final1.png)
 
@@ -297,4 +297,4 @@ In tutorial 6 you'll learn how to modify these values dynamically using the keyb
 _Addendum_
 
 
-[^projection]: [...]luckily for us, a 4x4 matrix can represent this projection1 : Actually, this is not correct. A perspective transformation is not affine, and as such, can't be represented entirely by a matrix. After beeing multiplied by the ProjectionMatrix, homogeneous coordinates are divided by their own W component. This W component happens to be -Z (because the projection matrix has been crafted this way). This way, points that are far away from the origin are divided by a big Z; their X and Y coordinates become smaller; points become more close to each other, objects seem smaller; and this is what gives the perspective.
+[^projection]: [...]luckily for us, a 4x4 matrix can represent this projection1 : Actually, this is not correct. A perspective transformation is not affine, and as such, can't be represented entirely by a matrix. After beeing multiplied by the ProjectionMatrix, homogeneous coordinates are divided by their own W component. This W component happens to be -Z (because the projection matrix has been crafted this way). This way, points that are far away from the origin are divided by a big Z; their X and Y coordinates become smaller; points become more close to each other, objects seem smaller; and this is what gives the perspective. This transformation is done in hardware, and is not visible in the shader.

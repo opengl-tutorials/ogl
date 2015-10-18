@@ -142,7 +142,7 @@ The most obvious problem is called <em>shadow acne</em> :</p>
 <p>The usual "fix" for this is to add an error margin : we only shade if the current fragment's depth (again, in light space) is really far away from the lightmap value. We do this by adding a bias :</p>
 <pre class="brush:fs; highlight: [1,3] ">float bias = 0.005;<br />
 float visibility = 1.0;<br />
-if ( texture2D( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z-bias){<br />
+if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z-bias){<br />
     visibility = 0.5;<br />
 }</pre><br />
 The result is already much nicer :</p>
@@ -185,7 +185,7 @@ The easiest way to improve this is to change the shadowmap's sampler type to <em
 <h3>Poisson Sampling</h3><br />
 An easy way to deal with this is to sample the shadowmap N times instead of once. Used in combination with PCF, this can give very good results, even with a small N. Here's the code for 4 samples :</p>
 <pre class="brush:fs">for (int i=0;i<4;i++){<br />
-  if ( texture2D( shadowMap, ShadowCoord.xy + poissonDisk[i]/700.0 ).z  <  ShadowCoord.z-bias ){<br />
+  if ( texture( shadowMap, ShadowCoord.xy + poissonDisk[i]/700.0 ).z  <  ShadowCoord.z-bias ){<br />
     visibility-=0.2;<br />
   }<br />
 }</pre><br />

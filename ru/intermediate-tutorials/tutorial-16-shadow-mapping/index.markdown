@@ -215,7 +215,7 @@ The usual "fix" for this is to add an error margin : we only shade if the curren
 {% highlight glsl linenos cssclass=highlightglslfs %}
 float bias = 0.005;
 float visibility = 1.0;
-if ( texture2D( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z-bias){
+if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z-bias){
     visibility = 0.5;
 }
 {% endhighlight %}
@@ -296,7 +296,7 @@ As you can see, shadow borders are smooth, but shadowmap's texels are still visi
 An easy way to deal with this is to sample the shadowmap N times instead of once. Used in combination with PCF, this can give very good results, even with a small N. Here's the code for 4 samples :
 {% highlight glsl linenos cssclass=highlightglslfs %}
 for (int i=0;i<4;i++){
-  if ( texture2D( shadowMap, ShadowCoord.xy + poissonDisk[i]/700.0 ).z  <  ShadowCoord.z-bias ){
+  if ( texture( shadowMap, ShadowCoord.xy + poissonDisk[i]/700.0 ).z  <  ShadowCoord.z-bias ){
     visibility-=0.2;
   }
 }

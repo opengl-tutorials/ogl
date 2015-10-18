@@ -95,7 +95,7 @@ vec4 transformedVector = myMatrix * myVector; // Да, это очень пох�
 
 **В C++, с GLM:**
 {% highlight text linenos %}
-#include <glm/transform.hpp> // после <glm/glm.hpp>
+#include <glm/gtc/transform.hpp> // после <glm/glm.hpp>
 
 glm::mat4 myMatrix = glm::translate(10.0f, 0.0f, 0.0f);
 glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);

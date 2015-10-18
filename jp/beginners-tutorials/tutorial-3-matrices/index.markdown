@@ -105,7 +105,7 @@ X、Y、Zは位置に加えたい値です。
 
 **GLMを用いるC++：**
 {% highlight cpp linenos %}
-#include <glm/transform.hpp> // <glm/glm.hpp>の後
+#include <glm/gtx/transform.hpp> // <glm/glm.hpp>の後
 
 glm::mat4 myMatrix = glm::translate(10.0f, 0.0f, 0.0f);
 glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);

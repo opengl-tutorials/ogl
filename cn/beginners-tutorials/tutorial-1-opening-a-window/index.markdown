@@ -58,7 +58,7 @@ language: cn
 
 
 * 更新驱动应该很轻松。直接去NVIDIA或者AMD的官网下载。若不清楚GPU的型号:控制面板->系统和安全->系统->设备管理器->显示适配器。如果是Intel集成显卡，一般由电脑厂商（Dell、HP等）提供驱动。
-* 建议用Visual Studio 2010 Express来编译。 [这里](http://www.microsoft.com/express/Downloads/#2010-Visual-CPP)可以免费下载。 若喜欢用MinGW，推荐[Qt Creator](http://qt-project.org/)。安装哪个都行。下列步骤是用Visual Studio讲解的，其他IDE也差不多。
+* 建议用Visual Studio 2015 Express for Desktop来编译。 [这里](https://www.visualstudio.com/en-US/products/visual-studio-express-vs)可以免费下载。 若喜欢用MinGW，推荐[Qt Creator](http://qt-project.org/)。安装哪个都行。下列步骤是用Visual Studio讲解的，其他IDE也差不多。
 * 从这里下载安装 [CMake ](http://www.cmake.org/cmake/resources/software.html)。
 * [下载课程源码](/?page_id=200) ，解压到例如C:/Users/XYZ/Projects/OpenGLTutorials .
 * 启动CMake。让第一栏路径指向刚才解压缩的文件夹；若不确定，就选包含CMakeLists.txt的文件夹。第二栏，填CMake输出路径 （译者注：这里CMake输出一个可以在Visual Studio中打开和编译的工程）。例如C:/Users/XYZ/Projects/OpenGLTutorials-build-Visual2010-32bits，或者C:/Users/XYZ/Projects/OpenGLTutorials/build/Visual2010-32bits。注意，此处可随便填，不一定要和源码在同一文件夹。

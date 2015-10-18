@@ -340,7 +340,7 @@ void computeTangentBasis(
 切线空间中的法线很容易获取--就在纹理中：
 {% highlight glsl linenos cssclass=highlightglslfs %}
     // Local normal, in tangent space
-    vec3 TextureNormal_tangentspace = normalize(texture2D( NormalTextureSampler, UV ).rgb*2.0 - 1.0);
+    vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, UV ).rgb*2.0 - 1.0);
 {% endhighlight %}
  
 

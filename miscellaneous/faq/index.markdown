@@ -64,6 +64,8 @@ Chances are that you don't run them from the right directory. Try double-clickin
 
 See Tutorial 1 for configuring the IDE so that you can debug the executable.
 
+Please note that the .exe is compiled in the *build* directory, but automatically copied to the *source* directory, so that it can find the needed resources (images, 3D models, shaders).
+
 ##No VAO
 
 If you created a program from scratch, make sure you created a VAO :

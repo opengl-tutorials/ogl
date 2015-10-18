@@ -56,7 +56,7 @@ This is because of mipmapping, which blends texels together when seen at a dista
 * You can use a bias in your texture fetch :
 
 {% highlight glsl linenos cssclass=highlightglslfs %}
-color = texture2D( myTextureSampler, UV, -2.0 ).rgb;
+color = texture( myTextureSampler, UV, -2.0 ).rgb;
 {% endhighlight %}
 -2 is the bias. You'll have to experiment with this value. The screenshot above was taken with a bias of +2, which means that OpenGL will select two mipmaps above the one it should have taken (so it's 16 times smaller, hence the glitches)
 

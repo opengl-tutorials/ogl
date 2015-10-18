@@ -145,15 +145,15 @@ lRayDir_world = glm::normalize(lRayDir_world);
 
 Raycasting is very simple, no need for special comments :
 {% highlight cpp linenos %}
-out_direction = out_direction*1000.0f;
+glm::vec3 out_end = out_origin + out_direction*1000.0f;
 
 btCollisionWorld::ClosestRayResultCallback RayCallback(
 	btVector3(out_origin.x, out_origin.y, out_origin.z), 
-	btVector3(out_direction.x, out_direction.y, out_direction.z)
+	btVector3(out_end.x, out_end.y, out_end.z)
 );
 dynamicsWorld->rayTest(
 	btVector3(out_origin.x, out_origin.y, out_origin.z), 
-	btVector3(out_direction.x, out_direction.y, out_direction.z), 
+	btVector3(out_end.x, out_end.y, out_end.z), 
 	RayCallback
 );
 
