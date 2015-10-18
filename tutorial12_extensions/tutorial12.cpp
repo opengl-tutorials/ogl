@@ -35,7 +35,7 @@ using namespace glm;
 //	                                          sizei length,
 //	                                          const char* message,
 //	                                          void* userParam);
-void APIENTRY DebugOutputCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, GLvoid* userParam){
+void APIENTRY DebugOutputCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam){
 
 	printf("OpenGL Debug Output message : ");
 
