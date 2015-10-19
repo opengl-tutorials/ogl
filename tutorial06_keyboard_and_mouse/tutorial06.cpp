@@ -43,10 +43,6 @@ int main( void )
 		return -1;
 	}
     glfwMakeContextCurrent(window);
-    //glfwSetCursorPos(window, 1024/2, 768/2);
-    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    //glfwSetCursorPos(window, 1024/2, 768/2);
 
 	// Initialize GLEW
 	glewExperimental = true; // Needed for core profile
@@ -59,7 +55,8 @@ int main( void )
 
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-	glfwSetCursorPos(window, 1024/2, 768/2);
+    // Hide the mouse and enable unlimited mouvement
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	// Dark blue background
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
