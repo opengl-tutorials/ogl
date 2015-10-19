@@ -22,8 +22,7 @@ tags: []
 #The alpha channel
 
 The concept of the alpha channel is pretty simple. Instead of a writing an RGB result, you write an RGBA :
-{% highlight glsl linenos cssclass=highlightglslfs %}
-// Ouput data : it's now a vec4
+{% highlight glsl linenos cssclass=highlightglslfs %}// Ouput data : it's now a vec4
 out vec4 color;
 {% endhighlight %}
 the first 3 components are still accessed with the .xyz swizzle operator, while the last one is accessed with .a :
@@ -111,7 +110,7 @@ New color in framebuffer =
            (1 - current alpha in framebuffer) * shader's output color
 {% endhighlight %}
 Example from the image above, with red on top :
-{% highlight text linenos %}
+{% highlight cpp linenos %}
 new color = 0.5*(0,1,0) + (1-0.5)*(1,0.5,0.5); // (the red was already blended with the white background)
 new color = (1, 0.75, 0.25) = the same orange
 {% endhighlight %}
