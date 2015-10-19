@@ -202,6 +202,7 @@ int main( void )
 	if( !glfwInit() )
 	{
 		fprintf( stderr, "Failed to initialize GLFW\n" );
+		getchar();
 		return -1;
 	}
 
@@ -213,6 +214,7 @@ int main( void )
 	window = glfwCreateWindow( 1024, 768, "Misc 05 - version with custom Ray-OBB code", NULL, NULL);
 	if( window == NULL ){
 		fprintf( stderr, "Failed to open GLFW window.\n" );
+		getchar();
 		glfwTerminate();
 		return -1;
 	}
@@ -221,6 +223,8 @@ int main( void )
 	// Initialize GLEW
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
+		getchar();
+		glfwTerminate();
 		return -1;
 	}
 

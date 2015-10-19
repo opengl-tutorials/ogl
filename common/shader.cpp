@@ -43,11 +43,8 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 		FragmentShaderStream.close();
 	}
 
-
-
 	GLint Result = GL_FALSE;
 	int InfoLogLength;
-
 
 
 	// Compile Vertex Shader
@@ -100,6 +97,10 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 		printf("%s\n", &ProgramErrorMessage[0]);
 	}
 
+	
+	glDetachShader(ProgramID, VertexShaderID);
+	glDetachShader(ProgramID, FragmentShaderID);
+	
 	glDeleteShader(VertexShaderID);
 	glDeleteShader(FragmentShaderID);
 

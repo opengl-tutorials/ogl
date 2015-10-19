@@ -27,6 +27,7 @@ int main( void )
 	if( !glfwInit() )
 	{
 		fprintf( stderr, "Failed to initialize GLFW\n" );
+		getchar();
 		return -1;
 	}
 
@@ -38,20 +39,34 @@ int main( void )
 	window = glfwCreateWindow( 1024, 768, "Tutorial 16 - Shadows", NULL, NULL);
 	if( window == NULL ){
 		fprintf( stderr, "Failed to open GLFW window.\n" );
+		getchar();
 		glfwTerminate();
 		return -1;
 	}
 	glfwMakeContextCurrent(window);
+    
+    // We would expect width and height to be 1024 and 768
+    int windowWidth = 1024;
+    int windowHeight = 768;
+    // But on MacOS X with a retina screen it'll be 1024*2 and 768*2, so we get the actual framebuffer size:
+    glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
 
 	// Initialize GLEW
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
+		getchar();
+		glfwTerminate();
 		return -1;
 	}
 
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-	glfwSetCursorPos(window, 1024/2, 768/2);
+    // Hide the mouse and enable unlimited mouvement
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    
+    // Set the mouse at the center of the screen
+    glfwPollEvents();
+    glfwSetCursorPos(window, 1024/2, 768/2);
 
 	// Dark blue background
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
@@ -257,7 +272,7 @@ int main( void )
 
 		// Render to the screen
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the lower left corner to the upper right
+		glViewport(0,0,windowWidth,windowHeight); // Render on the whole framebuffer, complete from the lower left corner to the upper right
 
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK); // Cull back-facing triangles -> draw only front-facing triangles

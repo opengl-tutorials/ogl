@@ -2,22 +2,24 @@ from utils import *
 	
 Clean()
 
-HgUpdate33()
+GitUpdate33()
 PatchAll()
 Build_VC11Express_64()
+RunAll()
+Build_VC14Express_64()
 RunAll()
 Build_CodeBlocks()
 RunAll()
 
 Clean()
 
-HgUpdate21()
+GitUpdate21()
 PatchAll()
-Build_VC11Express_64()
+Build_VC14Express_64()
 RunAll()
 
 Clean()
-HgUpdate33()
+GitUpdate33()
 
 
 

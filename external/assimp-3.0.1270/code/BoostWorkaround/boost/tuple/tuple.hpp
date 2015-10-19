@@ -215,7 +215,7 @@ namespace boost	{
 	template <unsigned N,typename T0,typename T1,typename T2,typename T3,typename T4>
 	inline const typename tuple<T0,T1,T2,T3,T4>::very_long::template type_getter<N>::type& get (
 			const tuple<T0,T1,T2,T3,T4>& m)	{
-			return m.template get<N>();
+			return  m.template get<N>();;
 		}
 
 	// Constructs a tuple with 5 elements
@@ -224,11 +224,11 @@ namespace boost	{
 		const T1& t1,const T2& t2,const T3& t3,const T4& t4) {
 
 		tuple <T0,T1,T2,T3,T4> t;
-		t.template get<0>() = t0;
-		t.template get<1>() = t1;
-		t.template get<2>() = t2;
-		t.template get<3>() = t3;
-		t.template get<4>() = t4;
+        t.template get<0>() = t0;
+        t.template get<1>() = t1;
+        t.template get<2>() = t2;
+        t.template get<3>() = t3;
+        t.template get<4>() = t4;
 		return t;
 	}
 
@@ -237,10 +237,10 @@ namespace boost	{
 	inline tuple <T0,T1,T2,T3> make_tuple (const T0& t0,
 		const T1& t1,const T2& t2,const T3& t3) {
 		tuple <T0,T1,T2,T3> t;
-		t.template get<0>() = t0;
-		t.template get<1>() = t1;
-		t.template get<2>() = t2;
-		t.template get<3>() = t3;
+        t.template get<0>() = t0;
+        t.template get<1>() = t1;
+        t.template get<2>() = t2;
+        t.template get<3>() = t3;
 		return t;
 	}
 
@@ -249,9 +249,9 @@ namespace boost	{
 	inline tuple <T0,T1,T2> make_tuple (const T0& t0,
 		const T1& t1,const T2& t2) {
 		tuple <T0,T1,T2> t;
-		t.template get<0>() = t0;
-		t.template get<1>() = t1;
-		t.template get<2>() = t2;
+        t.template get<0>() = t0;
+        t.template get<1>() = t1;
+        t.template get<2>() = t2;
 		return t;
 	}
 
@@ -260,8 +260,8 @@ namespace boost	{
 	inline tuple <T0,T1> make_tuple (const T0& t0,
 		const T1& t1) {
 		tuple <T0,T1> t;
-		t.template get<0>() = t0;
-		t.template get<1>() = t1;
+        t.template get<0>() = t0;
+        t.template get<1>() = t1;
 		return t;
 	}
 
@@ -269,7 +269,7 @@ namespace boost	{
 	template <typename T0>
 	inline tuple <T0> make_tuple (const T0& t0) {
 		tuple <T0> t;
-		t.template get<0>() = t0;
+        t.template get<0>() = t0;
 		return t;
 	}
 

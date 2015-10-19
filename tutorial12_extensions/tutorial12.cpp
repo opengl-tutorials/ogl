@@ -35,7 +35,7 @@ using namespace glm;
 //	                                          sizei length,
 //	                                          const char* message,
 //	                                          void* userParam);
-void APIENTRY DebugOutputCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, GLvoid* userParam){
+void APIENTRY DebugOutputCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam){
 
 	printf("OpenGL Debug Output message : ");
 
@@ -69,6 +69,7 @@ int main( void )
 	if( !glfwInit() )
 	{
 		fprintf( stderr, "Failed to initialize GLFW\n" );
+		getchar();
 		return -1;
 	}
 
@@ -79,7 +80,7 @@ int main( void )
 	// ARB_debug_output is a bit special, 
 	// it requires creating the OpenGL context
 	// with paticular flags.
-	// GLFW expose it this way; if you use SDL, SFML, freeGLUT
+	// GLFW exposes it this way; if you use SDL, SFML, freeGLUT
 	// or other, check the documentation.
 	// If you use custom code, read the spec : 
 	// http://www.opengl.org/registry/specs/ARB/debug_output.txt
@@ -89,6 +90,7 @@ int main( void )
 	window = glfwCreateWindow( 1024, 768, "Tutorial 12 - Extensions", NULL, NULL);
 	if( window == NULL ){
 		fprintf( stderr, "Failed to open GLFW window.\n" );
+		getchar();
 		glfwTerminate();
 		return -1;
 	}
@@ -97,6 +99,8 @@ int main( void )
 	// Initialize GLEW
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
+		getchar();
+		glfwTerminate();
 		return -1;
 	}
 
@@ -119,7 +123,12 @@ int main( void )
 
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-	glfwSetCursorPos(window, 1024/2, 768/2);
+    // Hide the mouse and enable unlimited mouvement
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    
+    // Set the mouse at the center of the screen
+    glfwPollEvents();
+    glfwSetCursorPos(window, 1024/2, 768/2);
 
 	// Dark blue background
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);

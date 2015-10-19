@@ -1,3 +1,6 @@
+#ifndef DISTRIB_SCREENSHOT_INTERNAL_H
+#define DISTRIB_SCREENSHOT_INTERNAL_H
+
 
 void TakeScreenshot(){
 	char * buffer = new char[54 + 1024*768*3];
@@ -40,3 +43,6 @@ void callGlfwWindowHint(int target, int hint){
 #define glfwSwapBuffers(a) TakeScreenshot(); break;
 #define glfwGetTime() Zero()
 #define glfwWindowHint(a,b) callGlfwWindowHint(a,b)
+
+
+#endif

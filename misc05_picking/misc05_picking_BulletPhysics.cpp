@@ -90,6 +90,7 @@ int main( void )
 	if( !glfwInit() )
 	{
 		fprintf( stderr, "Failed to initialize GLFW\n" );
+		getchar();
 		return -1;
 	}
 
@@ -101,6 +102,7 @@ int main( void )
 	window = glfwCreateWindow( 1024, 768, "Misc 05 - Bullet version", NULL, NULL);
 	if( window == NULL ){
 		fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
+		getchar();
 		glfwTerminate();
 		return -1;
 	}
@@ -109,6 +111,8 @@ int main( void )
 	// Initialize GLEW
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
+		getchar();
+		glfwTerminate();
 		return -1;
 	}
 
@@ -313,10 +317,10 @@ int main( void )
 				out_direction
 			);	
 			
-			out_direction = out_direction*1000.0f;
+			glm::vec3 out_end = out_origin + out_direction*1000.0f;
 
-			btCollisionWorld::ClosestRayResultCallback RayCallback(btVector3(out_origin.x, out_origin.y, out_origin.z), btVector3(out_direction.x, out_direction.y, out_direction.z));
-			dynamicsWorld->rayTest(btVector3(out_origin.x, out_origin.y, out_origin.z), btVector3(out_direction.x, out_direction.y, out_direction.z), RayCallback);
+			btCollisionWorld::ClosestRayResultCallback RayCallback(btVector3(out_origin.x, out_origin.y, out_origin.z), btVector3(out_end.x, out_end.y, out_end.z));
+			dynamicsWorld->rayTest(btVector3(out_origin.x, out_origin.y, out_origin.z), btVector3(out_end.x, out_end.y, out_end.z), RayCallback);
 			if(RayCallback.hasHit()) {
 				std::ostringstream oss;
 				oss << "mesh " << (size_t)RayCallback.m_collisionObject->getUserPointer();

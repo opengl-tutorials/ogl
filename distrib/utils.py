@@ -8,9 +8,10 @@ import sys
 import math
 from time import sleep
 
-CMakePath = r'C:\Program Files (x86)\CMake 2.8\bin\cmake.exe'
+CMakePath = r'C:\Program Files (x86)\CMake\bin\cmake.exe'
 VisualStudio10Path = r'C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com'
 VisualStudio11ExpressPath = r'C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\WDExpress.exe'
+VisualStudio14ExpressPath = r'C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\WDExpress.exe'
 CodeBlocksPath = r'C:\Program Files (x86)\CodeBlocks\codeblocks.exe'
 
 def SetCMakePath(path):
@@ -78,11 +79,18 @@ def InsertScreenshotCode(path):
 	for line in fileinput.input(path, inplace = 1): # Does a list of files, and writes redirects STDOUT to the file in question
 		print line.replace("#include <glfw3.h>", "#include <glfw3.h>\n#include \"distrib/screenshot.h\" // added by insertscreenshot.py; should NOT be committed !"),
 	  
-def HgUpdate21():
+def __HgUpdate21():
 	os.system('hg update --clean "2.1 branch"')
 
-def HgUpdate33():
+def GitUpdate21():
+	os.system('git checkout -f origin/2.1_branch')
+	
+def __HgUpdate33():
 	os.system('hg update --clean "default"')
+	
+def GitUpdate33():
+	os.system('git checkout -f origin/master')
+
 	
 def Build_VC10_32():
 	print "Building with Visual Studio 10, 32 bits"
@@ -118,7 +126,7 @@ def Build_VC11Express_32():
 	global CMakePath
 	global VisualStudio11ExpressPath
 	if os.path.exists("build_VC11_32") == False: 
-		os.makedirs("build_VC110_32")
+		os.makedirs("build_VC11_32")
 	os.chdir("build_VC11_32")
 	with open(os.devnull, "w") as fnull:
 		print "Running CMake..."
@@ -140,6 +148,36 @@ def Build_VC11Express_64():
 		print "Compiling everything..."
 		subprocess.call( [VisualStudio11ExpressPath, '/build', 'RelWithDebInfo', 'Tutorials.sln'], stdout=fnull, stderr=fnull )
 	os.chdir("..")
+
+	
+def Build_VC14Express_32():
+	print "Building with Visual Studio 14 Express Desktop, 32 bits"
+	global CMakePath
+	global VisualStudio14ExpressPath
+	if os.path.exists("build_VC14_32") == False: 
+		os.makedirs("build_VC14_32")
+	os.chdir("build_VC14_32")
+	with open(os.devnull, "w") as fnull:
+		print "Running CMake..."
+		subprocess.call( [CMakePath, '-G', 'Visual Studio 14', '-D', 'INCLUDE_DISTRIB:bool=true', '../../'], stdout=fnull, stderr=fnull )
+		print "Compiling everything..."
+		subprocess.call( [VisualStudio14ExpressPath, '/build', 'RelWithDebInfo', 'Tutorials.sln'], stdout=fnull, stderr=fnull )
+	os.chdir("..")
+
+def Build_VC14Express_64():
+	print "Building with Visual Studio 14 Express Desktop, 64 bits"
+	global CMakePath
+	global VisualStudio14ExpressPath
+	if os.path.exists("build_VC14_64") == False: 
+		os.makedirs("build_VC14_64")
+	os.chdir("build_VC14_64")
+	with open(os.devnull, "w") as fnull:
+		print "Running CMake..."
+		subprocess.call( [CMakePath, '-G', 'Visual Studio 14 Win64', '-D', 'INCLUDE_DISTRIB:bool=true', '../../'], stdout=fnull, stderr=fnull )
+		print "Compiling everything..."
+		subprocess.call( [VisualStudio14ExpressPath, '/build', 'RelWithDebInfo', 'Tutorials.sln'], stdout=fnull, stderr=fnull )
+	os.chdir("..")
+
 
 	
 def Build_CodeBlocks():
@@ -267,7 +305,7 @@ def OptimusForceNVIDIA():
 	print "Forcing NVidia GPU (on Optimus system)..."
 	subprocess.call(["selectoptimus.exe", "NVIDIA"])
 
-def Package(path):
+def __Package(path):
 	print "Packaging into " + path + " ..."
 	cwd = os.getcwd()
 	os.chdir("..");
