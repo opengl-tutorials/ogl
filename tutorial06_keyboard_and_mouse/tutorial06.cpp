@@ -42,7 +42,11 @@ int main( void )
 		glfwTerminate();
 		return -1;
 	}
-	glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent(window);
+    //glfwSetCursorPos(window, 1024/2, 768/2);
+    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    //glfwSetCursorPos(window, 1024/2, 768/2);
 
 	// Initialize GLEW
 	glewExperimental = true; // Needed for core profile
