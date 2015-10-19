@@ -46,6 +46,12 @@ int main( void )
 		return -1;
 	}
 	glfwMakeContextCurrent(window);
+    
+    // We would expect width and height to be 1024 and 768
+    int windowWidth = 1024;
+    int windowHeight = 768;
+    // But on MacOS X with a retina screen it'll be 1024*2 and 768*2, so we get the actual framebuffer size:
+    glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
 
 	// Initialize GLEW
 	glewExperimental = true; // Needed for core profile
@@ -259,7 +265,7 @@ int main( void )
 
 		// Render to the screen
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the lower left corner to the upper right
+		glViewport(0,0,windowWidth,windowHeight); // Render on the whole framebuffer, complete from the lower left corner to the upper right
 
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK); // Cull back-facing triangles -> draw only front-facing triangles

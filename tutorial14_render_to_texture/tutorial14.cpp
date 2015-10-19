@@ -50,7 +50,7 @@ int main( void )
     // We would expect width and height to be 1024 and 768
     int windowWidth = 1024;
     int windowHeight = 768;
-    // But on MacOS X with a retina screen it'll be 1024*2 and 768*2, so we get the screen size:
+    // But on MacOS X with a retina screen it'll be 1024*2 and 768*2, so we get the actual framebuffer size:
     glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
 
 	// Initialize GLEW
