@@ -27,7 +27,7 @@ You can download the ZIP archive containing the whole set of tutorials here (See
 
 Alternatively, you have access to the latest version of the code on the Git repository :
 
-* [Checkout the source on GitHub](https://github.com/Whiteseeker/opengl-tutorials) (The nodes corresponding to the above zips have tags 0014_33 and 0014_21 respectively)
+* [Checkout the source on GitHub](https://github.com/opengl-tutorials/ogl) (The nodes corresponding to the above zips have tags 0014_33 and 0014_21 respectively)
 
 All the source code on this site (except third-party libraries) is released under the WTFPL Public Licence :
 {% highlight text %}
