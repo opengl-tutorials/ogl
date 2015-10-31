@@ -70,7 +70,11 @@ a:visited { color: #205caa; }
     margin:0px auto;
 }
 
-.site-nav .page-link {
+.menu-icon {
+  display: none;
+}
+
+.site-nav .page-link a {
   color: #727272;
   letter-spacing: -.5px;
 }
@@ -443,7 +447,7 @@ a:visited { color: #205caa; }
 
   .wrap { padding: 0 12px; }
 
-/*
+
   .site-nav {
     position: fixed;
     z-index: 10;
@@ -453,6 +457,14 @@ a:visited { color: #205caa; }
     -moz-border-radius: 5px;
     border-radius: 5px;
     border: 1px solid #e8e8e8;
+  }
+
+  .site-nav .arrow {
+    display: none;
+  }
+
+  .site-nav li .sub-menu {
+    display: none;
   }
 
   .site-nav .menu-icon {
@@ -476,13 +488,13 @@ a:visited { color: #205caa; }
   .site-nav:hover .trigger { display: block; }
 
   .site-nav .page-link {
+    clear: right;
     display: block;
     text-align: right;
     line-height: 1.25;
     padding: 5px 10px;
     margin: 0;
   }
-  */
 
   .post-header h1 { font-size: 36px; }
   .post-content h2 { font-size: 28px; }

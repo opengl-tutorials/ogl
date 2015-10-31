@@ -31,7 +31,7 @@
     {% endif %}
 
     <nav class="site-nav">
-      <!--
+      
       <a href="#" class="menu-icon">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
            viewBox="0 0 18 15" enable-background="new 0 0 18 15" xml:space="preserve">
@@ -43,12 +43,11 @@
             c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
         </svg>
       </a>
-    -->
 
-      <ul>
+      <ul class="trigger">
         {% if page.language %}
-          <li><a class="page-link" href="{{site.baseurl}}/{{page.language}}/">Home</a></li>
-          <li><a class="page-link" href="{{site.baseurl}}/{{page.language}}/beginners-tutorials/">Basic tutorials</a>
+          <li class="page-link"><a href="{{site.baseurl}}/{{page.language}}/">Home</a></li>
+          <li class="page-link"><a href="{{site.baseurl}}/{{page.language}}/beginners-tutorials/">Basic tutorials</a>
           <span class="arrow">&#9660;</span>
             <ul class="sub-menu">
               {% assign sorted_pages = site.pages | sort:"order" %}
@@ -58,15 +57,15 @@
                 {% if splt.size == 2 and splt[0] == '' %}
                   {% assign slash = splt[1] | split: '/' %}
                   {% if slash.size == 1 %}      
-                    <li><a class="page-link" href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a></li>
+                    <li class="page-link"><a href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a></li>
                   {% else %}
-                    <li><a class="page-link" href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a></li>
+                    <li class="page-link"><a href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a></li>
                   {% endif %}
                 {% endif %}
               {% endfor %}
             </ul>
           </li>
-          <li><a class="page-link" href="{{site.baseurl}}/{{page.language}}/intermediate-tutorials/">Intermediate tutorials</a>
+          <li class="page-link"><a href="{{site.baseurl}}/{{page.language}}/intermediate-tutorials/">Intermediate tutorials</a>
             <span class="arrow">&#9660;</span>
             <ul class="sub-menu">
               {% assign sorted_pages = site.pages | sort:"order" %}
@@ -76,19 +75,19 @@
                 {% if splt.size == 2 and splt[0] == '' %}
                   {% assign slash = splt[1] | split: '/' %}
                   {% if slash.size == 1 %}      
-                    <li><a class="page-link" href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a></li>
+                    <li class="page-link"><a href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a></li>
                   {% else %}
-                    <li><a class="page-link" href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a></li>
+                    <li class="page-link"><a href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a></li>
                   {% endif %}
                 {% endif %}
               {% endfor %}
             </ul>
           </li>
-          <li><a class="page-link" href="{{site.baseurl}}/{{page.language}}/miscellaneous/">Miscellaneous</a></li>
-                <a class="page-link" href="{{site.baseurl}}/{{page.language}}/download/">Download</a></li>
+          <li class="page-link"><a href="{{site.baseurl}}/{{page.language}}/miscellaneous/">Miscellaneous</a></li>
+          <li class="page-link"><a href="{{site.baseurl}}/{{page.language}}/download/">Download</a></li>
         {% else %}
-          <li><a class="page-link" href="{{site.baseurl}}/">Home</a></li>
-          <li><a class="page-link" href="{{site.baseurl}}/beginners-tutorials/">Basic tutorials</a>
+          <li class="page-link"><a href="{{site.baseurl}}/">Home</a></li>
+          <li class="page-link"><a href="{{site.baseurl}}/beginners-tutorials/">Basic tutorials</a>
           <span class="arrow">&#9660;</span>
             <ul class="sub-menu">
               {% assign sorted_pages = site.pages | sort:"order" %}
@@ -97,15 +96,15 @@
                 {% if splt.size == 2 and splt[0] == '' %}
                   {% assign slash = splt[1] | split: '/' %}
                   {% if slash.size == 1 %}      
-                    <li><a class="page-link" href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a></li>
+                    <li class="page-link"><a href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a></li>
                   {% else %}
-                    <li><a class="page-link" href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a></li>
+                    <li class="page-link"><a href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a></li>
                   {% endif %}
                 {% endif %}
               {% endfor %}
             </ul>
           </li>
-          <li><a class="page-link" href="{{site.baseurl}}/intermediate-tutorials/">Intermediate tutorials</a>
+          <li class="page-link"><a href="{{site.baseurl}}/intermediate-tutorials/">Intermediate tutorials</a>
             <span class="arrow">&#9660;</span>
             <ul class="sub-menu">
               {% assign sorted_pages = site.pages | sort:"order" %}
@@ -122,26 +121,10 @@
               {% endfor %}
             </ul>
           </li>
-          <li><a class="page-link" href="{{site.baseurl}}/miscellaneous/">Miscellaneous</a></li>
-          <li><a class="page-link" href="{{site.baseurl}}/download/">Download</a></li>
+          <li class="page-link"><a href="{{site.baseurl}}/miscellaneous/">Miscellaneous</a></li>
+          <li class="page-link"><a href="{{site.baseurl}}/download/">Download</a></li>
         {% endif %}
 
-        <!--
-        <li><a href="#">Home</a></li>
-        <li>
-          <a href="#">Movies <span class="arrow">&#9660;</span></a>
-
-          <ul class="sub-menu">
-            <li><a href="#">In Cinemas Now</a></li>
-            <li><a href="#">Coming Soon</a></li>
-            <li><a href="#">On DVD/Blu-ray</a></li>
-            <li><a href="#">Showtimes &amp; Tickets</a></li>
-          </ul>
-        </li>
-        <li><a href="#">T.V. Shows</a></li>
-        <li class="current-item"><a href="#">Photos</a></li>
-        <li><a href="#">Site Help</a></li>
-      </ul>-->
 <!--
       <div class="trigger">
         {% if page.language %}
@@ -158,7 +141,7 @@
           <a class="page-link" href="{{site.baseurl}}/download/">Download</a>
       	{% endif %}
 -->
-        <li><select id="myLanguage" onchange="myFunction()">
+        <li class="page-link"><select id="myLanguage" onchange="myFunction()">
           {% for l in site.languages %}
             <option value="{{l}}" {% if page.language == {{l}} %} selected="1" {% endif %} >{{site.languages_names[forloop.index0]}}</option>	    
           {% endfor %}
