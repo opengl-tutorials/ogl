@@ -214,7 +214,8 @@ a:visited { color: #205caa; }
 }
 
 .github-icon-svg,
-.twitter-icon-svg {
+.twitter-icon-svg,
+.gplus-icon-svg {
   display: inline-block;
   width: 16px;
   height: 16px;
