@@ -95,7 +95,7 @@
 
                   {% if level == 0 %}
                     {% assign level = 1 %}
-                    <ul class="sub-menu">
+                    <span class="arrow">&#9654;</span><ul class="sub-menu">
                   {% endif %}
                   <li><a  href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a></li>
 
