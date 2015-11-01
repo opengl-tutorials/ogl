@@ -63,16 +63,135 @@ a:visited { color: #205caa; }
   position: relative;
   z-index: 1;
 }
- 
+
+.menu-icon {
+  display: none;
+}
+
+/*******************************************************/
+/*            Styling of the top menu bar              */
+
 .site-nav {
     line-height: 56px;
     float:right;
     margin:0px auto;
 }
 
-.menu-icon {
-  display: none;
+.site-nav a {
+  color: #727272;
+  letter-spacing: -.5px;
+  text-decoration:none;
 }
+
+.site-nav .arrow {
+  font-size:11px;
+}
+
+.site-nav ul {
+  padding: 0 10px; 
+  line-height: 18px;
+  list-style: none;
+  position: relative;
+  display: inline-table;
+}
+
+.site-nav > ul {
+  padding: 0 10px; 
+  line-height: 56px;
+  list-style: none;
+  position: relative;
+  display: block;
+}
+
+.site-nav > ul > li > a {
+  display:inline-block;
+}
+
+.site-nav ul li {
+  float:left;
+  padding: 0px 10px;
+  list-style:none;
+  background: #FFF;
+  position:relative;
+  display:inline-block;
+}
+
+.site-nav > ul > li:hover > a {
+  background: #F7F7F7;
+}
+
+.site-nav ul li:hover > ul {
+  display: block;
+}
+
+.site-nav ul ul {
+  display: none;
+  background: #FFF;
+  padding: 0;
+  position: absolute;
+  top: 100%;
+  width:250px;
+  border-top: 1px solid #E6E6E6;
+  border-left: 1px solid #E6E6E6;
+  border-right: 1px solid #E6E6E6;
+}
+
+.site-nav ul ul li {
+  clear: left;
+  width:100%;
+  padding: 5px 0px;
+  border-bottom: 1px solid #E6E6E6;
+  position: relative;
+}
+
+.site-nav ul ul li:hover {
+  background: #F7F7F7;
+}
+
+.site-nav ul ul ul {
+  position: absolute;
+  left: 100%;
+  width:200px;
+  top:0;
+}
+
+/*
+.site-nav ul ul li a {
+  display: block;
+  width: auto;
+  color: #757575;
+}
+*/
+
+
+
+/*.site-nav ul:after {
+  content: ""; clear: both; display: block;
+}*/
+
+
+
+
+
+/*
+
+.site-nav ul ul li a {
+  padding: 3px 10px;
+  line-height: 56px;
+} 
+.site-nav ul ul li a:hover {
+  background: #F7F7F7;
+}
+
+*/
+ /*
+.site-nav {
+    line-height: 56px;
+    float:right;
+    margin:0px auto;
+}
+
+
 
 .site-nav .page-link a {
   color: #727272;
@@ -103,6 +222,8 @@ a:visited { color: #205caa; }
     position:relative;
 }
 
+
+
 .site-nav > ul > li > a {
     padding:5px 10px;
     display:inline-block;
@@ -112,7 +233,6 @@ a:visited { color: #205caa; }
     background:#ffffff;
 }
  
-/*----- Bottom Level -----*/
 .site-nav li:hover .sub-menu {
     z-index:1;
     opacity:1;
@@ -143,8 +263,7 @@ a:visited { color: #205caa; }
 }
  
 .sub-menu li a:hover, .sub-menu .current-item a {
-    /*background:#3e3436;*/
-}
+}*/
 /*
 .site-nav {
   float: right;
@@ -459,7 +578,7 @@ a:visited { color: #205caa; }
     border: 1px solid #e8e8e8;
   }
 
-  .site-nav .arrow {
+  .site-nav .arrow {    
     display: none;
   }
 
