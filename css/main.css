@@ -486,7 +486,7 @@ a:visited { color: #205caa; }
   .site-nav:hover .trigger { display: block; }
 
   .site-nav > ul > li {
-    clear: right;
+    clear: left;
     display: block;
     text-align: right;
     line-height: 1.25;
