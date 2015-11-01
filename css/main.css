@@ -494,6 +494,10 @@ a:visited { color: #205caa; }
     margin: 0;
   }
 
+  .site-nav ul li:hover > ul {
+    display: none;
+  }
+
   .post-header h1 { font-size: 36px; }
   .post-content h2 { font-size: 28px; }
   .post-content h3 { font-size: 22px; }
