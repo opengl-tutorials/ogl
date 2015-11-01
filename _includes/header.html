@@ -50,7 +50,6 @@
           {% capture lg %}{{page.language}}/{% endcapture %}
         {% endif %}
 
-        <li><a href="{{ site.baseurl }}/{{ lg }}">Home</a></li>
         <li><a href="{{ site.baseurl }}/{{ lg }}beginners-tutorials/">Basic tutorials</a>
           <span class="arrow">&#9660;</span>
           <ul class="sub-menu">
@@ -108,7 +107,45 @@
             {% endif %}
           </ul>
         </li>
-        <li><a href="{{site.baseurl}}/{{ lg }}miscellaneous/">Miscellaneous</a></li>
+        <li><a href="{{site.baseurl}}/{{ lg }}miscellaneous/">Miscellaneous</a>
+          <span class="arrow">&#9660;</span>
+          <ul class="sub-menu">
+            {% assign sorted_pages = site.pages | sort:"order" %}
+            {% capture tuts_root %}/{{ lg }}miscellaneous/{% endcapture %}
+            {% assign level = -1 %}
+            {% for p in sorted_pages %}
+              {% assign splt = p.url | split: tuts_root %}
+              {% if splt.size == 2 and splt[0] == '' %}
+                {% assign slash = splt[1] | split: '/' %}
+                {% if slash.size == 1 %}
+
+                  {% if level == 1 %}
+                    {% assign level = 0 %}
+                    </ul></li>
+                  {% elsif level == -1 %}
+                    {% assign level = 0 %}
+                  {% elsif level == 0 %}
+                    </li>
+                  {% endif %}
+                  <li><a  href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a>
+
+                {% else %}
+
+                  {% if level == 0 %}
+                    {% assign level = 1 %}
+                    <span class="arrow">&#9654;</span><ul class="sub-menu">
+                  {% endif %}
+                  <li><a  href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a></li>
+
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+            {% if level == 1 %}
+              {% assign level = 0 %}
+              </ul></li>
+            {% endif %}
+          </ul>
+        </li>
         <li><a href="{{site.baseurl}}/{{ lg }}download/">Download</a></li>
 
 

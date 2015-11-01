@@ -73,7 +73,7 @@ a:visited { color: #205caa; }
 
 .site-nav {
     line-height: 56px;
-    float:right;
+    float:left;
     margin:0px auto;
 }
 
@@ -110,7 +110,7 @@ a:visited { color: #205caa; }
 
 .site-nav ul li {
   float:left;
-  padding: 0px 10px;
+  padding: 0px 5px;
   list-style:none;
   background: #FFF;
   position:relative;
@@ -137,10 +137,11 @@ a:visited { color: #205caa; }
   padding: 0;
   position: absolute;
   top: 100%;
-  width:250px;
+  width:210px;
   border-top: 1px solid #E6E6E6;
   border-left: 1px solid #E6E6E6;
   border-right: 1px solid #E6E6E6;
+  font-size: smaller;
 }
 
 .site-nav ul ul li {
@@ -158,7 +159,7 @@ a:visited { color: #205caa; }
 .site-nav ul ul ul {
   position: absolute;
   left: 100%;
-  width:200px;
+  width:170px;
   top:0;
 }
 
