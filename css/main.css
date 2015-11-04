@@ -457,7 +457,7 @@ img { max-width: 100% }
 
 
   .site-nav {
-    position: fixed;
+    position: absolute;
     z-index: 10;
     top: 14px; right: 8px;
     background-color: white;
