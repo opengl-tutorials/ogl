@@ -1,5 +1,6 @@
 import os
 import shutil
+import re
 from os import walk
 from tempfile import mkstemp
 
@@ -12,11 +13,35 @@ ignored_directories = ["assets", "css"];
 script_directory = os.path.dirname(os.path.abspath(__file__))
 directories = [script_directory]
 
+def getOrder( file_path ):
+    print "getOrder(%s)" % file_path
+
+    order = -1;
+    #Create temp file
+    with open(file_path) as en_file:
+        for line in en_file:
+            if line.startswith("order:"):
+                matchObj = re.search( r'[0-9]+', line, re.M|re.I )
+                order = int(matchObj.group(0))
+                break
+
+    return order
 
 
-def remplaceLanguage( file_path, lang ):
-    print "remplaceLanguage(%s, %s)" % (file_path, lang)
-    markerline = 0;
+def remplaceLanguage( file_path, lang, order ):
+    print "remplaceLanguage(%s, %s, %d)" % (file_path, lang, order)
+    # headerState store if we have write the language line or not
+    # 0 : mean we haven't read "---" yet
+    # 1 : mean we read "---" but haven't leaved the header yet (we are in th header)
+    # 2 : mean we read "---" for the second time, we are out of the header
+    headerState = 0;
+
+    # languageState store if we have write the language line or not
+    # 0 : mean we haven't read or write the language line
+    # 1 : mean the language line has been written
+    languageState = 0;
+
+    orderState = 0;
 
     #Create temp file
     fh, abs_path = mkstemp()
@@ -24,18 +49,30 @@ def remplaceLanguage( file_path, lang ):
     with open(abs_path,"w") as new_file:
         with open(file_path) as old_file:
             for line in old_file:
-                if line.startswith("language:"):
+                # If we found the language line we set the right value for it
+                if line.startswith("language:") and headerState == 1:
                     new_file.write("language: " + lang)
                     new_file.write(os.linesep)
-                    markerline = markerline + 1
-                elif line.startswith("---") and markerline == 0:
-                    new_file.write(line)
-                    markerline = markerline + 1
-                elif line.startswith("---") and markerline == 1:
-                    new_file.write("language: " + lang)
+                    languageState = 1
+                elif line.startswith("order:") and order >= 0 and headerState == 1:
+                    new_file.write("order: " + str(order))
                     new_file.write(os.linesep)
+                    orderState = 1
+                elif line.startswith("---") and headerState == 0:
                     new_file.write(line)
-                    markerline = markerline + 1
+                    headerState = 1
+                # If we are going to close the liquid header, we first write the language line if necessaru
+                elif line.startswith("---") and headerState == 1:
+                    if languageState == 0:
+                        new_file.write("language: " + lang)
+                        new_file.write(os.linesep)
+                        languageState = 1
+                    if orderState == 0 and order >= 0:
+                        new_file.write("order: " + str(order))
+                        new_file.write(os.linesep)
+                        orderState = 1
+                    headerState = 2
+                    new_file.write(line)
                 else:
                     new_file.write(line)
     os.close(fh)
@@ -48,7 +85,7 @@ def remplaceLanguage( file_path, lang ):
 index_markdown_files = []
 while len(directories) > 0:
     dir = directories[0]
-    # We remove "dir" from the direcotries to be parsed
+    # We remove "dir" from the directories to be parsed
     directories.remove(dir);
     #print '\n'.join(directories)
     
@@ -80,7 +117,11 @@ for ln in translation_directories:
         if not os.path.isfile(f):
             missing_index_markdown.append([f, index_file])
         else:
-            remplaceLanguage(f, ln)
+            order = getOrder(index_file)
+            print "Order[%d]" % order
+            remplaceLanguage(f, ln, order)
+
+    break
     if len(missing_index_markdown) > 0:
         print "Translation %s miss %d index.markdown file" % (ln, len(missing_index_markdown))
         print "Do you want to add them ?"
@@ -92,7 +133,9 @@ for ln in translation_directories:
                 if not os.path.exists(dirToCreate):
                     os.makedirs(dirToCreate)
                 shutil.copy2(mf[1], mf[0])
+                order = getOrder(mf[1])
+                print "Order[%d]" % order
                 # In the copied file we need to modify the language: xx to language: 'ln'
-                remplaceLanguage(mf[0], ln)    
+                remplaceLanguage(mf[0], ln, order)    
 
         
