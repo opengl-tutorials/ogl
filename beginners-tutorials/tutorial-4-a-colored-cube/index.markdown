@@ -30,7 +30,7 @@ Welcome for the 4rth tutorial ! You will do the following :
 
 A cube has six square faces. Since OpenGL only knows about triangles, we'll have to draw 12 triangles : two for each face. We just define our vertices in the same way as we did for the triangle.
 {% highlight cpp linenos %}
-// Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
+// Our vertices. Three consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
 // A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
 static const GLfloat g_vertex_buffer_data[] = {
     -1.0f,-1.0f,-1.0f, // triangle 1 : begin

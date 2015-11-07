@@ -83,7 +83,7 @@ So essentially quaternions store a *rotation axis* and a *rotation angle*, in a 
 
 This format is definitely less intuitive than Euler angles, but it's still readable: the xyz components match roughly the rotation axis, and w is the acos of the rotation angle (divided by 2). For instance, imagine that you see the following values in the debugger: [ 0.7 0 0 0.7 ]. x=0.7, it's bigger than y and z, so you know it's mostly a rotation around the X axis; and 2*acos(0.7) = 1.59 radians, so it's a rotation of 90&deg;.
 
-Similarly, [0 0 0 1] (w=1) means that angle = 2*acos(1) = 0, so this is a *unit quaternion*, which makes no rotation at all.
+Similarly, [0 0 0 1] (w=1) means that angle = 2*acos(1) = 0, so this is a `unit quaternion`, which makes no rotation at all.
 
 ##Basic operations
 
@@ -129,8 +129,6 @@ mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScaleMatrix;
 // You can now use ModelMatrix to build the MVP matrix
 {% endhighlight %}
 
-#
-
 
 #So, which one should I choose ?
 
@@ -153,7 +151,7 @@ You will be able to handle all you will need (or at least, it will be easier), a
 
 #Cheat-sheet
 
-How do I know it two quaternions are similar ?
+##How do I know it two quaternions are similar ?
 
 When using vector, the dot product gives the cosine of the angle between these vectors. If this value is 1, then the vectors are in the same direction.
 

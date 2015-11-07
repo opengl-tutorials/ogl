@@ -26,14 +26,14 @@ In this tutorial, you will learn :
 * How to use them in OpenGL
 * What is filtering and mipmapping, and how to use them
 * How to load texture more robustly with GLFW
-* What is the alpha channel
+* What the alpha channel is
 
 
 #About UV coordinates
 
 When texturing a mesh, you need a way to tell to OpenGL which part of the image has to be used for each triangle. This is done with UV coordinates.
 
-Each vertex has, on top of its position, a couple of floats, U and V. These coordinates are used to access the texture, in the following way :
+Each vertex can have, on top of its position, a couple of floats, U and V. These coordinates are used to access the texture, in the following way :
 
 [<img class="alignnone size-full wp-image-116" title="UVintro" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/UVintro.png" width="662" height="337" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/UVintro.png)
 
@@ -43,7 +43,7 @@ Notice how the texture is distorted on the triangle.
 
 #Loading .BMP images yourself
 
-Knowing the BMP file format is not crucial : plenty of libraries can do it for you. But it's very simple and can help you understand how things work under the hood. So we'll write a BMP file loader from scratch, so that you know how it works, <span style="text-decoration: underline;">and never use it again</span>.
+Knowing the BMP file format is not crucial : plenty of libraries can load BMP files for you. But it's very simple and can help you understand how things work under the hood. So we'll write a BMP file loader from scratch, so that you know how it works, <span style="text-decoration: underline;">and never use it again</span>.
 
 Here is the declaration of the loading function :
 {% highlight cpp linenos %}
@@ -69,7 +69,7 @@ We now have to actually open the file
 {% highlight cpp linenos %}
 // Open the file
 FILE * file = fopen(imagepath,"rb");
-if (!file)							    {printf("Image could not be opened\n"); return 0;}
+if (!file){printf("Image could not be opened\n"); return 0;}
 {% endhighlight %}
 The first thing in the file is a 54-bytes header. It contains information such as "Is this file really a BMP file?", the size of the image, the number of bits per pixel, etc. So let's read this header :
 {% highlight cpp linenos %}
@@ -137,8 +137,8 @@ GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 {% endhighlight %}
 Another very important point :** use power-of-two textures !**
 
-* good : 128*128*, 256*256, 1024*1024, 2*2...
-* bad : 127*128, 3*5, ...
+* good : 128x128, 256x256, 1024x1024, 2x2...
+* bad : 127x128, 3x5, ...
 * okay but weird : 128*256
 
 
@@ -298,7 +298,7 @@ glGenerateMipmap(GL_TEXTURE_2D);
 
 #How to load texture with GLFW
 
-Our loadBMP_custom function is great because we made it ourselves, but using a dedicated library is better. GLFW can do that too (but only for TGA files) :
+Our loadBMP_custom function is great because we made it ourselves, but using a dedicated library is better. GLFW2 can do that too (but only for TGA files, and this feature has been removed in GLFW3, that we now use) :
 {% highlight cpp linenos %}
 GLuint loadTGA_glfw(const char * imagepath){
 
@@ -328,21 +328,23 @@ GLuint loadTGA_glfw(const char * imagepath){
 
 At this point, you're probably wondering how to load JPEG files instead of TGA.
 
-Short answer : don't. There's a better option.
+Short answer : don't. GPUs can't understand JPEG. So you'll compress your original image in JPEG, and decompress it so that the GPU can understand it. You're back to raw images, but you lost image quality while compressing to JPEG.
+
+There's a better option.
 
 ##Creating compressed textures
 
 
-* Download [The Compressonator](http://developer.amd.com/Resources/archive/ArchivedTools/gpu/compressonator/Pages/default.aspx), an ATI tool
+* Download [The Compressonator](http://developer.amd.com/Resources/archive/ArchivedTools/gpu/compressonator/Pages/default.aspx), an AMD tool
 * Load a Power-Of-Two texture in it
+* Generate mipmaps so that you won't have to do it on runtime
 * Compress it in DXT1, DXT3 or in DXT5 (more about the differences between the various formats on [Wikipedia](http://en.wikipedia.org/wiki/S3_Texture_Compression)) :
 
 [<img class="alignnone size-full wp-image-358" title="TheCompressonator" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/TheCompressonator.png" width="806" height="688" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/TheCompressonator.png)
 
-* Generate mipmaps so that you won't have to do it on runtime
 * Export it as a .DDS file.
 
-At this point, your image is compressed in a format that is directly compatible with the GPU. Whenever calling texture() in a shader, it will uncompress it on-the-fly. This can seem slow, but since it takes a LOT less memory, less data needs to be transferred. But memory transfers are expensive; and texture decompression is free (there is dedicated hardware for that). Typically, using texture compression yields a 20% increase in performance.
+At this point, your image is compressed in a format that is directly compatible with the GPU. Whenever calling texture() in a shader, it will uncompress it on-the-fly. This can seem slow, but since it takes a LOT less memory, less data needs to be transferred. But memory transfers are expensive; and texture decompression is free (there is dedicated hardware for that). Typically, using texture compression yields a 20% increase in performance. So you save on performance and memory, at the expense of reduced quality.
 
 ##Using the compressed texture
 
@@ -447,7 +449,7 @@ DXT compression comes from the DirectX world, where the V texture coordinate is 
 
 You just learnt to create, load and use textures in OpenGL.
 
-In general, you should only use compressed textures, since they are smaller to store, almost instantaneous to load, and faster to use; the main drawback it that you have to convert your images through The Compressonator.
+In general, you should only use compressed textures, since they are smaller to store, almost instantaneous to load, and faster to use; the main drawback it that you have to convert your images through The Compressonator (or any similar tool)
 
 #Exercices
 
