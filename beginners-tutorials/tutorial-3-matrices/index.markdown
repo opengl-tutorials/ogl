@@ -309,7 +309,7 @@ And this is the image that is actually rendered !
 glm::mat4 MVPmatrix = projection * view * model; // Remember : inverted !
 {% endhighlight %}
 
-{% highlight glslvs linenos %}
+{% highlight glsl linenos cssclass=highlightglslfs %}
 // GLSL : apply it
 transformed_vertex = MVP * in_vertex;
 {% endhighlight %}
