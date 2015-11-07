@@ -246,7 +246,7 @@ Let's explain this line in detail :
 
 - "vec3" is a vector of 3 components in GLSL. It is similar (but different) to the glm::vec3 we used to declare our triangle. The important thing is that if we use 3 components in C++, we use 3 components in GLSL too.
 - "layout(location = 0)" refers to the buffer we use to feed the *vertexPosition_modelspace* attribute. Each vertex can have numerous attributes : A position, one or several colours, one or several texture coordinates, lots of other things. OpenGL doesn't know what a colour is : it just sees a vec3. So we have to tell him which buffer corresponds to which input. We do that by setting the layout to the same value as the first parameter to glVertexAttribPointer. The value "0" is not important, it could be 12 (but no more than glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &v) ), the important thing is that it's the same number on both sides.
-- "vertexPosition_modelspace" could be anything else. It will contain the position of the vertex for each run of the vertex shader.
+- "vertexPosition_modelspace" could have any other name. It will contain the position of the vertex for each run of the vertex shader.
 - "in" means that this is some input data. Soon we'll see the "out" keyword.
 
 The function that is called for each vertex is called main, just as in C :
@@ -288,7 +288,7 @@ Before the main loop, call our LoadShaders function :
 GLuint programID = LoadShaders( "SimpleVertexShader.vertexshader", "SimpleFragmentShader.fragmentshader" );
 {% endhighlight %}
 
-Now inside the main loop, first clear the screen. This will change the background color to dark blue because of the glClearColor(0.0f, 0.0f, 0.4f, 0.0f) call above the main loop:
+Now inside the main loop, first clear the screen. This will change the background color to dark blue because of the previous glClearColor(0.0f, 0.0f, 0.4f, 0.0f) call:
 
 {% highlight cpp linenos %}
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

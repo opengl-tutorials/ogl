@@ -50,7 +50,7 @@ Simply put, a matrix is an array of numbers with a predefined number of rows and
 
 [![](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/2X3.png "2X3")](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/2X3.png)
 
-In 3D graphics we will only use 4x4 matrices. They will allow us to transform our (x,y,z,w) vertices. This is done by multiplying the vertex with the matrix :
+In 3D graphics we will mostly use 4x4 matrices. They will allow us to transform our (x,y,z,w) vertices. This is done by multiplying the vertex with the matrix :
 
 **Matrix x Vertex (in this order !!) = TransformedVertex**
 
@@ -67,6 +67,7 @@ glm::vec4 myVector;
 // fill myMatrix and myVector somehow
 glm::vec4 transformedVector = myMatrix * myVector; // Again, in this order ! this is important.
 {% endhighlight %}
+
 **In GLSL :**
 {% highlight glsl linenos %}
 mat4 myMatrix;
@@ -74,6 +75,7 @@ vec4 myVector;
 // fill myMatrix and myVector somehow
 vec4 transformedVector = myMatrix * myVector; // Yeah, it's pretty much the same than GLM
 {% endhighlight %}
+
 ( have you cut'n pasted this in your code ? go on, try it)
 
 ##Translation matrices
@@ -108,11 +110,12 @@ glm::mat4 myMatrix = glm::translate(10.0f, 0.0f, 0.0f);
 glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);
 glm::vec4 transformedVector = myMatrix * myVector; // guess the result
 {% endhighlight%}
-**In GLSL : **
+
+**In GLSL :**
 {% highlight glsl linenos %}
 vec4 transformedVector = myMatrix * myVector;
 {% endhighlight%}
-Well, in fact, you almost never do this. Most of the time, you use glm::translate() in C++ to compute your matrix, send it to GLSL, and do only the multiplication :
+Well, in fact, you almost never do this in GLSL. Most of the time, you use glm::translate() in C++ to compute your matrix, send it to GLSL, and do only the multiplication :
 
 ## The Identity matrix
 
@@ -145,17 +148,23 @@ glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
 {% endhighlight%}
 ## Rotation matrices
 
-These are quite complicated. I'll skip the details here, as it's not important to know their exact layout for everyday use. For more information, please have a look to the [Matrices and Quaternions FAQ](http://www.cs.princeton.edu/~gewang/projects/darth/stuff/quat_faq.html) (popular resource, probably available in your language as well).
+These are quite complicated. I'll skip the details here, as it's not important to know their exact layout for everyday use. For more information, please have a look to the [Matrices and Quaternions FAQ](http://www.cs.princeton.edu/~gewang/projects/darth/stuff/quat_faq.html) (popular resource, probably available in your language as well). You can also have a look at the [Rotations tutorials]({{site.baseurl }}{{intermediate-tutorials/tutorial-17-quaternions}}) 
 
 **In C++ :**
 {% highlight cpp linenos %}
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
 glm::vec3 myRotationAxis( ??, ??, ??);
 glm::rotate( angle_in_degrees, myRotationAxis );
-{% endhighlight%}
+{% endhighlight %}
+
 ## Cumulating transformations
 
 So now we know how to rotate, translate, and scale our vectors. It would be great to combine these transformations. This is done by multiplying the matrices together, for instance :
+
+{% highlight cpp linenos %}
+TransformedVector = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalVector;
+{% endhighlight %}
+
 
 **!!! BEWARE !!!** This lines actually performs the scaling FIRST, and THEN the rotation, and THEN the translation. This is how matrix multiplication works.
 
@@ -191,7 +200,7 @@ vec4 out_vec = transform * in_vec;
 
 _For the rest of this tutorial, we will suppose that we know how to draw Blender's favourite 3d model : the monkey Suzanne._
 
-The Model, View and Projection matrices are a handy tool to separate transformations cleanly. You may not use this (after all, that's what we did in tutorials 1 and 2). But you should. This is the way everybody does, because it separates everything cleanly, as we'll see.
+The Model, View and Projection matrices are a handy tool to separate transformations cleanly. You may not use this (after all, that's what we did in tutorials 1 and 2). But you should. This is the way everybody does, because it's easier this way.
 
 ## The Model matrix
 
@@ -199,7 +208,7 @@ This model, just as our beloved red triangle, is defined by a set of vertices. T
 
 [![](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/model.png "model")](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/model.png)
 
-We'd like to be able to move this model, maybe because the player controls it with the keyboard and the mouse. Easy, you just learnt do do so : translation*rotation*scale, and done. You apply this matrix to all your vertices at each frame (in GLSL, not in C++!) and everything moves. Something that doesn't move will be at the _center of the world_.
+We'd like to be able to move this model, maybe because the player controls it with the keyboard and the mouse. Easy, you just learnt do do so : `translation*rotation*scale`, and done. You apply this matrix to all your vertices at each frame (in GLSL, not in C++!) and everything moves. Something that doesn't move will be at the _center of the world_.
 
 [![](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/world.png "world")](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/world.png)
 
@@ -214,6 +223,7 @@ We can sum this up with the following diagram :
 ## The View matrix
 
 Let's quote Futurama again :
+
 > _The engines don't move the ship at all. The ship stays where it is and the engines move the universe around it._
 
 [![](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/camera.png "camera")](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/camera.png)
@@ -227,6 +237,14 @@ Again, the image below illustrates this : _We went from World Space (all vertice
 [![](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/model_to_world_to_camera.png "model_to_world_to_camera")](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/model_to_world_to_camera.png)
 
 Before you head explodes from this, enjoy GLM's great glm::lookAt function:
+
+{% highlight cpp linenos %}
+glm::mat4 CameraMatrix = glm::lookAt(
+    cameraPosition, // the position of your camera, in world space
+    cameraTarget,   // where you want to look at, in world space
+    upVector        // probably glm::vec3(0,1,0), but (0,-1,0) would make you looking upside-down, which can be great too
+);
+{% endhighlight %}
 
 Here's the compulsory diagram :
 
@@ -243,6 +261,16 @@ This is called a perspective projection :
 [![](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/model_to_world_to_camera_to_homogeneous.png "model_to_world_to_camera_to_homogeneous")](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/model_to_world_to_camera_to_homogeneous.png)
 
 And luckily for us, a 4x4 matrix can represent this projection[^projection] :
+
+{% highlight cpp linenos %}
+// Generates a really hard-to-read matrix, but a normal, standard 4x4 matrix nonetheless
+glm::mat4 projectionMatrix = glm::perspective(
+    FoV,         // The horizontal Field of View, in degrees : the amount of "zoom". Think "camera lens". Usually between 90° (extra wide) and 30° (quite zoomed in)
+    4.0f / 3.0f, // Aspect Ratio. Depends on the size of your window. Notice that 4/3 == 800/600 == 1280/960, sounds familiar ?
+    0.1f,        // Near clipping plane. Keep as big as possible, or you'll get precision issues.
+    100.0f       // Far clipping plane. Keep as little as possible.
+);
+{% endhighlight %}
 
 One last time :
 
@@ -276,12 +304,23 @@ And this is the image that is actually rendered !
 
 ... Just a standard matrix multiplication as you already love them !
 
+{% highlight cpp linenos %}
+// C++ : compute the matrix
+glm::mat4 MVPmatrix = projection * view * model; // Remember : inverted !
+{% endhighlight %}
+
+{% highlight glslvs linenos %}
+// GLSL : apply it
+transformed_vertex = MVP * in_vertex;
+{% endhighlight %}
+
+
 # Putting it all together
 
 *  First step : generating our MVP matrix. This must be done for each model you render.
 *  Second step : give it to GLSL
 * Third step : use it in GLSL to transform our vertices
-* Done ! Here is the same triangle as in tutorial 2, still at the origin (0,0,0), but viewed in perspective from point (4,3,3), heads up (0,1,0), with a 45\A1\E3 field of view.
+* Done ! Here is the same triangle as in tutorial 2, still at the origin (0,0,0), but viewed in perspective from point (4,3,3), heads up (0,1,0), with a 45° field of view.
 
 [![](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/perspective_red_triangle-300x231.png "perspective_red_triangle")](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/perspective_red_triangle.png)
 
@@ -297,4 +336,4 @@ In tutorial 6 you'll learn how to modify these values dynamically using the keyb
 _Addendum_
 
 
-[^projection]: [...]luckily for us, a 4x4 matrix can represent this projection1 : Actually, this is not correct. A perspective transformation is not affine, and as such, can't be represented entirely by a matrix. After beeing multiplied by the ProjectionMatrix, homogeneous coordinates are divided by their own W component. This W component happens to be -Z (because the projection matrix has been crafted this way). This way, points that are far away from the origin are divided by a big Z; their X and Y coordinates become smaller; points become more close to each other, objects seem smaller; and this is what gives the perspective. This transformation is done in hardware, and is not visible in the shader.
+[^projection]: [...]luckily for us, a 4x4 matrix can represent this projection : Actually, this is not correct. A perspective transformation is not affine, and as such, can't be represented entirely by a matrix. After beeing multiplied by the ProjectionMatrix, homogeneous coordinates are divided by their own W component. This W component happens to be -Z (because the projection matrix has been crafted this way). This way, points that are far away from the origin are divided by a big Z; their X and Y coordinates become smaller; points become more close to each other, objects seem smaller; and this is what gives the perspective. This transformation is done in hardware, and is not visible in the shader.

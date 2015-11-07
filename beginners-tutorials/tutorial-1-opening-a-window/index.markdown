@@ -58,7 +58,7 @@ Detailed procedures will now be given for each platform. Adaptations may be requ
 * We suggest using Visual Studio 2015 Express for Desktop as a compiler. You can download it for free [here](https://www.visualstudio.com/en-US/products/visual-studio-express-vs). If you prefer using MinGW, we recommend using [Qt Creator](http://qt-project.org/). Install whichever you want. Subsequent steps will be explained with Visual Studio, but should be similar with any other IDE.
 * Download [CMake ](http://www.cmake.org/cmake/resources/software.html)from here and install it
 * [Download the source code](http://www.opengl-tutorial.org/download/) and unzip it, for instance in C:\Users\XYZ\Projects\OpenGLTutorials\ .
-* Launch CMake. In the first line, navigate to the unzipped folder. If unsure, choose the folder that contains the CMakeLists.txt file. In the second line, enter where you want all the compiler's stuff to live. For instance, you can choose C:\Users\XYZ\Projects\OpenGLTutorials-build-Visual2010-32bits\, or C:\Users\XYZ\Projects\OpenGLTutorials\build\Visual2010-32bits\. Notice that it can be anywhere, not necessarily in the same folder.
+* Launch CMake. In the first line, navigate to the unzipped folder. If unsure, choose the folder that contains the CMakeLists.txt file. In the second line, enter where you want all the compiler's stuff to live. For instance, you can choose C:\Users\XYZ\Projects\OpenGLTutorials-build-Visual2015-64bits\, or C:\Users\XYZ\Projects\OpenGLTutorials\build\Visual2015-36bits\. Notice that it can be anywhere, not necessarily in the same folder.
 ![]({{site.baseurl}}/assets/images/tuto-1-window/CMake.png)
 
 * Click on the Configure button. Since this is the first time you configure the project, CMake will ask you which compiler you would like to use. Choose wisely depending on step 1. If you have a 64 bit Windows, you can choose 64 bits; if you don't know, choose 32 bits.
@@ -75,7 +75,6 @@ In the *Build* menu, click *Build All*. Every tutorial and dependency will be co
 
 You can also launch any tutorial from inside Visual Studio. Right-click on Playground once, "Choose as startup project". You can now debug the code by pressing F5.
 
-![]({{site.baseurl}}/assets/images/tuto-1-window/WorkingDir.png)
 ![]({{site.baseurl}}/assets/images/tuto-1-window/StartupProject.png)
 
 
@@ -95,13 +94,13 @@ They are so many Linux variants out there that it's impossible to list every pos
  
 
 * Install the latest drivers. We highly recommend the closed-source binary drivers. It's not GNU or whatever, but they work. If your distribution doesn't provide an automatic install, try [Ubuntu's guide](http://help.ubuntu.com/community/BinaryDriverHowto).
-* Install all needed compilers, tools & libs. Complete list is : *cmake make g++ libx11-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxrandr-dev libxext-dev libxi-dev* . Use sudo apt-get install ***** or su && yum install ******.
+* Install all needed compilers, tools & libs. Complete list is : *cmake make g++ libx11-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxrandr-dev libxext-dev libxi-dev* . Use `sudo apt-get install *****` or `su && yum install ******`.
 * [Download the source code](http://www.opengl-tutorial.org/download/) and unzip it, for instance in ~/Projects/OpenGLTutorials/
 * cd in ~/Projects/OpenGLTutorials/ and enter the following commands :
 
-* mkdir build
-* cd build
-* cmake ..
+ * mkdir build
+ * cd build
+ * cmake ..
 
 
 * A makefile has been created in the build/ directory.
@@ -121,14 +120,14 @@ Note that you really should use an IDE like [Qt Creator](http://qt-project.org/)
 
 ##Building on Mac
 
-Mac OS doesn't support OpenGL 3.3. Recent Macs with MacOS 10.7 Lion and compatible GPUs can run OpenGL 3.2, but not 3.3. Use the 2.1 port of the tutorials instead. Apart from that, the procedure is very similar to Windows' (Makefiles are also supported, but won't be explained here) :
+The procedure is very similar to Windows' (Makefiles are also supported, but won't be explained here) :
 
 * Install XCode from the Mac App Store
 * [Download CMake](http://www.cmake.org/cmake/resources/software.html), and install the .dmg . You don't need to install the command-line tools.
-* [Download the source code](http://www.opengl-tutorial.org/download/) (VERSION 2.1 !!) and unzip it, for instance in ~/Projects/OpenGLTutorials/ .
+* [Download the source code](http://www.opengl-tutorial.org/download/) and unzip it, for instance in ~/Projects/OpenGLTutorials/ .
 * Launch CMake (Applications->CMake). In the first line, navigate to the unzipped folder. If unsure, choose the folder that contains the CMakeLists.txt file. In the second line, enter where you want all the compiler's stuff to live. For instance, you can choose ~/Projects/OpenGLTutorials_bin_XCode/. Notice that it can be anywhere, not necessarily in the same folder.
 * Click on the Configure button. Since this is the first time you configure the project, CMake will ask you which compiler you would like to use. Choose Xcode.
-* Click on Configure until all red lines disappear. Click on Generate. Your Xcode project is now created. You can forget about CMake; uninstall it if you want.
+* Click on Configure until all red lines disappear. Click on Generate. Your Xcode project is now created. You can forget about CMake.
 * Open ~/Projects/OpenGLTutorials_bin_XCode/ . You will see a Tutorials.xcodeproj file : open it.
 * Select the desired tutorial to run in Xcode's Scheme panel, and use the Run button to compile & run :
 
@@ -159,7 +158,7 @@ We will provide snippets of code all along the tutorials. Don't hesitate to cut'
 #Opening a window
 
 Finally ! OpenGL code !
-Well, not really. All tutorials show you the "low level" way to do things, so that you can see that no magic happens. But this part is actually very boring and useless, so we will use GLFW, an external library, to do this for us instead. If you really wanted to, you could use the Win32 API on Windows, the X11 API on Linux, and the Cocoa API on Mac; or use another library like SFML, FreeGLUT, SDL, ... see the [Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) page.
+Well, not really. All tutorials show you the "low level" way to do things, so that you can see that no magic happens. But this part is actually very boring and useless, so we will use GLFW, an external library, to do this for us instead. If you really wanted to, you could use the Win32 API on Windows, the X11 API on Linux, and the Cocoa API on Mac; or use another high-level library like SFML, FreeGLUT, SDL, ... see the [Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) page.
 
 Ok, let's go. First, we'll have to deal with dependencies : we need some basic stuff to display messages in the console :
 {% highlight cpp linenos %}
@@ -167,7 +166,7 @@ Ok, let's go. First, we'll have to deal with dependencies : we need some basic s
 #include <stdio.h>
 #include <stdlib.h>
 {% endhighlight %}
-First, GLEW. So this one actually is a little bit magic, but let's leave this for later.
+First, GLEW. This one actually is a little bit magic, but let's leave this for later.
 {% highlight cpp linenos %}
 // Include GLEW. Always include it before gl.h and glfw.h, since it's a bit magic.
 #include <GL/glew.h>
