@@ -308,6 +308,9 @@
 .highlightglslfs .lineno { color: #bbb; display:inline-block; padding: 0 5px; border-right:1px solid #bbb; }
 .highlightglslfs pre code { display: block; white-space: pre; overflow-x: auto; word-wrap: normal; }
 
+.highlightglslvs .lineno {-webkit-user-select: none;-moz-user-select: none; -o-user-select: none;} 
+.highlightglslvs .lineno { color: #bbb; display:inline-block; padding: 0 5px; border-right:1px solid #bbb; }
+.highlightglslvs pre code { display: block; white-space: pre; overflow-x: auto; word-wrap: normal; }
 
 /* Make line numbers unselectable: excludes line numbers from copy-paste user ops */
 .highlight .lineno {-webkit-user-select: none;-moz-user-select: none; -o-user-select: none;} 
