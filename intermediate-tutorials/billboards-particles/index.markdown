@@ -18,4 +18,7 @@ categories: [tuto]
 order: 100
 tags: []
 ---
+This tutorials is divided in two parts:
 
+- [Part 1: Billboards](./billboards)
+- [Part 2: Particules and object instancing](./particles-instancing)
