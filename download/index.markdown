@@ -22,12 +22,12 @@ tags: []
 
 You can download the ZIP archive containing the whole set of tutorials here (See the [FAQ](http://www.opengl-tutorial.org/miscellaneous/faq/) for which version to choose):
 
-* [OpenGL-tutorial_v0014_33]({{site.baseurl}}/assets/images/TODO/OpenGL-tutorial_v0014_33.zip) The normal version
-* [OpenGL-tutorial_v0014_21]({{site.baseurl}}/assets/images/TODO/OpenGL-tutorial_v0014_21.zip) The OpenGL 2.1 port
+* [OpenGL-tutorial_v0015_33](https://github.com/opengl-tutorials/ogl/archive/OpenGL-tutorial_0015_33.zip) The normal version
+* [OpenGL-tutorial_v0015_21](https://github.com/opengl-tutorials/ogl/archive/OpenGL-tutorial_0015_21.zip) The OpenGL 2.1 port
 
 Alternatively, you have access to the latest version of the code on the Git repository :
 
-* [Checkout the source on GitHub](https://github.com/opengl-tutorials/ogl) (The nodes corresponding to the above zips have tags 0014_33 and 0014_21 respectively)
+* [Checkout the source on GitHub](https://github.com/opengl-tutorials/ogl) (The nodes corresponding to the above zips have tags OpenGL-tutorial_0015_33 and OpenGL-tutorial_0015_21 respectively)
 
 All the source code on this site (except third-party libraries) is released under the WTFPL Public Licence :
 {% highlight text %}
@@ -45,4 +45,5 @@ as the name is changed.
 
  0. You just DO WHAT THE FUCK YOU WANT TO.
 {% endhighlight %}
+
 All the tutorial material is available under Creative-Common license: CC-BY-NC-ND available [here](http://creativecommons.org/licenses/by-nc-nd/3.0/fr/deed.en)
