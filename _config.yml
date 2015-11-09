@@ -1,5 +1,5 @@
 # Site settings
-title: opengl-tutorials
+title: opengl-tutorial
 email: contact@opengl-tutorial.org
 description: "This site is dedicated to tutorials for OpenGL 3.3 and later !"
 baseurl: ""
