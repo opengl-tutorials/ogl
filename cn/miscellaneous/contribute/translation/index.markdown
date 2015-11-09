@@ -19,15 +19,15 @@ A whole series of tutorial ? Even better (^_^)!
 Clone the branch "gh-pages" on the project's github repository [here](https://github.com/opengl-tutorials/ogl/tree/gh-pages).
 Find the page you want to edit, modify it, and simply send it back to us **by email** (or submit a **github pull request if you prefer**).
 
-Finding the file you want to edit is really easy.
-For example if you want to translate that page in japanese:
-
-[https://github.com/opengl-tutorials/ogl/tree/gh-pages/jp/intermediate-tutorials/tutorial-9-vbo-indexing](https://github.com/opengl-tutorials/ogl/tree/gh-pages/jp/intermediate-tutorials/tutorial-9-vbo-indexing)
-
-Notice the path of the page: *"jp/intermediate-tutorials/tutorial-9-vbo-indexing/"*
-Next in the github repository, under the branch *gh-pages*, you'll find a file: *"index.markdown"* under the same path:
-
-[https://github.com/opengl-tutorials/ogl/tree/gh-pages/jp/intermediate-tutorials/tutorial-9-vbo-indexing](https://github.com/opengl-tutorials/ogl/tree/gh-pages/jp/intermediate-tutorials/tutorial-9-vbo-indexing)
+>Finding the file you want to edit is really easy.
+>For example if you want to translate that page in japanese:
+>
+>[https://github.com/opengl-tutorials/ogl/tree/gh-pages/jp/intermediate-tutorials/tutorial-9-vbo-indexing](https://github.com/opengl-tutorials/ogl/tree/gh-pages/jp/intermediate-tutorials/tutorial-9-vbo-indexing)
+>
+>Notice the path of the page: *"jp/intermediate-tutorials/tutorial-9-vbo-indexing/"*.
+>Next in the github repository, under the branch *gh-pages*, you'll find a file: *"index.markdown"* under the same path:
+>
+>[https://github.com/opengl-tutorials/ogl/tree/gh-pages/jp/intermediate-tutorials/tutorial-9-vbo-indexing](https://github.com/opengl-tutorials/ogl/tree/gh-pages/jp/intermediate-tutorials/tutorial-9-vbo-indexing)
 
 **Want to participate in a new language ?**
 
