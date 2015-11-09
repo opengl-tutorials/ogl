@@ -3,15 +3,6 @@ layout: post
 status: publish
 published: true
 title: Building your own application
-author:
-  display_name: Calvin1602
-  login: Calvin1602
-  email: arnaud1602@gmail.com
-  url: ''
-author_login: Calvin1602
-author_email: arnaud1602@gmail.com
-wordpress_id: 635
-wordpress_url: http://www.opengl-tutorial.org/?p=635
 date: '2012-10-06 14:10:37 +0200'
 date_gmt: '2012-10-06 14:10:37 +0200'
 categories:
