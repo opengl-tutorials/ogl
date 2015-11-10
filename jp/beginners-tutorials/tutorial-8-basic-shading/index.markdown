@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: チュートリアル8：シェーディングの基礎
-author:
-  display_name: suzuichi
-  login: suzuichi
-  email: suzuichiblog@gmail.com
-  url: ''
-author_login: suzuichi
-author_email: suzuichiblog@gmail.com
-wordpress_id: 1317
-wordpress_url: http://www.opengl-tutorial.org/?page_id=1317
 date: '2014-07-30 03:04:02 +0100'
 date_gmt: '2014-07-30 03:04:02 +0100'
 categories: []

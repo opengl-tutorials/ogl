@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: "第五课：带纹理的立方体"
-author:
-  display_name: Calvin1602
-  login: Calvin1602
-  email: arnaud1602@gmail.com
-  url: ''
-author_login: Calvin1602
-author_email: arnaud1602@gmail.com
-wordpress_id: 741
-wordpress_url: http://www.opengl-tutorial.org/?page_id=741
 date: '2014-12-06 10:09:43 +0100'
 date_gmt: '2014-12-06 10:09:43 +0100'
 categories: []

@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: チュートリアル5：テクスチャされた立方体
-author:
-  display_name: suzuichi
-  login: suzuichi
-  email: suzuichiblog@gmail.com
-  url: ''
-author_login: suzuichi
-author_email: suzuichiblog@gmail.com
-wordpress_id: 1312
-wordpress_url: http://www.opengl-tutorial.org/?page_id=1312
 date: '2014-07-30 03:00:11 +0100'
 date_gmt: '2014-07-30 03:00:11 +0100'
 categories: []

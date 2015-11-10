@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: "第二课：画第一个三角形"
-author:
-  display_name: Calvin1602
-  login: Calvin1602
-  email: arnaud1602@gmail.com
-  url: ''
-author_login: Calvin1602
-author_email: arnaud1602@gmail.com
-wordpress_id: 718
-wordpress_url: http://www.opengl-tutorial.org/?page_id=718
 date: '2014-12-06 09:33:17 +0100'
 date_gmt: '2014-12-06 09:33:17 +0100'
 categories: []

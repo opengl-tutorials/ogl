@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: 'Tutorial 5 : A Textured Cube'
-author:
-  display_name: Calvin1602
-  login: Calvin1602
-  email: arnaud1602@gmail.com
-  url: ''
-author_login: Calvin1602
-author_email: arnaud1602@gmail.com
-wordpress_id: 83
-wordpress_url: http://www.opengl-tutorial.org/?page_id=83
 date: '2011-04-26 07:55:58 +0200'
 date_gmt: '2011-04-26 07:55:58 +0200'
 categories: [tuto]

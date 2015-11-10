@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: Picking with a physics library
-author:
-  display_name: Calvin1602
-  login: Calvin1602
-  email: arnaud1602@gmail.com
-  url: ''
-author_login: Calvin1602
-author_email: arnaud1602@gmail.com
-wordpress_id: 883
-wordpress_url: http://www.opengl-tutorial.org/?page_id=883
 date: '2013-05-18 20:42:49 +0200'
 date_gmt: '2013-05-18 20:42:49 +0200'
 categories: []

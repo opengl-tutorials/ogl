@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: FAQ
-author:
-  display_name: Calvin1602
-  login: Calvin1602
-  email: arnaud1602@gmail.com
-  url: ''
-author_login: Calvin1602
-author_email: arnaud1602@gmail.com
-wordpress_id: 526
-wordpress_url: http://www.opengl-tutorial.org/?page_id=526
 date: '2012-04-29 13:22:31 +0200'
 date_gmt: '2012-04-29 13:22:31 +0200'
 categories: []

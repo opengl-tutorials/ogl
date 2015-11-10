@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: 'Tutorial 3 : Matrices'
-author:
-  display_name: Calvin1602
-  login: Calvin1602
-  email: arnaud1602@gmail.com
-  url: ''
-author_login: Calvin1602
-author_email: arnaud1602@gmail.com
-wordpress_id: 19
-wordpress_url: http://www.dreamyourgame.com/wordpress/?page_id=19
 date: '2011-04-09 20:59:15 +0200'
 date_gmt: '2011-04-09 20:59:15 +0200'
 categories: [tuto]

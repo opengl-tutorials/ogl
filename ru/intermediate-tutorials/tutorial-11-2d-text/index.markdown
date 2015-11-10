@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: 'Tutorial 11 : 2D text'
-author:
-  display_name: Calvin1602
-  login: Calvin1602
-  email: arnaud1602@gmail.com
-  url: ''
-author_login: Calvin1602
-author_email: arnaud1602@gmail.com
-wordpress_id: 291
-wordpress_url: http://www.opengl-tutorial.org/?page_id=291
 date: '2011-05-16 22:38:44 +0200'
 date_gmt: '2011-05-16 22:38:44 +0200'
 categories: [tuto]

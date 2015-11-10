@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: "第十二课：OpenGL扩展"
-author:
-  display_name: Calvin1602
-  login: Calvin1602
-  email: arnaud1602@gmail.com
-  url: ''
-author_login: Calvin1602
-author_email: arnaud1602@gmail.com
-wordpress_id: 817
-wordpress_url: http://www.opengl-tutorial.org/?page_id=817
 date: '2013-01-27 04:04:46 +0100'
 date_gmt: '2013-01-27 04:04:46 +0100'
 categories: []

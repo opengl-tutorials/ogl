@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: Building your own C application
-author:
-  display_name: Calvin1602
-  login: Calvin1602
-  email: arnaud1602@gmail.com
-  url: ''
-author_login: Calvin1602
-author_email: arnaud1602@gmail.com
-wordpress_id: 587
-wordpress_url: http://www.opengl-tutorial.org/?page_id=587
 date: '2012-10-06 14:03:21 +0200'
 date_gmt: '2012-10-06 14:03:21 +0200'
 categories: []

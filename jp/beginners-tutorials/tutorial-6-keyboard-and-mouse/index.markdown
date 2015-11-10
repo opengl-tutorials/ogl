@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: チュートリアル６：キーボードとマウス
-author:
-  display_name: suzuichi
-  login: suzuichi
-  email: suzuichiblog@gmail.com
-  url: ''
-author_login: suzuichi
-author_email: suzuichiblog@gmail.com
-wordpress_id: 1313
-wordpress_url: http://www.opengl-tutorial.org/?page_id=1313
 date: '2014-07-30 03:01:09 +0100'
 date_gmt: '2014-07-30 03:01:09 +0100'
 categories: []

@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: Расширенные уроки
-author:
-  display_name: Calvin1602
-  login: Calvin1602
-  email: arnaud1602@gmail.com
-  url: ''
-author_login: Calvin1602
-author_email: arnaud1602@gmail.com
-wordpress_id: 1255
-wordpress_url: http://www.opengl-tutorial.org/?page_id=1255
 date: '2014-04-27 12:27:37 +0100'
 date_gmt: '2014-04-27 12:27:37 +0100'
 categories: []

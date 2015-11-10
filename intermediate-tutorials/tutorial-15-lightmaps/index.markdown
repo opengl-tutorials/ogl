@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: 'Tutorial 15 : Lightmaps'
-author:
-  display_name: Calvin1602
-  login: Calvin1602
-  email: arnaud1602@gmail.com
-  url: ''
-author_login: Calvin1602
-author_email: arnaud1602@gmail.com
-wordpress_id: 344
-wordpress_url: http://www.opengl-tutorial.org/?page_id=344
 date: '2011-05-28 10:07:24 +0200'
 date_gmt: '2011-05-28 10:07:24 +0200'
 categories: [tuto]

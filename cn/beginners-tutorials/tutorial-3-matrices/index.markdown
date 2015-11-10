@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: "\uFEFF第三课：矩阵"
-author:
-  display_name: Calvin1602
-  login: Calvin1602
-  email: arnaud1602@gmail.com
-  url: ''
-author_login: Calvin1602
-author_email: arnaud1602@gmail.com
-wordpress_id: 723
-wordpress_url: http://www.opengl-tutorial.org/?page_id=723
 date: '2014-12-04 15:36:26 +0100'
 date_gmt: '2014-12-04 15:36:26 +0100'
 categories: []

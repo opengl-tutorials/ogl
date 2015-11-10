@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: Picking with custom Ray-OBB function
-author:
-  display_name: Calvin1602
-  login: Calvin1602
-  email: arnaud1602@gmail.com
-  url: ''
-author_login: Calvin1602
-author_email: arnaud1602@gmail.com
-wordpress_id: 893
-wordpress_url: http://www.opengl-tutorial.org/?page_id=893
 date: '2013-05-18 22:13:41 +0200'
 date_gmt: '2013-05-18 22:13:41 +0200'
 categories: []

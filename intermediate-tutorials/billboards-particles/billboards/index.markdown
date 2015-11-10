@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: Billboards
-author:
-  display_name: Calvin1602
-  login: Calvin1602
-  email: arnaud1602@gmail.com
-  url: ''
-author_login: Calvin1602
-author_email: arnaud1602@gmail.com
-wordpress_id: 933
-wordpress_url: http://www.opengl-tutorial.org/?page_id=933
 date: '2013-10-15 17:15:15 +0200'
 date_gmt: '2013-10-15 17:15:15 +0200'
 categories: []

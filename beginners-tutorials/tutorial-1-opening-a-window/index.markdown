@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: 'Tutorial 1 : Opening a window'
-author:
-  display_name: Calvin1602
-  login: Calvin1602
-  email: arnaud1602@gmail.com
-  url: ''
-author_login: Calvin1602
-author_email: arnaud1602@gmail.com
-wordpress_id: 7
-wordpress_url: http://www.dreamyourgame.com/wordpress/?page_id=7
 date: '2011-04-07 17:54:16 +0200'
 date_gmt: '2011-04-07 17:54:16 +0200'
 categories: [tuto]

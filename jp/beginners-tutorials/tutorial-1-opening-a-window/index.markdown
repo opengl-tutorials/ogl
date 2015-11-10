@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: チュートリアル1：ウィンドウを開く
-author:
-  display_name: Calvin1602
-  login: Calvin1602
-  email: arnaud1602@gmail.com
-  url: ''
-author_login: Calvin1602
-author_email: arnaud1602@gmail.com
-wordpress_id: 1285
-wordpress_url: http://www.opengl-tutorial.org/?page_id=1285
 date: '2014-06-20 01:15:11 +0100'
 date_gmt: '2014-06-20 01:15:11 +0100'
 categories: []

@@ -8,10 +8,6 @@ author:
   display_name: Calvin1602
   email: arnaud1602@gmail.com
   url: ''
-author_login: Calvin1602
-author_email: arnaud1602@gmail.com
-wordpress_id: 200
-wordpress_url: http://www.opengl-tutorial.org/?page_id=200
 date: '2011-05-11 17:38:54 +0200'
 date_gmt: '2011-05-11 17:38:54 +0200'
 categories: []

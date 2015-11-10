@@ -3,15 +3,6 @@ layout: page
 status: publish
 published: true
 title: "第六课：键盘和鼠标"
-author:
-  display_name: Calvin1602
-  login: Calvin1602
-  email: arnaud1602@gmail.com
-  url: ''
-author_login: Calvin1602
-author_email: arnaud1602@gmail.com
-wordpress_id: 740
-wordpress_url: http://www.opengl-tutorial.org/?page_id=740
 date: '2014-12-06 12:38:25 +0100'
 date_gmt: '2014-12-06 12:38:25 +0100'
 categories: []
