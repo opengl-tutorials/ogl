@@ -204,7 +204,7 @@ int main( void )
 		// Use our shader
 		glUseProgram(programID);
  
-		glm::mat4 ProjectionMatrix = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+		glm::mat4 ProjectionMatrix = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 		glm::mat4 ViewMatrix = glm::lookAt(
 			glm::vec3( 0, 0, 7 ), // Camera is here
 			glm::vec3( 0, 0, 0 ), // and looks here
