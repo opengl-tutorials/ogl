@@ -278,7 +278,7 @@ for(int i=0; i<MaxParticles; i++){
 {% endhighlight %}
 This is what you get. Almost there, but there's a problem...
 
-<img class="alignnone size-full wp-image-963" title="particles_unsorted" src="http://www.opengl-tutorial.org/wp-content/uploads/2013/10/particles_unsorted.png" alt="" width="905" height="751" />
+![]({{site.baseurl}}/assets/images/tuto-particules/particles_unsorted.png)
 
 ##Sorting
 
