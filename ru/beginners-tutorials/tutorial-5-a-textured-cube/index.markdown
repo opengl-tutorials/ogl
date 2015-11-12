@@ -27,7 +27,7 @@ language: ru
 
 Каждая вершина помимо позиции имеет несколько дополнительных полей, а также U и V. Эти координаты используются применительно к текстуре, как показано на рисунке:
 
-[<img title="UVintro" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/UVintro.png" width="662" height="337" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/UVintro.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/UVintro.png)
 
 Обратите внимание, как текстура искажается на треугольнике.
 
@@ -72,7 +72,7 @@ if ( fread(header, 1, 54, file) != 54 ) { // Если мы прочитали м
 {% endhighlight %}
 Заголовок всегда начинается с букв BM. Вы можете открыть файл в HEX-редакторе и убедиться в этом самостоятельно, а можете посмотреть на наш скриншот:
 
-[<img title="hexbmp" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/hexbmp.png" width="541" height="128" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/hexbmp.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/hexbmp.png)
 
 Итак, мы проверяем первые два байта и если они не являются буквами "BM", то файл не является BMP-файлом или испорчен:
 {% highlight text linenos %}
@@ -236,17 +236,17 @@ static const GLfloat g_uv_buffer_data[] = {
 {% endhighlight %}
 Указанные UV-координаты относятся к такой модели:
 
-[<img title="uv_mapping_blender" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/uv_mapping_blender-300x222.png" width="300" height="222" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/uv_mapping_blender.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/uv_mapping_blender.png)
 
 Остальное очевидно. Мы создаем буфер, привязываем его, заполняем, настраиваем и выводим Буфер Вершин как обычно. Только будьте осторожны, так как в glVertexAttribPointer для буфера текстурных координат второй параметр (размер) будет не 3, а 2.
 
 И вот такой результат мы получим:
 
-[<img title="nearfiltering" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/nearfiltering.png" width="533" height="557" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearfiltering.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearfiltering.png)
 
 в увеличенном варианте:
 
-[<img title="nearfiltering_zoom" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/nearfiltering_zoom.png" width="348" height="340" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearfiltering_zoom.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearfiltering_zoom.png)
 
 #Фильтрация и мип-маппинг.
 
@@ -257,7 +257,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 {% endhighlight %}
 Это означает, что в нашем фрагментном шейдере, texture() возвращает строго тексель, который находится по указанным текстурным координатам:
 
-[<img title="nearest" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/nearest.png" width="440" height="240" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearest.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearest.png)
 
 Есть несколько решений, которые позволят улучшить ситуацию.
 
@@ -265,7 +265,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 При помощи линейной фильтрации texture() будет смешивать цвета находящихся рядом текселей в зависимости от дистанции до их центра, что позволит предотвратить резкие границы, которые вы видели выше:
 
-[<img title="linear" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/linear1.png" width="440" height="240" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/linear1.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/linear1.png)
 
 Это будет выглядить значительно лучше и используется часто, но если вы хотите очень высокого качества, то вам понадобится анизотропная фильтрация, которая работает несколько медленнее.
 
@@ -273,13 +273,13 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 Аппроксимирует часть изображения, которая действительно видна через фрагмент. К примеру, если указанная текстура просматривается сбоку и немного повернута, то анизотропная фильтрация будет вычислять цвет, который находится в синем прямоугольнике, с помощью  фиксированного количество сэмплов (Уровень анизотропии) вдоль его направления:
 
-[<img title="aniso" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/aniso.png" width="440" height="240" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/aniso.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/aniso.png)
 
 ##Мип-маппинг
 
 И линейная, и анизотропная фильтрация имеют недостаток. Если текстура просматривается с большого расстояния, то смешивать 4 текселя будет недостаточно. То есть, если ваша 3D модель находится так далеко, что занимает на экране всего 1 фрагмент, то фильный цвет фрагмента будет являться средним всех текселей текстуры. Естественно, это не реализовано из-за соображений производительности. Для этой цели существует так называемый мип-маппинг:
 
-[<img title="An original image and its mipmaps. Image by Tokigun under Creative Commons" alt="" src="http://upload.wikimedia.org/wikipedia/commons/5/5c/MipMap_Example_STS101.jpg" width="384" height="256" />](http://en.wikipedia.org/wiki/File:MipMap_Example_STS101.jpg)
+![](http://upload.wikimedia.org/wikipedia/commons/5/5c/MipMap_Example_STS101.jpg)
 
 * При инициализации вы уменьшаете масштаб текстуры до тех пор, пока не получите изображение 1х1 (которое по сути будет являться средним значением всех текселей текстуры)
 * Когда вы выводите объект, то вы выбираете тот мип-мап, который наиболее приемлем в данной ситуации.
