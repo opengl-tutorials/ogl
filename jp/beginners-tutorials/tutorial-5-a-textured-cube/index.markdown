@@ -27,7 +27,7 @@ language: jp
 
 各頂点は、その位置の上に、UとVという組になっている数値を持っています。これらの座標はテクスチャにアクセスするときに次のように使います。
 
-[<img class="alignnone size-full wp-image-116" title="UVintro" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/UVintro.png" width="662" height="337" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/UVintro.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/UVintro.png)
 
 三角形の上にテクスチャがどのようにゆがんでいるかを確認してください。
 
@@ -70,7 +70,7 @@ if ( fread(header, 1, 54, file)!=54 ){ // 54バイト読み込めなければ、
 {% endhighlight %}
 ヘッダは常にBMで始まります。実は、16進数エディタで.BMPファイルを開いたときに得られるものが、ここにあります。
 
-[<img class="alignnone size-full wp-image-662" title="hexbmp" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/hexbmp.png" width="541" height="128" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/hexbmp.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/hexbmp.png)
 
 だから最初の2バイトが本当に'B'と'M'で始まるかを確認する必要があります。
 {% highlight cpp linenos %}
@@ -226,17 +226,17 @@ static const GLfloat g_uv_buffer_data[] = {
 {% endhighlight %}
 上のUV座標は下のモデルに相当します。
 
-[<img class="alignnone size-medium wp-image-115" title="uv_mapping_blender" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/uv_mapping_blender-300x222.png" width="300" height="222" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/uv_mapping_blender.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/uv_mapping_blender.png)
 
 ここから後は明らかです。バッファを作り、バインドし、満たし、設定し、いつもどおり頂点バッファを描くだけです。glVertexAttribPointerの2つ目のパラメータ(サイズ)に3の代わりに2を入れることを注意してください。
 
 これが結果です。
 
-[<img class="alignnone size-full wp-image-119" title="nearfiltering" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/nearfiltering.png" width="533" height="557" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearfiltering.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearfiltering.png)
 
 そして、ズームインバージョンです。
 
-[<img class="alignnone size-full wp-image-120" title="nearfiltering_zoom" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/nearfiltering_zoom.png" width="348" height="340" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearfiltering_zoom.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearfiltering_zoom.png)
 
 #フィルタリングとミップマップの使い方
 
@@ -247,7 +247,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 {% endhighlight %}
 これはフラグメントシェーダにおいて、texture()が(U,V)座標のテクセルを取ってそれをそのまま使うことを意味します。
 
-[<img class="alignnone size-full wp-image-130" title="nearest" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/nearest.png" width="440" height="240" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearest.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearest.png)
 
 これを改善する方法はいくつかあります。
 
@@ -255,7 +255,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 線形フィルタリングでは、texture()は周りのほかのテクセルも見ます。そして各中心までの距離に応じて色を混ぜます。これは上で見たようなハードエッジを避けることが出来ます。
 
-[<img class="alignnone size-full wp-image-133" title="linear" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/linear1.png" width="440" height="240" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/linear1.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/linear1.png)
 
 これでよりよくなります。そしてこれは良く使われます。しかし、とても高い質を求めるならば、少し遅いですが異方性フィルタリングを使うのがよいでしょう。
 
@@ -263,13 +263,13 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 これは実際にフラグメントを通してみているかのように画像の部分を近似します。例えば、下のテクスチャが横から見られて少し回転しているならば、異方性フィルタリングは、メイン方向に沿って固定した数("異方性レベル")のサンプルを取ることで、青い四角形に含まれる色を計算します。
 
-[<img class="alignnone size-full wp-image-131" title="aniso" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/aniso.png" width="440" height="240" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/aniso.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/aniso.png)
 
 ##ミップマップ
 
 線形フィルタリングも異方性フィルタリングも問題を抱えています。テクスチャが遠くから見られる場合、4つのテクセルを混ぜ合わせるだけでは充分ではありません。実際、3Dモデルがスクリーン上の1フラグメントにも満たない場合、最終的な色を作るために画像の"すべて"のテクセルを平均しなければなりません。明らかにパフォーマンス上の問題があるため、この方法は使われません。代わりに、ミップマップを導入します。
 
-[<img class="alignnone" title="An original image and its mipmaps. Image by Tokigun under Creative Commons" alt="" src="http://upload.wikimedia.org/wikipedia/commons/5/5c/MipMap_Example_STS101.jpg" width="384" height="256" />](http://en.wikipedia.org/wiki/File:MipMap_Example_STS101.jpg)
+![](http://upload.wikimedia.org/wikipedia/commons/5/5c/MipMap_Example_STS101.jpg)
 
 * 最初のタイルから、1&times;1サイズの画像になるまで、連続的に1/2で縮小していきます。(1x1の画像は事実上すべての色の平均です。)
 * メッシュを描くとき、テクセルの大きさに応じて、どのミップマップを使うのが一番適しているかを決めます。
@@ -327,7 +327,7 @@ GLuint loadTGA_glfw(const char * imagepath){
 * 2のべき乗サイズのテクスチャをそれにロードします。
 * DXT1、DXT3あるいはDXT5に圧縮します。(これらのフォーマットの違いは[Wikipedia](http://en.wikipedia.org/wiki/S3_Texture_Compression)を呼んでください。) :
 
-[<img class="alignnone size-full wp-image-358" title="TheCompressonator" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/TheCompressonator.png" width="806" height="688" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/TheCompressonator.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/TheCompressonator.png)
 
 * 実行時にしなくて良いようにミップマップを作ります。
 * .DDSファイルとしてエクスポートします。
