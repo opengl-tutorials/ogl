@@ -26,7 +26,7 @@ When texturing a mesh, you need a way to tell to OpenGL which part of the image 
 
 Each vertex can have, on top of its position, a couple of floats, U and V. These coordinates are used to access the texture, in the following way :
 
-[<img class="alignnone size-full wp-image-116" title="UVintro" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/UVintro.png" width="662" height="337" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/UVintro.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/UVintro.png)
 
 Notice how the texture is distorted on the triangle.
 
@@ -71,7 +71,7 @@ if ( fread(header, 1, 54, file)!=54 ){ // If not 54 bytes read : problem
 {% endhighlight %}
 The header always begins by BM. As a matter of fact, here's what you get when you open a .BMP file in a hexadecimal editor :
 
-[<img class="alignnone size-full wp-image-662" title="hexbmp" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/hexbmp.png" width="541" height="128" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/hexbmp.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/hexbmp.png)
 
 So we have to check that the two first bytes are really 'B' and 'M' :
 {% highlight cpp linenos %}
@@ -227,17 +227,17 @@ static const GLfloat g_uv_buffer_data[] = {
 {% endhighlight %}
 The UV coordinates above correspond to the following model :
 
-[<img class="alignnone size-medium wp-image-115" title="uv_mapping_blender" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/uv_mapping_blender-300x222.png" width="300" height="222" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/uv_mapping_blender.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/uv_mapping_blender.png)
 
 The rest is obvious. Generate the buffer, bind it, fill it, configure it, and draw the Vertex Buffer as usual. Just be careful to use 2 as the second parameter (size) of glVertexAttribPointer instead of 3.
 
 This is the result :
 
-[<img class="alignnone size-full wp-image-119" title="nearfiltering" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/nearfiltering.png" width="533" height="557" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearfiltering.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearfiltering.png)
 
 and a zoomed-in version :
 
-[<img class="alignnone size-full wp-image-120" title="nearfiltering_zoom" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/nearfiltering_zoom.png" width="348" height="340" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearfiltering_zoom.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearfiltering_zoom.png)
 
 #What is filtering and mipmapping, and how to use them
 
@@ -248,7 +248,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 {% endhighlight %}
 This means that in our fragment shader, texture() takes the texel that is at the (U,V) coordinates, and continues happily.
 
-[<img class="alignnone size-full wp-image-130" title="nearest" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/nearest.png" width="440" height="240" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearest.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearest.png)
 
 There are several things we can do to improve this.
 
@@ -256,7 +256,7 @@ There are several things we can do to improve this.
 
 With linear filtering, texture() also looks at the other texels around, and mixes the colours according to the distance to each center. This avoids the hard edges seen above.
 
-[<img class="alignnone size-full wp-image-133" title="linear" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/linear1.png" width="440" height="240" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/linear1.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/linear1.png)
 
 This is much better, and this is used a lot, but if you want very high quality you can also use anisotropic filtering, which is a bit slower.
 
@@ -264,13 +264,13 @@ This is much better, and this is used a lot, but if you want very high quality y
 
 This one approximates the  part of the image that is really seen through the fragment. For instance, if the following texture is seen from the side, and a little bit rotated, anisotropic filtering will compute the colour contained in the blue rectangle by taking a fixed number of samples (the "anisotropic level") along its main direction.
 
-[<img class="alignnone size-full wp-image-131" title="aniso" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/aniso.png" width="440" height="240" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/aniso.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/aniso.png)
 
 ##Mipmaps
 
 Both linear and anisotropic filtering have a problem. If the texture is seen from far away, mixing only 4 texels won't be enough. Actually, if your 3D model is so far away than it takes only 1 fragment on screen, ALL the texels of the image should be averaged to produce the final color. This is obviously not done for performance reasons. Instead, we introduce MipMaps :
 
-[<img class="alignnone" title="An original image and its mipmaps. Image by Tokigun under Creative Commons" alt="" src="http://upload.wikimedia.org/wikipedia/commons/5/5c/MipMap_Example_STS101.jpg" width="384" height="256" />](http://en.wikipedia.org/wiki/File:MipMap_Example_STS101.jpg)
+![](http://upload.wikimedia.org/wikipedia/commons/5/5c/MipMap_Example_STS101.jpg)
 
 * At initialisation tile, you scale down your image by 2, successively, until you only have a 1x1 image (which effectively is the average of all the texels in the image)
 * When you draw a mesh, you select which mipmap is the more appropriate to use given how big the texel should be.
@@ -331,7 +331,7 @@ There's a better option.
 * Generate mipmaps so that you won't have to do it on runtime
 * Compress it in DXT1, DXT3 or in DXT5 (more about the differences between the various formats on [Wikipedia](http://en.wikipedia.org/wiki/S3_Texture_Compression)) :
 
-[<img class="alignnone size-full wp-image-358" title="TheCompressonator" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/TheCompressonator.png" width="806" height="688" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/TheCompressonator.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/TheCompressonator.png)
 
 * Export it as a .DDS file.
 
