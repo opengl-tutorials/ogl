@@ -1,0 +1,64 @@
+---
+layout: null
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  {% for page in site.pages %}
+    {% if page.language == null %}
+      {% for lg in site.languages %}
+        {% if lg == "en" %}
+          <url>
+            <loc>{{ site.url }}{{ page.url }}</loc>
+            {% for lg in site.languages %}
+              {% if lg == "en" %}
+                <xhtml:link 
+                       rel="alternate"
+                       hreflang="en"
+                       href="{{site.url}}{{page.url}}"/>
+              {% else %}
+                <xhtml:link 
+                         rel="alternate"
+                         hreflang="{{site.languages_iso[forloop.index0]}}"
+                         href="{{site.url}}{{lg}}{{page.url}}"/>
+              {% endif %}
+            {% endfor %}
+            <changefreq>monthly</changefreq>
+            <priority>1.0</priority>
+          </url>
+        {% else %}
+          <url>
+            <loc>{{ site.url }}{{ lg }}{{ page.url }}</loc>
+            {% for lg in site.languages %}
+              {% if lg == "en" %}
+                <xhtml:link 
+                       rel="alternate"
+                       hreflang="en"
+                       href="{{site.url}}{{page.url}}"/>
+              {% else %}
+                <xhtml:link 
+                         rel="alternate"
+                         hreflang="{{site.languages_iso[forloop.index0]}}"
+                         href="{{site.url}}{{lg}}{{page.url}}"/>
+              {% endif %}
+            {% endfor %}
+            <changefreq>monthly</changefreq>
+            <priority>0.8</priority>
+          </url>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+
+  {% for post in site.posts %}
+    <url>
+      <loc>{{ site.url }}{{ post.url }}</loc>
+      {% if post.lastmod != null %}
+        <lastmod>{{ post.lastmod | date_to_xmlschema }}</lastmod>
+      {% elsif post.date != null %}
+        <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
+      {% endif %}
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+    </url>
+  {% endfor %}
+</urlset>
