@@ -2,9 +2,10 @@
 layout: null
 ---
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
   {% for page in site.pages %}
-    {% if page.language == null %}
+    {% if page.language == null and page.sitemap == nil  %}
       {% for lg in site.languages %}
         {% if lg == "en" %}
           <url>
@@ -19,7 +20,7 @@ layout: null
                 <xhtml:link 
                          rel="alternate"
                          hreflang="{{site.languages_iso[forloop.index0]}}"
-                         href="{{site.url}}{{lg}}{{page.url}}"/>
+                         href="{{site.url}}/{{lg}}{{page.url}}"/>
               {% endif %}
             {% endfor %}
             <changefreq>monthly</changefreq>
@@ -27,7 +28,7 @@ layout: null
           </url>
         {% else %}
           <url>
-            <loc>{{ site.url }}{{ lg }}{{ page.url }}</loc>
+            <loc>{{ site.url }}/{{ lg }}{{ page.url }}</loc>
             {% for lg in site.languages %}
               {% if lg == "en" %}
                 <xhtml:link 
@@ -38,11 +39,11 @@ layout: null
                 <xhtml:link 
                          rel="alternate"
                          hreflang="{{site.languages_iso[forloop.index0]}}"
-                         href="{{site.url}}{{lg}}{{page.url}}"/>
+                         href="{{site.url}}/{{lg}}{{page.url}}"/>
               {% endif %}
             {% endfor %}
             <changefreq>monthly</changefreq>
-            <priority>0.8</priority>
+            <priority>1.0</priority>
           </url>
         {% endif %}
       {% endfor %}
@@ -58,7 +59,7 @@ layout: null
         <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
       {% endif %}
       <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
+      <priority>0.9</priority>
     </url>
   {% endfor %}
 </urlset>
