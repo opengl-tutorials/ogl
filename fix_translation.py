@@ -6,7 +6,7 @@ from tempfile import mkstemp
 
 # This cript look for all the "index.markdown" files in the english website, and check if all of them are present in each translation directories
 
-translation_directories = ["cn", "jp", "ru"];
+translation_directories = ["cn", "jp", "ru", "fr"];
 ignored_directories = ["assets", "css"];
 
 # Get the directory where this python script is stored
@@ -14,8 +14,6 @@ script_directory = os.path.dirname(os.path.abspath(__file__))
 directories = [script_directory]
 
 def getOrder( file_path ):
-    print "getOrder(%s)" % file_path
-
     order = -1;
     #Create temp file
     with open(file_path) as en_file:
@@ -29,7 +27,7 @@ def getOrder( file_path ):
 
 
 def remplaceLanguage( file_path, lang, order ):
-    print "remplaceLanguage(%s, %s, %d)" % (file_path, lang, order)
+    #print "remplaceLanguage(%s, %s, %d)" % (file_path, lang, order)
     # headerState store if we have write the language line or not
     # 0 : mean we haven't read "---" yet
     # 1 : mean we read "---" but haven't leaved the header yet (we are in th header)
@@ -44,8 +42,7 @@ def remplaceLanguage( file_path, lang, order ):
     orderState = 0;
 
     #Create temp file
-    fh, abs_path = mkstemp()
-    print "abs_path %s" % abs_path
+    fh, abs_path = mkstemp()    
     with open(abs_path,"w") as new_file:
         with open(file_path) as old_file:
             for line in old_file:
@@ -118,12 +115,11 @@ for ln in translation_directories:
             missing_index_markdown.append([f, index_file])
         else:
             order = getOrder(index_file)
-            print "Order[%d]" % order
             remplaceLanguage(f, ln, order)
-
-    break
     if len(missing_index_markdown) > 0:
         print "Translation %s miss %d index.markdown file" % (ln, len(missing_index_markdown))
+        for mf in missing_index_markdown:
+            print "missing: %s" % mf[0]
         print "Do you want to add them ?"
         answer = raw_input('y / n\n')
         if answer == "y":
@@ -134,7 +130,6 @@ for ln in translation_directories:
                     os.makedirs(dirToCreate)
                 shutil.copy2(mf[1], mf[0])
                 order = getOrder(mf[1])
-                print "Order[%d]" % order
                 # In the copied file we need to modify the language: xx to language: 'ln'
                 remplaceLanguage(mf[0], ln, order)    
 
