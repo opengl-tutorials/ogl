@@ -2,6 +2,6 @@
 
 # Allow crawling of all content
 User-agent: *
-Disallow:
+Disallow: /BingSiteAuth.xml
 
 Sitemap: http://www.opengl-tutorial.org/sitemap.xml
