@@ -9,6 +9,7 @@ categories: []
 tags: []
 comments: []
 language: jp
+order: 80
 ---
 
 チュートリアル8では、基本的なシェーディングについて学びます。ここでは次のことを学びます。

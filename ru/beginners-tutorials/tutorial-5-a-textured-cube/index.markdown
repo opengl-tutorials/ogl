@@ -337,7 +337,7 @@ GLuint loadTGA_glfw(const char * imagepath){
 * Загрузите в нее текстуру, размер которой является степенью двойки
 * Сожмите ее в DXT1, DXT3 или в DXT5 (о разнице между форматами можете почитать на [Wikipedia](http://en.wikipedia.org/wiki/S3_Texture_Compression))
 
-[<img title="TheCompressonator" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/TheCompressonator.png" width="806" height="688" />]({{site.baseurl}}/assets/images/tuto-5-textured-cube/TheCompressonator.png)
+![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/TheCompressonator.png)
 
 * Создайте мипмапы, чтобы не создавать их во время выполнения программы.
 * Экспортируйте это как .DDS файл

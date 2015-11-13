@@ -9,6 +9,7 @@ categories: []
 tags: []
 comments: []
 language: jp
+order: 60
 ---
 
 ﻿6回目のチュートリアルにようこそ！

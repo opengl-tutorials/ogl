@@ -9,6 +9,7 @@ categories: []
 tags: []
 comments: []
 language: jp
+order: 40
 ---
 
 4回目のチュートリアルにようこそ！ここでは次のことを行います。

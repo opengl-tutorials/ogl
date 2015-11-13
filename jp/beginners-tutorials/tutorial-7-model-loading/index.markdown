@@ -9,6 +9,7 @@ categories: []
 tags: []
 comments: []
 language: jp
+order: 70
 ---
 
 これまで立方体をソースコードに直接書いていました。これは扱いにくく、不便だということに同意してもらえるでしょう。
