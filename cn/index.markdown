@@ -9,10 +9,13 @@ categories: []
 tags: []
 language: cn
 ---
-<p>本站致力于为大家提供<strong>OpenGL3.3+教程<&#47;strong>！</p>
-<p>所有源代码可在<a title="Download" href="&#47;?page_id=200">这里<&#47;a>下载。</p>
-<p>您若有任何问题、建议、错误报告，可联系<a href="mailto:contact@opengl-tutorial.org">contact@opengl-tutorial.org<&#47;a>。</p>
-<p>如果您喜欢我们的教程，别忘了帮我们宣传一下。</p>
+本站致力于为大家提供**OpenGL3.3+教程**！
+
+所有源代码可在[这里]({{ site.baseurl }}/cn/download)下载。
+
+您若有任何问题、建议、错误报告，可联系<a href="mailto:contact@opengl-tutorial.org">contact@opengl-tutorial.org</a>。
+
+如果您喜欢我们的教程，别忘了帮我们宣传一下。
 
 <div class="home">
 

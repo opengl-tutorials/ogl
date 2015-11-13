@@ -11,7 +11,7 @@ language: jp
 ---
 このサイトは **OpenGL 3.3** 以降の **チュートリアル** を扱っています！
 
-完全なソースコードは[ここ]({{ site.baseurl }}/download)から利用可能です。
+完全なソースコードは[ここ]({{ site.baseurl }}/jp/download)から利用可能です。
 
 何か質問や意見、バグ報告、その他何かあればお気軽にご連絡ください : <a href="mailto:contact@opengl-tutorial.org">contact@opengl-tutorial.org</a>.
 

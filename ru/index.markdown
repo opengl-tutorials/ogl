@@ -9,10 +9,17 @@ categories: []
 tags: []
 language: ru
 ---
-<p>This site is dedicated to <strong>tutorials</strong> for <strong>OpenGL 3.3</strong> and later !</p>
-<p>Full source code is available <a title="Download" href="{{ site.baseurl }}/download">here</a>.</p>
-<p>Feel free to contact us for any question, remark, bug report, or other : <a href="mailto:contact@opengl-tutorial.org">contact@opengl-tutorial.org</a> .</p>
-<p>If you enjoy our work, please don't hesitate to spread the word !</p>
+Этот сайт посвящен **урокам OpenGL 3.3** и выше!
+
+Полный исходный код уроков доступен []здесь](({{ site.baseurl }}/ru/download))
+
+По любым вопросам, багам, заметкам вы можете всегда обратиться по этому адресу: <a href="mailto:contact@opengl-tutorial.org">contact@opengl-tutorial.org</a>.
+
+*От переводчика:*
+
+*Я не являюсь профессионалом в программировании OpenGL и компьютерной графики, поэтому, пожалуйста, если вы заметите ошибку или какую-либо неточность, то сообщите мне об этом по адресу:*
+
+*<a href="mailto:fdevrnd@mail.ru">fdevrnd@mail.ru</a>*
 
 <div class="home">
 
