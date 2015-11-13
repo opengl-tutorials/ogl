@@ -9,10 +9,15 @@ categories: []
 tags: []
 language: jp
 ---
-<p>This site is dedicated to <strong>tutorials</strong> for <strong>OpenGL 3.3</strong> and later !</p>
-<p>Full source code is available <a title="Download" href="{{ site.baseurl }}/download">here</a>.</p>
-<p>Feel free to contact us for any question, remark, bug report, or other : <a href="mailto:contact@opengl-tutorial.org">contact@opengl-tutorial.org</a> .</p>
-<p>If you enjoy our work, please don't hesitate to spread the word !</p>
+このサイトは **OpenGL 3.3** 以降の **チュートリアル** を扱っています！
+
+完全なソースコードは[ここ]({{ site.baseurl }}/download)から利用可能です。
+
+何か質問や意見、バグ報告、その他何かあればお気軽にご連絡ください : <a href="mailto:contact@opengl-tutorial.org">contact@opengl-tutorial.org</a>.
+
+日本語に関する意見などは私(翻訳者)の[ブログ](http://suzuichibolgpg.blog.fc2.com&#47;blog-entry-155.html)か<a href="mailto:suzuichiblog+mot@gmail.com">メール</a>へご連絡ください。
+
+このサイトが気に入ったなら、どうぞ世界に広めてください！
 
 <div class="home">
 
