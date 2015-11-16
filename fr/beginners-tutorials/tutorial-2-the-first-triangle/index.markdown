@@ -3,7 +3,7 @@ layout: page
 status: publish
 published: true
 title: 'Tutoriel 2 : le premier triangle'
-date: '2011-04-07 18:54:11 +0200'
+date: '2015-11-14 09:17:41 +0200'
 categories: [tuto]
 order: 20
 tags: []

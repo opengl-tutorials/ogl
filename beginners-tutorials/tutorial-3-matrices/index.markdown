@@ -175,7 +175,7 @@ As a matter of fact, the order above is what you will usually need for game char
 	- You scale your ship by 2\. You get a big ship, centered on the origin.
 	- You translate your ship. It's still the same size, and at the right distance.
 
-Matrix-matrix multiplication is very similar to matrix-vector multiplication, so I'll once again skip some details and redirect you the the Matrices and Quaternions FAQ if needed. For now, we'll simply ask the computer to do it :
+Matrix-matrix multiplication is very similar to matrix-vector multiplication, so I'll once again skip some details and redirect you the the [Matrices and Quaternions FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html#Q11) if needed. For now, we'll simply ask the computer to do it :
 
 **in C++, with GLM :**
 {% highlight cpp linenos %}
@@ -222,6 +222,11 @@ Let's quote Futurama again :
 When you think about it, the same applies to cameras. It you want to view a moutain from another angle, you can either move the camera... or move the mountain. While not practical in real life, this is really simple and handy in Computer Graphics.
 
 So initially your camera is at the origin of the World Space. In order to move the world, you simply introduce another matrix. Let's say you want to move your camera of 3 units to the right (+X). This is equivalent to moving your whole world (meshes included) 3 units to the LEFT ! (-X). While you brain melts, let's do it :
+
+{% highlight cpp linenos %}
+// Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
+glm::mat4 ViewMatrix = glm::translate(-3.0f, 0.0f ,0.0f);
+{% endhighlight %}
 
 Again, the image below illustrates this : _We went from World Space (all vertices defined relatively to the center of the world, as we made so in the previous section) to Camera Space (all vertices defined relatively to the camera)._
 
@@ -309,8 +314,50 @@ transformed_vertex = MVP * in_vertex;
 # Putting it all together
 
 *  First step : generating our MVP matrix. This must be done for each model you render.
+{% highlight cpp linenos %}
+// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
+glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float) width / (float)height, 0.1f, 100.0f);
+
+// Or, for an ortho camera :
+//glm::mat4 Projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f); // In world coordinates
+
+// Camera matrix
+glm::mat4 View = glm::lookAt(
+               glm::vec3(4,3,3), // Camera is at (4,3,3), in World Space
+               glm::vec3(0,0,0), // and looks at the origin
+               glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
+               );
+
+// Model matrix : an identity matrix (model will be at the origin)
+glm::mat4 Model = glm::mat4(1.0f);
+// Our ModelViewProjection : multiplication of our 3 matrices
+glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is the other way around
+{% endhighlight %}
 *  Second step : give it to GLSL
+{% highlight cpp linenos %}
+// Get a handle for our "MVP" uniform
+// Only during the initialisation
+GLuint MatrixID = glGetUniformLocation(program_id, "MVP");
+
+// Send our transformation to the currently bound shader, in the "MVP" uniform
+// This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
+glUniformMatrix4fv(mvp_handle, 1, GL_FALSE, &mvp[0][0]);
+{% endhighlight %}
 * Third step : use it in GLSL to transform our vertices
+{% highlight glsl linenos cssclass=highlightglslvs %}
+// Input vertex data, different for all executions of this shader.
+layout(location = 0) in vec3 vertexPosition_modelspace;
+
+// Values that stay constant for the whole mesh.
+uniform mat4 MVP;
+
+void main(){
+
+    // Output position of the vertex, in clip space : MVP * position
+    gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
+
+}
+{% endhighlight %}
 * Done ! Here is the same triangle as in tutorial 2, still at the origin (0,0,0), but viewed in perspective from point (4,3,3), heads up (0,1,0), with a 45° field of view.
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/perspective_red_triangle.png)
