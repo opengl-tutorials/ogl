@@ -3,8 +3,7 @@ layout: page
 status: publish
 published: true
 title: 'Tutoriel 4 : un cube coloré'
-date: '2011-04-26 07:55:37 +0200'
-date_gmt: '2011-04-26 07:55:37 +0200'
+date: '2015-11-16 21:47:1 +0200'
 categories: [tuto]
 order: 40
 tags: []
@@ -142,7 +141,7 @@ glVertexAttribPointer(
 );
 {% endhighlight %}
 Maintenant, dans le vertex shader, on accède au nouveau buffer (tampon) :
-% highlight glsl linenos cssclass=highlightglslvs %}
+{% highlight glsl linenos cssclass=highlightglslvs %}
 // Notice that the "1" here equals the "1" in glVertexAttribPointer
 layout(location = 1) in vec3 vertexColor;
 {% endhighlight %}
