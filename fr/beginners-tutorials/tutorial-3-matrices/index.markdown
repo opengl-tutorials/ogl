@@ -15,7 +15,7 @@ language: fr
 > 
 > Futurama
 
-**This is the single most important tutorial of the whole set. Be sure to read it at least eight times.**
+**C'est le tutoriel le plus important de tous. Tu devrais le garder en livre de chevet, et le lire et relire au moins 8 fois !**
 
 #Coordonnées homogènes
 
