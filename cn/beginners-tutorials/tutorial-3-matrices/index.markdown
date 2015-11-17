@@ -323,7 +323,7 @@ transformed_vertex = MVP * in_vertex;
 
 {% highlight text linenos %}
 // Projection matrix : 45&deg; Field of View, 4:3 ratio, display range : 0.1 unit  100 units
-glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 // Camera matrix
 glm::mat4 View       = glm::lookAt(
     glm::vec3(4,3,3), // Camera is at (4,3,3), in World Space

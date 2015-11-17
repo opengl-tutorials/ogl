@@ -301,7 +301,7 @@ transformed_vertex = MVP * in_vertex;
 
 {% highlight text linenos %}
 // Проекционная матрица : 45&deg; поле обзора, 4:3 соотношение сторон, диапазон : 0.1 юнит <-> 100 юнитов
-glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 // Матрица камеры
 glm::mat4 View       = glm::lookAt(
     glm::vec3(4,3,3), // Камера находится в мировых координатах (4,3,3)

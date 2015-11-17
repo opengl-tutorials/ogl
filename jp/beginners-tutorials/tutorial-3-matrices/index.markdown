@@ -329,7 +329,7 @@ transformed_vertex = MVP * in_vertex;
 
 {% highlight cpp linenos %}
 // 射影行列：45&deg;の視界、アスペクト比4:3、表示範囲：0.1単位  100単位
-glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 // カメラ行列
 glm::mat4 View       = glm::lookAt(
     glm::vec3(4,3,3), // ワールド空間でカメラは(4,3,3)にあります。
