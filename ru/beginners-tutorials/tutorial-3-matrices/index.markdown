@@ -36,14 +36,14 @@ Futurama</blockquote>
 
 Проще всего представить матрицу, как массив чисел, со строго определенным количеством строк и столбцов. К примеру, матрица 2x3 выглядит так:
 
-[<img title="2X3" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/2X3.png" width="68" height="44" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/2X3.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/2X3.png)
 
 Однако в трехмерной графике мы будем использовать только матрицы 4x4, которые позволят нам трансформировать наши вершины (x, y, z, w). Трансформированная вершина является результатом умножения матрицы на саму вершину:
 
 **Матрица x Вершина  (именно в этом порядке!!) = Трансформир. вершина
 **
 
-[<img title="MatrixXVect" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/MatrixXVect-300x71.gif" width="300" height="71" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/MatrixXVect.gif)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/MatrixXVect.gif)
 
 Довольно просто. Мы будем использовать это довольно часто, так что имеет смысл поручить это компьютеру:
 
@@ -67,19 +67,19 @@ vec4 transformedVector = myMatrix * myVector; // Да, это очень пох�
 
 Матрица переноса выглядит так:
 
-[<img title="translationMatrix" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/translationMatrix.png" width="103" height="88" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/translationMatrix.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/translationMatrix.png)
 
 где X, Y, Z - это значения, которые мы хотим добавить к нашему вектору.
 
 Значит, если мы захотим перенести вектор (10, 10, 10, 1) на 10 юнитов в направлении X, то мы получим:
 
-[<img title="translationExamplePosition" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/translationExamplePosition1.png" width="639" height="82" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/translationExamplePosition1.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/translationExamplePosition1.png)
 
 ... получим (20, 10, 10, 1) однородный вектор! Не забывайте, что 1 в параметре w, означает позицию, а не направление и наша трансформация не изменила того, что мы работаем с позицией.
 
 Теперь посмотрим, что случится, если вектор (0, 0, -1, 0) представляет собой направление:
 
-[<img title="translationExampleDirection" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/translationExampleDirection1.png" width="621" height="82" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/translationExampleDirection1.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/translationExampleDirection1.png)
 
 ... и получаем наш оригинальный вектор (0, 0, -1, 0). Как было сказано раньше, вектор с параметром w = 0 нельзя перенести.
 
@@ -103,7 +103,7 @@ vec4 transformedVector = myMatrix * myVector;
 
 Это специальная матрица, которая не делает ничего, но мы затрагиваем ее, так как важно помнить, что A умноженное на 1.0 дает A:
 
-[<img title="identityExample" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/identityExample.png" width="742" height="80" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/identityExample.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/identityExample.png)
 
 **В C++ :**
 {% highlight text linenos %}
@@ -114,11 +114,11 @@ glm::mat4 myIdentityMatrix = glm::mat4(1.0f);
 
 Выглядит также просто:
 
-[<img title="scalingMatrix" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/scalingMatrix.png" width="98" height="88" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/scalingMatrix.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/scalingMatrix.png)
 
 Значит, если вы хотите применить масштабирование вектора (позицию или направление - это не важно) на 2.0 во всех направлениях, то вам необходимо:
 
-[<img title="scalingExample" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/scalingExample.png" width="799" height="80" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/scalingExample.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/scalingExample.png)
 
 Обратите внимание, что w не меняется, а также обратите внимание на то, что единичная матрица - это частный случай матрицы масштабирования с коэффициентом масштаба равным 1 по всем осям. Также единичная матрица - это частный случай матрицы переноса, где (X, Y, Z) = (0, 0, 0) соответственно.
 
@@ -177,7 +177,7 @@ vec4 out_vec = transform * in_vec;
 
 Эта модель, также, как и наш красный треугольник задается множеством вершин, координаты которых заданы относительно центра объекта, т. е. вершина с координатами (0, 0, 0) будет находиться в центре объекта.
 
-[<img title="model" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/model.png" width="960" height="540" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/model.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/model.png)
 
  
 
@@ -185,7 +185,7 @@ vec4 out_vec = transform * in_vec;
 
  
 
-[<img title="world" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/world.png" width="960" height="540" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/world.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/world.png)
 
  
 
@@ -193,11 +193,11 @@ vec4 out_vec = transform * in_vec;
 
  
 
-[<img title="model_to_world" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/model_to_world.png" width="960" height="540" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/model_to_world.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/model_to_world.png)
 
 Схематично это показывается так:
 
-[<img title="M" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/M.png" width="240" height="148" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/M.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/M.png)
 
  
 
@@ -206,7 +206,7 @@ vec4 out_vec = transform * in_vec;
 Еще раз процитируем Футураму:
 <blockquote>
 Движок не перемещает корабль. Корабль остается на том же месте, а движок перемещает вселенную вокруг него.</blockquote>
-[<img title="camera" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/camera.png" width="960" height="540" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/camera.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/camera.png)
 
 Попробуйте представить это применительно к камере. Например, если вы хотите сфотографировать гору, то вы не перемещаете камеру, а перемещаете гору. Это не возможно в реальной жизни, но это невероятно просто в компьютерной графике.
 
@@ -217,7 +217,7 @@ glm::mat4 ViewMatrix = glm::translate(-3.0f, 0.0f ,0.0f);
 {% endhighlight %}
 Опять же, изображение ниже полностью показывает это. Мы перешли из мировой системы координат (все вершины заданы относительно центра мировой системы) к системе координат камеры (все вершины заданы относительно камеры):
 
-[<img title="model_to_world_to_camera" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/model_to_world_to_camera.png" width="960" height="540" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/model_to_world_to_camera.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/model_to_world_to_camera.png)
 
 Ну и пока ваш мозг переваривает это, мы посмотрим на функцию, которую предоставляет нам GLM, а точнее на glm::LookAt:
 {% highlight text linenos %}
@@ -229,9 +229,7 @@ glm::mat4 CameraMatrix = glm::LookAt(
 {% endhighlight %}
 А вот диаграмма, которая показывает то, что мы делаем:
 
-[<img title="MV" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/MV.png" width="240" height="265" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/MV.png)
-
- 
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/MV.png)
 
 ##Проекционная матрица
 
@@ -239,7 +237,7 @@ glm::mat4 CameraMatrix = glm::LookAt(
 
 Это называется перспективной проекцией:
 
-[<img title="model_to_world_to_camera_to_homogeneous" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/model_to_world_to_camera_to_homogeneous.png" width="960" height="540" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/model_to_world_to_camera_to_homogeneous.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/model_to_world_to_camera_to_homogeneous.png)
 
  
 
@@ -260,27 +258,27 @@ glm::mat4 projectionMatrix = glm::perspective(
 
  
 
-[<img title="MVP" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/MVP-235x300.png" width="235" height="300" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/MVP.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/MVP.png)
 
  
 
 Теперь посмотрим на следующие изображения, чтобы вы могли лучше понять что же происходит с проекцией. До проецирования мы имеем синие объекты в пространстве камеры, в то время как красная фигура показывает обзор камеры, т. е. все то, что камера видит.
 
-[<img title="nondeforme" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/nondeforme.png" width="960" height="540" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/nondeforme.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/nondeforme.png)
 
 Применение Проекционной матрицы дает следующий эффект:
 
-[<img title="homogeneous" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/homogeneous.png" width="960" height="540" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/homogeneous.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/homogeneous.png)
 
 На этом изображении обзор камеры представляет собой куб и все объекты деформируются. Объекты, которые находятся ближе к камере отображаются большими, а те, которые дальше - маленькими. Прямо как в реальности!
 
 Вот так это будет выглядеть:
 
-[<img title="projected" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/projected1.png" width="602" height="588" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/projected1.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/projected1.png)
 
 Изображение является квадратным, поэтому следующие математические трансформации применяются, чтобы растянуть изображение согласно актуальным размерам окна:
 
-[<img title="final" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/final1.png" width="640" height="462" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/final1.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/final1.png)
 
 И это изображение является тем, что на самом деле будет выведено.
 
@@ -345,7 +343,7 @@ void main(){
 
 * Готово! Теперь у нас есть такой же треугольник как и в Уроке 2, все так же находящийся в начале координат (0, 0, 0), но теперь мы его видим в перспективе из точки (4, 3, 3).
 
-[<img title="perspective_red_triangle" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/perspective_red_triangle-300x231.png" width="300" height="231" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/perspective_red_triangle.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/perspective_red_triangle.png)
 
 В Уроке 6 вы научитесь изменять эти значения динамически, используя клавиатуру и мышь, чтобы создать камеру, которую вы привыкли видеть в играх. Но для начала мы узнаем как придать нашем моделям цвета (Урок 4) и текстуры (Урок 5).
 

@@ -34,13 +34,13 @@ language: cn
 
 简而言之，矩阵就是一个行列数固定的、纵横排列的数表。比如，一个2x3矩阵看起来像这样：
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/2X3.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/2X3.png)
 
 
 三维图形学中我们只用到4x4矩阵，它能对顶点(x,y,z,w)作变换。这一变换是用矩阵左乘顶点来实现的：
 
 **矩阵x顶点（记住顺序！！矩阵左乘顶点，顶点用列向量表示）= 变换后的顶点**
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/MatrixXVect.gif)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/MatrixXVect.gif)
 
 
 这看上去复杂，实则不然。左手指着a，右手指着x，得到*ax*。 左手移向右边一个数b，右手移向下一个数y，得到*by*。依次类推，得到*cz*、*dw*。最后求和ax + by + cz + dw，就得到了新的x！每一行都这么算下去，就得到了新的(x, y, z, w)向量。
@@ -67,14 +67,14 @@ vec4 transformedVector = myMatrix * myVector; // Yeah, it's pretty much the same
 
 平移矩阵是最简单的变换矩阵。平移矩阵是这样的：
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/translationMatrix.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/translationMatrix.png)
 
 
 其中，X、Y、Z是点的位移增量。
 
 例如，若想把向量(10, 10, 10, 1)沿X轴方向平移10个单位，可得：
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/translationExamplePosition1.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/translationExamplePosition1.png)
 
 
 （算算看！一定得亲手算！！）
@@ -83,7 +83,7 @@ vec4 transformedVector = myMatrix * myVector; // Yeah, it's pretty much the same
 
 下面来看看，对一个代表Z轴负方向的向量作上述平移变换会得到什么结果：
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/translationExampleDirection1.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/translationExampleDirection1.png)
 
 
 还是原来的(0,0,-1,0)方向，这也很合理，恰好印证了前面的结论："平移一个方向是毫无意义的"。
@@ -107,7 +107,7 @@ vec4 transformedVector = myMatrix * myVector;
 
 单位矩阵很特殊，它什么也不做。单位矩阵的身份和自然数"1"一样基础而重要，因此在这里要特别提及一下。
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/identityExample.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/identityExample.png)
 
 
 **用C++表示：**
@@ -119,12 +119,12 @@ glm::mat4 myIdentityMatrix = glm::mat4(1.0);
 
 缩放矩阵也很简单：
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/scalingMatrix.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/scalingMatrix.png)
 
 
 例如把一个向量（点或方向皆可）沿各方向放大2倍：
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/scalingExample.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/scalingExample.png)
 
 
 w还是没变。您也许会问："缩放一个向量"有什么用？嗯，大多数情况下是没什么用，所以一般不会去缩放向量；但在某些特殊情况下它就派上用场了。（顺便说一下，单位矩阵只是缩放矩阵的一个特例，其(X, Y, Z) = (1, 1, 1)。单位矩阵同时也是旋转矩阵的一个特例，其(X, Y, Z)=(0, 0, 0)）。
@@ -199,22 +199,22 @@ vec4 out_vec = transform * in_vec;
 
 这个三维模型和可爱的红色三角形一样，由一组顶点定义。顶点的XYZ坐标是相对于物体中心定义的：也就是说，若某顶点位于(0,0,0)，则其位于物体的中心。
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/model.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/model.png)
 
 
 我们希望能够移动它，玩家也需要用键鼠控制这个模型。这很简单，只需记住：缩放*旋转*平移就够了。在每一帧中，用算出的这个矩阵去乘（在GLSL中乘，不是在C++中！）所有的顶点，物体就会移动。唯一不动的是世界空间（World Space）的中心。
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/world.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/world.png)
 
 
 现在，物体所有顶点都位于*世界空间*。下图中黑色箭头的意思是：*从模型空间（Model Space）（顶点都相对于模型的中心定义）变换到世界空间（顶点都相对于世界空间中心定义）。*
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/model_to_world.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/model_to_world.png)
 
 
 下图概括了这一过程：
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/M.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/M.png)
 
 
 ##观察矩阵
@@ -222,7 +222,7 @@ vec4 out_vec = transform * in_vec;
 这里再引用一下《飞出个未来》：
 <blockquote>
 *引擎推动的不是飞船而是宇宙。飞船压根就没动过。*</blockquote>
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/camera.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/camera.png)
 
 
 仔细想想，摄像机的原理也是相通的。如果想换个角度观察一座山，您可以移动摄像机也可以......移动山。后者在实际中不可行，在计算机图形学中却十分方便。
@@ -234,7 +234,7 @@ glm::mat4 ViewMatrix = glm::translate(-3,0,0);
 {% endhighlight %}
 下图展示了：*从世界空间（顶点都相对于世界空间中心定义）到摄像机空间（Camera Space，顶点都相对于摄像机定义）的变换。*
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/model_to_world_to_camera.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/model_to_world_to_camera.png)
 
 
 趁脑袋还没爆炸，来欣赏一下GLM强大的glm::LookAt函数吧：
@@ -247,7 +247,7 @@ glm::mat4 CameraMatrix = glm::LookAt(
 {% endhighlight %}
 下图解释了上述变换过程：
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/MV.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/MV.png)
 
 
 好戏还在后头呢。
@@ -258,7 +258,7 @@ glm::mat4 CameraMatrix = glm::LookAt(
 
 这就是所谓的透视投影（perspective projection）：
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/model_to_world_to_camera_to_homogeneous.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/model_to_world_to_camera_to_homogeneous.png)
 
 
 好在用一个4x4矩阵就能表示这个投影&sup1; :
@@ -277,29 +277,29 @@ glm::mat4 projectionMatrix = glm::perspective(
 
 最后一幅图示：
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/MVP.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/MVP.png)
 
 
 再添几张图，以便大家更好地理解投影变换。投影前，蓝色物体都位于摄像机空间中，红色的东西是摄像机的平截头体（frustum）：这是摄像机实际能看见的区域。
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/nondeforme.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/nondeforme.png)
 
 
 用投影矩阵去乘前面的结果，得到如下效果：
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/homogeneous.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/homogeneous.png)
 
 
 此图中，平截头体变成了一个正方体（每条棱的范围都是-1到1，图不太明显），所有的蓝色物体都经过了相同的变形。因此，离摄像机近的物体就显得大一些，远的显得小一些。这和现实生活一样！
 
 让我们从平截头体的"后面"看看它们的模样：
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/projected1.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/projected1.png)
 
 
 这就是您得到的图像！看上去太方方正正了，因此，还需要做一次数学变换使之适合实际的窗口大小。
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/final1.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/final1.png)
 
 
 这就是实际渲染的图像啦！
@@ -365,7 +365,7 @@ void main(){
 
 * 搞定！三角形和第二课的一样，仍然在原点(0,0,0)，然而是从点(4,3,3)透视观察的；摄像机的朝上方向为(0,1,0)，视野（field of view）45&deg;。
 
-![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/perspective_red_triangle.png)
+![]({{site.baseurl}}/assets/images/tuto-3-matrix/perspective_red_triangle.png)
 
 
 第6课中你会学到怎样用键鼠动态修改这些值，从而创建一个和游戏中类似的摄像机。但我们会先学给三维模型上色（第4课）、贴纹理（第5课）。
