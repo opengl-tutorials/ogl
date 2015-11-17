@@ -272,7 +272,7 @@ Both linear and anisotropic filtering have a problem. If the texture is seen fro
 
 ![](http://upload.wikimedia.org/wikipedia/commons/5/5c/MipMap_Example_STS101.jpg)
 
-* At initialisation tile, you scale down your image by 2, successively, until you only have a 1x1 image (which effectively is the average of all the texels in the image)
+* At initialisation time, you scale down your image by 2, successively, until you only have a 1x1 image (which effectively is the average of all the texels in the image)
 * When you draw a mesh, you select which mipmap is the more appropriate to use given how big the texel should be.
 * You sample this mipmap with either nearest, linear or anisotropic filtering
 * For additional quality, you can also sample two mipmaps and blend the results.
