@@ -89,7 +89,7 @@ Let's read this from right to left :
 
 * 1024/2 - xpos means : how far is the mouse from the center of the window ? The bigger this value, the more we want to turn.
 * float(...) converts it to a floating-point number so that the multiplication goes well.
-* mouseSpeed is just there to speed up or slow down the rotations. Finetune this at will, or let the user choose it.
+* mouseSpeed is just there to speed up or slow down the rotations. Fine-tune this at will, or let the user choose it.
 * += : If you didn't move the mouse, 1024/2-xpos will be 0, and horizontalAngle+=0 doesn't change horizontalAngle. If you had a "=" instead, you would be forced back to your original orientation each frame, which isn't good.
 
 We can now compute a vector that represents, in World Space, the direction in which we're looking
