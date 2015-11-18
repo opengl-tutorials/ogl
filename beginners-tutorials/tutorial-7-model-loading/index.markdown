@@ -105,7 +105,7 @@ The bad news is that OpenGL can't be told to use one index for the position, ano
 
 ##Creating an OBJ file in Blender
 
-Since our toy loader will severely limited, we have to be extra careful to set the right options when exporting the file. Here's how it should look in Blender :
+Since our toy loader will be severely limited, we have to be extra careful to set the right options when exporting the file. Here's how it should look in Blender :
 
 ![]({{site.baseurl}}/assets/images/tuto-7-model-loading/Blender.png)
 
