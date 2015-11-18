@@ -11,54 +11,51 @@ tags: []
 language: es
 ---
 
-#Introduction
+#Introducción
 
-Welcome to the first tutorial !
+Bienvenido al primer tutorial !
 
-Before jumping into OpenGL, you will first learn how to build the code that goes with each tutorial, how to run it, and most importantly, how to play with the code yourself.
+Antes de saltar a OpenGL, primero es importante aprender a compilar el código que viene con cada tutorial, como correrlo y lo mas importante, como modificar el código usted mismo.
 
-#Prerequisites
+#Prerrequisitos
 
-No special prerequisite is needed to follow these tutorials. Experience with any programming langage ( C, Java, Lisp, Javascript, whatever ) is better to fully understand the code, but not needed ; it will merely be more complicated to learn two things at the same time.
+No hay prerrequisitos para seguir este tutorial. Si tiene experiencia con cualquier lenguaje de programación ( C, Java, Lisp, Javascript, otros ) le servirá para entender completamente el código pero no es necesario. Śería como aprender dos cosas al mismo tiempo.
 
-All tutorials are written in "Easy C++" : Lots of effort has been made to make the code as simple as possible. No templates, no classes, no pointers. This way, you will be able to understand everything even if you only know Java.
+Todos los tutoriales estan escritos en C++ "fácil". Hemos hecho un gran esfuerzo para hacer l código lo mas sencillo posible. No hay templates, no hay clases, no hay apuntadores. De esta forma usted entenderá todo, aun si solo sabe programar en Java.
 
-#Forget Everything
+#Olvide todo lo anterior
 
-You don't have to know anything, but you have to forget everything you know about OpenGL.
-If you know about something that looks like glBegin(), forget it. Here you will learn modern OpenGL (OpenGL 3 and 4) , and most online tutorials teach "old" OpenGL (OpenGL 1 and 2). So forget everything you might know before your brain melts from the mix.
+Usted no tiene que saberlas todas, pero aquí debe olvidar todo lo que sabe de OpenGL. Si usted sabe algo acerca de algo que se parece a glBegin(), olvidelo. Aquí usted va aprender el OpenGl moderno (OpenGL 3 y 4), y la mayoría de tutoriales enseñan el OpenGl "viejo" (OpenGL 1 and 2). así que olvide todo lo que sabe antes de que su cerebro se derrita con la mezcla.
 
-#Building the tutorials
+#Compilando los tutoriales
 
-All tutorials can be built on Windows, Linux and Mac. For all these platforms, the procedure is roughly the same :
+Todos los tutoriales pueden ser compilados en Windows, Linux y Mac. Para todas las plataformas el proceso es prácticamente el mismo :
 
-* **Update your drivers** !! doooo it. You've been warned.
-* Download a compiler, if you don't already have one.
-* Install CMake
-* Download the source code of the tutorials
-* Generate a project using CMake
-* Build the project
-* Play with the samples !
+* **Actualice sus controlares** !! Hagalo ! Soldado advertido no muere en guerra ...
+* Descargue un compilador, si no tiene uno aun. 
+* Instale CMake
+* Descargue el código fuente de los tutoriales
+* Genere un proyecto usando CMake
+* Compile el proyecyo
+* Juegue con los ejemplos !
 
-Detailed procedures will now be given for each platform. Adaptations may be required. If unsure, read the instruction for Windows and try to adapt them.
+Ahora en detalle para cada plataforma. Es posible que se necesite adaptar el proceso. Si no esta seguro, siga las instrucciones para Windows y trate de adaptarlas.
 
 ##Building on Windows
 
- 
-
-* Updating your drivers should be easy. Just go to NVIDIA's or AMD's website and download the drivers. If unsure about your GPU model : Control Panel -> System and Security -> System -> Device Manager -> Display adapter. If you have an integrated Intel GPU, drivers are usually provided by your OEM (Dell, HP, ...).
-* We suggest using Visual Studio 2015 Express for Desktop as a compiler. You can download it for free [here](https://www.visualstudio.com/en-US/products/visual-studio-express-vs). If you prefer using MinGW, we recommend using [Qt Creator](http://qt-project.org/). Install whichever you want. Subsequent steps will be explained with Visual Studio, but should be similar with any other IDE.
-* Download [CMake ](http://www.cmake.org/cmake/resources/software.html)from here and install it
-* [Download the source code](http://www.opengl-tutorial.org/download/) and unzip it, for instance in C:\Users\XYZ\Projects\OpenGLTutorials\ .
-* Launch CMake. In the first line, navigate to the unzipped folder. If unsure, choose the folder that contains the CMakeLists.txt file. In the second line, enter where you want all the compiler's stuff to live. For instance, you can choose C:\Users\XYZ\Projects\OpenGLTutorials-build-Visual2015-64bits\, or C:\Users\XYZ\Projects\OpenGLTutorials\build\Visual2015-36bits\. Notice that it can be anywhere, not necessarily in the same folder.
+* Actualizar sus controladores debe ser fácil. Solo vaya a los sitios de NVIDIA's o AMD's y descargue los controladores. Si no sabe su modelo de GPU use : Panel de Control -> Sistema y Seguridad -> Sistema -> Administrador de Dispositivos -> Adaptadores de antalla. Si usted tiene una tarjeta gráfica integrada, los controladores usualmente han sido ya instalados por el fabricante del equipo (Dell, HP, ...).
+* Sugerimos que use Visual Studio 2015 Express de escritorio como compilador. Puede descargarlo grátis [aquí](https://www.visualstudio.com/en-US/products/visual-studio-express-vs). Si prefiere puede usar MinGW, en ese casi le recomendamos usar [Qt Creator](http://qt-project.org/). Instale cualquier que desee. Los pasos a continuación son para Visual Studio, pero son los mismo para cualquier IDE.
+* Descargue [CMake ](http://www.cmake.org/cmake/resources/software.html) de aquí e instalelo
+* [Descargue el código fuente](http://www.opengl-tutorial.org/download/) descomprimalo en una ubicación que usted recuerde, por ejemplo,  C:\Users\XYZ\Projects\OpenGLTutorials\ .
+* Abra CMake. En la primera línea navegue hasta la carpeta descomprimida. Si no esta seguro, escoja la carpeta que contiene el archivo CMakeLists.txt . En la segunda línea  escriba la ruta del lugar donde será compilado y estarán todos los archivos. Por ejemplo puede escoger C:\Users\XYZ\Projects\OpenGLTutorials-build-Visual2015-64bits\, o C:\Users\XYZ\Projects\OpenGLTutorials\build\Visual2015-36bits\ . Note que puede ser quen cualquier lugar, no necesariamente en la misma carpeta .
 ![]({{site.baseurl}}/assets/images/tuto-1-window/CMake.png)
 
-* Click on the Configure button. Since this is the first time you configure the project, CMake will ask you which compiler you would like to use. Choose wisely depending on step 1. If you have a 64 bit Windows, you can choose 64 bits; if you don't know, choose 32 bits.
-* Click on Configure until all red lines disappear. Click on Generate. Your Visual Studio project is now created. You can now forget about CMake.
-* Open C:\Users\XYZ\Projects\OpenGLTutorials-build-Visual2010-32bits\. You will see a Tutorials.sln file : open it with Visual Studio.
+* Haga clic en el botón Configurar. Dado que es la primera vez que usted configura un proyecto, CMake le preguntará el compilador que desea usar. Escoja bien dependiendo del paso 1. Si usted tiene windows de 64 bits, puede seleccionar 64 bits, si no lo sabe escoja 32 bits.
+* Hagala cloc en configurar hasta que todas las lineas rojas desaparezcan. Haga clic en generar. Su proyecto de Visual Studio project ha sido creado. En este momento puede olvidarse de CMake.
+* Abra C:\Users\XYZ\Projects\OpenGLTutorials-build-Visual2010-32bits\. Verá un archivo Tutorials.sln : abralo con Visual Studio.
 ![]({{site.baseurl}}/assets/images/tuto-1-window/directories.png)
 
-In the *Build* menu, click *Build All*. Every tutorial and dependency will be compiled. Each executable will also be copied back into C:\Users\XYZ\Projects\OpenGLTutorials\ . Hopefuly no error occurs.
+En el menu *Build*, haga clic en *Build All*. Cada tutorial y dependencia será compilado. Cada ejecutable también será copiado en  C:\Users\XYZ\Projects\OpenGLTutorials\ . Hopefuly no error occurs.
 ![]({{site.baseurl}}/assets/images/tuto-1-window/visual_2010.png)
 
 * Open C:\Users\XYZ\Projects\OpenGLTutorials\playground, and launch playground.exe. A black window should appear.
