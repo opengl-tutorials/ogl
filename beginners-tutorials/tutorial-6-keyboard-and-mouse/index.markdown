@@ -107,7 +107,9 @@ This is a standard computation, but if you don't know about cosine and sinus, he
 
 The formula above is just the generalisation to 3D.
 
-Now we want to compute the "up" vector reliably. Notice that "up" isn't always towards +Y : if you look down, for instance, the "up" vector will be in fact horizontal. Here is an example of to cameras with the same position, the same target, but a different up.
+Now we want to compute the "up" vector reliably. Notice that "up" isn't always towards +Y : if you look down, for instance, the "up" vector will be in fact horizontal. Here is an example of to cameras with the same position, the same target, but a different up:
+
+![]({{site.baseurl}}/assets/images/tuto-6-mouse-keyboard/CameraUp.png)
 
 In our case, the only constant is that the vector goes to the right of the camera is always horizontal. You can check this by putting your arm horizontal, and looking up, down, in any direction. So let's define the "right" vector : its Y coordinate is 0 since it's horizontal, and its X and Z coordinates are just like in the figure above, but with the angles rotated by 90&deg;, or Pi/2 radians.
 {% highlight cpp linenos %}

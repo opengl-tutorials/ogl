@@ -108,7 +108,9 @@ C'est un calcul standard, mais si tu ne connais pas sinus et cosinus, voici une 
 
 La formule ci-dessus n'est qu'une généralisation pour la 3D.
 
-Maintenant, on souhaite calculer le vecteur « haut » efficacement. Le « haut » n'est pas toujours en direction de +Y : si tu regardes vers le bas, par exemple, le vecteur « haut » sera en réalité horizontale. Voici un exemple avec deux caméras ayant la même position, la même direction, mais de vecteurs « haut » différents.
+Maintenant, on souhaite calculer le vecteur « haut » efficacement. Le « haut » n'est pas toujours en direction de +Y : si tu regardes vers le bas, par exemple, le vecteur « haut » sera en réalité horizontale. Voici un exemple avec deux caméras ayant la même position, la même direction, mais de vecteurs « haut » différents:
+
+![]({{site.baseurl}}/assets/images/tuto-6-mouse-keyboard/CameraUp.png)
 
 Dans ce cas, la seule constante est que le vecteur allant sur la droite est toujours horizontal. Vous pouvez vérifier cela en plaçant votre bras à l'horizontal et en regardant vers le haut, le bas et dans toutes les directions. Voici comment définir le « bon » vecteur « vers la droite » : sa coordonnée Y est 0, car le vecteur est horizontal et ses coordonnées X et Z sont exactement comme dans la figure ci-dessus, mais avec des angles tournés de 90°, ou Pi/2 radians.
 
