@@ -13,7 +13,7 @@ Ce site est dédié à des **tutoriels** pour **Opengl 3.3** et plus récent !
 
 Le source code complet des tutoriels est disponible [ici]({{ site.baseurl }}/download).
 
-S'il te plait, contacte nous (on est Francais d'ailleurs) si tu as une question, remarque, bug ou n'importe quoi d'autre : <a href="mailto:contact@opengl-tutorial.org">contact@opengl-tutorial.org</a>.
+Hésite pas à nous contacter (on est Francais d'ailleurs) si tu as une question, remarque, bug ou n'importe quoi d'autre : <a href="mailto:contact@opengl-tutorial.org">contact@opengl-tutorial.org</a>.
 
 Et si les tutoriels te plaise, hésite pas à passer le mot !
 
