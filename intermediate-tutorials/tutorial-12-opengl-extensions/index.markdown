@@ -100,7 +100,7 @@ With OpenGL 3.3 and above, you already have 99% of the tools you're likely to ne
 
 If you have to handle older hardware, though, OpenGL 3+ won't be available, and you'll have to use OpenGL 2+ instead. You won't be able to assume that you have all the fancy extensions anymore, and you'll need to cope with that.
 
-For further details, see for instance the [OpenGL 2.1 version of Tutorial  14 - Render To Texture, line 152](http://code.google.com/p/opengl-tutorial-org/source/browse/tutorial14_render_to_texture/tutorial14.cpp?name=2.1%20branch#152), where I have to check the presence of GL_ARB_framebuffer_object by hand. See also the [FAQ](http://www.opengl-tutorial.org/miscellaneous/faq/).
+For further details, see for instance the [OpenGL 2.1 version of Tutorial  14 - Render To Texture, line 167](https://github.com/opengl-tutorials/ogl/blob/2.1_branch/tutorial14_render_to_texture/tutorial14.cpp#L167), where I have to check the presence of GL_ARB_framebuffer_object by hand. See also the [FAQ](http://www.opengl-tutorial.org/miscellaneous/faq/).
 
 #Conclusion
 
