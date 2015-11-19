@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: 'Tutoriel 7 : Chargement d&apos;un modèle 3D'
+title: 'Tutoriel 7 : Charger d&apos;un modèle 3D'
 date: '2015-11-18 17:32:03 +0200'
 categories: [tuto]
 order: 70
