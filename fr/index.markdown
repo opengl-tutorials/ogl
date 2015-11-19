@@ -15,7 +15,7 @@ Le source code complet des tutoriels est disponible [ici]({{ site.baseurl }}/dow
 
 Hésite pas à nous contacter (on est Francais d'ailleurs) si tu as une question, remarque, bug ou n'importe quoi d'autre : <a href="mailto:contact@opengl-tutorial.org">contact@opengl-tutorial.org</a>.
 
-Et si les tutoriels te plaise, hésite pas à passer le mot !
+Et si les tutoriels te plaisent, hésite pas à passer le mot !
 
 Tu peux aussi nous suivre sur Twitter / Google+ / Github ! <br>
 <a href="https://github.com/opengl-tutorials/ogl" target="_blank" style="text-decoration:none;" >
