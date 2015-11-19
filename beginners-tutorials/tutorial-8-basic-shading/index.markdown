@@ -99,9 +99,9 @@ If the light is perpendicular to the surface, it is concentrated on a small surf
 ![]({{site.baseurl}}/assets/images/tuto-8-basic-shading/diffuseAngle.png)
 
 
-This means that each point of the surface will look darker with gazing light (but remember, more points will be illuminated, to the total quantity of light will remain the same)
+This means that each point of the surface will look darker with gazing light (but remember, more points will be illuminated, so the total quantity of light will remain the same)
 
-This means that when we compute the colour of a pixel, the angle between the incoming light and the surface normal matters.We thus have :
+This means that when we compute the colour of a pixel, the angle between the incoming light and the surface normal matters. We thus have :
 {% highlight glsl linenos cssclass=highlightglslfs %}
 // Cosine of the angle between the normal and the light direction,
 // clamped above 0
