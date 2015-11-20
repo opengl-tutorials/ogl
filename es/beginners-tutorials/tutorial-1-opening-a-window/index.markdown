@@ -41,7 +41,7 @@ Todos los tutoriales pueden ser compilados en Windows, Linux y Mac. Para todas l
 
 Ahora en detalle para cada plataforma. Es posible que se necesite adaptar el proceso. Si no esta seguro, siga las instrucciones para Windows y trate de adaptarlas.
 
-##Building on Windows
+##Generando en Windows
 
 * Actualizar sus controladores debe ser fácil. Solo vaya a los sitios de NVIDIA's o AMD's y descargue los controladores. Si no sabe su modelo de GPU use : Panel de Control -> Sistema y Seguridad -> Sistema -> Administrador de Dispositivos -> Adaptadores de antalla. Si usted tiene una tarjeta gráfica integrada, los controladores usualmente han sido ya instalados por el fabricante del equipo (Dell, HP, ...).
 * Sugerimos que use Visual Studio 2015 Express de escritorio como compilador. Puede descargarlo grátis [aquí](https://www.visualstudio.com/en-US/products/visual-studio-express-vs). Si prefiere puede usar MinGW, en ese casi le recomendamos usar [Qt Creator](http://qt-project.org/). Instale cualquier que desee. Los pasos a continuación son para Visual Studio, pero son los mismo para cualquier IDE.
@@ -55,107 +55,92 @@ Ahora en detalle para cada plataforma. Es posible que se necesite adaptar el pro
 * Abra C:\Users\XYZ\Projects\OpenGLTutorials-build-Visual2010-32bits\. Verá un archivo Tutorials.sln : abralo con Visual Studio.
 ![]({{site.baseurl}}/assets/images/tuto-1-window/directories.png)
 
-En el menu *Build*, haga clic en *Build All*. Cada tutorial y dependencia será compilado. Cada ejecutable también será copiado en  C:\Users\XYZ\Projects\OpenGLTutorials\ . Hopefuly no error occurs.
+En el menu *Build*, haga clic en *Build All*. Cada tutorial y dependencia será generado. Cada ejecutable también será copiado en  C:\Users\XYZ\Projects\OpenGLTutorials\ . Con suerte, no habrá errores.
 ![]({{site.baseurl}}/assets/images/tuto-1-window/visual_2010.png)
 
-* Open C:\Users\XYZ\Projects\OpenGLTutorials\playground, and launch playground.exe. A black window should appear.
+* Abra C:\Users\XYZ\Projects\OpenGLTutorials\playground, y ejecute playground.exe. Debe aparecer una pantalla negra.
 ![]({{site.baseurl}}/assets/images/tuto-1-window/empty_window.png)
 
-
-You can also launch any tutorial from inside Visual Studio. Right-click on Playground once, "Choose as startup project". You can now debug the code by pressing F5.
+Usted puede ejecutar los tutoriales desde Visual Studio. Clic derecho en el proyecto Playground y "Escoger como proyecto principal". Puede depurar presionando F5.
 
 ![]({{site.baseurl}}/assets/images/tuto-1-window/StartupProject.png)
 
+##Generando en Linux
 
+Hay tantas variantes de Linux en el mundo que es imposible listar para cada plataforma posible. Adapte estas instrucciones si y de ser necesario consulte la documentación de su distribución.
 
-
-
-
-
-
-
-
-
-##Building on Linux
-
-They are so many Linux variants out there that it's impossible to list every possible platform. Adapt if required, and don't hesitate to read your distribution's documentation.
-
- 
-
-* Install the latest drivers. We highly recommend the closed-source binary drivers. It's not GNU or whatever, but they work. If your distribution doesn't provide an automatic install, try [Ubuntu's guide](http://help.ubuntu.com/community/BinaryDriverHowto).
-* Install all needed compilers, tools & libs. Complete list is : *cmake make g++ libx11-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxrandr-dev libxext-dev libxi-dev* . Use `sudo apt-get install *****` or `su && yum install ******`.
-* [Download the source code](http://www.opengl-tutorial.org/download/) and unzip it, for instance in ~/Projects/OpenGLTutorials/
-* cd in ~/Projects/OpenGLTutorials/ and enter the following commands :
+* Instale los controladores mas recientes. Recomendamos los controladores binarios de codigo cerrado. No serán GNU pero de seguro si funcionan. Si su distribución no provee los controladores automáticamente, intente con [la guía de Ubuntu](http://help.ubuntu.com/community/BinaryDriverHowto).
+* Instale los compiladores necesarios, herramientas y librerías. La lista completa es : *cmake make g++ libx11-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxrandr-dev libxext-dev libxi-dev* . Use `sudo apt-get install *****` o `su && yum install ******`.
+* [Descargue el código fuente](http://www.opengl-tutorial.org/download/) y descomprimalo, por ejemplo en ~/Projects/OpenGLTutorials/
+* cd ~/Projects/OpenGLTutorials/ e ingrese los siguientes comandos :
 
  * mkdir build
  * cd build
  * cmake ..
 
+* Un archivo makefile se habrá creado en el directorio build/ .
+* Escriba "make all". Cada tutorial y dependencia será compilado. Cada ejecutable será copiado en ~/Projects/OpenGLTutorials/ . Con suerte, no habrá errores.
+* Abra ~/Projects/kOpenGLTutorials/playground, y ejecute ./playground. Debe aparecer una ventana negra.
 
-* A makefile has been created in the build/ directory.
-* type "make all". Every tutorial and dependency will be compiled. Each executable will also be copied back into ~/Projects/OpenGLTutorials/ . Hopefuly no error occurs.
-* Open ~/Projects/OpenGLTutorials/playground, and launch ./playground. A black window should appear.
+Nota: Es recomendable usar un IDE como [Qt Creator](http://qt-project.org/). En particular este tiene soporte integrado para CMake, de manera que le proveerá una agradable experiencia para depurar. Estas son las instrucciones en QtCreator :
 
-Note that you really should use an IDE like [Qt Creator](http://qt-project.org/). In particular, this one has built-in support for CMake, and it will provide a much nicer experience when debugging. Here are the instructions for QtCreator :
-
-* In QtCreator, go to File->Tools->Options->Compile&Execute->CMake
-* Set the path to CMake. This is most probably /usr/bin/cmake
-* File->Open Project; Select tutorials/CMakeLists.txt
-* Select a build directory, preferably outside the tutorials folder
-* Optionally set -DCMAKE_BUILD_TYPE=Debug in the parameters box. Validate.
-* Click on the hammer on the bottom. The tutorials can now be launched from the tutorials/ folder.
-* To run the tutorials from QtCreator, click on Projects->Execution parameters->Working Directory, and select the directory where the shaders, textures & models live. Example for tutorial 2 : ~/opengl-tutorial/tutorial02_red_triangle/
+* En QtCreator, vaya a Archivo->Herramientas->Opciones->Compilar&ejecutar->CMake
+* Esriba la ruta de CMake. Probablemente sea /usr/bin/cmake
+* Archivo->Abrir proyecto; Seleccione, tutorials/CMakeLists.txt
+* Seleccione un directorio para construir, preferiblemente fuera del directorio de los tutoriales.
+* Opcionalmente puede usar -DCMAKE_BUILD_TYPE=Debug en los parámetros. Valide.
+* Para ejecutar los tutoriales desde QtCreator, haga clic en Proyectos->Parámetros de ejecución->Directorio actual, y seleccione el directorio donde estan los shaders, texturas y modelos. Ejemplo para tutorial 2 : ~/opengl-tutorial/tutorial02_red_triangle/
+* Haga clic en el martillo de abajo. Estos tutoriales pueden ser ejecutados desde el directorio tutorials/.
 
 
-##Building on Mac
+##Generandi en Mac
 
-The procedure is very similar to Windows' (Makefiles are also supported, but won't be explained here) :
+El procedimiento es muy similar a Windows (También se puede usar Makefiles pero no los vamos a explicar aquí) :
 
-* Install XCode from the Mac App Store
-* [Download CMake](http://www.cmake.org/cmake/resources/software.html), and install the .dmg . You don't need to install the command-line tools.
-* [Download the source code](http://www.opengl-tutorial.org/download/) and unzip it, for instance in ~/Projects/OpenGLTutorials/ .
-* Launch CMake (Applications->CMake). In the first line, navigate to the unzipped folder. If unsure, choose the folder that contains the CMakeLists.txt file. In the second line, enter where you want all the compiler's stuff to live. For instance, you can choose ~/Projects/OpenGLTutorials_bin_XCode/. Notice that it can be anywhere, not necessarily in the same folder.
-* Click on the Configure button. Since this is the first time you configure the project, CMake will ask you which compiler you would like to use. Choose Xcode.
-* Click on Configure until all red lines disappear. Click on Generate. Your Xcode project is now created. You can forget about CMake.
-* Open ~/Projects/OpenGLTutorials_bin_XCode/ . You will see a Tutorials.xcodeproj file : open it.
-* Select the desired tutorial to run in Xcode's Scheme panel, and use the Run button to compile & run :
+* Instale XCode desde la App Store
+* [Descargue CMake](http://www.cmake.org/cmake/resources/software.html), e instale el .dmg . No necesita instalar las herramientas de linea de comando.
+* [Descargue el código fuente](http://www.opengl-tutorial.org/download/) y descomprimalo, por ejemplo en ~/Projects/OpenGLTutorials/ .
+* Ejecute CMake (Applications->CMake). En la primera linea, navegue hasta el directorio descomprimido. Si no esta seguro, busque el directorio que contiene el archivo CMakeLists.txt. En la segunda línea, escriba dónde se generarán todos los archivos para la compilación. Por ejemplo ~/Projects/OpenGLTutorials_bin_XCode/. Note que puede ser en cualquier parte, no necesariamente en el mismo directorio.
+* Haga clic en el botón configurar. Dado que es la primera vez que configura un proyecto, CMake le preguntará qué copilador desea usar. Escoja XCode.
+* Clic en Configurar hasta que desaparezcan las lineas rojas. Clic en Generar. Su proyecto XCode ha sido creado. Ahora puede olvidarse de CMake.
+* Abra ~/Projects/OpenGLTutorials_bin_XCode/ . Verá un archivo Tutorials.xcodeproj : abralo.
+* Seleccione el tutorial que desea ejecutar en el panel de XCode y luego use el botón de Ejecutar para compilar y ejecutar.
 
 ![]({{site.baseurl}}/assets/images/tuto-1-window/Xcode-projectselection.png)
 
 
-##Note for Code::Blocks
+##Nota para Code::Blocks
 
-Due to 2 bugs (one in C::B, one in CMake), you have to edit the command-line in Project->Build Options->Make commands, as follows :
+Por culpa de 2 bugs (uno en C::B y otro en CMake), usted debe editar la linea de comando en Proyecto->Opciones de construcción->Comandos Make, así :
 
 ![]({{site.baseurl}}/assets/images/tuto-1-window/CodeBlocksFix.png)
 
+También debe seleccionar el directorio de trabajo usted mismo : Proyecto->Propiedades -> Proyecto a construir -> tutorial N -> directorio de trabajo ( que es : src_dir/tutorial_N/ ).
 
-You also have to setup the working directory yourself : Project->Properties -> Build targets -> tutorial N -> execution working dir ( it's src_dir/tutorial_N/ ).
+#Ejecutando los tutoriales
 
-#Running the tutorials
+Usted debe ejecutar los tutoriales directamente de los directorios, simplemente haga doble clic en el ejecutable. Si prefier usar la linea de comandos asegurese de hacer cd al directorio correcto.
 
-You should run the tutorials directly from the right directory : simply double-click on the executable. If you like command line best, cd to the right directory.
+Si quiere ejecutar los tutoriales desde el IDE, no olvide leer las instrucciones de arriba para seleccionar el directorio correcto.
 
-If you want to run the tutorials from the IDE, don't forget to read the instructions above to set the correct working directory.
+#Cómo seguir estos tutoriales
 
-#How to follow these tutorials
+Cada tutorial consiste en su código y sus datos, cada uno se puede encontrar en tutorialXX/. Sinembargo, nunca debe modificar estos proyectos : solo son para referencia. Abra playground/playground.cpp, y modifique este archivo en su lugar. Torturelo como le plazca. Si se pierde, simplemente copie otro tutorial dentro de playground/playground.cpp, todo deberá haber vuelto a la normalidad.
 
-Each tutorial comes with its source code and data, which can be found in tutorialXX/. However, you will never modify these projects : they are for reference only. Open playground/playground.cpp, and tweak this file instead. Torture it in any way you like. If you are lost, simply cut'n paste any tutorial in it, and everything should be back to normal.
+Nosotros le proveemos pedacitos de código a lo largo del tutorial. No dude en copiar y pegarlos directamente en el playground mientras va avanzando : Experimentar es bueno ! Evite leer todo el código finalizado, no va a aprender mucho de esta manera. Aun si solo copia y pega los pedazos aprenderá mas y podrá solucionar problemas.
 
-We will provide snippets of code all along the tutorials. Don't hesitate to cut'n paste them directly in the playground while you're reading : experimentation is good. Avoid simply reading the finished code, you won't learn a lot this way. Even with simple cut'n pasting, you'll get your boatload of problems.
+#Abriendo una ventana
 
-#Opening a window
+Código ! Porfin !
+Bueno, en realidad no. Todos los tutoriales le muestran el "nivel bajo" de hacer las cosas, de manera que usted pueda ver qué no es nada mágico, es parte de un largo y tedioso proceso, así que vamos a usar GLFW, una librería externa para que haga la parte aburrida por nosotros. Si usted realmente quisiera, podría usar el API de Win32 en windows, el API X11 en Linux o el API Cocoa en Mac. Podría usar otras librerías como SFML, FreeGLUT, SDL, ... Vea los [vinculos de herramientas útiles aquí](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) 
 
-Finally ! OpenGL code !
-Well, not really. All tutorials show you the "low level" way to do things, so that you can see that no magic happens. But this part is actually very boring and useless, so we will use GLFW, an external library, to do this for us instead. If you really wanted to, you could use the Win32 API on Windows, the X11 API on Linux, and the Cocoa API on Mac; or use another high-level library like SFML, FreeGLUT, SDL, ... see the [Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) page.
-
-Ok, let's go. First, we'll have to deal with dependencies : we need some basic stuff to display messages in the console :
+Bueno, ahora si. Listos? Primero, debemos lidiar con las dependencias : necesitamos lo básico para mostrar mensajes en consola :
 {% highlight cpp linenos %}
-// Include standard headers
+// Incluir los cabeceros estándar
 #include <stdio.h>
 #include <stdlib.h>
 {% endhighlight %}
-First, GLEW. This one actually is a little bit magic, but let's leave this for later.
+Primero GLEW. Esto de hecho es un poco de mágia, pero luego lo explicamos.
 {% highlight cpp linenos %}
 // Include GLEW. Always include it before gl.h and glfw.h, since it's a bit magic.
 #include <GL/glew.h>
