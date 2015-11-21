@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: 'Tutorial 16 : Shadow mapping'
+title: 'Tutoriel 16 : Shadow mapping'
 date: '2015-11-21 09:29:49 +0200'
 categories: [tuto]
 order: 80

@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: 'Tutorial 13 : Normal Mapping'
+title: 'Tutoriel 13 : Normal Mapping'
 date: '2015-11-19 22:23:06 +0200'
 categories: [tuto]
 order: 50
