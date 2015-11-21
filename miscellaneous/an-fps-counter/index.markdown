@@ -39,4 +39,4 @@ You write a great rendering function that runs at 1000 FPS ( 1ms/frame ). But yo
 
 If you intend to make a 60fps game, your target will be 16.6666ms ; If you intend to make a 30fps game, your target will be 33.3333ms. That's all you need to know.
 
-This code is available in all tutorials starting from [Tutorial 9 : VBO indexing](http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-9-vbo-indexing/); see tutorial09_vbo_indexing/tutorial09.cpp . Other performance tools are available in [Tools - Debuggers](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/#header-4).
+This code is available in all tutorials starting from [Tutorial 9 : VBO indexing]({{site.baseurl}}/intermediate-tutorials/tutorial-9-vbo-indexing/); see [tutorial09_vbo_indexing/tutorial09.cpp](https://github.com/opengl-tutorials/ogl/blob/master/tutorial09_vbo_indexing/tutorial09.cpp#L142) . Other performance tools are available in [Tools - Debuggers]({{site.baseurl}}/miscellaneous/useful-tools-links/#debugging-tools).
