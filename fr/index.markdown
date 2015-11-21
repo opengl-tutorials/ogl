@@ -2,9 +2,8 @@
 layout: page
 status: publish
 published: true
-title: Home
-date: '2011-05-07 11:00:04 +0200'
-date_gmt: '2011-05-07 11:00:04 +0200'
+title: Page principale
+date: '2015-11-21 12:53:59 +0200'
 categories: []
 tags: []
 language: fr
@@ -27,7 +26,6 @@ Tu peux aussi nous suivre sur Twitter / Google+ / Github ! <br>
 <a href="https://plus.google.com/107410003823545892786" target="_blank" style="text-decoration:none;">
   <svg enable-background="new 0 0 128 128" height="50px" id="Layer_1" version="1.1" viewBox="0 0 128 128" width="50px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><circle cx="64" cy="64" fill="#D95032" r="64"/><g><g><path d="M49.424,97.875c-19.018,0-34.491-15.193-34.491-33.874c0-18.68,15.473-33.875,34.491-33.875     c8.318,0,16.354,2.952,22.624,8.309l-8.771,9.899c-3.838-3.279-8.758-5.086-13.853-5.086c-11.652,0-21.13,9.31-21.13,20.752     c0,11.441,9.479,20.75,21.13,20.75c9.858,0,16.311-4.723,18.407-13.197H49.587V58.432h32.347v6.562     C81.934,84.659,68.869,97.875,49.424,97.875z" fill="#FFFFFF"/></g><polygon fill="#FFFFFF" points="117.934,58.438 107.934,58.438 107.934,48.438 99.934,48.438 99.934,58.438 89.934,58.438     89.934,66.438 99.934,66.438 99.934,76.438 107.934,76.438 107.934,66.438 117.934,66.438   "/></g></g></svg>
 </a>
-
 
 <div class="home">
 

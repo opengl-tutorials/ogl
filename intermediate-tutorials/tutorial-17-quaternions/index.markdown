@@ -38,7 +38,7 @@ These 3 rotations are then applied successively, usually in this order: first Y,
 
 One simple use of Euler angles is setting a character's orientation. Usually game characters do not rotate on X and Z, only on the vertical axis. Therefore, it's easier to write, understand and maintain "float direction;" than 3 different orientations.
 
-Another good use of Euler angles is an FPS camera: you have one angle for the heading (Y), and one for up/down (X). See common/controls.cpp for an example.
+Another good use of Euler angles is an FPS camera: you have one angle for the heading (Y), and one for up/down (X). See [common/controls.cpp](https://github.com/opengl-tutorials/ogl/blob/master/common/controls.cpp) for an example.
 
 However, when things get more complex, Euler angle will be hard to work with. For instance :
 
@@ -226,7 +226,7 @@ quat RotationBetweenVectors(vec3 start, vec3 dest){
 
 }
 {% endhighlight %}
-(You can find this function in common/quaternion_utils.cpp)
+(You can find this function in [common/quaternion_utils.cpp](https://github.com/opengl-tutorials/ogl/blob/master/common/quaternion_utils.cpp))
 
 ##I need an equivalent of gluLookAt. How do I orient an object towards a point ?
 
@@ -252,7 +252,7 @@ Now, combine them:
 {% highlight cpp linenos %}
 quat targetOrientation = rot2 * rot1; // remember, in reverse order.
 {% endhighlight %}
-Beware, "direction" is, well, a direction, not the target position ! But you can compute the direction simply: targetPos - currentPos.
+Beware, "direction" is, well, a direction, not the target position ! But you can compute the position simply: targetPos - currentPos.
 
 Once you have this target orientation, you will probably want to interpolate between startOrientation and targetOrientation.
 

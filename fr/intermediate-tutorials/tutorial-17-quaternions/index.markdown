@@ -76,15 +76,15 @@ Donc fondamentalement, les quaternions stockent un *axe de rotation* et un *angl
 
 ##Lire des quaternions
 
-This format is definitely less intuitive than Euler angles, but it's still readable: the xyz components match roughly the rotation axis, and w is the acos of the rotation angle (divided by 2). For instance, imagine that you see the following values in the debugger: [ 0.7 0 0 0.7 ]. x=0.7, it's bigger than y and z, so you know it's mostly a rotation around the X axis; and 2*acos(0.7) = 1.59 radians, so it's a rotation of 90&deg;.
+Le format est définitivement moins intuitif que celui des angles d'Euler, mais il reste lisible : les composantes xyz correspondent grossièrement à l'axe de rotation et w est l'arc cosinus de l'angle de rotation (divisé par 2). Par exemple, imagines que tu veux les valeurs suivantes dans le débogueur : [0.7, 0, 0, 0.7]. x = 0.7, c'est plus grand que y et z, donc vous savez grossièrement que la rotation est principalement autour de l'axe X, et 2 * acos(0.7) = 1.59 radians, donc que la rotation est de 90°.
 
-Similarly, [0 0 0 1] (w=1) means that angle = 2*acos(1) = 0, so this is a `unit quaternion`, which makes no rotation at all.
+Pareillement, [0, 0, 0, 1] (w = 1) signifie que l'angle = 2*acos(1) = 0, donc que c'est un quaternion unitaire, ne faisant aucune rotation.
 
-##Basic operations
+##Opérations de bases
 
-Knowing the math behind the quaternions is rarely useful: the representation is so unintuitive that you usually only rely on utility functions which do the math for you. If you're interested, see the math books in the [Useful Tools & Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) page.
+Connaître les mathématiques derrière les quaternions n'est que rarement utile : la représentation est tellement non intuitive que tu te reposes habituellement sur les fonctions utilitaires qui feront les calculs pour toi. Si tu êtes intéressés, regardez les livres de mathématiques dans la page des [outils et liens utiles]({{site.baseurl}}}/miscellaneous/useful-tools-links/).
 
-###How do I create a quaternion in C++ ?
+###Comment créer un quaternion en C++ ?
 
 {% highlight cpp linenos %}
 // Don't forget to #include <glm/gtc/quaternion.hpp> and <glm/gtx/quaternion.hpp>
@@ -105,97 +105,106 @@ MyQuaternion = quat(EulerAngles);
 MyQuaternion = gtx::quaternion::angleAxis(degrees(RotationAngle), RotationAxis);
 {% endhighlight %}
 
-###How do I create a quaternion in GLSL ?
+###Comment créer un quaternion en GLSL ?
 
-You don't. Convert your quaternion to a rotation matrix, and use it in the Model Matrix. Your vertices will be rotated as usual, with the MVP matrix.
+Tu ne le fais pas. Convertis le quaternion vers une matrice de rotation et utilises-la dans la matrice de modèle. Tes sommets seront tournés comme d'habitude, avec la matrice MVP.
 
-In some cases, you might actually want to use quaternions in GLSL, for instance if you do skeletal animation on the GPU. There is no quaternion type in GLSL, but you can pack one in a vec4, and do the math yourself in the shader.
+Dans quelques cas, tu peux réellement vouloir utiliser les quaternions en GLSL, par exemple si tu fais l'animation d'un squelette sur le GPU. Il n'y a pas de type pour les quaternions en GLSL, mais tu peux utiliser un vec4 et faire les mathématiques toi-même dans le shader.
 
-###How do I convert a quaternion to a matrix ?
+###Comment convertir un quaternion vers une matrice ?
 
 {% highlight cpp linenos %}
 mat4 RotationMatrix = quaternion::toMat4(quaternion);
 {% endhighlight %}
-You can now use it to build your Model matrix as usual:
+
+Tu peux maintenant construire ta matrice de modèle comme d'habitude :
+
 {% highlight cpp linenos %}
 mat4 RotationMatrix = quaternion::toMat4(quaternion);
 ...
 mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScaleMatrix;
-// You can now use ModelMatrix to build the MVP matrix
+// Tu peux maintenant utiliser ModelMatrix pour construire la matrice MVP
 {% endhighlight %}
 
+#Donc, quelle méthode choisir ?
 
-#So, which one should I choose ?
+Choisir entre les angles d'Euler et les quaternions est difficile. Les angles d'Euler sont intuitifs pour les artistes, donc si tu écris un éditeur 3D, utilises-les. Mais les quaternions sont pratiques pour les programmeurs et aussi moins couteux, donc tu devrais les utiliser dans le cœur du moteur 3D.
 
-Choosing between Euler angles and quaternions is tricky. Euler angles are intuitive for artists, so if you write some 3D editor, use them. But quaternions are handy for programmers, and faster too, so you should use them in a 3D engine core.
+Le consensus général est exactement cela : utilises les quaternions en interne et exposes les angles d'Euler à chaque fois qu'il y a une interface utilisateur.
 
-The general consensus is exactly that: use quaternions internally, and expose Euler angles whenever you have some kind of user interface.
+Tu vas être capable de gérer tout ce que tu veux (ou du moins, cela sera plus facile) et tu peux toujours utiliser les angles d'Euler pour les entités le nécessitant (comme dit précédemment : la caméra, les humanoïdes et c'est à peu près tout) avec une simple conversion.
 
-You will be able to handle all you will need (or at least, it will be easier), and you can still use Euler angles for entities that require it ( as said above: the camera, humanoids, and that's pretty much it) with a simple conversion.
+#Autres ressources
 
-#Other resources
+* Les livres dans la page des [outils et liens utiles]({{site.baseurl}}/miscellaneous/useful-tools-links/#books) !
+* Aussi vieux qu'il puisse être, le Game Programming Gem 1 contient quelques articles géniaux sur les quaternions. Tu peux probablement le trouver en ligne aussi.
+* Cette [présentation de la GDC](http://www.essentialmath.com/GDC2012/GDC2012_JMV_Rotations.pdf) sur les rotations
+* Le [tutoriel sur les quaternions](http://content.gpwiki.org/index.php/OpenGL:Tutorials:Using_Quaternions_to_represent_rotation) du wiki des programmeurs de jeux vidéo
+* La [FAQ sur les quaternions](http://www.ogre3d.org/tikiwiki/Quaternion+and+Rotation+Primer) d'Ogre, bien que la seconde partie soit principalement spécifique à Ogre
+* Les fichiers d'Ogre [Vector3D.h](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/include/OgreVector3.h?at=default) et [Quaternions.cpp](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/src/OgreQuaternion.cpp?at=default).
 
+#Feuille de triche
 
-* The books on [Useful Tools & Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) !
-* As old as it can be, Game Programming Gems 1 has several awesome articles on quaternions. You can probably find them online too.
-* A [GDC presentation](http://www.essentialmath.com/GDC2012/GDC2012_JMV_Rotations.pdf) on rotations
-* The Game Programing Wiki's [Quaternion tutorial](http://content.gpwiki.org/index.php/OpenGL:Tutorials:Using_Quaternions_to_represent_rotation)
-* Ogre3D's [FAQ on quaternions](http://www.ogre3d.org/tikiwiki/Quaternion+and+Rotation+Primer). Most of the 2nd part is ogre-specific, though.
-* Ogre3D's [Vector3D.h](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/include/OgreVector3.h?at=default) and [Quaternion.cpp](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/src/OgreQuaternion.cpp?at=default)
+##Comment savoir que deux quaternions sont similaires ?
 
+Lors de l'utilisation d'un vecteur, le produit scalaire donne le cosinus de l'angle entre ces deux vecteurs. Si cette valeur est 1, alors les vecteurs sont dans la même direction.
 
-#Cheat-sheet
+Avec les quaternions, c'est la même chose :
 
-##How do I know it two quaternions are similar ?
-
-When using vector, the dot product gives the cosine of the angle between these vectors. If this value is 1, then the vectors are in the same direction.
-
-With quaternions, it's exactly the same:
 {% highlight cpp linenos %}
 float matching = quaternion::dot(q1, q2);
 if ( abs(matching-1.0) < 0.001 ){
     // q1 and q2 are similar
 }
 {% endhighlight %}
-You can also get the angle between q1 and q2 by taking the acos() of this dot product.
 
-##How do I apply a rotation to a point ?
+Tu peux aussi obtenir l'angle entre q1 et q2 en prenant le acos() de ce produit scalaire.
 
-You can do the following:
+##Comment appliquer une rotation sur un point ?
+
+Tu peux faire comme ça :
+
 {% highlight cpp linenos %}
 rotated_point = orientation_quaternion *  point;
 {% endhighlight %}
-... but if you want to compute your Model Matrix, you should probably convert it to a matrix instead.
 
-Note that the center of rotation is always the origin. If you want to rotate around another point:
+... mais si tu souhaites calculer ta matrice de modèle, tu devrais plutot convertir le quaternion en une matrice.
+
+> Le centre de la rotation est toujours l'origine.
+
+Si tu souhaites tourner autour d'un autre point :
+
 {% highlight cpp linenos %}
 rotated_point = origin + (orientation_quaternion * (point-origin));
 {% endhighlight %}
 
-##How do I interpolate between 2 quaternions ?
+##Comment interpoler entre deux quaternions ?
 
-This is called a SLERP: Spherical Linear intERPolation. With GLM, you can do this with mix:
+Cela s'appelle SLERP : **S**phérical **L**iner int**ERP**olation. Avec GLM, tu peux le faire avec la fonction mix :
+
 {% highlight cpp linenos %}
 glm::quat interpolatedquat = quaternion::mix(quat1, quat2, 0.5f); // or whatever factor
 {% endhighlight %}
 
-##How do I cumulate 2 rotations ?
+##Comment accumuler deux rotations ?
 
-Simple ! Just multiply the two quaternions together. The order is the same as for matrices, i.e. reverse:
+C'est simple ! Multiplie les deux quaternions ensemble. L'ordre est identique à celui des matrices, c'est-à-dire l'inverse :
+
 {% highlight cpp linenos %}
 quat combined_rotation = second_rotation * first_rotation;
 {% endhighlight %}
 
-##How do I find the rotation between 2 vectors ?
+##Comment trouver la rotation entre deux vecteurs ?
 
-(in other words: the quaternion needed to rotate v1 so that it matches v2)
+(En d'autres mots : Comment trouver le quaternion dont on a besoin pour tourner v1 et qu'il corresponde à v2.)
 
-The basic idea is straightforward:
+L'idée de base est évidente :
 
-* The angle between the vectors is simple to find: the dot product gives its cosine.
-* The needed axis is also simple to find: it's the cross product of the two vectors.
+* L'angle entre deux vecteurs est facilement trouvable : le produit scalaire donne son cosinus
+* L'axe nécessaire est aussi facilement trouvable : c'est le produit vectoriel des deux vecteurs.
 
-The following algorithm does exactly this, but also handles a number of special cases:
+L'algorithme suivant fait exactement cela, mais gère aussi quelques cas spéciaux :
+
 {% highlight cpp linenos %}
 quat RotationBetweenVectors(vec3 start, vec3 dest){
 	start = normalize(start);
@@ -230,17 +239,21 @@ quat RotationBetweenVectors(vec3 start, vec3 dest){
 
 }
 {% endhighlight %}
-(You can find this function in common/quaternion_utils.cpp)
 
-##I need an equivalent of gluLookAt. How do I orient an object towards a point ?
+(Tu peux trouver cette fonction dans [common/quaternion_utils.cpp](https://github.com/opengl-tutorials/ogl/blob/master/common/quaternion_utils.cpp).)
 
-Use RotationBetweenVectors !
+##J'ai besoin d'un équivalent à gluLookAt. Comment orienter un objet vers un point ?
+
+Utilise RotationBetweenVectors !
+
 {% highlight cpp linenos %}
 // Find the rotation between the front of the object (that we assume towards +Z,
 // but this depends on your model) and the desired direction
 quat rot1 = RotationBetweenVectors(vec3(0.0f, 0.0f, 1.0f), direction);
 {% endhighlight %}
-Now, you might also want to force your object to be upright:
+
+Maintenant, tu peux aussi souhaiter que ton objet soit droit :
+
 {% highlight cpp linenos %}
 // Recompute desiredUp so that it's perpendicular to the direction
 // You can skip that part if you really want to force desiredUp
@@ -252,24 +265,29 @@ desiredUp = cross(right, direction);
 vec3 newUp = rot1 * vec3(0.0f, 1.0f, 0.0f);
 quat rot2 = RotationBetweenVectors(newUp, desiredUp);
 {% endhighlight %}
-Now, combine them:
+
+Maintenant, combine-les :
+
 {% highlight cpp linenos %}
 quat targetOrientation = rot2 * rot1; // remember, in reverse order.
 {% endhighlight %}
-Beware, "direction" is, well, a direction, not the target position ! But you can compute the direction simply: targetPos - currentPos.
 
-Once you have this target orientation, you will probably want to interpolate between startOrientation and targetOrientation.
+Attention, « direction » est, bien sûr, une direction et non la position cible ! Tu peux calculer la position simplement avec : targetPos - currentPos.
 
-(You can find this function in common/quaternion_utils.cpp)
+Une fois que tu as l'orientation cible, tu vas probablement souhaiter effectuer une interpolation entre startOrientation et targetOrientation.
+(Tu peux trouver cette fonction dans [common/quaternion_utils.cpp](https://github.com/opengl-tutorials/ogl/blob/master/common/quaternion_utils.cpp)).
 
-##How do I use LookAt, but limit the rotation at a certain speed ?
+##Comment utiliser LookAt mais en limitant la rotation à une certaine vitesse ?
 
-The basic idea is to do a SLERP ( = use glm::mix ), but play with the interpolation value so that the angle is not bigger than the desired value:
+L'idée de base est d'effectuer un SLERP (utilise glm::mix), mais de jouer avec la valeur d'interpolation afin que l'angle ne soit pas supérieur à la valeur désirée :
+
 {% highlight cpp linenos %}
 float mixFactor = maxAllowedAngle / angleBetweenQuaternions;
 quat result = glm::gtc::quaternion::mix(q1, q2, mixFactor);
 {% endhighlight %}
-Here is a more complete implementation, which deals with many special cases. Note that it doesn't use mix() directly as an optimization.
+
+Voici une fonction plus complexe, qui gère les cas spéciaux. Elle n'utilise même pas directement mix() comme optimisation :
+
 {% highlight cpp linenos %}
 quat RotateTowards(quat q1, quat q2, float maxAngle){
 
@@ -309,12 +327,15 @@ quat RotateTowards(quat q1, quat q2, float maxAngle){
 
 }
 {% endhighlight %}
-You can use it like that:
+
+Que tu peux utiliser comme suit :
+
 {% highlight cpp linenos %}
 CurrentOrientation = RotateTowards(CurrentOrientation, TargetOrientation, 3.14f * deltaTime );
 {% endhighlight %}
-(You can find this function in common/quaternion_utils.cpp)
 
-##How do I...
+(Tu peux trouver cette fonction dans [common/quaternion_utils.cpp](https://github.com/opengl-tutorials/ogl/blob/master/common/quaternion_utils.cpp))
 
-If you can't figure it out, drop us an email, and we'll add it to the list !
+##Comment je peux ...
+
+Si tu arrives pas à trouver comment faire quelque chose, envoie nous un email, et on l'ajoutera à la liste !
