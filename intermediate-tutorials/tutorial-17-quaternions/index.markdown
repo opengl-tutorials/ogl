@@ -142,7 +142,7 @@ You will be able to handle all you will need (or at least, it will be easier), a
 
 #Cheat-sheet
 
-##How do I know it two quaternions are similar ?
+##How do I know if two quaternions are similar ?
 
 When using vector, the dot product gives the cosine of the angle between these vectors. If this value is 1, then the vectors are in the same direction.
 
