@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: 'Tutoriel 17 : les rotations'
+title: 'Tutoriel 17 : Les rotations'
 date: '2015-11-21 12:31:28 +0200'
 categories: [tuto]
 order: 90
