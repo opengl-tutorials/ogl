@@ -211,7 +211,8 @@ Ce phénomène est facilement explicable avec une image :
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/shadow-acne.png)
 
-The usual "fix" for this is to add an error margin : we only shade if the current fragment's depth (again, in light space) is really far away from the lightmap value. We do this by adding a bias :
+Le « correctif » habituel pour ça consiste à utiliser une marge d'erreur : on n'ajoute l'ombre que si la profondeur du fragment actuel (encore une fois, dans l'espace de la lumière) est vraiment loin de la valeur de la texture de lumière. On fait ça en ajoutant un biais :
+
 {% highlight glsl linenos cssclass=highlightglslfs %}
 float bias = 0.005;
 float visibility = 1.0;
@@ -219,81 +220,82 @@ if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z-bias){
     visibility = 0.5;
 }
 {% endhighlight %}
-The result is already much nicer :
+
+Le résultat est déjà beaucoup plus beau :
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/FixedBias.png)
 
+Par contre, tu peux remarquer qu'à cause de notre biais, l'artefact entre le sol est le mur s'est empiré. Qui plus est, un biais de 0.005 semble trop important pour le sol, mais pas assez pour les surfaces arrondies : quelques artefacts sont toujours visibles sur le cylindre et la sphère.
 
-However, you can notice that because of our bias, the artefact between the ground and the wall has gone worse. What's more, a bias of 0.005 seems too much on the ground, but not enough on curved surface : some artefacts remain on the cylinder and on the sphere.
+Une approche commune consiste à modifier le biais suivant la pente :
 
-A common approach is to modify the bias according to the slope :
 {% highlight glsl linenos cssclass=highlightglslfs %}
 float bias = 0.005*tan(acos(cosTheta)); // cosTheta is dot( n,l ), clamped between 0 and 1
 bias = clamp(bias, 0,0.01);
 {% endhighlight %}
-Shadow acne is now gone, even on curved surfaces.
+
+L'acné d'ombrage n'est plus là, même sur les surfaces arrondies :
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/VariableBias.png)
 
-
-Another trick, which may or may not work depending on your geometry, is to render only the back faces in the shadow map. This forces us to have a special geometry ( see next section - Peter Panning ) with thick walls, but at least, the acne will be on surfaces which are in the shadow :
+Une autre astuce qui peut ou non fonctionner suivant vos modèles est d'afficher seulement les faces arrière dans la texture d'ombre. Cela force à utiliser une scène spécifique (voir la prochaine section - Peter Panning) avec les murs fins. Mais au moins, l'acné sera sur les surfaces qui sont dans l'ombre (on la verra donc pas) :
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/shadowmapping-backfaces.png)
 
+Lors du rendu de la texture d'ombre, supprime les faces avant des triangles :
 
-When rendering the shadow map, cull front-facing triangles :
 {% highlight cpp linenos %}
         // We don't use bias in the shader, but instead we draw back faces,
         // which are already separated from the front faces by a small distance
         // (if your geometry is made this way)
         glCullFace(GL_FRONT); // Cull front-facing triangles -> draw only back-facing triangles
 {% endhighlight %}
-And when rendering the scene, render normally (backface culling)
+
+Et ensuite, affiche la scène avec un rendu normal (suppression des faces arrière) :
+
 {% highlight cpp linenos %}
          glCullFace(GL_BACK); // Cull back-facing triangles -> draw only front-facing triangles
 {% endhighlight %}
-This method is used in the code, in addition to the bias.
+
+Cette méthode est utilisée dans le code, en plus du biais.
 
 ##Peter Panning
 
-We have no shadow acne anymore, but we still have this wrong shading of the ground, making the wall to look as if it's flying (hence the term "Peter Panning"). In fact, adding the bias made it worse.
+On n'a plus d'acné d'ombrages, mais on a toujours un mauvais ombrage sur le sol, faisant comme si les murs volaient (d'où le terme « Peter Panning »). En fait, en ajoutant le biais, c'est devenu pire.
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/PeterPanning.png)
 
+Celui-ci est très facile à corriger : évite tout simplement les géométries sans épaisseurs. Ça a deux avantages :
 
-This one is very easy to fix : simply avoid thin geometry. This has two advantages :
+* Premièrement, ça corrige le « Peter Panning » : si ta géométrie est plus épaisse que le biais, tout est bon
+* Deuxièmement, tu peux réactiver la suppression des faces arrière lors du rendu de la texture de lumière, car maintenant, il y a un polygone du mur qui fait face à la lumière et donc cache l'autre côté, qui n'aurait pas été affiché avec la suppression des faces arrière.
 
-* First, it solves Peter Panning : it the geometry is more deep than your bias, you're all set.
-* Second, you can turn on backface culling when rendering the lightmap, because now, there is a polygon of the wall which is facing the light, which will occlude the other side, which wouldn't be rendered with backface culling.
-
-The drawback is that you have more triangles to render ( two times per frame ! )
+L'inconvénient est que tu as plus de triangles à afficher (deux fois par image !).
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/NoPeterPanning.png)
 
-
 ##Aliasing
 
-Even with these two tricks, you'll notice that there is still aliasing on the border of the shadow. In other words, one pixel is white, and the next is black, without a smooth transition inbetween.
+Mais avec ces deux astuces, tu vas remarquer qu'il y a toujours du crénelage sur le bord de l'ombre. En d'autres termes, un pixel est blanc et le prochain noir, sans même de transition douce entre les deux.
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/Aliasing.png)
 
-
 ###PCF
 
-The easiest way to improve this is to change the shadowmap's sampler type to *sampler2DShadow*. The consequence is that when you sample the shadowmap once, the hardware will in fact also sample the neighboring texels, do the comparison for all of them, and return a float in [0,1] with a bilinear filtering of the comparison results.
+La façon la plus simple d'améliorer ça est de changer le type d'échantillonnage de la texture d'ombre en shadow2DShadow. La conséquence est que, lorsque tu échantillonnes une fois, le matériel fera en réalité aussi un échantillonnage des pixels voisins, une comparaison entre eux et retournera un nombre à virgule flottante compris dans [0, 1] avec un filtrage bilinéaire du résultat de la comparaison.
 
-For instance, 0.5 means that 2 samples are in the shadow, and 2 samples are in the light.
+Par exemple, 0.5 signifie que deux échantillons sont dans l'ombre et deux échantillons dans la lumière.
 
-Note that it's not the same than a single sampling of a filtered depth map ! A comparison always returns true or false; PCF gives a interpolation of 4 "true or false".
+> Ce n'est pas la même chose qu'un échantillonnage simple d'une texture de profondeur filtrée ! Une comparaison retourne toujours vrai ou faux ; PCF donne une interpolation de quatre « vrai ou faux ».
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/PCF_1tap.png)
 
+Comme vous pouvez le voir, les bordures de l'ombre sont douces, mais la texture d'ombre est toujours visible.
 
-As you can see, shadow borders are smooth, but shadowmap's texels are still visible.
+###Échantillonnage de Poisson
 
-###Poisson Sampling
+Une méthode simple pour le gérer est d'échantillonner la texture d'ombre N fois au lieu d'une seule. En combinaison avec le PCF, cela peut donner de très bons résultats, même avec un petit N. Voici le code pour quatre échantillonnages :
 
-An easy way to deal with this is to sample the shadowmap N times instead of once. Used in combination with PCF, this can give very good results, even with a small N. Here's the code for 4 samples :
 {% highlight glsl linenos cssclass=highlightglslfs %}
 for (int i=0;i<4;i++){
   if ( texture( shadowMap, ShadowCoord.xy + poissonDisk[i]/700.0 ).z  <  ShadowCoord.z-bias ){
@@ -301,7 +303,9 @@ for (int i=0;i<4;i++){
   }
 }
 {% endhighlight %}
-poissonDisk is a constant array defines for instance as follows :
+
+poissonDisk est un tableau constant qui peut être défini comme suit :
+
 {% highlight glsl linenos cssclass=highlightglslfs %}
 vec2 poissonDisk[4] = vec2[](
   vec2( -0.94201624, -0.39906216 ),
@@ -310,39 +314,39 @@ vec2 poissonDisk[4] = vec2[](
   vec2( 0.34495938, 0.29387760 )
 );
 {% endhighlight %}
-This way, depending on how many shadowmap samples will pass, the generated fragment will be more or less dark :
+
+De cette façon, suivant le nombre d'échantillon de la shadow map qui passe le test, le fragment généré sera plus ou moins sombre :
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/SoftShadows.png)
 
-
-The 700.0 constant defines how much the samples are "spread". Spread them too little, and you'll get aliasing again; too much, and you'll get this :* banding *(this screenshot doesn't use PCF for a more dramatic effect, but uses 16 samples instead)*
-*
+La constante 700.0 définit la « diffusion » des échantillons. Si la diffusion est trop petite, on obtient du *crénelage* ; si la diffusion est trop importante, on a alors des *bandes* (cette capture n'utilise pas PCF pour accentuer l'effet, mais utilise 16 échantillons à la place).
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/SoftShadows_Close.png)
 
-
- 
-
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/SoftShadows_Wide.png)
 
+###Échantillonnage de Poisson stratifié
 
-###Stratified Poisson Sampling
+On peut supprimer cet effet de bande en choisissant différents échantillons pour chaque pixel. Il y a deux méthodes principales : l'échantillonnage de Poisson *stratifié* ou de Poisson *tourné*. Le *stratifié* choisit différents échantillons, le *tourné* toujours les mêmes, mais avec une rotation aléatoire afin qu'ils semblent différents. Dans ce tutoriel, je vais expliquer seulement la version stratifiée.
 
-We can remove this banding by choosing different samples for each pixel. There are two main methods : Stratified Poisson or Rotated Poisson. Stratified chooses different samples; Rotated always use the same, but with a random rotation so that they look different. In this tutorial I will only explain the stratified version.
+La seule différence avec la version précédente est que l'on indexe poissonDisk avec un indice aléatoire :
 
-The only difference with the previous version is that we index *poissonDisk* with a random index :
 {% highlight glsl linenos cssclass=highlightglslfs %}
     for (int i=0;i<4;i++){
         int index = // A random number between 0 and 15, different for each pixel (and each i !)
         visibility -= 0.2*(1.0-texture( shadowMap, vec3(ShadowCoord.xy + poissonDisk[index]/700.0,  (ShadowCoord.z-bias)/ShadowCoord.w) ));
     }
 {% endhighlight %}
-We can generate a random number with a code like this, which returns a random number in [0,1[ :
+
+On peut générer un nombre aléatoire avec une ligne comme celle-ci, qui retourne un nombre entre [0, 1[ :
+
 {% highlight glsl linenos cssclass=highlightglslfs %}
     float dot_product = dot(seed4, vec4(12.9898,78.233,45.164,94.673));
     return fract(sin(dot_product) * 43758.5453);
 {% endhighlight %}
-In our case, seed4 will be the combination of i (so that we sample at 4 different locations) and ... something else. We can use gl_FragCoord ( the pixel's location on the screen ), or Position_worldspace :
+
+Dans notre cas, seed4 sera une combinaison de i (faisant que l'on échantillonne à quatre emplacements différents) et ... quelque chose d'autre. On peut utiliser gl_FragCoord (l'emplacement du pixel sur l'image) ou Position_worldspace :
+
 {% highlight glsl linenos cssclass=highlightglslfs %}
         //  - A random sample, based on the pixel's screen location.
         //    No banding, but the shadow moves with the camera, which looks weird.
@@ -351,90 +355,92 @@ In our case, seed4 will be the combination of i (so that we sample at 4 differen
         //    The position is rounded to the millimeter to avoid too much aliasing
         //int index = int(16.0*random(floor(Position_worldspace.xyz*1000.0), i))%16;
 {% endhighlight %}
-This will make patterns such as in the picture above disappear, at the expense of visual noise. Still, a well-done noise is often less objectionable than these patterns.
+
+Cela fera que les motifs de l'image ci-dessus vont disparaître, au détriment d'un bruit visuel. Mais au final un bruit correctement distribué soit souvent moins désagréable que les motifs précédents.
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/PCF_stratified_4tap.png)
 
+Regarde le fichier [tutorial16/ShadowMapping.fragmentshader](https://github.com/opengl-tutorials/ogl/blob/master/tutorial16_shadowmaps/ShadowMapping.fragmentshader) pour les trois exemples d'implémentation.
 
-See tutorial16/ShadowMapping.fragmentshader for three example implementions.
+#Aller plus loin
 
-#Going further
-
-Even with all these tricks, there are many, many ways in which our shadows could be improved. Here are the most common :
+Même avec toutes ces astuces, il reste de nombreuses, très nombreuses méthodes pour améliorer tes ombres. Voici les plus répandues :
 
 ##Early bailing
 
-Instead of taking 16 samples for each fragment (again, it's a lot), take 4 distant samples. If all of them are in the light or in the shadow, you can probably consider that all 16 samples would have given the same result : bail early. If some are different, you're probably on a shadow boundary, so the 16 samples are needed.
+Au lieu de prendre seize échantillons pour chaque fragment (encore une fois, c'est beaucoup), on prend quatre échantillons distants. S'ils sont tous dans la lumière ou dans l'ombre, tu peux sûrement considérer que les seize échantillons auraient donné le même résultat : tu peux arrêter tout de suite (bail early). Si certains sont différents, tu es probablement sur une bordure d'ombre, donc les seize sont nécessaires.
 
 ##Spot lights
 
-Dealing with spot lights requires very few changes. The most obvious one is to change the orthographic projection matrix into a perspective projection matrix :
+La gestion des lumières de type "spots" nécessite quelques petites modifications. La plus évidente est de changer la matrice de projection orthographique pour une matrice de projection en perspective :
+
 {% highlight cpp linenos %}
 glm::vec3 lightPos(5, 20, 20);
 glm::mat4 depthProjectionMatrix = glm::perspective<float>(45.0f, 1.0f, 2.0f, 50.0f);
 glm::mat4 depthViewMatrix = glm::lookAt(lightPos, lightPos-lightInvDir, glm::vec3(0,1,0));
 {% endhighlight %}
-same thing, but with a perspective frustum instead of an orthographic frustum. Use texture2Dproj to account for perspective-divide (see footnotes in tutorial 4 - Matrices)
 
-The second step is to take into account the perspective in the shader. (see footnotes in tutorial 4 - Matrices. In a nutshell, a perspective projection matrix actually doesn't do any perspective at all. This is done by the hardware, by dividing the projected coordinates by w. Here, we emulate the transformation in the shader, so we have to do the perspective-divide ourselves. By the way, an orthographic matrix always generates homogeneous vectors with w=1, which is why they don't produce any perspective)
+Même chose, mais avec une pyramide tronquée de matrice de perspective à la place de celle de la matrice orthographique. Utilise texture2Dproj pour prendre en compte la division de la perspective (voir les notes de bas de pages du troisième tutoriel sur les matrices).
 
-Here are two way to do this in GLSL. The second uses the built-in textureProj function, but both methods produce exactly the same result.
+La seconde étape consiste à prendre en compte la perspective dans le shader (voir les notes de bas de pages du troisième tutoriel sur les matrices aussi). En résumé, une matrice de projection perspective n'a en fait pas besoin d'effectuer de perspective. Cela est effectué par le matériel, lors de la division avec la coordonnée projetée w. Ici, on émule la transformation dans le shader, donc on doit effectuer la division de la perspective. D'ailleurs, une matrice orthographique génère toujours des vecteurs homogènes avec w = 1, faisant qu'elle ne produit jamais de perspective.
+
+Voici deux façons de faire cela en GLSL. La seconde utilise la fonction du langage textureProj, mais les deux méthodes produisent le exactement le même résultat.
+
 {% highlight glsl linenos cssclass=highlightglslfs %}
 if ( texture( shadowMap, (ShadowCoord.xy/ShadowCoord.w) ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 if ( textureProj( shadowMap, ShadowCoord.xyw ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 {% endhighlight %}
  
+##Lumières ponctuelles
 
-##Point lights
+Même chose, mais avec une cubemap (carte cubique) de profondeur. Une cubemap est un ensemble de six textures, une pour chaque côté du cube. De plus, l'accès ne se fait pas avec des coordonnées UV standard, mais avec un vecteur 3D représentant une direction.
 
-Same thing, but with depth cubemaps. A cubemap is a set of 6 textures, one on each side of a cube; what's more, it is not accessed with standard UV coordinates, but with a 3D vector representing a direction.
-
-The depth is stored for all directions in space, which make possible for shadows to be cast all around the point light.
+La profondeur est conservée pour chaque direction dans l'espace, rendant possible la projection des ombres tout autour de la lumière ponctuelle.
 
 ##Combination of several lights
 
-The algorithm handles several lights, but keep in mind that each light requires an additional rendering of the scene in order to produce the shadowmap. This will require an enormous amount of memory when applying the shadows, and you might become bandwidth-limited very quickly.
+L'algorithme gère plusieurs lumières, mais garde à l'esprit que chaque lumière nécessite un rendu supplémentaire de la scène afin de produire la carte d'ombres. Cela nécessitera une quantité énorme de mémoire lors de l'application des ombres et tu peux être très rapidement limité par la bande passante.
 
 ##Automatic light frustum
 
-In this tutorial, the light frustum hand-crafted to contain the whole scene. While this works in this restricted example, it should be avoided. If your map is 1Km x 1Km, each texel of your 1024x1024 shadowmap will take 1 square meter; this is lame. The projection matrix of the light should be as tight as possible.
+Dans ce tutoriel, la zone de lumière est produite à la main pour contenir toute la scène. Bien que cela fonctionne dans cet exemple restreint, c'est à éviter. Si ta carte s'étend sur 1 km x 1 km, chaque texel de ta shadow map 1024x1024 prendra un mètre carré, ce qui est honteux. La matrice de projection de la lumière doit être aussi compacte que possible.
 
-For spot lights, this can be easily changed by tweaking its range.
+Pour les lumières spots, cela peut être facilement modifié en jouant sur sa portée.
 
-Directional lights, like the sun, are more tricky : they really *do* illuminate the whole scene. Here's a way to compute a the light frustum :
+Pour les lumières directionnelles, comme le soleil, c'est plus compliqué : elles illuminent réellement toute la scène. Voici une façon de calculer cette pyramide tronquée :
 
-Potential Shadow Receivers, or PSRs for short, are objects which belong at the same time to the light frustum, to the view frustum, and to the scene bounding box. As their name suggest, these objects are susceptible to be shadowed : they are visible by the camera and by the light.
+1. Les Potential Shadow Receivers, ou PSR, sont des objets qui appartiennent en même temps à la zone de lumière, à celle de la vue et à la boîte englobante de la scène. Comme leur nom le suggère, ces objets sont susceptibles d'être dans l'ombre : ils sont visibles par la caméra et la lumière ;
 
-Potential Shadow Casters, or PCFs, are all the Potential Shadow Receivers, plus all objects which lie between them and the light (an object may not be visible but still cast a visible shadow).
+2. Les Potential Shadow Casters, ou PSC, sont tous les Potential Shadow Receivers, plus tous les objets qui se tiennent entre eux et la lumière (un objet peut ne pas être visible mais produire une ombre visible).
 
-So, to compute the light projection matrix, take all visible objects, remove those which are too far away, and compute their bounding box; Add the objects which lie between this bounding box and the light, and compute the new bounding box (but this time, aligned along the light direction).
+Donc, pour calculer la matrice de projection de la lumière, prend tous les objets visibles, retire ceux qui sont trop loin et calcule leur boîte englobante. Ajoute les objets se tenant entre la boîte englobante et la lumière, et calcule la nouvelle boîte englobante (mais cette fois, alignée suivant la direction de la lumière).
 
-Precise computation of these sets involve computing convex hulls intersections, but this method is much easier to implement.
+Le calcul précis de ces ensembles implique le calcul d'intersections d'enveloppes convexes, mais cette méthode est bien plus facile à implémenter.
 
-This method will result in popping when objects disappear from the frustum, because the shadowmap resolution will suddenly increase. Cascaded Shadow Maps don't have this problem, but are harder to implement, and you can still compensate by smoothing the values over time.
+Cette méthode provoquera des apparitions soudaines lorsque les objets disparaîtrons de la zone, car la résolution de la texture d'ombre diminuera brusquement. Les textures d'ombre en cascade ne souffrent pas de ce problème, mais sont plus compliquées à implémenter et tu peux toujours compenser cela en adoucissant le redimensionnement de la texture dans le temps.
 
-##Exponential shadow maps
+##Shadow maps exponentielles
 
-Exponential shadow maps try to limit aliasing by assuming that a fragment which is in the shadow, but near the light surface, is in fact "somewhere in the middle". This is related to the bias, except that the test isn't binary anymore : the fragment gets darker and darker when its distance to the lit surface increases.
+Les cartes d'ombres exponentielles tentent de limiter le crénelage en supposant qu'un fragment se situant dans l'ombre, mais proche de la surface éclairée, est en fait « quelque part entre les deux ». Cela est lié au biais, sauf que le test n'est plus binaire : le fragment devient plus sombre lorsque la distance de la surface éclairée augmente.
 
-This is cheating, obviously, and artefacts can appear when two objects overlap.
+C'est de la triche, évidemment, et des artefacts peuvent apparaître lorsque deux objets se recouvrent.
 
-##Light-space perspective Shadow Maps
+##Light-space perspective shadow maps
 
-LiSPSM tweaks the light projection matrix in order to get more precision near the camera. This is especially important in case of "duelling frustra" : you look in a direction, but a spot light "looks" in the opposite direction. You have a lot of shadowmap precision near the light, i.e. far from you, and a low resolution near the camera, where you need it the most.
+Les LiSPSM ajustent la matrice de projection de la lumière afin d'obtenir une plus grande précision pour les objets proches de la caméra. C'est très important dans les cas de « duelling frustra » : tu regardes dans une direction, mais la lumière spot « semble » dans la direction opposée. Vous avez une grande précision pour la carte d'ombres près de la lumière, soit loin de toi et une faible résolution proche de la caméra, là où tu en as le plus besoin.
 
-However LiSPM is tricky to implement. See the references for details on the implementation.
+Par contre, les LiSPSM sont délicates à implémenter. Lis les références pour des détails d'implémentation.
 
-##Cascaded shadow maps
+##Shadow maps en cascade
 
-CSM deals with the exact same problem than LiSPSM, but in a different way. It simply uses several (2-4) standard shadow maps for different parts of the view frustum. The first one deals with the first meters, so you'll get great resolution for a quite little zone. The next shadowmap deals with more distant objects. The last shadowmap deals with a big part of the scene, but due tu the perspective, it won't be more visually important than the nearest zone.
+Les CSM gèrent le même problème que les LiSPSM mais d'une manière différente. Elles utilisent simplement plusieurs (2-4) cartes d'ombres standards pour les différentes parties de la zone vue. La première gère les premiers mètres, donc tu vas obtenir une bonne résolution pour une petite zone. La prochaine carte d'ombres gère les objets plus loin. La dernière carte d'ombres gère la grosse partie de la scène, mais à cause de la perspective, elle ne sera pas aussi importante visuellement que la zone la plus proche.
 
-Cascarded shadow maps have, at time of writing (2012), the best complexity/quality ratio. This is the solution of choice in many cases.
+Les cartes d'ombres en cascade ont, au moment de l'écriture (2012), le meilleur compromis complexité/qualité. C'est *la solution de choix* dans bien des cas.
 
 #Conclusion
 
-As you can see, shadowmaps are a complex subject. Every year, new variations and improvement are published, and to day, no solution is perfect.
+Comme tu peux le voir, les shadow maps sont un sujet compliqué. Chaque année, de nouvelles variations et améliorations sont publiées, et aujourd'hui (2012), aucune solution n'est parfaite. (PS: C'est toujours vrai en 2015)
 
-Fortunately, most of the presented methods can be mixed together : It's perfectly possible to have Cascaded Shadow Maps in Light-space Perspective, smoothed with PCF... Try experimenting with all these techniques.
+Heureusement, les solutions présentées peuvent être mélangées : il est parfaitement possible d'avoir des shadow maps en cascade dans une perspective dans l'espace lumière, adoucie avec le PCF... Essaye d'expérimenter toutes ces techniques.
 
-As a conclusion, I'd suggest you to stick to pre-computed lightmaps whenever possible, and to use shadowmaps only for dynamic objects. And make sure that the visual quality of both are equivalent : it's not good to have a perfect static environment and ugly dynamic shadows, either.
+Comme conclusion, je vous suggère de rester avec les lightmap précalculées autant que possible et d'utiliser les shadow maps seulement pour les objets dynamiques. Et assures-toi que la qualité visuelle des deux soit équivalente : il n'est pas bon d'avoir des ombres statiques parfaites et des ombres dynamiques atroces.

@@ -345,8 +345,7 @@ This will make patterns such as in the picture above disappear, at the expense o
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/PCF_stratified_4tap.png)
 
-
-See tutorial16/ShadowMapping.fragmentshader for three example implementions.
+See [tutorial16/ShadowMapping.fragmentshader](https://github.com/opengl-tutorials/ogl/blob/master/tutorial16_shadowmaps/ShadowMapping.fragmentshader) for three example implementions.
 
 #Going further
 
