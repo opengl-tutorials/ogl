@@ -25,7 +25,7 @@ In each RGB texel is encoded a XYZ vector : each colour component is between 0 a
 {% highlight c linenos %}
 normal = (2*color)-1 // on each component
 {% endhighlight %}
-The texture has a general blue tone because overall, the normal is towards the "outside of the surface"; as usual, X is right and Y is up.
+The texture has a general blue tone because overall, the normal is towards the "outside of the surface". As usual, X is right in the plane of the texture, Y is up (again in the plane of the texture), thus  given the right hand rule Z point to the "outside" of the plane of the texture.
 
 This texture is mapped just like the diffuse one; The big problem is how to convert our normal, which is expressed in the space each individual triangle ( tangent space, also called image space), in model space (since this is what is used in our shading equation).
 
