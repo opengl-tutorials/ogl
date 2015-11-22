@@ -8,7 +8,7 @@ highlighter: pygments
 safe: true
 lsi: false
 source:      .
-languages_iso: [en, zh, ja, ru. fr]
+languages_iso: [en, zh, ja, ru, fr]
 languages: [en, cn, jp, ru, fr]
 languages_names: [english, chinese, japanese, russian, français]
 # Build settings
