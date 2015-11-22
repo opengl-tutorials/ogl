@@ -11,7 +11,7 @@ tags: []
 language: fr
 ---
 
-Cette technique n'est pas vraiment conseillée, mais c'est une méthode facile et rapide pour ajouter un picking[^1] simple. Dans tous les cas, évite d'utiliser cela dans les jeux, car cela peut provoquer une chute de FPS. Toutefois, si tu as une simulation et que tu ne te soucie pas des performances liées au picking, cette technique peut être la solution parfaite.
+Cette technique n'est pas vraiment conseillée, mais c'est une méthode facile et rapide pour ajouter un picking[^picking] simple. Dans tous les cas, évite d'utiliser cela dans les jeux, car cela peut provoquer une chute de FPS. Toutefois, si tu as une simulation et que tu ne te soucie pas des performances liées au picking, cette technique peut être la solution parfaite.
 
 Le code source pour ce tutoriel est disponible dans le fichier au nom lourd de sens : [misc05_picking/misc05_picking_slow_easy.cpp](https://github.com/opengl-tutorials/ogl/blob/master/misc05_picking/misc05_picking_slow_easy.cpp).
 
@@ -189,6 +189,6 @@ Bien que cela ne soit pas recommandé, cette technique peut être vraiment utile
 
 Si finalement tu utilises cette technique et que tu veux obtenir plusieurs points dans une même image, tu dois obtenir ces points en une seule fois. Par exemple, si tu veux gérer cinq points de toucher, ne dessinez pas cinq fois la scène !
 
-[^1] *Picker* c'est détecter quel objet se trouve sous le pointeur de la souris. Le *picking* c'est donc la *détection de l'objet sous le pointeur de la souris*
+[^picking]: *Picker* c'est détecter quel objet se trouve sous le pointeur de la souris. Le *picking* c'est donc la *détection de l'objet sous le pointeur de la souris*
 
  

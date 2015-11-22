@@ -12,9 +12,9 @@ tags: []
 
 This technique is not really recommended, but it's an easy and fast way to add simple picking. By all means, avoid using this in a game, since it might introduce noticeable framerate drops. However, if you have some kind of simulation and you don't really care about picking performance, this might the perfect option.
 
-Source code for this tutorial is available in *misc05_picking/misc05_picking_slow_easy.cpp*, which is a quite meaningful name.
+Source code for this tutorial is available in [misc05_picking/misc05_picking_slow_easy.cpp](https://github.com/opengl-tutorials/ogl/blob/master/misc05_picking/misc05_picking_slow_easy.cpp), which is a quite meaningful name.
 
-Basic idea
+#Basic idea
 
 The idea behind this technique is to render the scene as usual, but instead of using a nice shading, you render each mesh with a specific and unique color.
 
