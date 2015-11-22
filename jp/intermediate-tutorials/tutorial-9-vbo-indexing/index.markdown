@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: 'Tutorial 9 : VBO Indexing'
+title: 'チュートリアル9：VBOインデックス'
 date: '2011-05-12 19:21:49 +0200'
 date_gmt: '2011-05-12 19:21:49 +0200'
 categories: [tuto]
@@ -11,54 +11,54 @@ tags: []
 language: jp
 ---
 
-#The principle of indexing
+#インデックスの原理
 
-Until now, when building your VBO, we always duplicated our vertices whenever two triangles shared an edge.
+これまでVBOを構築するとき、二つの三角形が一辺を共有していたとしても、頂点を重複して作成していました。
 
-In this tutorial, we introduce indexing, which enables to reuse the same vertex over and over again. This is done with an *index buffer*.
+このチュートリアルでは、インデックスを導入します。インデックスにより同じ頂点を何度でも再利用できるようになります。これは*インデックスバッファ*によって行われます。
 
 ![]({{site.baseurl}}/assets/images/tuto-9-vbo-indexing/indexing1.png)
 
 
-The index buffer contains integers, three for each triangle in the mesh, which reference the various *attribute buffers* (position, colour, UV coordinates, other UV coordinates, normal, ...). It's a little bit like in the OBJ file format, with one huge difference : there is only ONE index buffer. This means that for a vertex to be shared between two triangles, all attributes must be the same.
+インデックスバッファは複数の整数を持ちます。メッシュ内の各三角形ごとに3つ持ちます。インデックスバッファは様々な*属性のバッファ*を参照します。（頂点、色、UV座標、その他のUV座標、法線、…）これはOBJファイルのフォーマットに少し似ていますが、決定的に違うことは一つのインデックスバッファしかないことです。これは、二つの三角形間で共有されている頂点のすべての属性が同じでなければならないことを意味しています。
 
-#Shared vs Separate
+#共有と分離
 
-Let's take the example of the normals. In this figure, the artist who created these two triangle probably wanted them to represent a smooth surface. We can thus blend the normals of the two triangle into a single vertex normal. For visualization purposes, I added a red line which represents the aspect of the smooth surface.
+法線を例にとって考えてみましょう。この図では、これらの二つの三角形を作った人はきっとスムーズな表面を表現することを望んでいるでしょう。だから一つの頂点の二法線を一つにまとめました。視覚化のため、スムーズな面を表現するために赤い線を追加しました。
 
 ![]({{site.baseurl}}/assets/images/tuto-9-vbo-indexing/goodsmooth.png)
 
 
-In this second figure however, the artist visibly wanted a "seam", a rough edge. But if we merge the normals, this means that the shader will smoothly interpolate as usual and create a smooth aspect just like before :
+一方で、この二つ目の図ではとがったように見せたいはずです。しかし法線を一つにしてしまうと、前の例と同様に、シェーダが補間してスムーズな面となってしまいます。
 
 ![]({{site.baseurl}}/assets/images/tuto-9-vbo-indexing/badmooth.png)
 
 
-So in this case it's actually better to have two different normals, one for each vertex. The only way to do this in OpenGL is to duplicate the whole vertex, with its whole set of attributes.
+だからこのケースでは二つの異なる法線を使うほうが良いでしょう。これをOpenGLで行うためには、全頂点を属性のセットともに重複して作成するしかありません。
 
 ![]({{site.baseurl}}/assets/images/tuto-9-vbo-indexing/spiky.png)
 
 
-#Indexed VBO in OpenGL
+#OpenGLでのインデックスVBO
 
-Using indexing is very simple. First, you need to create an additional buffer, which you fill with the right indices. The code is the same as before, but now it's an ELEMENT_ARRAY_BUFFER, not an ARRAY_BUFFER.
+インデックスは簡単に使うことができます。まず正しいインデックスで満たした追加のバッファを作ります。コードは以前と同じですが、ARRAY_BUFFERではなくELEMENT_ARRAY_BUDFFERです。
 {% highlight cpp linenos %}
 std::vector<unsigned int> indices;
 
-// fill "indices" as needed
+// 必要に応じて"インデックス"を満たす
 
-// Generate a buffer for the indices
+// インデックス用のバッファを作る
  GLuint elementbuffer;
  glGenBuffers(1, &elementbuffer);
  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 {% endhighlight %}
-and to draw the mesh, simply replace glDrawArrays by this :
+そしてメッシュを描画するために、このようにglDrawArraysを単純に置き換えます。
 {% highlight cpp linenos %}
-// Index buffer
+// インデックスバッファ
  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 
- // Draw the triangles !
+ // 三角形を描く！
  glDrawElements(
      GL_TRIANGLES,      // mode
      indices.size(),    // count
@@ -66,27 +66,27 @@ and to draw the mesh, simply replace glDrawArrays by this :
      (void*)0           // element array buffer offset
  );
 {% endhighlight %}
-(quick note : it's better to use "unsigned short" than "unsigned int", because it takes less memory, which also makes it faster)
+（メモ：unsigned intの代わりにunsigned shortを使うほうが、メモリの節約にも高速化にもつながります。）
 
-#Filling the index buffer
+#インデックスバッファを満たす
 
-Now we actually have a problem. As I said before, OpenGL can only use one index buffer, whereas OBJ (and some other popular 3D formats like Collada) use one index buffer *by attribute*. Which means that we somehow have to convert from N index buffers to 1 index buffer.
+インデックスバッファを満たすここで問題があります。前に言ったように、OBJ（あるいはColladaなどの他の3Dフォーマット）は*属性ごと*にひとつのインデックスバッファを使っていますが、OpenGLは一つのインデックスバッファしか使えません。このためどうにかしてN個のインデックスバッファを一つのインデックスバッファにまとめなければなりません。
 
-The algorithm to do this is as follows :
+これを行うアルゴリズムは以下のとおりです。
 {% highlight text linenos %}
-For each input vertex
-    Try to find a similar ( = same for all attributes ) vertex between all those we already output
-    If found :
-        A similar vertex is already in the VBO, use it instead !
-    If not found :
-        No similar vertex found, add it to the VBO
+各頂点に対して
+    すでに出力したすべての頂点と比較してまったく同じ属性を持つ頂点を探す。
+    存在するならば :
+        既にVBO内にあるので、そっちを使います！
+    存在しないならば :
+        VBOに頂点を追加します。
 {% endhighlight %}
-The actual C++ code can be found in common/vboindexer.cpp. It's heavily commented so if you understand the algorithm above, it should be all right.
+実際のC++コードはcommon/vboindexer.cppにあります。そこにはたくさんのコメントがあるので、上記のアルゴリズムを理解したなら、それで良いでしょう。
 
-The criterion for similarity is that vertices' position, UVs and normals should be ** equal. You'll have to adapt this if you add more attributes.
+同じであるということの基準は、頂点の位置・UV・法線が等しいということです。他の属性も入れたければ、これを改造すれば良いでしょう。
 
-Searching a similar vertex is done with a lame linear search for simplicity. A std::map would be more appropriate for real use.
+同じ頂点を探す方法は単純に線形探索で行いました。std::mapのほうが実際には適しているでしょう。
 
-#Extra : the FPS counter
+#その他：FPSカウンター
 
-It's not directly related to indexing, but it's a good moment to have a look at [the FPS counter](http://www.opengl-tutorial.org/miscellaneous/an-fps-counter/) because we can eventually see the speed improvement of indexing. Other performance tools are available in [Tools - Debuggers](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/#header-4).
+インデックスには直接関係しませんが、[FPSカウンター](http://www.opengl-tutorial.org/miscellaneous/an-fps-counter/) を見ておくのも良いでしょう。なぜならインデックスのスピードの改善を見られるからです。他のパフォーマンスツールは [Tools - Debuggers](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/#header-4).で利用可能です。
