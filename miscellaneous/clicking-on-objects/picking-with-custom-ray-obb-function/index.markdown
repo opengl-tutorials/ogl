@@ -50,7 +50,7 @@ Let's put this in practice.
 
 #Algorithm implementation
 
-(full source code is available in Misc05/misc05_picking_custom.cpp)
+(full source code is available in [Misc05/misc05_picking_custom.cpp](https://github.com/opengl-tutorials/ogl/blob/master/misc05_picking/misc05_picking_custom.cpp))
 
 Our Ray - OBB intersection function will look like this :
 {% highlight cpp linenos %}

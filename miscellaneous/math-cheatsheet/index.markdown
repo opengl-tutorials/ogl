@@ -117,4 +117,5 @@ example for a translation matrix :
 
 
 ... but in your shaders, you can also represent your vectors in tangent space. And in image-space when you do post-effects.
-<div id="_mcePaste" class="mcePaste" style="position: absolute; left: -10000px; top: 1254px; width: 1px; height: 1px; overflow: hidden;">res.x = A.x + B.x</div>
+
+res.x = A.x + B.x
