@@ -18,7 +18,7 @@ In this tutorial, we will use the Bullet Physics Engine, but the concepts are ex
 
 #Bullet integration
 
-Lots of tutorials explain how to integrate Bullet; in particular, the Bullet's wiki is very well done.
+Lots of tutorials explain how to integrate Bullet; in particular, the [Bullet's wiki](http://bulletphysics.org/mediawiki-1.5.8/index.php/Main_Page) is very well done.
 {% highlight cpp linenos %}
 // Initialize Bullet. This strictly follows http://bulletphysics.org/mediawiki-1.5.8/index.php/Hello_World, 
 // even though we won't use most of this stuff.
