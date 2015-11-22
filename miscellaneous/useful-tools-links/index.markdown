@@ -63,13 +63,11 @@ tags: []
 
 ##Windowing & misc
 
-
 * [GLFW ](http://www.glfw.org/), the one we use
 * GLUT, the oldest. Not maintained, horrible license. Not recommended.
 * [FreeGlut](http://freeglut.sourceforge.net/), same API, but Open Source.
 * [SDL](http://www.libsdl.org/) I think this one is weird but some people like it.
 * [SFML](http://www.sfml-dev.org/index-fr.php). Includes a coffee machine, a washing machine, and a cellular.
-
 
 ##Extension loading
 
@@ -81,17 +79,14 @@ If unsure, simply use the GLEW version included in the source code.
 * [GLEE ](http://elf-stone.com/glee.php)I hear it's not bad either
 * [gl3w ](https://github.com/skaslev/gl3w/wiki). A Python scripts that generates a C++ file.
 
-
 ##Math library
-
 
 * [GLM](http://glm.g-truc.net/), the one we use. Very complete. Directly OpenGL and CUDA compatible.
 * [Bullet's Vectormath](http://bulletphysics.com/Bullet/BulletFull/) Never used it but it seems to be SIMD'ed ( = faster, even if you seldom make big computations on the CPU side )
 * [Boost.ublas ](http://www.boost.org/). Heavyweight. I don't recommend it for OpenGL.
-
+* [MathFu](https://google.github.io/mathfu/) Google's tak on math libraries, SIMD optimised.
 
 ##Image loading
-
 
 * [stbimage](http://nothings.org/) A single .c file to include to your project, and you can load jpeg, bmp and png files !!!
 * [SOIL ](http://www.lonesock.net/soil.html)I recommend this one. Based on stbimage, provides handy functions for use with OpenGL, and a DDS loader.
@@ -101,15 +96,11 @@ If unsure, simply use the GLEW version included in the source code.
 * libjpg The usual library for .jpg loading. Quite hard to use, but plenty of examples on the net.
 * libpng Same thing here.
 
-
 ##Static objects loading
-
 
 * [ASSIMP ](http://assimp.sourceforge.net/)
 
-
 ##Articulated objects loading & stuff
-
 
 * Any Quake III or Quake IV loader around
 * [Cal3D](http://gna.org/projects/cal3d/)

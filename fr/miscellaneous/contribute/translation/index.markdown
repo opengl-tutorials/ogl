@@ -24,7 +24,7 @@ Trouve la page que tu veux éditer, modifie la, et envoie la nous simplement **p
 >Ensuite va dans le dépôt GitHub, sous la branche *gh-pages*, et tu va trouver le fichier *index.markdown* dans le même chemin :
 >[https://github.com/opengl-tutorials/ogl/tree/gh-pages/jp/intermediate-tutorials/tutorial-9-vbo-indexing](https://github.com/opengl-tutorials/ogl/tree/gh-pages/jp/intermediate-tutorials/tutorial-9-vbo-indexing)
 
-#Tu veux commencer une traduction dans un nouveau langage ?
+#Tu veux commencer une traduction dans un nouveau langage :
 
 Envoie nous un courriel, on va créer les nouvelles pages (avec le contenu en anglais) au bon endroit sur le site. Ensuite il ne te restera plus qu'a faire comme ci-dessus: Editer les fichiers à traduire, et nous les renvoyer par courriel ou par pull request.
 
