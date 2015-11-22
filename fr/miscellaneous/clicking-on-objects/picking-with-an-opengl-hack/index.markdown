@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: 'Cliquer avec un hack OpenGL'
+title: 'Picking avec un hack OpenGL'
 date: '2015-11-22 07:52:18 +0200'
 date_gmt: '2013-05-18 20:43:28 +0200'
 categories: []

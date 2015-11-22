@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: Building your own C application
+title: 'Faire ta propre application en C'
 date: '2015-11-22 13:49:21 +0200'
 categories: []
 order: 50

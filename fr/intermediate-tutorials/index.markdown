@@ -3,7 +3,7 @@ layout: page
 type: section
 status: publish
 published: true
-title: Tutoriaux intermédiares
+title: Tutoriaux intermédiaires
 date: '2015-11-19 21:22:53 +0200'
 categories: []
 tags: []
