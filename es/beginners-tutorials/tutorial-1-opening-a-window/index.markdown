@@ -142,14 +142,14 @@ Bueno, ahora si. Listos? Primero, debemos lidiar con las dependencias : necesita
 {% endhighlight %}
 Primero GLEW. Esto de hecho es un poco de mágia, pero luego lo explicamos.
 {% highlight cpp linenos %}
-// Include GLEW. Always include it before gl.h and glfw.h, since it's a bit magic.
+// Incluya GLEW. Siempre incluyalo antes de gl.h y glfw.h, un poco de magia.
 #include <GL/glew.h>
 {% endhighlight %}
-We decided to let GLFW handle the window and the keyboard, so let's include it too :
+Decidimos dejar que GLFW maneje la ventana y el teclado, asi que lo incluimos :
 {% highlight cpp linenos %}
-// Include GLFW
+// Incluir GLFW
 #include <GL/glfw3.h>
-{% endhighlight %}
+{% endhighlight %} 
 We don't actually need this one right now, but this is a library for 3D mathematics. It will prove very useful soon. There is no magic in GLM, you can write your own if you want; it's just handy. The "using namespace" is there to avoid typing "glm::vec3", but "vec3" instead.
 {% highlight cpp linenos %}
 // Include GLM
