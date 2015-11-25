@@ -150,67 +150,69 @@ Decidimos dejar que GLFW maneje la ventana y el teclado, asi que lo incluimos :
 // Incluir GLFW
 #include <GL/glfw3.h>
 {% endhighlight %} 
-We don't actually need this one right now, but this is a library for 3D mathematics. It will prove very useful soon. There is no magic in GLM, you can write your own if you want; it's just handy. The "using namespace" is there to avoid typing "glm::vec3", but "vec3" instead.
+En realidad no necesitamos esta en este momento, pero una librería para matemáticas 3D. Nos será muy util pronto. No hay magia en GLM, ustes puede escribir la suya propia si desea. Simplemente esta es útil. El "using namespace" esta allí para evitar que debamos escribir "glm::vec3", y escribamos "vec3" en su lugar.
 {% highlight cpp linenos %}
-// Include GLM
+// Incluir GLM
 #include <glm/glm.hpp>
 using namespace glm;
 {% endhighlight %}
-If you cut'n paste all these #include's in playground.cpp, the compiler will complain that there is no main() function. So let's create one :
+Si no puede copiar el código, todo esto está incluído en playground.cpp. 
+El compilador se va a quejar por que no hay una función main(). Creamos una :
 {% highlight cpp linenos %}
 int main(){
 {% endhighlight %}
-First thing to do it to initialize GLFW :
+Lo primero que haremos es inicializar GLFW :
 {% highlight cpp linenos %}
-// Initialise GLFW
+// Inicializar GLFW
 if( !glfwInit() )
 {
-    fprintf( stderr, "Failed to initialize GLFW\n" );
+    fprintf( stderr, "Error al inicializar GLFW\n" );
     return -1;
 }
 {% endhighlight %}
-We can now create our first OpenGL window !
+Ahora podemos crear nuestra primera ventana OpenGL !
 
  
 {% highlight cpp linenos %}
 glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
-glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
+glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // Queremos OpenGL 3.3
 glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
-glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL 
+glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Para hacer feliz a MacOS ; Aunque no debería necesitarse
+glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //No queremos el viejo OpenGL 
 
-// Open a window and create its OpenGL context
-GLFWwindow* window; // (In the accompanying source code, this variable is global)
+//Crear una ventana y su contexto OpenGL
+GLFWwindow* window; // (En el código que viene aqui, esta variable es global)
 window = glfwCreateWindow( 1024, 768, "Tutorial 01", NULL, NULL);
 if( window == NULL ){
-    fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
+    fprintf( stderr, "Falla al abrir una ventana GLFW. Si usted tiene una GPU Intel, esta no es compatible con 3.3. Intente con la versón 2.1 de los tutoriales.\n" );
     glfwTerminate();
     return -1;
 }
-glfwMakeContextCurrent(window); // Initialize GLEW
-glewExperimental=true; // Needed in core profile
+glfwMakeContextCurrent(window); // Inicializar GLEW
+glewExperimental=true; // Se necesita en el perfil de base.
 if (glewInit() != GLEW_OK) {
-    fprintf(stderr, "Failed to initialize GLEW\n");
+    fprintf(stderr, "Falló al inicializar GLEW\n");
     return -1;
 }
 {% endhighlight %}
-Build this and run. A window should appear, and be closed right away. Of course ! We need to wait until the user hits the Escape key :
+Construya este y ejecutelo. Una ventana debe aparecer y se cerrará de inmediato. Debemos hacer que espere hasta que alguien oprima la tecla ESC :
 {% highlight cpp linenos %}
-// Ensure we can capture the escape key being pressed below
+// Capturar la tecla ESC cuando sea presionada
 glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
 do{
-    // Draw nothing, see you in tutorial 2 !
+    // No vamos a pintar nada, nos vemos en el tutorial 2 !
 
-    // Swap buffers
+    // Intercambiar buffers
     glfwSwapBuffers(window);
     glfwPollEvents();
 
-} // Check if the ESC key was pressed or the window was closed
+} // Revisar que la teclar ESC fue presionada y cerrar la ventana
 while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
 glfwWindowShouldClose(window) == 0 );
 {% endhighlight %}
-And this concludes our first tutorial ! In Tutorial 2, you will learn how to actually draw a triangle.
+
+Y así termina el primer tutorial ! En el tutorial 2 usted aprenderá a dibujar un triangulo.
 
 
 
