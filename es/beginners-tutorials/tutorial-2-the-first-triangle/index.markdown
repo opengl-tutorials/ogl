@@ -12,17 +12,17 @@ language: es
 ---
 {:TOC}
 
-This will be another long tutorial.
+Este será otro tutorial largo .
 
-OpenGL 3 makes it easy to write complicated stuff, but at the expense that drawing a simple triangle is actually quite difficult.
+OpenGL 3 hace que sea facil escrbiir las cosas complicadas a cambio de dibujar un solo triangulo de forma un poco complicada.
 
-Don't forget to cut'n paste the code on a regular basis.
+No olvide copiar el código continuamente.
 
-**<span style="color: red">If the program crashes at startup, you're probably running from the wrong directory. Read CAREFULLY the first tutorial on how to configure Visual Studio !</span>**
+**<span style="color: red"> Si el programa no funciona al iniciar, es probable que lo este intentando correr desde la carpeta incorrecta. Lea detenidamente el tutorial 1 y configure correctamente Visual Studio !</span>**
 
-## The VAO
+## El VAO
 
-I won't dig into details now, but you need to create a Vertex Array Object and set it as the current one :
+No vamos a entrar en detalles ahora, pero se necesita crear un arreglo de objetos (Vertex Array Object) y tenerlo como el actual :
 
 {% highlight cpp linenos %}
 GLuint VertexArrayID;
@@ -30,32 +30,33 @@ glGenVertexArrays(1, &VertexArrayID);
 glBindVertexArray(VertexArrayID);
 {% endhighlight %}
 
-Do this once your window is created (= after the OpenGL Context creation) and before any other OpenGL call.
+Haga esto una vez haya creado su ventana (= luego de haber creado el contexto OpenGL) y antes de cualquier llamada a una función OpenGL.
 
-If you really want to know more about VAOs, there are a few other tutorials out there, but this is not very important.
+Si realmente quiere saber sobre los VAO, hay tutoriales por doquier, pero no es realmente importante .
 
-## Screen Coordinates
+## Coordenadas de la pantalla
 
-A triangle is defined by three points. When talking about "points" in 3D graphics, we usually use the word "vertex" ( "vertices" on the plural ). A vertex has 3 coordinates : X, Y and Z. You can think about these three coordinates in the following way :
+Un triangulo es definido por tres puntos. Cuando hablamos de puntos en computación gráfica, usualmente usamos la palabra "vertice". Un vertice tiene 3 coordenadas : X, Y, y Z, puede pensar en estas tres coordenadas asi :
 
-- X in on your right
-- Y is up
-- Z is towards your back (yes, behind, not in front of you)
+- X es su derecha
+- Y es hacia arriba
+- Z es hacia atrás (si, hacia atrás, no hacia el frente)
 
-But here is a better way to visualize this : use the Right Hand Rule
+Pero hay una mejor forma de visualizar esto : la regla de la mano derecha
 
-- X is your thumb
-- Y is your index
-- Z is your middle finger. If you put your thumb to the right and your index to the sky, it will point to your back, too.
+- X es su pulgar
+- Y es su dedo indice
+- Z es su dedo corazón 
+- Si usted pone su dedo pulgar hacia la derecha y su dedo indice hacia arriba, su dedo corazón apuntará hacia usted.
 
-Having the Z in this direction is weird, so why is it so ? Short answer : because 100 years of Right Hand Rule Math will give you lots of useful tools. The only downside is an unintuitive Z.
+Tener la coordenada Z en esta dirección no es intuitivo, ¿Por qué? en resumen : porque 100 años de la regla de la mano derecha le va a dar a usted muchas herramientas matemáticas que le harán la vida mas sencilla, todo a cambio de esta pequeña incomodidad de tener el Z al revés.
 
-On a side note, notice that you can move your hand freely : your X, Y and Z will be moving, too. More on this later.
+Una nota aparte : Note que usted puede mover su mano libremente y con ella X, Y y Z. Le diremos mas el respecto luego.
 
-So we need three 3D points in order to make a triangle ; let's go :
+Asi que necesitamos puntos 3D para hacer un triangulo, empecemos :
 
 {% highlight cpp linenos %}
-// An array of 3 vectors which represents 3 vertices
+// Un arreglo de 3 vectores que representan 3 vertices
 static const GLfloat g_vertex_buffer_data[] = {
    -1.0f, -1.0f, 0.0f,
    1.0f, -1.0f, 0.0f,
@@ -63,22 +64,22 @@ static const GLfloat g_vertex_buffer_data[] = {
 };
 {% endhighlight %}
 
-The first vertex is (-1,-1,0). This means that _unless we transform it in some way_, it will be displayed at (-1,-1) on the screen. What does this mean ? The screen origin is in the middle, X is on the right, as usual, and Y is up. This is what it gives on a wide screen :
+El primer vertice es (-1,-1,0). Esto significa que _amenos que lo transformemos de alguna forma_, se mostrará en (-1,-1) en la pantalla. ¿qué significa esto? El origen de la pantalla esta en el medio, X es a la derecha, y Y es arriba. Esto es lo que aparece en una pantalla amplia :
 
 ![screenCoordinates]({{site.baseurl}}/assets/images/tuto-2-first-triangle/screenCoordinates.png){: height="165px" width="300px"}
 
-This is something you can't change, it's built in your graphics card. So (-1,-1) is the bottom left corner of your screen. (1,-1) is the bottom right, and (0,1) is the middle top. So this triangle should take most of the screen.
+Esto es algo que no se puede cambiar, viene asi desde la trajeta gráfica. Asi que (-1,-1) es la esquina inferior izquierda de su pantalla. (1,-1) es la esquina inferior derecha, y (0,1) es el medio arriba. Este triangulo va a tomar casi toda la pantalla.
 
-##Drawing our triangle
+##Dibujando nuestro triangulo
 
-The next step is to give this triangle to OpenGL. We do this by creating a buffer:
+El siguiente paso es entregarle este triangulo a OpenGL. Hacemos esto creando un buffer :
 
 {% highlight cpp linenos %}
-// This will identify our vertex buffer
+// Identificar el vertex buffer
 GLuint vertexbuffer;
-// Generate 1 buffer, put the resulting identifier in vertexbuffer
+// Generar un buffer, poner el resultado en el vertexbuffer que acabamos de crear
 glGenBuffers(1, &vertexbuffer);
-// The following commands will talk about our 'vertexbuffer' buffer
+// Los siguientes comandos le darán caractrtísticas especiales al 'vertexbuffer' 
 glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 // Give our vertices to OpenGL.
 glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);{% endhighlight %}
