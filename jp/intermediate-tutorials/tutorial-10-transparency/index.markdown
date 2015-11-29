@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: 'Tutorial 10 : Transparency'
+title: 'チュートリアル10:透明'
 date: '2011-05-13 23:00:42 +0200'
 date_gmt: '2011-05-13 23:00:42 +0200'
 categories: [tuto]
@@ -11,101 +11,101 @@ tags: []
 language: jp
 ---
 
-#The alpha channel
+#アルファチャネル
 
-The concept of the alpha channel is pretty simple. Instead of a writing an RGB result, you write an RGBA :
+アルファチャネルの概念はとても単純です。RGBを書くの代わりに、RGBAを書きます：
 {% highlight glsl linenos cssclass=highlightglslfs %}
-// Ouput data : it's now a vec4
+// 出力データ：今回はvec4です。
 out vec4 color;
 {% endhighlight %}
-the first 3 components are still accessed with the .xyz swizzle operator, while the last one is accessed with .a :
+最初の3要素は.xyzでアクセスでき、最後の要素は.aでアクセスします：
 {% highlight glsl linenos cssclass=highlightglslfs %}
 color.a = 0.3;
 {% endhighlight %}
-Unintuitively, alpha = opaqueness, so alpha = 1 means fully opaque while alpha = 0 means fully transparent.
+直感的ではありませんが、alpha=不透明度、そのためalpha=1は完全な不透明を、一方でalpha=0は完全な透明を表します。
 
-Here, we simply hardcode the alpha channel at 0.3, but you probably want to use a uniform, or read it from a RGBA texture ( TGA supports the alpha channel, and GLFW supports TGA )
+ここで、単純にアルファチャネルを0.3と直書きしていますが、きっとRGBAテクスチャから読み込んだ値を使いたいでしょう。（TGAはアルファチャネルをサポートしており、GLFWはTGAをサポートしています。）
 
-Here's the result. Make sure to turn backface culling off (glDisable(GL_CULL_FACE) ) because since we can look through the mesh, we could see that it has no "back" face.
+メッシュの中を見るときに、"背面"がないものとしたいので、バックフェースカリングをオフにしました。 (glDisable(GL_CULL_FACE) )
 
 ![]({{site.baseurl}}/assets/images/tuto-10-transparency/transparencyok.png)
 
 
-#Order matters !
+#順序について！
 
-The previous screenshot looks okay-ish, but that's just because we're lucky.
+上で示した結果はちゃんと表示されてますが、それは単に運が良かっただけです。
 
-##The problem
+##問題
 
-Here, I drew two squares with 50% alpha, one green and one red. You can see that order is important, the final colour gives an important clue to the eyes for proper depth perception.
+ここで、50％アルファの緑と赤の二つの四角形を描画するとします。 下の図を見れば順序が重要であることが見てわかるでしょう。つまり、最終的な色はどちらが前面にあるかを判断する重要なカギとなります。
 
 ![]({{site.baseurl}}/assets/images/tuto-10-transparency/transparencyorder.png)
 
 
-This phenomena also happens in our scene. Let's change the viewpoint a bit :
+同様のことが視点を少し変えた下のシーンでも起こっています：
 
 ![]({{site.baseurl}}/assets/images/tuto-10-transparency/transparencybad.png)
 
 
-It turns out that this is a very hard problem. You never see lots of transparency in games, do you ?
+これはとても面倒な問題だとわかったでしょう。実際ゲームではあまり透明なものは見ないでしょう？
 
-##Usual solution
+##一般的な解決策
 
-The usual solution is to sort all transparent triangles. Yes, ALL transparent triangles.
+一般的な解決法としては、すべての透明な三角形をソートするというものがあります。そうです、すべての透明な三角形です。
 
-* Draw the opaque part of the world so that the depth buffer already can reject hidden transparent triangles
-* Sort transparent triangles, from the furthest to the closest
-* Draw the transparent triangles.
+* 隠れてしまう透明な三角形を排除するために、まずは不透明な部分を描画します。
+* 遠くのものから近くのものへ、三角形をソートします。
+* 透明な三角形を描画します。
 
-You can sort whatever you want with qsort (in C) or std::sort (in C++). I won't dig in the details, because...
+C言語のqsortやC++のstd::sortなど好きな方法でソートできます。これらの詳細については深入りしません。
 
-##Caveat
+##警告
 
-Doing so will work ( more on this in the next section ), but :
+上で述べた方法は確かに機能します。しかし：
 
-* You will be fillrate limited. That is, each fragment will be written 10, 20 times, maybe more. This is way too much for the poor memory bus. Usually the depth buffer allows to reject enough "far" fragments, but here, you explicitly sorted them, so the depth buffer is actually useless.
-* You will be doing this 4 times per pixel ( we use 4xMSAA ), except if you use some clever optimisation
-* Sorting all the transparent triangles takes time
-* If you have to switch your texture, or worse, your shader, from triangle to triangle, you're going into deep performance trouble. Don't do this.
+* 描画速度が制限されます。つまり各フラグメントが10回、20回あるいはそれ以上描画されます。通常深度バッファは遠くのフラグメントを除外することを許しています。しかしここでは、明示的にそれらをソートし、深度バッファを事実上使っていません。
+* もっと良い方法を使わない限り、一つのピクセルに対してこの処理を4回行うことになります。（4xMSAAを使っているため。）
+* すべての透過三角形をソートするには時間がかかります。
+* 三角形から三角形へテクスチャやシェーダを切り替える必要があるならば、パフォーマンスに大きな影響が出るでしょう。その場合はこの方法を使わないようにしましょう。
 
-A good enough solution is often to :
+必要十分な解決策：
 
-* Limit to a maximum the number of transparent polygons
-* Use the same shader and the same texture for all of them
-* If they are supposed to look very different, use your texture !
-* If you can avoid sorting, and it still doesn't look *too *bad, consider yourself lucky.
+* 透過ポリゴンの最大数を制限する。
+* 同じシェーダや同じテクスチャを使用する。
+* まるで違ったように見えるなら、あなたのテクスチャを使いましょう。
+* ソートを避けても、*あまり*悪くならないなら、それは単に運が良いだけだと思いましょう。
 
 
-##Order-Independent Transparency
+##順不同透過
 
-A number of other techniques are worth investigating if your engine really, really needs state-of-the-art transparency :
+どうしても最新の透過技術が必要なら、他のテクニックを探してみるのも良いでしょう：
 
-* [The original 2001 Depth Peeling paper](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.18.9286&rep=rep1&type=pdf): pixel-perfect results, not very fast.
-* [Dual Depth Peeling](http://developer.download.nvidia.com/SDK/10/opengl/src/dual_depth_peeling/doc/DualDepthPeeling.pdf) : a slight improvement
-* Several papers on bucket sort. Uses an array of fragments; sort them by depth in a shader.
-* [ATI's Mecha Demo](http://fr.slideshare.net/hgruen/oit-and-indirect-illumination-using-dx11-linked-lists) : good and fast, but tricky to implement, needs recent hardware. Uses a linked list of fragments.
-* [Cyril Crassin's variation on the ATI's  technique](http://blog.icare3d.org/2010/07/opengl-40-abuffer-v20-linked-lists-of.html) : even harder implementation
+* [The original 2001 Depth Peeling paper](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.18.9286&rep=rep1&type=pdf): ピクセルパーフェクト、あまり速くはない。
+* [Dual Depth Peeling](http://developer.download.nvidia.com/SDK/10/opengl/src/dual_depth_peeling/doc/DualDepthPeeling.pdf) : ちょっとした改善が見られる。
+* バケットソートに関する論文。フラグメントの配列を使用して、シェーダで深度によりソートする。
+* [ATI's Mecha Demo](http://fr.slideshare.net/hgruen/oit-and-indirect-illumination-using-dx11-linked-lists) : とても良い。しかし改善が難しく、最新のハードウェアが必要です。フラグメントのリンクリストを使用します。
+* [Cyril Crassin's variation on the ATI's  technique](http://blog.icare3d.org/2010/07/opengl-40-abuffer-v20-linked-lists-of.html) : 実装が難しい。
 
-Note that even a recent game like Little Big Planet, which ran on a powerful console, used only 1 layer of transparency.
+ハイスペックの端末で動かすリトルビッグプラネットのような最新のゲームでさえ、たった透過に1レイヤーしか使われていません。
 
-#The blend function
+#ブレンド関数
 
-In order for the previous code to work, you need to setup your blend function.
+上のコードのために、ブレンド関数をセットアップする必要があります。
 {% highlight cpp linenos %}
-// Enable blending
+// ブレンドの有効化
 glEnable(GL_BLEND);
 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 {% endhighlight %}
-Which means :
+これは次のことを意味します。
 {% highlight text linenos %}
-New color in framebuffer =
-           current alpha in framebuffer * current color in framebuffer +
-           (1 - current alpha in framebuffer) * shader's output color
+フレームバッファ内の新たな色 =
+           フレームバッファの現在のアルファ * フレームバッファ内の現在の色 +
+           (1 - フレームバッファ内の現在のアルファ) * シェーダの出力色
 {% endhighlight %}
-Example from the image above, with red on top :
+赤を上にした上で示した画像の例：
 {% highlight text linenos %}
-new color = 0.5*(0,1,0) + (1-0.5)*(1,0.5,0.5); // (the red was already blended with the white background)
-new color = (1, 0.75, 0.25) = the same orange
+new color = 0.5*(0,1,0) + (1-0.5)*(1,0.5,0.5); // (赤は既に白い背景とブレンドされています。)
+new color = (1, 0.75, 0.25) = オレンジと同じです
 {% endhighlight %}
  
 
