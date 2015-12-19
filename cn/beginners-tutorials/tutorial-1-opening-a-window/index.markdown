@@ -148,7 +148,7 @@ Mac OS不支持OpenGL 3.3。最近，搭载MacOS 10.7 Lion和兼容型GPU的Mac�
 
 {% highlight text linenos %}
 // Include GLFW
-#include <GL/glfw.h>
+#include <GL/glfw3.h>
 {% endhighlight %}
 
 下文中的GLM是个很有用3D数学库，我们暂时用不到，但很快就会派上用场。GLM库很好用，但也没什么神奇的，您不妨自己试着写一个。添加“using namespace”，这样就可以不用写“glm::vec3”，直接写“vec3”。
@@ -171,52 +171,55 @@ int main(){
 // Initialise GLFW
 if( !glfwInit() )
 {
-fprintf( stderr, "Failed to initialize GLFW\n" );
-return -1;
+    fprintf( stderr, "Failed to initialize GLFW\n" );
+    return -1;
 }
 {% endhighlight %}
 
 终于可以创建我们的第一个OpenGL窗口啦！
 
 {% highlight text linenos %}
-glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4); // 4x antialiasing
-glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3); // We want OpenGL 3.3
-glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
-glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
+glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
+glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
+glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
+glfwWindowHint(GLFW_CONTEXT_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
 
 // Open a window and create its OpenGL context
-if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
+GLFWwindow* window;
+window = glfwCreateWindow(1024, 768, "Totorial 01", NULL, NULL);
+
+if (window == NULL)
 {
-fprintf( stderr, "Failed to open GLFW window\n" );
-glfwTerminate();
-return -1;
+    fprintf( stderr, "Failed to open GLFW window\n" );
+    glfwTerminate();
+    return -1;
 }
 
 // Initialize GLEW
+glfwMakeContextCurrent(window);
 glewExperimental=true; // Needed in core profile
 if (glewInit() != GLEW_OK) {
-fprintf(stderr, "Failed to initialize GLEW\n");
-return -1;
+    fprintf(stderr, "Failed to initialize GLEW\n");
+    return -1;
 }
-
-glfwSetWindowTitle( "Tutorial 01" );
 {% endhighlight %}
 
 生成并运行。一个窗口弹出后立即关闭了。可不是嘛，还没设置等待用户按Esc键再关闭呢：
 
 {% highlight text linenos %}
 // Ensure we can capture the escape key being pressed below
-glfwEnable( GLFW_STICKY_KEYS );
+glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
 do{
-// Draw nothing, see you in tutorial 2 !
+    // Draw nothing, see you in tutorial 2 !
 
-// Swap buffers
-glfwSwapBuffers();
+    // Swap buffers
+    glfwSwapBuffers(window);
 
 } // Check if the ESC key was pressed or the window was closed
-while( glfwGetKey( GLFW_KEY_ESC ) != GLFW_PRESS &&
-glfwGetWindowParam( GLFW_OPENED ) );
+while( glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
+glfwWindowShouldClose(window) == 0);
 {% endhighlight %}
 
 第一课就到这啦！第二课会教大家绘制三角形。
