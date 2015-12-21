@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: 'Tutorial 12 : OpenGL Extensions'
+title: 'チュートリアル12：OpenGLの拡張'
 date: '2012-02-03 20:46:21 +0100'
 date_gmt: '2012-02-03 20:46:21 +0100'
 categories: [tuto]
@@ -11,109 +11,107 @@ tags: []
 language: jp
 ---
 
-#Extensions
+#拡張
 
-With each new generation, the performance of GPU increases, allowing to render more triangles and more pixels. However, raw performance isn't the only concern. NVIDIA, AMD and Intel also improve their graphic cards by providing more functionality. Let's have a look at some examples.
+最近はGPUの性能向上などによりより多くの三角形やピクセルの描画が可能となっています。しかし、そのような単純な性能向上だけに関心があるわけではありません。NVIDIAやAMD、Intelはよりよい機能を提供することでグラフィックカードの性能を向上させています。その例を見ていきましょう。
 
 ##ARB_fragment_program
 
-Back in 2002, GPUs had no vertex shaders or fragment shaders : everything was hardcoded inside the chip. This was called the Fixed-Function Pipeline (FFP). As such, the most recent version of the API, which was OpenGL 1.3, proposed no way to create, manipulate and use so-called "shaders", since it didn't even exist. But then NVIDIA decided that it could be handy to describe the rendering process with actual code, instead of hundreds of flags and state variables. This is how ARB_fragment_program was created : there was no GLSL, but instead you could write stuff like this :
+2002年当時のGPUは頂点シェーダやフラグメントシェーダがありませんでした。すべてはチップ内でハードコードされていました。これは固定機能パイプライン（FFP)と呼ばれていました。そのため当時の最新のAPI(OpenGL1.3)では”シェーダ”と呼ばれるものの作成、演算、使用はできませんでした。なぜならそもそも存在していないからです。しかしNVIDIAは、多くのフラグや状態変数の代わりに、実際のコードを使いレンダリングプロセスを表現することを決めました。このようにしてARB_fragment_programが生まれました。GLSLはありませんが、代わりに以下のように書くことができます。
 {% highlight text linenos %}
 !!ARBfp1.0 MOV result.color, fragment.color; END
 {% endhighlight %}
-But obviously to tell OpenGL to use such code, you needed special functions, which were not yet in OpenGL. Before moving on to the explanations, one more example.
+しかしOpenGLで上記のようなコードを使うには、OpenGLにはない特別な関数が必要でした。
 
 ##ARB_debug_output
 
-Ok, you say, but this ARB_fragment_program is too old, surely I don't need this extension stuff anymore ? Well there are newer extensions which are very handy. One of them is ARB_debug_output, which expose a functionality that doesn't exist in OpenGL 3.3 but that you can/should use anyway. It defines tokens like GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB or GL_DEBUG_SEVERITY_MEDIUM_ARB, and functions like DebugMessageCallbackARB. The great thing about this extension is that whenever you write some incorrect code, for instance :
+ARB_fragment_programは昔のものだからもう必要ないでしょ？といいたいのは分かります。しかしより使いやすくなった新しい拡張があります。そのうちの一つがARB_debug_outputで、OpenGL3.3にはない機能を提供します。それはGL_DEBUG_OUTPUT_SYNCHRONOUS_ARB orGL_DEBUG_SEVERITY_MEDIUM_ARBなどのトークンやDebugMessageCallbackARBの関数を定義しています。この機能の良い点は下のような間違ったコードを書いたときに、エラーメッセージや問題の場所を教えてくれます。
 {% highlight cpp linenos %}
-glEnable(GL_TEXTURE); // Incorrect ! You probably meant GL_TEXTURE_2D !
+glEnable(GL_TEXTURE); // 間違い! GL_TEXTURE_2Dが正しいのでは？
 {% endhighlight %}
-you can have an error message and the exact location of the problem. Lessons learned :
+エラーメッセージと問題の場所を教えてくれます：
 
-* Extensions are still very useful, even in modern, 3.3 OpenGL
-* Use ARB_debug_output ! See below for links.
+・この拡張は最新のOpenGL3.3でさえとても便利です。
+・ARB_debug_outputを使ってみましょう！
 
 ![]({{site.baseurl}}/assets/images/tuto-12-ogl-ext/breakpoint.png)
 
 
-##Getting an extension - the hard way
+##拡張機能を取得するー難しい方法
 
-The "manual" way for checking is an extension is present is to use this code snippet (from the [OpenGL.org wiki](http://www.opengl.org/wiki/GlGetString)) :
+”手作業”で拡張機能をチェックする方法を下のコードに示します。 ([OpenGL.org wiki](http://www.opengl.org/wiki/GlGetString)にあります。) :
 {% highlight cpp linenos %}
 int NumberOfExtensions;
 glGetIntegerv(GL_NUM_EXTENSIONS, &NumberOfExtensions);
 for(i=0; i<NumberOfExtensions; i++) {
   const GLubyte *ccc=glGetStringi(GL_EXTENSIONS, i);
   if ( strcmp(ccc, (const GLubyte *)"GL_ARB_debug_output") == 0 ){
-    // The extension is supported by our hardware and driver
-    // Try to get the "glDebugMessageCallbackARB" function :
+    // この拡張機能はハードウェアとドライバでサポートされています。
+    // "glDebugMessageCallbackARB"関数を取得してみましょう。
     glDebugMessageCallbackARB  = (PFNGLDEBUGMESSAGECALLBACKARBPROC) wglGetProcAddress("glDebugMessageCallbackARB");
   }
 }
 {% endhighlight %}
 
-##Getting all extensions - the easy way
+##拡張機能をすべて取得するー簡単な方法
 
-All in all this is very complicated. Libraries like GLEW, GLee, gl3w, etc, make it much easier. For instance, with GLEW, you just have to call glewInit() after you created your window, and handy variables are created :
+拡張機能をすべて取得するー簡単な方法すべての機能を上記のような方法で取得するのは面倒です。GLEW、GLee、gl3wなどのライブラリはもっと簡単な方法を提供しています。例えばGLEWでは、ウィンドウを作った後でglewInit()を呼ぶだけで、便利な変数が作られます。
 {% highlight cpp linenos %}
 if (GLEW_ARB_debug_output){ // Ta-Dah ! }
 {% endhighlight %}
-( a word of caution : debug_output is special because you have to enable it at context creation. In GLFW, this is done with glfwOpenWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1); )
+（debug_outputは特殊で、コンテキストの作成時に有効にしないといけません。GLFWでは、glfwOpenWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1); とします。）
 
 ##ARB vs EXT vs ...
 
-The name of each extention contains information on its availability :
+拡張機能の名前には機能情報が込められています。
 
-GL_ : all platforms;
-GLX_ : Linux & Mac only (X11);
-WGL_ : Windows only
+GL_ : すべてのプラットフォーム;
+GLX_ : LinuxとMacだけ(X11);
+WGL_ : Windowsだけ
 
-EXT : A generic extention.
-ARB : the extention has been accepted by all the members of the OpenGL Architecture Review Board (EXT extentions are often promoted to ARB after a while).
-NV/AMD/INTEL : Quite self-explanatory =)
+EXT : 一般的な拡張
+ARB : OpenGL Architecture Review Boardで受け入れられた拡張機能
+NV/AMD/INTEL : これはそのままの意味 =)
 
-#Designing with Extentions
+#拡張機能によるデザイン
 
 
-##The problem
+##問題
 
-Let's say that your OpenGL 3.3 application needs to render some large lines. You could write a complicated vertex shader to do that, or simply rely on [GL_NV_path_rendering](http://www.opengl.org/registry/specs/NV/path_rendering.txt), which will handle all the complicated stuff for you.
+OpenGL3.3のアプリケーションで膨大な量の線を描画ることを考えましょう。複雑な頂点シェーダを書くことでも実現できます。あるいは複雑な処理をあなたの代わりにやってくれる [GL_NV_path_rendering](http://www.opengl.org/registry/specs/NV/path_rendering.txt)に頼ることでも実現できます。
 
-You will thus have code that look like this :
+以下のようなコードを書くことになるでしょう。
 {% highlight cpp linenos %}
 if ( GLEW_NV_path_rendering ){
-    glPathStringNV( ... ); // Draw the shape. Easy !
+    glPathStringNV( ... ); // シェイプを描画するだけ！
 }else{
-    // Else what ? You still have to draw the lines
-    // on older NVIDIA hardware, on AMD and on INTEL !
-    // So you have to implement it yourself anyway !
+    // 古いNVIDEAハードウェアやAMD、INTEL上では自分で実装しなければなりません！
 }
 {% endhighlight %}
 
-##Choosing the limit
+##制限の選択
 
-One usually choose to use an extention when the gain in rendering quality or performance outweights the pain of maintaining two different paths.
+一般的には、場合わけを維持するコストと描画のクオリティやパフォーマンスによるメリットを秤にかけて拡張機能を使うかどうかを決めます。
 
-For instance, Braid (the 2D game where you travel in time) has all kinds of image-warping effects when you mess with the time, which simply aren't rendered on older hardware.
+例えば2DゲームのBraidは、古いハードウェアでは単純には描画できないような種類のエフェクトがあります。
 
-With OpenGL 3.3 and above, you already have 99% of the tools you're likely to need. Some extensions can be very useful, like GL_AMD_pinned_memory, but this is often not like a few years ago when having GL_ARB_framebuffer_object ( used for Render To Texture ) could make your game look 10 times better.
+OpenGL3.3以降では、あなたが必要な機能の99%は用意されてます。たしかにGL_AMD_pinned_memoryのような拡張機能は便利ですが、数年前には好まれていませんでした。
 
-If you have to handle older hardware, though, OpenGL 3+ won't be available, and you'll have to use OpenGL 2+ instead. You won't be able to assume that you have all the fancy extensions anymore, and you'll need to cope with that.
+古いハードウェアを扱う必要があるなら、OpenGL3+は使えません。代わりにOpenGL2+を使う必要があります。拡張機能を使うことはできませんが、そこはうまいことやってくしかありません。
 
-For further details, see for instance the [OpenGL 2.1 version of Tutorial  14 - Render To Texture, line 152](http://code.google.com/p/opengl-tutorial-org/source/browse/tutorial14_render_to_texture/tutorial14.cpp?name=2.1%20branch#152), where I have to check the presence of GL_ARB_framebuffer_object by hand. See also the [FAQ](http://www.opengl-tutorial.org/miscellaneous/faq/).
+より詳しく知りたいなら[OpenGL 2.1 version of Tutorial  14 - Render To Texture, line 152](http://code.google.com/p/opengl-tutorial-org/source/browse/tutorial14_render_to_texture/tutorial14.cpp?name=2.1%20branch#152)や [FAQ](http://www.opengl-tutorial.org/miscellaneous/faq/)を見てください。
 
-#Conclusion
+#結論
 
-OpenGL Extentions provide a nice way to extend OpenGL's capabilities, depending on your user's GPU.
+あなたのGPU次第ではありますが、OpenGLの機能性を拡張するような良い拡張機能があることがわかりました。
 
-While extentions are nowaday mostly for advanced use since most functionality is already in the core, it's still important to know how they work and how you can use them to improve your software - at the expense of higher maintainance.
+多くの機能が既にOpenGLに組み込まれているので、最近では拡張機能のほとんどが高度な使用のためのものとなっています。しかし、それらがどう動くかや、それらを使うことでソフトウェアの性能を向上させることができるということを知っておくことは重要です。同時にメンテナンスコストも発生しますが。
 
-#Further reading
+#参考文献
 
 
-* [debug_output tutorial by Aks](http://sites.google.com/site/opengltutorialsbyaks/introduction-to-opengl-4-1---tutorial-05 ) you can skip Step 1 thanks to GLEW.
-* [The OpenGL extension registry](http://www.opengl.org/registry/) All extensions specifications. The bible.
-* [GLEW](http://glew.sourceforge.net/) The OpenGL Extension Wrangler Library
-* [gl3w](https://github.com/skaslev/gl3w) Simple OpenGL 3/4 core profile loading
+* [debug_output tutorial by Aks](http://sites.google.com/site/opengltutorialsbyaks/introduction-to-opengl-4-1---tutorial-05 ) GLEWのおかげでステップ1は飛ばせます。
+* [The OpenGL extension registry](http://www.opengl.org/registry/) すべての拡張機能が載ってます。バイブルです。
+* [GLEW](http://glew.sourceforge.net/) OpenGLの拡張機能ライブラリです。
+* [gl3w](https://github.com/skaslev/gl3w) シンプルなOpenGL3/4コアプロファイルローディングです。
 
