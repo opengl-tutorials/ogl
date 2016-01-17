@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: 'Tutorial 13 : Normal Mapping'
+title: 'チュートリアル13:法線マッピング'
 date: '2011-05-26 06:07:04 +0200'
 date_gmt: '2011-05-26 06:07:04 +0200'
 categories: [tuto]
@@ -11,64 +11,64 @@ tags: []
 language: jp
 ---
 
-Welcome for our 13th tutorial ! Today we will talk about normal mapping.
+ようこそチュートリアル13へ！ここでは法線マッピングについて説明します。
 
-Since [Tutorial 8 : Basic shading](http://www.opengl-tutorial.org/beginners-tutorials/tutorial-8-basic-shading/) , you know how to get decent shading using triangle normals. One caveat is that until now, we only had one normal per vertex : inside each triangle, they vary smoothly, on the opposite to the colour, which samples a texture. The basic idea of normal mapping is to give normals similar variations.
+[チュートリアル8](http://www.opengl-tutorial.org/beginners-tutorials/tutorial-8-basic-shading/)で 、三角形の法線を使ってちゃんとしたシェーディングをする方法を学びました。これまでは、各頂点に対して一つの法線だけを扱ってきました。各三角形内では、テクスチャからサンプルした色はスムーズに変化していました。法線マッピングの基本的な考え方は、これと同様な方法で法線を与えることです。
 
-#Normal textures
+#法線テクスチャ
 
-A "normal texture" looks like this :
+”法線テクスチャ”は次のようなものです。
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/normal.jpg)
 
 
-In each RGB texel is encoded a XYZ vector : each colour component is between 0 and 1, and each vector component is between -1 and 1, so this simple mapping goes from the texel to the normal :
+各RGBテクセルはXYZベクターに符号化されます。各色要素は0と1の間にあり、各ベクター要素は-1から1の間にあります。だからこのシンプルなマッピングはテクセルから法線へと変わっていきます。
 {% highlight c linenos %}
-normal = (2*color)-1 // on each component
+normal = (2*color)-1 // 各要素
 {% endhighlight %}
-The texture has a general blue tone because overall, the normal is towards the "outside of the surface"; as usual, X is right and Y is up.
+テクスチャは一般的に青色です。なぜなら法線は"面の外側"に向かっているからです。いつもどおり、Xはテクスチャの右方向を、Yは上方向を表します。だから右手の法則により、法線はテクスチャの面の外側へ向かってることを意味します。
 
-This texture is mapped just like the diffuse one; The big problem is how to convert our normal, which is expressed in the space each individual triangle ( tangent space, also called image space), in model space (since this is what is used in our shading equation).
+このテクスチャはちょうど拡散光と同じようにマッピングされます。ここで、各三角形の空間（接空間、あるいはイメージ空間とよばれます）で表されている法線を、どのようにしてモデル空間へ変換するかが問題となります。
 
-#Tangent and Bitangent
+#接空間と従接空間
 
-You are now so familiar with matrices that you know that in order to define a space (in our case, the tangent space), we need 3 vectors. We already have our UP vector : it's the normal, given by Blender or computed from the triangle by a simple cross product. It's represented in blue, just like the overall color of the normal map :
+空間を定義するためには3つのベクトルを必要とすることは分かると思います。（ここでは接空間を指します。）既に”上”は向かうベクトルを分かっているとします。これこそが法線で、Blenderや三角形から単純な外積によって計算されているとします。これは法線マップの全体的な色のように青色で表現されます。
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/NormalVector.png)
 
 
-Next we need a tangent, T : a vector perpendicular to the surface. But there are many such vectors :
+次に接線Tが必要となります。つまり面に垂直なベクトルです。しかしそのようなベクトルはたくさんあります。
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/TangentVectors.png)
 
 
-Which one should we choose ? In theory, any, but we have to be consistent with the neighbors to avoid introducing ugly edges. The standard method is to orient the tangent in the same direction that our texture coordinates :
+どれを選ぶべきでしょうか？理論的にはどれでもよいのですが、醜いエッジが出るのを避けるためには、周囲と調和しているものを選ぶ必要があります。一般的な方法は接線をテクスチャ座標と同じ方向に向かせることです。
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/TangentVectorFromUVs.png)
 
 
-Since we need 3 vectors to define a basis, we must also compute the bitangent B (which is any other tangent vector, but if everything is perpendicular, math is simpler) :
+基底を定義するには3つのベクトルが必要になるので、従接線Bを計算しなければなりません。（これはどれか他の接線ですが、すべてのベクトルが垂直ならば、計算が楽になります。）
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/NTBFromUVs.png)
 
 
  
 
-Here is the algorithm : if we note deltaPos1 and deltaPos2 two edges of our triangle, and deltaUV1 and deltaUV2 the corresponding differences in UVs, we can express our problem with the following equation :
+ここにアルゴリズムを示します。deltaPos1とdeltaPos2を三角形の2線を、deltaUV1とdeltaUV2がUV座標での差を表すとすると、次のような等式で問題を表現できます。
 {% highlight c linenos %}
 deltaPos1 = deltaUV1.x * T + deltaUV1.y * B
 deltaPos2 = deltaUV2.x * T + deltaUV2.y * B
 {% endhighlight %}
-Just solve this system for T and B, and you have your vectors ! (See code below)
+ただこれをTとBに対して解くだけで、ベクトルが得られます。（下のコードを見てください。）
 
-Once we have our T, B, N vectors, we also have this nice matrix which enables us to go from Tangent Space to Model Space :
+いまTとBとNベクトルが得られたとすると、この行列が接空間からモデル空間への変換を可能にしてくれます。
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/TBN.png)
 
 
-With this TBN matrix, we can transform normals (extracted from the texture) into model space. However, it's usually done the other way around : transform everything from Model Space to Tangent Space, and keep the extracted normal as-is. All computations are done in Tangent Space, which doesn't changes anything.
+ただこれをTとBに対して解くだけで、ベクトルが得られます。（下のコードを見てください。）いまTとBとNベクトルが得られたとすると、この行列が接空間からモデル空間への変換を可能にしてくれます。このTBN行列により、（テクスチャから得られた）法線をモデル空間へ変換できます。しかし通常は別の方法が使われます。すべてをモデル空間から接空間へ変換し、法線をそのままの状態にしておきます。すべての計算を接空間で行っても、なにも変わりません。
 
-Do have this inverse transformation, we simply have to take the matrix inverse, which in this case (an orthogonal matrix, i.e each vector is perpendicular to the others. See "going further" below) is also its transpose, much cheaper to compute :
+逆変換は単純に逆行列を計算することで得られます。すべてのベクトルが他のベクトルと直交する直交行列なので、安い計算コストで得られる転置行列が逆行列となります。
 {% highlight c linenos %}
 invTBN = transpose(TBN)
 {% endhighlight %}
@@ -76,24 +76,23 @@ invTBN = transpose(TBN)
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/transposeTBN.png)
 
 
-#Preparing our VBO
+#VBOの準備
 
+##接線と従接線の計算
 
-##Computing the tangents and bitangents
-
-Since we need our tangents and bitangents on top of our normals, we have to compute them for the whole mesh. We'll do this in a separate function :
+法線に対応する接線と従接線が必要となるので、すべてのメッシュに対して計算しなければなりません。これは個別の関数で実装しています。
 {% highlight cpp linenos %}
 void computeTangentBasis(
-    // inputs
+    // 入力
     std::vector<glm::vec3> & vertices,
     std::vector<glm::vec2> & uvs,
     std::vector<glm::vec3> & normals,
-    // outputs
+    // 出力
     std::vector<glm::vec3> & tangents,
     std::vector<glm::vec3> & bitangents
 ){
 {% endhighlight %}
-For each triangle, we compute the edge (deltaPos) and the deltaUV
+各三角形に対して、エッジ(deltaPos)とdeltaUVを計算します。
 {% highlight cpp linenos %}
     for ( int i=0; i<vertices.size(); i+=3){
 
@@ -115,21 +114,21 @@ For each triangle, we compute the edge (deltaPos) and the deltaUV
         glm::vec2 deltaUV1 = uv1-uv0;
         glm::vec2 deltaUV2 = uv2-uv0;
 {% endhighlight %}
-We can now use our formula to compute the tangent and the bitangent :
+以下の式で接線と従接線を計算します。
 {% highlight cpp linenos %}
         float r = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV1.y * deltaUV2.x);
         glm::vec3 tangent = (deltaPos1 * deltaUV2.y   - deltaPos2 * deltaUV1.y)*r;
         glm::vec3 bitangent = (deltaPos2 * deltaUV1.x   - deltaPos1 * deltaUV2.x)*r;
 {% endhighlight %}
-Finally, we fill the *tangents *and *bitangents *buffers. Remember, these buffers are not indexed yet, so each vertex has its own copy.
+最後に、*tangentsとbitangentsとbuffers* をセットします。注意することはこれらのバッファはまだインデックスされた居ない点です。だから各頂点はそれ自身のコピーを持っています。
 {% highlight cpp linenos %}
-        // Set the same tangent for all three vertices of the triangle.
-        // They will be merged later, in vboindexer.cpp
+        // 三角形の3頂点すべてに同じ接線をセットします。
+        // これらは後でvboindexer.cppにてマージされます。
         tangents.push_back(tangent);
         tangents.push_back(tangent);
         tangents.push_back(tangent);
 
-        // Same thing for binormals
+        // 従接線に対しても同じ処理をします。
         bitangents.push_back(bitangent);
         bitangents.push_back(bitangent);
         bitangents.push_back(bitangent);
@@ -137,35 +136,35 @@ Finally, we fill the *tangents *and *bitangents *buffers. Remember, these buffer
     }
 {% endhighlight %}
 
-##Indexing
+##インデックス
 
-Indexing our VBO is very similar to what we used to do, but there is a subtle difference.
+このVBOをインデックスする方法はこれまでと似ていますが、少し違う部分があります。
 
-If we find a similar vertex (same position, same normal, same texture coordinates), we don't want to use its tangent and binormal too ; on the contrary, we want to average them. So let's modify our old code a bit :
+似たような頂点（同じ位置、同じ法線、同じテクスチャ座標）を見つけたとき、それ自身の接線や従接線を使ってほしくありません。代わりにに平均化したそれらを使います。だから古いコードを少し修正しましょう。
 {% highlight cpp linenos %}
-        // Try to find a similar vertex in out_XXXX
+        // out_XXXXにある似た頂点を見つけましょう。
         unsigned int index;
         bool found = getSimilarVertexIndex(in_vertices[i], in_uvs[i], in_normals[i],     out_vertices, out_uvs, out_normals, index);
 
-        if ( found ){ // A similar vertex is already in the VBO, use it instead !
+        if ( found ){ // 似たような頂点が既にVBOにあります、代わりにそれを使いましょう！
             out_indices.push_back( index );
 
-            // Average the tangents and the bitangents
+            // 接線と従接線を平均化する
             out_tangents[index] += in_tangents[i];
             out_bitangents[index] += in_bitangents[i];
-        }else{ // If not, it needs to be added in the output data.
-            // Do as usual
+        }else{ //もしなければ出力データに追加します。
+            // いつもどおり
             [...]
         }
 {% endhighlight %}
-Note that we don't normalize anything here. This is actually handy, because this way, small triangles, which have smaller tangent and bitangent vectors, will have a weaker effect on the final vectors than big triangles (which contribute more to the final shape).
+ここでは正規化は行いません。小さな接線と従接線を持つ小さな三角形は、大きな三角形に比べて最終的なベクトルに小さな影響を与えるため、このようにします。
 
-#The shader
+#シェーダ
 
 
-##Additional buffers & uniforms
+##追加のバッファとユニフォーム
 
-We need two new buffers : one for the tangents, and one for the bitangents :
+接線と従接線用の新たに二つのバッファが必要となります。
 {% highlight cpp linenos %}
     GLuint tangentbuffer;
     glGenBuffers(1, &tangentbuffer);
@@ -177,26 +176,26 @@ We need two new buffers : one for the tangents, and one for the bitangents :
     glBindBuffer(GL_ARRAY_BUFFER, bitangentbuffer);
     glBufferData(GL_ARRAY_BUFFER, indexed_bitangents.size() * sizeof(glm::vec3), &indexed_bitangents[0], GL_STATIC_DRAW);
 {% endhighlight %}
-We also need a new uniform for our new normal texture :
+新たな法線テクスチャ用の新たなユニフォームも必要となります。
 {% highlight cpp linenos %}
     [...]
     GLuint NormalTexture = loadTGA_glfw("normal.tga");
     [...]
     GLuint NormalTextureID  = glGetUniformLocation(programID, "NormalTextureSampler");
 {% endhighlight %}
-And one for the 3x3 ModelView matrix. This is strictly speaking not necessary, but it's easier ; more about this later. We just need the 3x3 upper-left part because we will multiply directions, so we can drop the translation part.
+3x3のモデルビュー行列も作ります。実際は必要ではありませんが、後で述べるようにより簡単になります。方向だけを掛けるため、行列の左上の3x3部分だけが必要です。そのため平行移動部分は使いません。
 {% highlight cpp linenos %}
     GLuint ModelView3x3MatrixID = glGetUniformLocation(programID, "MV3x3");
 {% endhighlight %}
-So the full drawing code becomes :
+最終的なコードは次のようになります。
 {% highlight cpp linenos %}
-        // Clear the screen
+        // スクリーンをクリアする
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // Use our shader
+        // シェーダを使う
         glUseProgram(programID);
 
-        // Compute the MVP matrix from keyboard and mouse input
+        // キーボードとマウスの入力からMVP行列を計算する
         computeMatricesFromInputs();
         glm::mat4 ProjectionMatrix = getProjectionMatrix();
         glm::mat4 ViewMatrix = getViewMatrix();
@@ -205,8 +204,7 @@ So the full drawing code becomes :
         glm::mat3 ModelView3x3Matrix = glm::mat3(ModelViewMatrix); // Take the upper-left part of ModelViewMatrix
         glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 
-        // Send our transformation to the currently bound shader,
-        // in the "MVP" uniform
+        // MVPユニフォームで、今使っているシェーダに変換を送る。
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
         glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
         glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
@@ -216,87 +214,87 @@ So the full drawing code becomes :
         glm::vec3 lightPos = glm::vec3(0,0,4);
         glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
 
-        // Bind our diffuse texture in Texture Unit 0
+        // 拡散テクスチャをテクスチャユニット0としてバインドする
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, DiffuseTexture);
-        // Set our "DiffuseTextureSampler" sampler to user Texture Unit 0
+        // "DiffuseTextureSampler"をテクスチャユニット0としてセットする
         glUniform1i(DiffuseTextureID, 0);
 
-        // Bind our normal texture in Texture Unit 1
+        // 法線テクスチャをテクスチャユニット1としてバインドする
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, NormalTexture);
-        // Set our "Normal    TextureSampler" sampler to user Texture Unit 0
+        // "Normal TextureSampler"をテクスチャユニット0としてセットする。
         glUniform1i(NormalTextureID, 1);
 
-        // 1rst attribute buffer : vertices
+        // 最初の属性バッファ：頂点
         glEnableVertexAttribArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
         glVertexAttribPointer(
-            0,                  // attribute
-            3,                  // size
-            GL_FLOAT,           // type
-            GL_FALSE,           // normalized?
-            0,                  // stride
-            (void*)0            // array buffer offset
+            0,                  // 属性
+            3,                  //サイズ
+            GL_FLOAT,           // タイプ
+            GL_FALSE,           // 正規化？
+            0,                  // ストライド
+            (void*)0            // 配列バッファオフセット
         );
 
-        // 2nd attribute buffer : UVs
+        // 2番目の属性バッファ：UV
         glEnableVertexAttribArray(1);
         glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
         glVertexAttribPointer(
-            1,                                // attribute
-            2,                                // size
-            GL_FLOAT,                         // type
-            GL_FALSE,                         // normalized?
-            0,                                // stride
-            (void*)0                          // array buffer offset
+            1,                                // 属性
+            2,                                // サイズ
+            GL_FLOAT,                         // タイプ
+            GL_FALSE,                         // 正規化？
+            0,                                // ストライド
+            (void*)0                          // 配列バッファオフセット
         );
 
-        // 3rd attribute buffer : normals
+        // 3番目の属性バッファ：法線
         glEnableVertexAttribArray(2);
         glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
         glVertexAttribPointer(
-            2,                                // attribute
-            3,                                // size
-            GL_FLOAT,                         // type
-            GL_FALSE,                         // normalized?
-            0,                                // stride
-            (void*)0                          // array buffer offset
+            2,                                // 属性
+            3,                                // サイズ
+            GL_FLOAT,                         // タイプ
+            GL_FALSE,                         // 正規化？
+            0,                                // ストライド
+            (void*)0                          // 配列バッファオフセット
         );
 
-        // 4th attribute buffer : tangents
+        // 4番目の属性バッファ：接線
         glEnableVertexAttribArray(3);
         glBindBuffer(GL_ARRAY_BUFFER, tangentbuffer);
         glVertexAttribPointer(
-            3,                                // attribute
-            3,                                // size
-            GL_FLOAT,                         // type
-            GL_FALSE,                         // normalized?
-            0,                                // stride
-            (void*)0                          // array buffer offset
+            3,                                // 属性
+            3,                                // サイズ
+            GL_FLOAT,                         // タイプ
+            GL_FALSE,                         // 正規化？
+            0,                                // ストライド
+            (void*)0                          // 配列バッファオフセット
         );
 
-        // 5th attribute buffer : bitangents
+        // 5番目の属性バッファ：従接線
         glEnableVertexAttribArray(4);
         glBindBuffer(GL_ARRAY_BUFFER, bitangentbuffer);
         glVertexAttribPointer(
-            4,                                // attribute
-            3,                                // size
-            GL_FLOAT,                         // type
-            GL_FALSE,                         // normalized?
-            0,                                // stride
-            (void*)0                          // array buffer offset
+            4,                                // 属性
+            3,                                // サイズ
+            GL_FLOAT,                         // タイプ
+            GL_FALSE,                         // 正規化？
+            0,                                // ストライド
+            (void*)0                          // 配列バッファオフセット
         );
 
-        // Index buffer
+        // インデックスバッファ
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 
-        // Draw the triangles !
+        // 三角形を描く！
         glDrawElements(
-            GL_TRIANGLES,      // mode
-            indices.size(),    // count
-            GL_UNSIGNED_INT,   // type
-            (void*)0           // element array buffer offset
+            GL_TRIANGLES,      // モード
+            indices.size(),    // カウント
+            GL_UNSIGNED_INT,   //タイプ
+            (void*)0           // 要素配列バッファオフセット
         );
 
         glDisableVertexAttribArray(0);
@@ -305,78 +303,79 @@ So the full drawing code becomes :
         glDisableVertexAttribArray(3);
         glDisableVertexAttribArray(4);
 
-        // Swap buffers
+        // バッファを入れ替える
         glfwSwapBuffers();
 {% endhighlight %}
 
-##Vertex shader
+##頂点シェーダ
 
-As said before, we'll do everything in camera space, because it's simpler to get the fragment's position in this space. This is why we multiply our T,B,N vectors with the ModelView matrix.
+以前言ったように、カメラ空間ですべてを行います。なぜならこの空間ではフラグメントの位置をより簡単に取得できるからです。これがT、B、Nベクターにモデルビュー行列を掛けた理由です。
 {% highlight glsl linenos cssclass=highlightglslfs %}
     vertexNormal_cameraspace = MV3x3 * normalize(vertexNormal_modelspace);
     vertexTangent_cameraspace = MV3x3 * normalize(vertexTangent_modelspace);
     vertexBitangent_cameraspace = MV3x3 * normalize(vertexBitangent_modelspace);
 {% endhighlight %}
-These three vector define a the TBN matrix, which is constructed this way :
+これらの3つのベクトルはTBN行列として定義され、次のように構築します。
 {% highlight text linenos %}
     mat3 TBN = transpose(mat3(
         vertexTangent_cameraspace,
         vertexBitangent_cameraspace,
         vertexNormal_cameraspace
-    )); // You can use dot products instead of building this matrix and transposing it. See References for details.
+    )); // この行列を作って変換する代わりに内積でもできます。参考文献を読んでみてください。
 {% endhighlight %}
-This matrix goes from camera space to tangent space (The same matrix, but with XXX_modelspace instead, would go from model space to tangent space). We can use it to compute the light direction and the eye direction, in tangent space :
+この行列でカメラ空間から接空間へ移ります。代わりにXXX_modelspaceという同じ行列でもモデル空間から接空間への変換が行われます。これを接空間でのライトと目の方向を計算するために使います。
 {% highlight text linenos %}
     LightDirection_tangentspace = TBN * LightDirection_cameraspace;
     EyeDirection_tangentspace =  TBN * EyeDirection_cameraspace;
 {% endhighlight %}
 
-##Fragment shader
+##フラグメントシェーダ
 
-Our normal, in tangent space, is really straightforward to get : it's our texture :
+接空間での法線はテクスチャから直接得られます。
 {% highlight glsl linenos cssclass=highlightglslfs %}
-    // Local normal, in tangent space
+    // 接空間でのローカル法線
     vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, UV ).rgb*2.0 - 1.0);
 {% endhighlight %}
  
 
-So we've got everything we need now. Diffuse lighting uses *clamp( dot( n,l ), 0,1 )*, with n and l expressed in tangent space (it doesn't matter in which space you make your dot and cross products; the important thing is that n and l are both expressed in the same space). Specular lighting uses *clamp( dot( E,R ), 0,1 )*, again with E and R expressed in tangent space. Yay !
+これで必要なものはすべてそろいました。拡散光は *clamp( dot( n,l ), 0,1 )* を使います。
+nとlは接空間で表されています。（内積や外積をとる場合、2ベクトルがどの空間にあるかは問題ではありませんが、同じ空間にある必要があります。）鏡面光では *clamp( dot( E,R ), 0,1 )* を使います。同様にEとRは接空間で表現されています。
 
-#Results
+#結果
 
-Here is our result so far. You can notice that :
+結果を示しておきます。次のことに気づくでしょう
 
-* The bricks look bumpy because we have lots of variations in the normals
-* Cement looks flat because the  normal texture is uniformly blue
+* 様々な種類の法線を使っているので、レンガがでこぼこに見える。
+* 法線テクスチャは一様に青いので、セメントは平面的に見える。
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/normalmapping.png)
 
 
-#Going further
+#さらに先へ
 
 
-##Orthogonalization
+##直交化
 
-In our vertex shader we took the transpose instead of the inverse because it's faster. But it only works if the space that the matrix represents is orthogonal, which is not yet the case. Luckily, this is very easy to fix : we just have to make the tangent perpendicular to the normal at he end of computeTangentBasis() :
+頂点シェーダでは逆行列の変わりに転置行列を使いました。しかしこれは行列が表す空間が直交してることが前提です。幸運なことに、まだそういう状態でないときでも簡単に修正できます。TangentBasis()を計算する最後のほうで法線に直交するように接線を作る必要があります。
 {% highlight glsl linenos cssclass=highlightglslvs %}
 t = glm::normalize(t - n * glm::dot(n, t));
 {% endhighlight %}
-This formula may be hard to grasp, so a little schema might help :
+上の式は理解しづらいかもしれません。以下の図が参考になります。
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/gramshmidt.png)
 
 
-n and t are almost perpendicular, so we "push" t in the direction of -n by a factor of dot(n,t)
+nとtはほぼ垂直です。だからtを-n倍したdot(n,t)方向へ押せば良いのです。
 
-[Here](http://www.cse.illinois.edu/iem/least_squares/gram_schmidt/)'s a little applet that explains it too (Use only 2 vectors).
+[ここに](http://www.cse.illinois.edu/iem/least_squares/gram_schmidt/)これを説明するアプレットがここにあります。(2ベクトルの場合)
 
-##Handedness
+##利き手
 
-You usually don't have to worry about that, but in some cases, when you use symmetric models, UVs are oriented in the wrong way, and your T has the wrong orientation.
+通常それについて悩む必要はありませんが、対象のモデルを使うような特殊なケースでは、UVは間違った方向を向き、Tは間違った方向になります。
 
-To check whether it must be inverted or not, the check is simple : TBN must form a right-handed coordinate system, i.e. cross(n,t) must have the same orientation than b.
+逆にすべきかどうかを判断するのはとても簡単です。TBNは右手座標系でなければなりません。つまりcross(n,t)はbと同じ方向を向きます。
 
-In mathematics, "Vector A has the same orientation as Vector B" translates as dot(A,B)>0, so we need to check if dot( cross(n,t) , b ) > 0.
+数学的には、ベクトルAとベクトルBが同じ方向を向いているというのは、dot(A,B)>0と表せます。だからdot( cross(n,t) , b ) > 0かどうかをチェックする必要があります。もし負ならば逆にします。
 
 If it's false, just invert t :
 {% highlight c linenos %}
@@ -384,38 +383,38 @@ if (glm::dot(glm::cross(n, t), b) < 0.0f){
      t = t * -1.0f;
  }
 {% endhighlight %}
-This is also done for each vertex at the end of computeTangentBasis().
+TangentBasis()を計算し終わったときに、各頂点で同様の処理をします。
 
-##Specular texture
+##鏡面テクスチャ
 
-Just for fun, I added a specular texture to the code. It looks like this :
+よりおもしろくするために、鏡面テクスチャをコードに追加しました。それは次のようなものです。
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/specular.jpg)
 
 
-and is used instead of the simple "vec3(0.3,0.3,0.3)" grey that we used as specular color.
+そして単純な灰色“vec3(0.3,0.3,0.3)”の鏡面光の代わりに使います。
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/normalmappingwithspeculartexture.png)
 
 
-Notice that now, cement is always black : the texture says that it has no specular component.
+これでセメントは常に黒くなりました。なぜならテクスチャが鏡面光はないものとしているからです。
 
-##Debugging with the immediate mode
+##immediateモードによるデバッグ
 
-The real aim of this website is that you DON'T use immediate mode, which is deprecated, slow, and problematic in many aspects.
+このウェブサイトの本当の目的は、あなたがimmediateモードを使わないようにすることです。immediateモードは遅いなど様々な面で問題を抱えています。
 
-However, it also happens to be really handy for debugging :
+しかし、デバッグのためにはとても便利です。
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/immediatemodedebugging.png)
 
 
-Here we visualize our tangent space with lines drawn in immediate mode.
+ここにimmediateモードで接空間を線で可視化しました。
 
-For this, you need to abandon the 3.3 core profile :
+このためには、3.3 core profileを捨てる必要があります。
 {% highlight cpp linenos %}
 glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 {% endhighlight %}
-then give our matrices to OpenGL's old-school pipeline (you can write another shader too, but it's simpler this way, and you're hacking anyway) :
+そして行列を古いOpenGLのパイプラインに渡します。（他のシェーダでもできますが、これがよりシンプルな例です。）
 {% highlight cpp linenos %}
 glMatrixMode(GL_PROJECTION);
 glLoadMatrixf((const GLfloat*)&ProjectionMatrix[0]);
@@ -423,11 +422,11 @@ glMatrixMode(GL_MODELVIEW);
 glm::mat4 MV = ViewMatrix * ModelMatrix;
 glLoadMatrixf((const GLfloat*)&MV[0]);
 {% endhighlight %}
-Disable shaders :
+シェーダを無効化します。
 {% highlight cpp linenos %}
 glUseProgram(0);
 {% endhighlight %}
-And draw your lines (in this case, normals, normalized and multiplied by 0.1, and applied at the correct vertex) :
+そして線を描画します。（この場合、法線を正規化して0.1を掛けて、正しい頂点に適用します。）
 {% highlight cpp linenos %}
 glColor3f(0,0,1);
 glBegin(GL_LINES);
@@ -440,62 +439,62 @@ for (int i=0; i<indices.size(); i++){
 }
 glEnd();
 {% endhighlight %}
-Remember : don't use immediate mode in real world ! Only for debugging ! And don't forget to re-enable the core profile afterwards, it will make sure that you don't do such things.
+注意：immediateモードはデバッグ以外では使わないでください。そしてcore profileを後で有効化するのを忘れないでください。
 
-##Debugging with colors
+##色によるデバッグ
 
-When debugging, it can be useful to visualize the value of a vector. The easiest way to do this is to write it on the framebuffer instead of the actual colour. For instance, let's visualize LightDirection_tangentspace :
+デバッグするとき、ベクトルの値を可視化できると便利です。最も簡単な方法は、フラグメントシェーダで実際の色の代わりに使うことです。
 {% highlight glsl linenos cssclass=highlightglslfs %}
 color.xyz = LightDirection_tangentspace;
 {% endhighlight %}
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/colordebugging.png)
 
 
-This means :
+これは次のことを意味します。 
 
-* On the right part of the cylinder, the light (represented by the small white line) is UP (in tangent space). In other words, the light is in the direction of the normal of the triangles.
-* On the middle part of the cylinder, the light is in the direction of the tangent (towards +X)
+* 円柱の右側では、（小さな白い線で表現されている）光は（接空間で）上を向いていることを意味します。言い換えれば、光は三角形の法線の方向を向いています。
+* 円柱の中央では、光は接線（+X)方向を向いています。
 
-A few tips :
+チップス：
 
-* Depending on what you're trying to visualize, you may want to normalize it.
-* If you can't make sense of what you're seeing, visualize all components separately by forcing for instance green and blue to 0.
-* Avoid messing with alpha, it's too complicated :)
-* If you want to visualize negative value, you can use the same trick that our normal textures use : visualize (v+1.0)/2.0 instead, so that black means -1 and full color means +1. It's hard to understand what you see, though.
+* 何を可視化したいかにもよりますが、それを正規化したいでしょう。
+* 見えているものが何か理解できないときは、すべての要素を分解して可視化しましょう。例えば緑と青を0にするとか。
+* アルファには手を出さないようにしましょう。とっても複雑です。:)
+* 負の値を可視化したい場合は、通常のテクスチャを使うときと同じようなトリックが使えます。つまりかわりに(v+1.0)/2.0を使います。すると黒は-1をフルカラーは+1を意味します。とはいっても、見ているものを理解するのは難しいですが。
 
  
 
-##Debugging with variable names
+##変数名でデバッグ
 
-As already stated before, it's crucial to exactly know in which space your vectors are. Don't take the dot product of a vector in camera space and a vector in model space.
+既に以前言ったように、ベクトルがどの空間にあるかはとても重要です。カメラ空間にあるベクトルとモデル空間にあるベクトルとの内積は取ってはいけません。
 
-Appending the space of each vector in their names ("..._modelspace") helps fixing math bugs tremendously.
+変数名にベクトルがある空間名を(“…_modelspace”のように)追加する と数学的なバグを修正するのがとても簡単になります。
 
-##How to create a normal map
+##法線マップの作り方
 
-Created by James O'Hare. Click to enlarge.
+James O’Hareによる作りかた。クリックで拡大してください。
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/normalMapMiniTut.jpg)
 
 
-#Exercises
+#演習
 
 
-* Normalize the vectors in indexVBO_TBN before the addition and see what it does.
-* Visualize other vectors (for instance, EyeDirection_tangentspace) in color mode, and try to make sense of what you see
+* 加える前にindexVBO_TBNにあるベクトルを正規化して可視化してみましょう。
+* 他のベクトル（例えば、EyeDirection_tangentspace）もカラーモードで可視化してみましょう。そしてそれが何を意味するか理解してみましょう。
 
 
-#Tools & Links
+#ツールとリンク
 
 
-* [Crazybump](http://www.crazybump.com/) , a great tool to make normal maps. Not free.
-* [Nvidia's photoshop plugin](http://developer.nvidia.com/nvidia-texture-tools-adobe-photoshop). Free, but photoshop isn't...
+* [Crazybump](http://www.crazybump.com/) , 法線マップを作るのに適しています。有料です。
+* [Nvidia's photoshop plugin](http://developer.nvidia.com/nvidia-texture-tools-adobe-photoshop). 無料です。でもフォトショップが必要です。
 * [Make your own normal maps out of several photos](http://www.zarria.net/nrmphoto/nrmphoto.html)
 * [Make your own normal maps out of one photo](http://www.katsbits.com/tutorials/textures/making-normal-maps-from-photographs.php)
-* Some more info on [matrix transpose](http://www.katjaas.nl/transpose/transpose.html)
+* より詳しいことは [matrix transpose](http://www.katjaas.nl/transpose/transpose.html)にあります。
 
 
-#References
+#参考文献
 
 
 * [Lengyel, Eric. "Computing Tangent Space Basis Vectors for an Arbitrary Mesh". Terathon Software 3D Graphics Library, 2001.](http://www.terathon.com/code/tangent.html)

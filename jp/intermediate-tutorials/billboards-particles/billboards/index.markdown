@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: Billboards
+title: ビルボード
 date: '2013-10-15 17:15:15 +0200'
 date_gmt: '2013-10-15 17:15:15 +0200'
 categories: []
@@ -11,45 +11,44 @@ tags: []
 language: jp
 ---
 
-Billboards are 2D elements incrusted in a 3D world. Not a 2D menu on top of everything else; not a 3D plane around which you can turn; but something in-between, like health bars in many games.
+ビルボードは3D世界にある2D要素です。他のすべての上に表示される2Dメニューではありません。またターンできるような3D面でもありません。ゲームでのHPゲージのような、それらの中間のようなものです。
 
-What's different with billboards is that they are positionned at a specific location, but their orientation is automatically computed so that it always faces the camera.
+ビルボードと他のものとの違いは特定の位置に配置されるが、常にカメラの方向を自動で向くように計算されています。
 
  
 
-#Solution #1 : The 2D way
+#解決策1：2Dでの方法
 
-This one is supra-easy.
+この方法はとっても簡単です。
 
-Just compute where your point is on screen, and display a 2D text (see Tutorial 11) at this position.
+画面上でのあなたの位置を計算し、この位置に2Dテキストを表示します。（チュートリアル11を見てください。）
 {% highlight cpp linenos %}
-// Everything here is explained in Tutorial 3 ! There's nothing new.
+// ここでやってることはすべてチュートリアル3で説明済みです。新しいことはありません。
 glm::vec4 BillboardPos_worldspace(x,y,z, 1.0f);
 glm::vec4 BillboardPos_screenspace = ProjectionMatrix * ViewMatrix * BillboardPos_worldspace;
 BillboardPos_screenspace /= BillboardPos_screenspace.w;
 
 if (BillboardPos_screenspace.z < 0.0f){
-    // Object is behind the camera, don't display it.
+    // カメラの後ろにあるものは表示しません。
 }
 {% endhighlight %}
-Ta-dah !
 
-On the plus side, this method is really easy, and the billboard will have the same size regardless of its distance to the camera. But 2D text is always displayed on top of everything else, and this can/will mess up the rendering and show above other objects.
+この方法の良い点はとても簡単で、ビルボードとカメラの距離によらず常に一定の大きさになってくれる点です。しかし2Dテキストは他のすべてのものの上に表示されるので、他のオブジェクトの上に表示されてしまいます。
 
  
 
-#Solution #2 : The 3D way
+#解決策2：3Dでの方法
 
-This one is usually better and not much more complicated.
+この方法のほうがよりよく、またそこまで複雑でもありません。
 
-The goal is to keep the mesh aligned with the camera, even when the camera moves :
+目的はメッシュが動いてもカメラの方向に向けることです。
 
 ![]({{site.baseurl}}/assets/images/tuto-billboard/2a.gif)
 
 
-You can view this problem as generating an appropriate Model matrix, even though it's is much simpler than that.
+これは適切なモデル行列を生成する問題と捉えることができます。
 
-The idea is that each corner of the billboard is at the center position, displaced by the camera's up and right vectors :
+基本的な考え方は、ビルボードの各コーナーの中心を、カメラの上と横ベクトルにによって移動させることです。
 
  
 
@@ -58,18 +57,18 @@ The idea is that each corner of the billboard is at the center position, displac
 
  
 
-Of course, we only know the billboard's center position in world space, so we also need the camera's up/right vectors in world space.
+もちろん、ワールド空間でのビルボードの中心座標は知っているものとして、ワールド空間でのカメラの上/右ベクトルが必要となります。
 
-In camera space, the camera's up vector is (0,1,0). To get it in world space, just multiply this by the matrix that goes from Camera Space to World Space, which is, of course, the inverse of the View matrix.
+カメラ空間ではカメラの上は(0,1,0)です。これをワールド空間で表現するには単にカメラ空間からワールド空間へ移すような行列を掛ければ良いだけです。これはもちろんビュー行列の逆行列です。
 
-An easier way to express the same math is :
+これは次のように簡単に表現できます。
 {% highlight text linenos %}
 CameraRight_worldspace = {ViewMatrix[0][0], ViewMatrix[1][0], ViewMatrix[2][0]}
 CameraUp_worldspace = {ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]}
 {% endhighlight %}
  
 
-Once we have this, it's very easy to compute the final vertex' position :
+一度これを得れば、最終的な頂点位置を計算するのはとても簡単です。
 {% highlight glsl linenos cssclass=highlightglslvs %}
 vec3 vertexPosition_worldspace =
     particleCenter_wordspace
@@ -77,19 +76,19 @@ vec3 vertexPosition_worldspace =
     + CameraUp_worldspace * squareVertices.y * BillboardSize.y;
 {% endhighlight %}
 
-* particleCenter_worldspace is, as its name suggests, the billboard's center position. It is specified with an uniform vec3.
-* squareVertices is the original mesh. squareVertices.x is -0.5 for the left vertices, which are thus moved towars the left of the camera (because of the *CameraRight_worldspace)
-* BillboardSize is the size, in world units, of the billboard, sent as another uniform.
+* particleCenter_worldspaceは名前が示すとおり、ビルボードの中心位置です。これはvec3で表されます。.
+* squareVerticesはオリジナルのメッシュです。左の頂点のため、squareVertices.xは-0.5です。これはカメラの左方向へ移動されます。（*CameraRight_worldspace のため。）
+* BillboardSizeはワールド単位でのビルボードのサイズです。
 
-<div><span style="font-size: medium;"><span style="line-height: 24px;">And presto, here's the result. Wasn't this easy ? </span></span><span style="font-size: 16px;"> </span></div>
+<div><span style="font-size: medium;"><span style="line-height: 24px;">以下に結果を示します。 </span></span><span style="font-size: 16px;"> </span></div>
 ![]({{site.baseurl}}/assets/images/tuto-billboard/2.gif)
 
 
  
 
-For the record, here's how squareVertices is made :
+squareVerticesは次のように作ります。
 {% highlight cpp linenos %}
-// The VBO containing the 4 vertices of the particles.
+// VBOは粒子の4つのベクトルを保持しています。
  static const GLfloat g_vertex_buffer_data[] = {
  -0.5f, -0.5f, 0.0f,
  0.5f, -0.5f, 0.0f,
@@ -99,24 +98,25 @@ For the record, here's how squareVertices is made :
 {% endhighlight %}
  
 
-#Solution #3 : The fixed-size 3D way
+#解決策3：固定サイズでの3Dでの方法
 
-As you can see above, the size of the billboard changes with respect to the camera's distance. This is the expected result in some cases, but in others, such as health bars, you probably want a fixed-size instead.
+上で見たように、ビルボードのサイズはカメラとの距離に応じて変わります。こういう感じにしたい場合もあるでしょうが、ライフゲージのように固定サイズにしたい場合もあるでしょう。
 
-Since the displacement between the center and a corner must be fixed in screen-space, that's exactly what we're going to do : compute the center's position in screen space, and offset it.
+画面空間で中心とコーナーの配置を固定したいので次のようにします。画面空間での中心位置とそのオフセットを計算します。
 {% highlight cpp linenos %}
 vertexPosition_worldspace = particleCenter_wordspace;
-// Get the screen-space position of the particle's center
+// 粒子の中心の座標を空間座標で得る。
 gl_Position = VP * vec4(vertexPosition_worldspace, 1.0f);
-// Here we have to do the perspective division ourselves.
+// パースペクティブ除算を自分自身で行います。
 gl_Position /= gl_Position.w;
 
-// Move the vertex in directly screen space. No need for CameraUp/Right_worlspace here.
+// 頂点を直接画面空間へ移動します。CameraUp/Right_worlspaceはここではいりません。
 gl_Position.xy += squareVertices.xy * vec2(0.2, 0.05);
 {% endhighlight %}
-Remember that at this stage of the rendering pipeline, you're in Normalized Device Coordinates, so between -1 and 1 on both axes : it's not in pixels.
+描画パイプラインのこのステージは正規化デバイス座標にあることを覚えて置いてください。
+つまり各軸は-1と1の間にあり、ピクセルではありません。
 
-If you want a size in pixels, easy : just use (ScreenSizeInPixels / BillboardSizeInPixels) instead of BillboardSizeInScreenPercentage.
+ピクセルでサイズを指定したい場合はBillboardSizeInScreenPercentageの代わりに(ScreenSizeInPixels / BillboardSizeInPixels)を使うだけです。
 
  
 
@@ -125,11 +125,13 @@ If you want a size in pixels, easy : just use (ScreenSizeInPixels / BillboardSiz
 
  
 
-#Solution #4 : Vertical rotation only
+#解決策4：頂点回転だけ
 
-Some systems model faraway trees and lamps as billboards. But you really, really don't want your tree to be bent : it MUST be vertical. So you need an hybrid system that rotates only around one axis.
+遠くの木やランプをビルボードとしてモデル化してるシステムもあります。
+本当に木を曲げさせたくない場合には、頂点とすべきです。
+だから一つの軸の周りで回転させるようなハイブリッドシステムが必要となります。
 
-Well, this one is left as an exercise to the reader !
+これは演習として読者に任せます。
 
  
 

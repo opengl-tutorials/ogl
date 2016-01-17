@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: Particles / Instancing
+title:粒子/インスタンス化
 date: '2013-10-19 10:52:04 +0200'
 date_gmt: '2013-10-19 10:52:04 +0200'
 categories: []
@@ -11,48 +11,48 @@ tags: []
 language: jp
 ---
 
-Particles are very similar to 3D billboards. There are two major differences, though :
+粒子は3Dビルボードにとても良く似ています。しかし、この二つは次の点が異なっています。
 
-* there is usually a LOT of them
-* they move
-* the appear and die.
-* they are semi-transparent
+* 通常多くの粒子が存在します。
+* 粒子は動きます。
+* 現れたり消えたりします。
+* 半透明になっています。
 
-Both of these difference come with problems. This tutorial will present ONE way to solve them; there are many other possibilities.
+これらの違いが問題となります。このチュートリアルではこれを解決する一つの方法を紹介します。他にも多くの方法があります。
 
-#Particles, lots of them !
+#多くある粒子
 
-The first idea to draw many particles would be to use the previous tutorial's code, and call glDrawArrays once for each particle. This is a very bad idea, because this means that all your shiny GTX' 512+ multiprocessors will all be dedicated to draw ONE quad (obviously, only one will be used, so that's 99% efficiency loss). Then you will draw the second billboard, and it will be the same.
+多くの粒子を描く方法のひとつは前のチュートリアルのコードを使うことです。そして各粒子ごとにglDrawArraysを呼びます。これはとても悪い方法で、GTX'512+のようなマルチプロセッサに一つの四角形を描画することに専念させることを意味しています。（明らかに一つしか使われず、99％の効率ロスとなります。）そして二つ目のビルボードを同じように描画します。
 
-Clearly, we need a way to draw all particles at the same time.
+明らかに、同じときにすべての粒子を描画することが必要となります。
 
-There are many ways to do this; here are three of them :
+これにはいくつか方法がありますが、ここでは3つの方法を示します。
 
-* Generate a single VBO with all the particles in them. Easy, effective, works on all platforms.
-* Use geometry shaders. Not in the scope of this tutorial, mostly because 50% of the computers don't support this.
-* Use instancing. Not available on ALL computers, but a vast majority of them.
+* すべての粒子に対して一つのVBOだけを生成します。簡単で、効果的でどのプロットフォームでも動きます。
+* ジオメトリシェーダを使います。このチュートリアルの範囲外です。なぜなら50％程度のコンピュータでサポートされていないからです。
+* インスタンス化を使う。すべてのコンピュータでは使えませんが、大半のもので使えます。
 
-In this tutorial, we'll use the 3rd option, because it is a nice balance between performance and availability, and on top of that, it's easy to add support for the first method once this one works.
+このチュートリアルでは三番目の選択肢を使います。なぜならこの方法はパフォーマンスと可用性とのバランスがとても良く、一つ目の方法をこの方法に追加するのも簡単だからです。
 
-##Instancing
+##インスタンス化
 
-"Instancing" means that we have a base mesh (in our case, a simple quad of 2 triangles), but many instances of this quad.
+インスタンス化はベースメッシュ（この場合2つの三角形によるシンプルな四角形）で、この四角形のインスタンスが多くあるということを意味しています。
 
-Technically, it's done via several buffers :
+技術的には、いくつかのバッファを通して行われます。
 
-* Some of them describe the base mesh
-* Some of them describe the particularities of each instance of the base mesh.
+* それらのバッファの中にはメッシュを描写するものもある
+* それらのバッファの中にはベースメッシュの各インスタンスの粒子を描画するものもある
 
-You have many, many options on what to put in each buffer. In our simple case, we have :
+各バッファに何を入れるかは多くの選択肢があります。ここでは次のようなものを考えます。
 
-* One buffer for the vertices of the mesh. No index buffer, so it's 6 vec3, which make 2 triangles, which make 1 quad.
-* One buffer for the particles' centers.
-* One buffer for the particles' colors.
+* メッシュの頂点用の一つのバッファ。インデックスバッファではなく、6個のvec3で二つの四角形と一つの四角形を示します。
+* 粒子の中心用の一つのバッファ
+* 粒子の色用の一つのバッファ
 
-These are very standard buffers. They are created this way :
+これらは基本的なバッファで、次のように作ります。
 {% highlight cpp linenos %}
-// The VBO containing the 4 vertices of the particles.
-// Thanks to instancing, they will be shared by all particles.
+// このVBOは粒子の4頂点を持っている。
+// インスタンス化のおかげで、すべての粒子で共有できます。
 static const GLfloat g_vertex_buffer_data[] = {
  -0.5f, -0.5f, 0.0f,
  0.5f, -0.5f, 0.0f,
@@ -64,29 +64,28 @@ glGenBuffers(1, &billboard_vertex_buffer);
 glBindBuffer(GL_ARRAY_BUFFER, billboard_vertex_buffer);
 glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 
-// The VBO containing the positions and sizes of the particles
+// このVBO粒子の位置とサイズを持ちます。
 GLuint particles_position_buffer;
 glGenBuffers(1, &particles_position_buffer);
 glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
-// Initialize with empty (NULL) buffer : it will be updated later, each frame.
+// 空の(NULL)バッファで初期化します。各フレームで後で更新します。
 glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
 
-// The VBO containing the colors of the particles
+// このVBOは粒子の色を持ちます。
 GLuint particles_color_buffer;
 glGenBuffers(1, &particles_color_buffer);
 glBindBuffer(GL_ARRAY_BUFFER, particles_color_buffer);
-// Initialize with empty (NULL) buffer : it will be updated later, each frame.
+//空の(NULL)バッファで初期化します。各フレームで後で更新します。
 glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW);
 {% endhighlight %}
  
 
-, which is as usual. They are updated this way :
+これらは通常、次のようにして更新します。
 
  
 {% highlight cpp linenos %}
-// Update the buffers that OpenGL uses for rendering.
-// There are much more sophisticated means to stream data from the CPU to the GPU,
-// but this is outside the scope of this tutorial.
+// OpenGLが描画用に使うバッファを更新する
+// CPUからGPUへ向かうデータを流すようなより洗練された意味もありますが、このチュートリアルの範囲外です。
 // http://www.opengl.org/wiki/Buffer_Object_Streaming
 
 glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
@@ -99,101 +98,99 @@ glBufferSubData(GL_ARRAY_BUFFER, 0, ParticlesCount * sizeof(GLubyte) * 4, g_part
 {% endhighlight %}
  
 
-, which is as usual. Before render, they are bound this way :
+これはいつもどおりです。描画の前に次のようにバインドします。
 
  
 {% highlight cpp linenos %}
-// 1rst attribute buffer : vertices
+// 一つ目の属性バッファ：頂点
 glEnableVertexAttribArray(0);
 glBindBuffer(GL_ARRAY_BUFFER, billboard_vertex_buffer);
 glVertexAttribPointer(
- 0, // attribute. No particular reason for 0, but must match the layout in the shader.
- 3, // size
- GL_FLOAT, // type
- GL_FALSE, // normalized?
- 0, // stride
- (void*)0 // array buffer offset
+ 0, // 属性：0に深い意味はないが、シェーダのlayoutと一致させないといけない。
+ 3, // サイズ
+ GL_FLOAT, // タイプ
+ GL_FALSE, // 正規化？
+ 0, // ストライド
+ (void*)0 // 配列バッファオフセット
 );
 
-// 2nd attribute buffer : positions of particles' centers
+// 二つ目の属性バッファ：粒子の中心の位置
 glEnableVertexAttribArray(1);
 glBindBuffer(GL_ARRAY_BUFFER, particles_position_buffer);
 glVertexAttribPointer(
- 1, // attribute. No particular reason for 1, but must match the layout in the shader.
- 4, // size : x + y + z + size => 4
- GL_FLOAT, // type
- GL_FALSE, // normalized?
- 0, // stride
- (void*)0 // array buffer offset
+ 1, // 属性：1に深い意味はないが、シェーダのlayoutと一致させないといけない。
+ 4, // サイズ：x+y+z+size => 4
+ GL_FLOAT, // タイプ
+ GL_FALSE, // 正規化？
+ 0, // ストライド
+ (void*)0 // 配列バッファオフセット
 );
 
-// 3rd attribute buffer : particles' colors
+// 3つ目の属性バッファ：粒子の色
 glEnableVertexAttribArray(2);
 glBindBuffer(GL_ARRAY_BUFFER, particles_color_buffer);
 glVertexAttribPointer(
- 2, // attribute. No particular reason for 1, but must match the layout in the shader.
- 4, // size : r + g + b + a => 4
- GL_UNSIGNED_BYTE, // type
- GL_TRUE, // normalized? *** YES, this means that the unsigned char[4] will be accessible with a vec4 (floats) in the shader ***
- 0, // stride
- (void*)0 // array buffer offset
+ 2, // 属性：2に深い意味はないが、シェーダのlayoutと一致させないといけない。
+ 4, //サイズ：r+g+b+a=>4
+ GL_UNSIGNED_BYTE, // タイプ
+ GL_TRUE, // 正規化する。これはunsigned char[4]にシェーダでvec4(float)でアクセスできるようにすることを意味します。
+ 0, // ストライド
+ (void*)0 // 配列バッファオフセット
 );
 {% endhighlight %}
-, which is as usual. The difference comes when rendering. Instead of using glDrawArrays (or glDrawElements if your base mesh has an index buffer), you use glDrawArrraysInstanced / glDrawElementsInstanced, which is equivalent to calling glDrawArrays N times (N is the last parameter, in our case ParticlesCount) :
+これもいつもどおり。描画のときに違う処理が必要になります。glDrawArrays（あるいはベースメッシュがインデックスバッファを持っている場合はglDrawElements）を使う代わりにglDrawArrraysInstanced / glDrawElementsInstancedを使います。これらはglDrawArraysをN回呼ぶのと同じです。（Nは最後のパラメータ、ここではParticlesCountを指します。）
 {% highlight cpp linenos %}
 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticlesCount);
 {% endhighlight %}
-Bue something is missing here. We didn't tell OpenGL which buffer was for the base mesh, and which were for the different instances. This is done with glVertexAttribDivisor. Here's the full commented code :
+気をつけることは、ベースメッシュ用のバッファは呼ばず、異なるインスタンス用のバッファを呼ぶ点です。これはglVertexAttribDivisorで実現でき、以下にコメントつきのコードを示します。
 {% highlight cpp linenos %}
-// These functions are specific to glDrawArrays*Instanced*.
-// The first parameter is the attribute buffer we're talking about.
-// The second parameter is the "rate at which generic vertex attributes advance when rendering multiple instances"
+// これらの関数はglDrawArrays *Instanced* 特有です。
+// 最初のパラメータは注目してる属性バッファです。
+// 二つ目のパラメータは、複数のインスタンスを描画するときに一般的な頂点属性が進む割合を意味します。
 // http://www.opengl.org/sdk/docs/man/xhtml/glVertexAttribDivisor.xml
-glVertexAttribDivisor(0, 0); // particles vertices : always reuse the same 4 vertices -> 0
-glVertexAttribDivisor(1, 1); // positions : one per quad (its center) -> 1
-glVertexAttribDivisor(2, 1); // color : one per quad -> 1
+glVertexAttribDivisor(0, 0); // 粒子の頂点：同じ4頂点を使いまわすので->0
+glVertexAttribDivisor(1, 1); // 位置：四角形ごとに一つ（中心）->1
+glVertexAttribDivisor(2, 1); // 色：四角形ごとに一つ->1
 
-// Draw the particules !
-// This draws many times a small triangle_strip (which looks like a quad).
-// This is equivalent to :
+// 粒子を描画する
+// これは（四角形に似た）triangle_stripを何度も描画します。
+// これは以下のコードと等価ですがより早いです。
 // for(i in ParticlesCount) : glDrawArrays(GL_TRIANGLE_STRIP, 0, 4),
-// but faster.
 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticlesCount);
 {% endhighlight %}
-As you can see, instancing is very versatile, because you can pass any integer as the AttribDivisor. For instance, with glVertexAttribDivisor(2, 10), each 10 subsequent instances will have the same color.
+これまで見てきたようにインスタンス化は本当にいろいろな用途に使えます。なぜならAttribDivisorとして整数をパスできるからです。例えばglVertexAttribDivisor(2, 10)では各10個の連続したインスタンスが同じ色を持ちます。
 
-##What's the point ?
+##どういう意味か？
 
-The point is that now, we only have to update a small buffer each frame (the center of the particles) and not a huge mesh. This is a x4 bandwidth gain !
+多くのメッシュを変更するのではなく、各フレームで小さなバッファ（粒子の中心）を更新する必要があるだけです。これは4倍の帯域幅が節約されたことを意味します。
 
  
 
-#Life and death
+#生成と消滅
 
-On the contrary to most other objects in the scene, particles die and born at a very high rate. We need a decently fast way to get new particles and to discard them, something better than "new Particle()".
+シーンでのほかのオブジェクトとは違い、粒子は高速で生成したりと消滅したりします。新しい粒子を取得したり、古い粒子を無視したりする“new Particle()”のような方法より洗練された方法が必要です。
 
-##Creating new particles
+##新しい粒子を作る
 
-For this, we will have a big particles container :
+ここでは、大きな粒子コンテナを作ります。
 {% highlight cpp linenos %}
-// CPU representation of a particle
+// 粒子のCPUでの表現
 struct Particle{
 	glm::vec3 pos, speed;
-	unsigned char r,g,b,a; // Color
+	unsigned char r,g,b,a; // 色
 	float size, angle, weight;
-	float life; // Remaining life of the particle. if < 0 : dead and unused.
+	float life; // パーティクルの寿命。0未満ならば消滅し使用しない
 
 };
 
 const int MaxParticles = 100000;
 Particle ParticlesContainer[MaxParticles];
 {% endhighlight %}
-Now, we need a way to create new ones. This function searches linearly in ParticlesContainer, which should be an horrible idea, except that it starts at the last known place, so this function usually returns immediately :
+新たな粒子を作る方法が必要です。この関数はParticlesContainerを線形サーチします。これは一般的にはひどいアイディアですが、最後の位置からサーチを始めることにより、通常この関数は迅速に返してくれます。
 {% highlight cpp linenos %}
 int LastUsedParticle = 0;
 
-// Finds a Particle in ParticlesContainer which isn't used yet.
-// (i.e. life < 0);
+// ParticlesContainerで使われていない粒子を探す。（つまりlife<0）
 int FindUnusedParticle(){
 
     for(int i=LastUsedParticle; i<MaxParticles; i++){
@@ -210,52 +207,53 @@ int FindUnusedParticle(){
         }
     }
 
-    return 0; // All particles are taken, override the first one
+    return 0; // すべての粒子が使用中なので、一番最初のものにオーバーライドする。
 }
 {% endhighlight %}
-We can now fill ParticlesContainer[particleIndex] with interesting "life", "color", "speed" and "position" values. See the code for details, but you can do pretty much anything here. The only interesting bit is, how many particles should we generate each frame ? This is mostly application-dependant, so let's say 10000 new particles per second (yes, it's quite a lot) :
+ParticlesContainer[particleIndex] を“life”と“color”と“speed”と“position”で満たします。
+より詳しくコードを見ると、ここでいろいろなことができます。問題は各フレームでいくつの粒子を生成すべきかということです。これはアプリケーション次第で、1秒間に10000個のような大量の新しい粒子を生成することを考えます。
 {% highlight cpp linenos %}
 int newparticles = (int)(deltaTime*10000.0);
 {% endhighlight %}
-except that you should probably clamp this to a fixed number :
+固定した値になるように切り捨てを行います。
 {% highlight cpp linenos %}
-// Generate 10 new particule each millisecond,
-// but limit this to 16 ms (60 fps), or if you have 1 long frame (1sec),
-// newparticles will be huge and the next frame even longer.
+// 1ミリ秒に10個の新しい粒子を生成します。
+// しかし60fpsという条件を満たすようにします。
+// newparticlesは大きく、次フレームではより長いです。
 int newparticles = (int)(deltaTime*10000.0);
 if (newparticles > (int)(0.016f*10000.0))
     newparticles = (int)(0.016f*10000.0);
 {% endhighlight %}
 
-##Deleting old particles
+##古い粒子の削除
 
-There's a trick, see below =)
+ここにはトリックがあります=)
 
-#The main simulation loop
+#メインシミュレーションループ
 
-ParticlesContainer contains both active and "dead" particles, but the buffer that we send to the GPU needs to have only living particles.
+ParticlesContainerはアクティブな粒子と死んだ粒子を含んでいます。しかしGPUへ送る必要があるのは生きている粒子だけです。
 
-So we will iterate on each particle, check if it is alive, if it must die, and if everything is allright, add some gravity, and finally copy it in a GPU-specific buffer.
+そこで各パーティクルを繰り返し、生死をチェックして、すべてが問題なければ重力を付加し、最終的にGPU特有のバッファにコピーします。
 {% highlight cpp linenos %}
-// Simulate all particles
+// 全粒子をシミュレートする
 int ParticlesCount = 0;
 for(int i=0; i<MaxParticles; i++){
 
-    Particle& p = ParticlesContainer[i]; // shortcut
+    Particle& p = ParticlesContainer[i]; // ショートカット
 
     if(p.life > 0.0f){
 
-        // Decrease life
+        // lifeを減らす
         p.life -= delta;
         if (p.life > 0.0f){
 
-            // Simulate simple physics : gravity only, no collisions
+            // シンプルな物理をシミュレートします。衝突はありません。
             p.speed += glm::vec3(0.0f,-9.81f, 0.0f) * (float)delta * 0.5f;
             p.pos += p.speed * (float)delta;
             p.cameradistance = glm::length2( p.pos - CameraPosition );
             //ParticlesContainer[i].pos += glm::vec3(0.0f,10.0f, 0.0f) * (float)delta;
 
-            // Fill the GPU buffer
+            // GPUバッファを満たします。
             g_particule_position_size_data[4*ParticlesCount+0] = p.pos.x;
             g_particule_position_size_data[4*ParticlesCount+1] = p.pos.y;
             g_particule_position_size_data[4*ParticlesCount+2] = p.pos.z;
@@ -268,7 +266,7 @@ for(int i=0; i<MaxParticles; i++){
             g_particule_color_data[4*ParticlesCount+3] = p.a;
 
         }else{
-            // Particles that just died will be put at the end of the buffer in SortParticles();
+            // SortParticles()で丁度消滅した粒子をバッファの最後に移します。
             p.cameradistance = -1.0f;
         }
 
@@ -277,115 +275,119 @@ for(int i=0; i<MaxParticles; i++){
     }
 }
 {% endhighlight %}
-This is what you get. Almost there, but there's a problem...
+これが結果です。ただし問題点があります。
 
 <img class="alignnone size-full wp-image-963" title="particles_unsorted" src="http://www.opengl-tutorial.org/wp-content/uploads/2013/10/particles_unsorted.png" alt="" width="905" height="751" />
 
-##Sorting
+##ソート
 
-As explained in [Tutorial 10](http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-10-transparency/), you need to sort semi-transparent objects from back to front for the blending to be correct.
+[チュートリアル10](http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-10-transparency/)で説明したように、ブレンドを正しくするには後から前面に向かって半透明オブジェクトをソートする必要があります。
 {% highlight cpp linenos %}
 void SortParticles(){
     std::sort(&ParticlesContainer[0], &ParticlesContainer[MaxParticles]);
 }
 {% endhighlight %}
-Now, std::sort needs a function that can tell whether a Particle must be put before or after another Particle in the container. This can be done with Particle::operator< :
+ここでstd::sortにコンテナのどの粒子を前に置いて、どの粒子を後に置くかを伝える必要があります。そこでParticle::operator<を定義します。
 {% highlight text linenos %}
-// CPU representation of a particle
+// 粒子のGPUでの表現
 struct Particle{
 
     ...
 
     bool operator<(Particle& that){
-        // Sort in reverse order : far particles drawn first.
+        // 一番遠い粒子を最初に描画するように、逆順にソートする
         return this->cameradistance > that.cameradistance;
     }
 };
 {% endhighlight %}
-This will make ParticleContainer be sorted, and the particles now display correctly*:
+これでParticleContainerはソートされ、粒子は正しく表示されます。
 
 ![]({{site.baseurl}}/assets/images/tuto-particules/particles_final.gif)
 
 
  
 
-#Going further
+#さらに先へ
 
 
-##Animated particles
+##アニメ粒子
 
-You can animate your particles' texture with a texture atlas. Send the age of each particle along with the position, and in the shaders, compute the UVs like we did for the [2D font tutorial](http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-11-2d-text/). A texture atlas looks like this :
+texture atlasによって粒子のテクスチャをアニメーションさせることができます。位置とともにパーティクルの年を送ることで[2Dフォントチュートリアル](http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-11-2d-text/)でやったようにシェーダでUVを計算します。texture atlasは次のようにします。
 
 ![]({{site.baseurl}}/assets/images/tuto-particules/ParticleAtlas.png)
 
 
-##Handling several particle systems
+##複数の粒子システムを扱う
 
-If you need more than one particle system, you have two options : either use a single ParticleContainer, or one per system.
+一つの粒子システム以上のものが必要な場合、二つの方法があります。一方は一つのParticleContainerで済ます方法。もう一つはシステムごとにParticleContainerを作る方法。
 
-If you have a single container for ALL particles, then you will be able to sort them perfectly. The main drawback is that you'll have to use the same texture for all particles, which is a big problem. This can be solved by using a texture atlas (one big texture with all your different textures on it, just use different UVs), but it's not really handy to edit and use.
+すべての粒子に対して一つのコンテナしか使わない場合は、ソートを完璧に行えます。欠点としては、すべての粒子に同じテクスチャを使う必要がある点です。これはtexture atlasを使うことで解決できます。（異なるUVを使うように、異なるテクスチャをすべて含んだ一つの大きなテクスチャ）しかしこの方法はエディットしたり使用したりするのに便利ではありません。
 
-If you have one container per particle system, on the other hand, particles will only be sorted inside these containers : if two particle sytems overlap, artefacts will start to appear. Depending on your application, this might not be a problem.
+パーティクルシステムごとにコンテナを用意する場合、一方で、コンテナ内でのみ粒子のソートが行われます。もし二つの粒子システムがオーバーラップすると乱れ始めます。アプリケーション次第ですが、これはあまり問題ではありません。
 
-Of course, you can also use some kind of hybrid system with several particle systems, each with a (small and manageable) atlas.
+もちろんいくつかの粒子システムを組み合わせることも可能です。
 
-##Smooth particles
+##粒子の平滑化
 
-You'll notice very soon a common artifact : when your particle intersect some geometry, the limit becomes very visible and ugly :
+すぐに乱れに気づくと思います。
+幾何学的に交差するときに、とてもおかしくなります。
 
 ![]({{site.baseurl}}/assets/images/tuto-particules/ParticleHardSmooth.jpg)
 
 
 (image from http://www.gamerendering.com/2009/09/16/soft-particles/ )
 
-A common technique to solve this is to test if the currently-drawn fragment is near the Z-Buffer. If so, the fragment is faded out.
+これを解決する一般的な方法は、今描画してるフラグメントが近くにあるかZバッファでテストする方法です。そうならばフラグメントをフェードアウトさせます。
 
-However, you'll have to sample the Z-Buffer, which is not possible with the "normal" Z-Buffer. You need to render your scene in a [render target](http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-14-render-to-texture/). Alternatively, you can copy the Z-Buffer from one framebuffer to another with glBlitFramebuffer.
+しかし、Zバッファをサンプルする必要があり、通常のZバッファでは不可能です。
+そこで[描画対象](http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-14-render-to-texture/)でシーンを描画する必要があります。代わりに、あるフレームバッファから別のバッファへとglBlitFramebufferを使ってZバッファをコピーできます。
 
 http://developer.download.nvidia.com/whitepapers/2007/SDK10/SoftParticles_hi.pdf
 
-##Improving fillrate
+##フィルレートの改善
 
-One of the most limiting factor in modern GPUs is fillrate : the amount of fragments (pixels) it can write in the 16.6ms allowed to get 60 FPS.
+現代のGPUの最も大きな制約はフィルレートです。60FPSを許すような16.6ミリ秒のうちに描画できるフラグメント（ピクセル）の総量です。
 
-This is a problem, because particles typically need a LOT of fillrate, since you can re-draw the same fragment 10 times, each time with another particle; and if you don't do that, you get the same artifacts as above.
+これは問題で、粒子は大きなフィルレートが必要な典型例で、毎回他の粒子とともに10回も同じフラグメントを再描画しなければなりません。これができなければ上で見たような乱れが生じます。
 
-Amongst all the fragments that are written, many are completely useless : these on the border. Your particle textures are often completely transparent on the edges, but the particle's mesh will still draw them - and update the color buffer with exactly the same value than before.
+描画されたすべてのフラグメントのなかには不用なものもあります。例えば境界にあるようなもの。粒子テクスチャはエッジ上で完璧な透明なではあるが、粒子のメッシュはそれらに描画しようとします。そして前とまったく同じ色に色を更新します。
 
-This small utility computes a mesh (the one you're supposed to draw with glDrawArraysInstanced() ) that tightly fits your texture :
+この小さなユーティリティがテクスチャに合った（glDrawArraysInstanced() で描画しようとしている）メッシュを計算します。
 
 ![](http://www.humus.name/Cool/ParticleTrimmer.jpg)
 
 
-[http://www.humus.name/index.php?page=Cool&ID=8](http://www.humus.name/index.php?page=Cool&ID=8) . Emil Person's site has plenty of other fascinating articles, too.
+[http://www.humus.name/index.php?page=Cool&ID=8](http://www.humus.name/index.php?page=Cool&ID=8) . Emil Personのサイトには他にもいろいろな記事があります。
 
-##Particle physics
+##粒子の物理
 
-At some point, you'll probably want your particles to interact some more with your world. In particular, particles could rebound on the ground.
+粒子が地面にぶつかったら跳ね返るようなリアルな感じにしたいと考えているかもしれません。
 
-You could simply launch a raycast for each particle, between the current position and the future one; we learnt to do this in the [Picking tutorials](http://www.opengl-tutorial.org/miscellaneous/clicking-on-objects/picking-with-a-physics-library/). But this is extremely expensive, you just can't to this for each particle, each frame.
+各粒子に現在の位置と未来の位置との間でレイキャストを適用すれば良いのです。これは[Picking tutorials](http://www.opengl-tutorial.org/miscellaneous/clicking-on-objects/picking-with-a-physics-library/)で学べます。
+しかし、これはとても計算コストが高いので、各フレームで各粒子に適応することはできません。
 
-Depending on your application, you can either approximate your geometry with a set of planes and do the raycast on these planes only; Or, you can use real raycast, but cache the results and approximate nearby collisions with the cache (or, you can do both).
+アプリケーション次第ですが、面のセットであると近似して、それぞれの面にのみレイキャストを適応するという方法があります。あるいは、リアルなレイキャストを適応するが、結果をキャッシュしておいて、近くのものと衝突するかをキャッシュで近似するという方法もあります。
 
-A completely different technique is to use the existing Z-Buffer as a very rough approximation of the (visible) geometry, and collide particles on this. This is "good enough" and fast, but you'll have to do all your simulation on the GPU, since you can't access the Z-Buffer on the CPU (at least not fast), so it's way more complicated.
+まったく別の方法としてはZバッファを幾何学の近似として使う方法です。これは十分な精度で早いです。しかしGPU上でシミュレーションをしなければいけません。なぜならCPU上でZバッファにアクセスできないからです。（できても早くありません。）だからより複雑な方法です。.
 
-Here are a few links about these techniques :
+これらの方法に関するリンクを書いておきます。
 
 [http://www.altdevblogaday.com/2012/06/19/hack-day-report/](http://www.altdevblogaday.com/2012/06/19/hack-day-report/)
 
 [http://www.gdcvault.com/search.php#&category=free&firstfocus=&keyword=Chris+Tchou's%2BHalo%2BReach%2BEffects&conference_id=](http://www.gdcvault.com/search.php#&category=free&firstfocus=&keyword=Chris+Tchou's%2BHalo%2BReach%2BEffects&conference_id=)
 
-##GPU Simulation
+##GPUシミュレーション
 
-As said above, you can simulate the particles' movements completely on the GPU. You will still have to manage your particle's lifecycle on the CPU - at least to spawn them.
+上で言ったように、GPU上で粒子の動きを完璧にシミュレートできます。まだ粒子のライフサイクルをCPU上で管理したいでしょう。
 
-You have many options to do this, and none in the scope of this tutorial ; I'll just give a few pointers.
+これを行うための選択肢は次のようなものがあります。
 
-* Use Transform Feedback. It allows you to store the outputs of a vertex shader in a GPU-side VBO. Store the new positions in this VBO, and next frame, use this VBO as the starting point, and store the new position in the former VBO.
-* Same thing but without Transform Feedback: encode your particles' positions in a texture, and update it with Render-To-Texture.
-* Use a General-Purpose GPU library : CUDA or OpenCL, which have interoperability functions with OpenGL.
-* Use a Compute Shader. Cleanest solution, but only available on very recent GPUs.
+* 変換フィードバックを使う。GPUサイドのVBOの頂点シェーダの出力を保存できます。このVBOの新たな位置を保存し、次のフレームで、このVBOをスタート位置として使い、以前のVBOに新たな位置を保存します。
+* 変換フィードバックを使わない似た方法。粒子の位置をテクスチャにエンコードして、Render-To-Textureで更新する。
+* GPGPUライブラリを使う：CUDAやOpenCLはOpenGLとの橋渡し役をやってくれます。
+* コンピュータシェーダを使う：簡潔な方法ですが、最新のGPUでのみ可能です。
 
  
 
-* Note that for simplicity, in this implementation, ParticleContainer is sorted after updating the GPU buffers. This makes the particles not exactly sorted (there is a one-frame delay), but it's not really noticeable. You can fix it by splitting the main loop in 2 : Simulate, Sort, and update.
+* 簡単化のため、この実装では、ParticleContainerはGPUバッファの更新後に保存しています。これは粒子が正しくは保存されないことを意味します。（1フレームの遅延があります。）
+しかしそれには気づかないでしょう。メインループをシミュレート、ソート、アップデートに分割すれば修正できます。

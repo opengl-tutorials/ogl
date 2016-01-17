@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: 'Tutorial 15 : Lightmaps'
+title: 'チュートリアル15：ライトマップ'
 date: '2011-05-28 10:07:24 +0200'
 date_gmt: '2011-05-28 10:07:24 +0200'
 categories: [tuto]
@@ -11,46 +11,48 @@ tags: []
 language: jp
 ---
 
-#Introduction
+#イントロダクション
 
-This a video-only tutorial. It doesn't introduce any new OpenGL-specific technique/syntax, but shows you how to use the techniques you already know to build high-quality shadows.
+これはビデオでのチュートリアルです。ここでは新たなOpenGL特有のテクニックや文法は導入しません。しかし、既に知っている技術でよりクオリティの高い影を作る方法お教えします。
 
-This tutorials explains how to build a simple world in Blender, and bake the lightmaps so that you can use them in your application.
+このチュートリアルはBlender上でシンプルな世界を構築し、あなたのアプリケーションでそれらを使えるようにするためにライトマップを作る方法を説明します。
 
 ![]({{site.baseurl}}/assets/images/tuto-15-lightmaps/lighmappedroom.png)
 
-No prior knowledge of Blender is required. I will explain all keyboard shortcuts and everything.
+Blenderに関する前提知識は要りません。キーボードショートカットなどのことについて説明していきます。
 
-#A note on lightmaps
+#ライトマップについて
 
-Lightmaps are baked. Once and for all. This means that they are completely static, you can't decide to move the light at runtime. Or even remove it.
+ライトマップはくっきりと焼かれます。
+これは完全に静的で実行時にライトを動かすことができないことを意味します。
 
-This can still be useful for the sunlight, though, or indoor scenes where you may not break the light bulbs. Mirror Edge, released in 2009, uses them extensively, both indoors and outdoors.
+これは太陽光を表現するのに便利ですが、インドア用としても使えます。
+2009年にリリースされたMirror Edgeではインドアとアウトドア双方で使われています。
 
-What's more, it's very easy to setup, and you can't beat the speed.
+さらに、簡単にセットアップでき、スピードも落ちません。
 
-#The video
+#ビデオ
 
-This is a 1024x768p video, use HD mode...
+これはHDモードを使った1024x768pのビデオです。
 
 <iframe src="http://player.vimeo.com/video/24359223?title=0&byline=0&portrait=0" frameborder="0" width="800" height="450"></iframe>
 
-#Addendum
+#付録
 
-When rendering it in OpenGL, you might notice some glitches (exaggerated here) :
+OpenGLで描画するとき、以下のような欠陥に気づくかもしれません。
 
 ![]({{site.baseurl}}/assets/images/tuto-15-lightmaps/positivebias.png)
 
 
-This is because of mipmapping, which blends texels together when seen at a distance. Black pixels from the texture's background get mixed with good parts of the lightmap. To avoid this, there are a few things you can do :
+これは遠くから見たときにテクセルをブレンドするときの、ミスマッピングによって起こります。テクスチャの背景の黒いピクセルは、ライトマップの正しい部分とミックスされてしまいます。これを避けるための方法はいくつかあります。
 
-* You can ask Blender to generate a margin around the limits of the UV map. This is the "margin" parameter in the "bake" panel. For good results, you may have to go up to a margin of 20 texels.
-* You can use a bias in your texture fetch :
+* BlenderでUVマップの限界付近での間隔を作るように設定します。これは"bake"パネルの"margin"パラメータで設定できます。良い結果を得るためには20テクセル程度のマージンが必要となるでしょう。
+* テクスチャを取り出すときにバイアスを使います
 
 {% highlight glsl linenos cssclass=highlightglslfs %}
 color = texture( myTextureSampler, UV, -2.0 ).rgb;
 {% endhighlight %}
--2 is the bias. You'll have to experiment with this value. The screenshot above was taken with a bias of +2, which means that OpenGL will select two mipmaps above the one it should have taken (so it's 16 times smaller, hence the glitches)
+-2がバイアスです。この値をいろいろ変更する必要があるでしょう。スクリーンショットはバイアスが+2の場合です。これはOpenGLが二つ上のミップマップを選択することを意味します。（だから16倍小さくなります。そのため欠陥が出てきます。）
 
-* You can fill the black background in a post-processing step. I'll post more about this later.
+* 後処理ステップで背景を黒塗りにします。後で詳しく説明する予定です。
 
