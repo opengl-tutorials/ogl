@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: 'Tutorial 17 : Rotations'
+title: 'チュートリアル17：回転'
 date: '2012-08-22 14:12:14 +0200'
 date_gmt: '2012-08-22 14:12:14 +0200'
 categories: [tuto]
@@ -11,190 +11,191 @@ tags: []
 language: jp
 ---
 
-This tutorial goes a bit outside the scope of OpenGL, but nevertheless tackles a very common problem: how to represent rotations ?
+このチュートリアルではすこしOpenGLの領域を外れたことを説明します。しかしとても一般的な問題です。どうやって回転を表現するか？です。
 
-In Tutorial 3 - Matrices, we learnt that matrices are able to rotate a point around a specific axis. While matrices are a neat way to transform vertices, handling matrices is difficult: for instance, getting the rotation axis from the final matrix is quite tricky.
+チュートリアル3行列では特定の軸周りで点を回転させる行列を学びました。行列は頂点を変換するには良い方法ですが、行列を扱うのは難しいです。例えば、最終的な行列から回転軸を得るのはとてもトリッキーです。
 
-We will present the two most common ways to represent rotation: Euler angles and Quaternions. Most importantly, we will explain why you should probably use Quaternions.
+回転を表す一般的な二つの方法を紹介します。オイラー角とクォータニオンです。最も重要なことは、なぜクォータニオンを使うべきかという理由を説明するところです。
 
 ![]({{site.baseurl}}/assets/images/tuto-17-rotation/tuto17.png)
 
 
-#Foreword: rotation VS orientation
+#序文：回転と方向
 
-While reading articles on rotations, you might get confused because of the vocabulary. In this tutorial:
+回転に関する記事を読んでいる間、きっと語彙によって混乱が生じるでしょう。このチュートリアルでは次のようなものがあります。
 
-* An orientation is a state: "the object's orientation is..."
-* A rotation is an operation: "Apply this rotation to the object"
+* 方向は状態です。”オブジェクトの方向は…”
+* 回転は操作です。”オブジェクトに回転を適用する。”
 
-That is, when you *apply a rotation*, you *change the orientation*. Both can be represented with the same tools, which leads to the confusion. Now, let's get started...
+これはつまり *回転を適用* すれば *方向が変わる* ということです。同じようなツールとして表現できるがゆえに混乱を招きます。それでは説明をしていきます。
 
-#Euler Angles
+#オイラー角
 
-Euler angles are the easiest way to think of an orientation. You basically store three rotations around the X, Y and Z axes. It's a very simple concept to grasp. You can use a vec3 to store it:
+オイラー角は回転を考える上で最も簡単な方法です。基本的にX、Y、Z軸周りでの3つの回転を格納するだけです。理解しやすいシンプルな概念です。それを格納するためにvec3を使います。
 {% highlight cpp linenos %}
 vec3 EulerAngles( RotationAroundXInRadians, RotationAroundYInRadians, RotationAroundZInRadians);
 {% endhighlight %}
-These 3 rotations are then applied successively, usually in this order: first Y, then Z, then X (but not necessarily). Using a different order yields different results.
+これらの3つの回転は連続的に実行されます。通常はY軸、Z軸、X軸の順番です。（ただし絶対ではありません。）異なる順番では異なる結果となります。
 
-One simple use of Euler angles is setting a character's orientation. Usually game characters do not rotate on X and Z, only on the vertical axis. Therefore, it's easier to write, understand and maintain "float direction;" than 3 different orientations.
+オイラー角のシンプルな使用方法の一つにキャラクターの方向をセットすることがあります。通常キャラクターはX軸やZ軸で回転せず、垂直軸だけで回転します。それゆえ、3つの異なる方向よりも、書くのも、理解するのも、軸を維持するのも簡単な方法となります。
 
-Another good use of Euler angles is an FPS camera: you have one angle for the heading (Y), and one for up/down (X). See common/controls.cpp for an example.
+他のオイラー角の使用方法にFPSカメラがあります。Y軸とX軸での角度のみを扱います。common/controls.cppを例として見てください。
 
-However, when things get more complex, Euler angle will be hard to work with. For instance :
+しかし、より複雑になると、オイラー角でうまくやるには大変です。
+例えば。
 
-* Interpolating smoothly between 2 orientations is hard. Naively interpolating the X,Y and Z angles will be ugly.
-* Applying several rotations is complicated and unprecise: you have to compute the final rotation matrix, and guess the Euler angles from this matrix
-* A well-known problem, the "Gimbal Lock", will sometimes block your rotations, and other singularities which will flip your model upside-down.
-* Different angles make the same rotation ( -180&deg; and 180&deg;, for instance )
-* It's a mess - as said above, usually the right order is YZX, but if you also use a library with a different order, you'll be in trouble.
-* Some operations are complicated: for instance, rotation of N degrees around a specific axis.
+* 二つの方向をスムーズに補間するのは大変です。単純にXとYとZの角度を補間してもひどい結果にしかなりません。
+* いくつかの回転を適用することは複雑で不正確なものです。最終的な回転行列を計算するには、この行列のオイラー角がどうなるかを考えなければなりません。
+* 良く知られた問題として、ジンバルロックがあります。これは時々回転をブロックしたり、モデルを上下逆さまにフリップするというような特性があります。
+* 異なる角度が同じ結果を表します。（例えば-180度と180度です。）
+* 上で挙げたように混乱を招きます。例えば正しい順番はYZXであるとか。しかしもし異なる順番のライブラリを使うと問題が生じます。
+* 複雑な操作もあります。例えばある軸でのN度の回転とかです。
 
-Quaternions are a tool to represent rotations, which solves these problems.
+クォータニオンはこれらの問題を解決する回転を表現するためのツールです。
 
-#Quaternions
+#クォータニオン
 
-A quaternion is a set of 4 numbers, [x y z w], which represents rotations the following way:
+クォータニオンは4つの数字[x y z w]のセットで、次のように回転を表します。
 {% highlight cpp linenos %}
-// RotationAngle is in radians
+// RotationAngleはラジアンで表します。
 x = RotationAxis.x * sin(RotationAngle / 2)
 y = RotationAxis.y * sin(RotationAngle / 2)
 z = RotationAxis.z * sin(RotationAngle / 2)
 w = cos(RotationAngle / 2)
 {% endhighlight %}
-RotationAxis is, as its name implies, the axis around which you want to make your rotation.
+RotationAxisは名前が示すとおり、回転させたい軸を表します。
 
-RotationAngle is the angle of rotation around this axis.
+RotationAngleはこの軸周りでの回転角度を示します。
 
 ![]({{site.baseurl}}/assets/images/tuto-17-rotation/quaternion.png)
 
 
-So essentially quaternions store a *rotation axis* and a *rotation angle*, in a way that makes combining rotations easy.
+だからクォータニオンには *回転軸* と *回転角度* が必要となり、組み合わせることで回転を簡単にしています。
 
-##Reading quaternions
+##クォータニオンを読みこみ
 
-This format is definitely less intuitive than Euler angles, but it's still readable: the xyz components match roughly the rotation axis, and w is the acos of the rotation angle (divided by 2). For instance, imagine that you see the following values in the debugger: [ 0.7 0 0 0.7 ]. x=0.7, it's bigger than y and z, so you know it's mostly a rotation around the X axis; and 2*acos(0.7) = 1.59 radians, so it's a rotation of 90&deg;.
+フォーマットはオイラー角ほど直感的ではありませんが、解読は可能です。xyz要素はおおむね回転軸で、wは回転角のacosを2で割ったものを表します。例えばデバッガで次のような値を見たとしましょう。[ 0.7 0 0 0.7 ]、x=0.7はyとzより大きく、おおむねX軸周りで回転すると理解できるでしょう。そして2*acos(0.7) = 1.59ラジアン、つまりは90度の回転角で。
 
-Similarly, [0 0 0 1] (w=1) means that angle = 2*acos(1) = 0, so this is a *unit quaternion*, which makes no rotation at all.
+同様に[0 0 0 1] (w=1)はangle = 2*acos(1) = 0ラジアンを意味し、これは *単位クォータニオン* を意味し、何の回転も行いません。
 
-##Basic operations
+##基本的な操作
 
-Knowing the math behind the quaternions is rarely useful: the representation is so unintuitive that you usually only rely on utility functions which do the math for you. If you're interested, see the math books in the [Useful Tools & Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) page.
+クォータニオンの背景にある数学を知ることにあまり意味はありません。表現はあまり直感的ではないので数学を実行してくれるようなユーティリティ関数にのみ頼ることになるでしょう。もし興味があれば  [Useful Tools & Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/)にある数学本を読んでみてください。
 
-###How do I create a quaternion in C++ ?
+###どのようにC++でクォータニオンを作るか？
 
 {% highlight cpp linenos %}
-// Don't forget to #include <glm/gtc/quaternion.hpp> and <glm/gtx/quaternion.hpp>
+// #include <glm/gtc/quaternion.hpp>と<glm/gtx/quaternion.hpp>を忘れないで
 
-// Creates an identity quaternion (no rotation)
+// 単位クォータニオンを作る（何の回転もさせない）
 quat MyQuaternion;
 
-// Direct specification of the 4 components
-// You almost never use this directly
+// 4要素の直接的な記述
+// これを直接使うことはないでしょう。
 MyQuaternion = quat(w,x,y,z); 
 
-// Conversion from Euler angles (in radians) to Quaternion
+// オイラー角からラジアンのクォータニオンへの変換
 vec3 EulerAngles(90, 45, 0);
 MyQuaternion = quat(EulerAngles);
 
-// Conversion from axis-angle
-// In GLM the angle must be in degrees here, so convert it.
+// 軸-角からの変換
+// GLMでは角度は度で表すので、変換します。
 MyQuaternion = gtx::quaternion::angleAxis(degrees(RotationAngle), RotationAxis);
 {% endhighlight %}
 
-###How do I create a quaternion in GLSL ?
+###GLSLでのクォータニオンの作りかた
 
-You don't. Convert your quaternion to a rotation matrix, and use it in the Model Matrix. Your vertices will be rotated as usual, with the MVP matrix.
+できません。クォータニオンを回転行列に変換して、モデル行列で使います。頂点はいつもどおりMVP行列で回転されます。
 
-In some cases, you might actually want to use quaternions in GLSL, for instance if you do skeletal animation on the GPU. There is no quaternion type in GLSL, but you can pack one in a vec4, and do the math yourself in the shader.
+多くの場合、GLSLでクォータニオンを使いたいでしょう。例えばGPU上でスケルタルアニメーションを実行したいときなどです。GLSLにはクォータニオンタイプはありません。しかし、vec4にひとまとめにできます。そしてシェーダ内であなた自身で数学を実行すれば良いのです。
 
-###How do I convert a quaternion to a matrix ?
+###クォータニオンの行列への変換方法
 
 {% highlight cpp linenos %}
 mat4 RotationMatrix = quaternion::toMat4(quaternion);
 {% endhighlight %}
-You can now use it to build your Model matrix as usual:
+これでいつもどおりモデル行列を作れます。
 {% highlight cpp linenos %}
 mat4 RotationMatrix = quaternion::toMat4(quaternion);
 ...
 mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScaleMatrix;
-// You can now use ModelMatrix to build the MVP matrix
+// MVP行列を作るためにモデル行列を使えます。
 {% endhighlight %}
 
 #
 
 
-#So, which one should I choose ?
+#どちらを選ぶべきか？
 
-Choosing between Euler angles and quaternions is tricky. Euler angles are intuitive for artists, so if you write some 3D editor, use them. But quaternions are handy for programmers, and faster too, so you should use them in a 3D engine core.
+オイラー角とクォータニオンの選択は難しいです。オイラー角は直感的で3Dエディタで書く場合には使うほうが良いでしょう。しかしクォータニオンはプログラマにとっては便利で、早いです。だから3Dエンジンコアではクォータニオンを使うべきです。
 
-The general consensus is exactly that: use quaternions internally, and expose Euler angles whenever you have some kind of user interface.
+一般的には内部的にはクォータニオンを使い、ユーザインターフェースではオイラー角を使うべきです。
 
-You will be able to handle all you will need (or at least, it will be easier), and you can still use Euler angles for entities that require it ( as said above: the camera, humanoids, and that's pretty much it) with a simple conversion.
+必要なもの（あるいは少なくとも簡単に）はすべて対処でき、必要とあればよりシンプルな変換であるオイラー角が使えます。（上で言ったようにカメラ、人型に適しています。）
 
-#Other resources
-
-
-* The books on [Useful Tools & Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) !
-* As old as it can be, Game Programming Gems 1 has several awesome articles on quaternions. You can probably find them online too.
-* A [GDC presentation](http://www.essentialmath.com/GDC2012/GDC2012_JMV_Rotations.pdf) on rotations
-* The Game Programing Wiki's [Quaternion tutorial](http://content.gpwiki.org/index.php/OpenGL:Tutorials:Using_Quaternions_to_represent_rotation)
-* Ogre3D's [FAQ on quaternions](http://www.ogre3d.org/tikiwiki/Quaternion+and+Rotation+Primer). Most of the 2nd part is ogre-specific, though.
-* Ogre3D's [Vector3D.h](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/include/OgreVector3.h?at=default) and [Quaternion.cpp](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/src/OgreQuaternion.cpp?at=default)
+#他の資料
 
 
-#Cheat-sheet
+*  [Useful Tools & Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) に本があります。
+* Game Programming Gems 1にはクォータニオンに関する素晴らしい記事があります。きっとネットで手に入るでしょう。
+* [GDC presentation](http://www.essentialmath.com/GDC2012/GDC2012_JMV_Rotations.pdf) の回転に関する項目
+* ゲームプログラミングwikiの [Quaternion tutorial](http://content.gpwiki.org/index.php/OpenGL:Tutorials:Using_Quaternions_to_represent_rotation)
+* Ogre3Dの [FAQ on quaternions](http://www.ogre3d.org/tikiwiki/Quaternion+and+Rotation+Primer)。二つ目の部分はおおむねogre特有です。
+* Ogre3Dの[Vector3D.h](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/include/OgreVector3.h?at=default) and [Quaternion.cpp](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/src/OgreQuaternion.cpp?at=default)
 
-How do I know it two quaternions are similar ?
 
-When using vector, the dot product gives the cosine of the angle between these vectors. If this value is 1, then the vectors are in the same direction.
+#チートシート
 
-With quaternions, it's exactly the same:
+二つのクォータニオンが似てるかの確認方法
+
+内積をとればそれらのベクトルの角度を出してくれます。もし値が1ならば、同じ方向を向いています。
+
+クォータニオンでもまったく同じです。
 {% highlight cpp linenos %}
 float matching = quaternion::dot(q1, q2);
 if ( abs(matching-1.0) < 0.001 ){
-    // q1 and q2 are similar
+    // q1とq2は同じ
 }
 {% endhighlight %}
-You can also get the angle between q1 and q2 by taking the acos() of this dot product.
+q1とq2間の角度を知りたい場合は内積のacos()を取れば良いです。
 
-##How do I apply a rotation to a point ?
+##頂点への回転の適用方法
 
-You can do the following:
+次のようにできます。
 {% highlight cpp linenos %}
 rotated_point = orientation_quaternion *  point;
 {% endhighlight %}
-... but if you want to compute your Model Matrix, you should probably convert it to a matrix instead.
+しかしモデル行列で計算したい場合は、代わりに行列に変換すべきです。
 
-Note that the center of rotation is always the origin. If you want to rotate around another point:
+回転の中心は常に原点です。他の点で回転させたい場合には次のようにします。
 {% highlight cpp linenos %}
 rotated_point = origin + (orientation_quaternion * (point-origin));
 {% endhighlight %}
 
-##How do I interpolate between 2 quaternions ?
+##二つのクォータニオンの補間方法
 
-This is called a SLERP: Spherical Linear intERPolation. With GLM, you can do this with mix:
+これはSLERPと呼ばれています。球面線形補間とい言います。GLMではこれをミックスすることで行えます。
 {% highlight cpp linenos %}
 glm::quat interpolatedquat = quaternion::mix(quat1, quat2, 0.5f); // or whatever factor
 {% endhighlight %}
 
-##How do I cumulate 2 rotations ?
+##二つの回転の計算方法
 
-Simple ! Just multiply the two quaternions together. The order is the same as for matrices, i.e. reverse:
+単純に二つのクォータニオンを掛け合わせるだけです。行列と同じで順番は同じです。つまり逆順です。
 {% highlight cpp linenos %}
 quat combined_rotation = second_rotation * first_rotation;
 {% endhighlight %}
 
-##How do I find the rotation between 2 vectors ?
+##二つのベクトル間の回転の見つけ方
 
-(in other words: the quaternion needed to rotate v1 so that it matches v2)
+(言い換えれば、v2にマッチするようにv1を回転させるようなクォータニオン）
 
-The basic idea is straightforward:
+基本的な考え方は直接的です。
 
-* The angle between the vectors is simple to find: the dot product gives its cosine.
-* The needed axis is also simple to find: it's the cross product of the two vectors.
+* ベクトル同士の角度の見つけ方：内積でコサインが得られます
+* 回転角の見つけ方：二つのベクトルの外積
 
-The following algorithm does exactly this, but also handles a number of special cases:
+次のアルゴリズムがこれを行います。しかし特別なケースには対処が必要です。
 {% highlight cpp linenos %}
 quat RotationBetweenVectors(vec3 start, vec3 dest){
 	start = normalize(start);
@@ -204,11 +205,10 @@ quat RotationBetweenVectors(vec3 start, vec3 dest){
 	vec3 rotationAxis;
 
 	if (cosTheta < -1 + 0.001f){
-		// special case when vectors in opposite directions:
-		// there is no "ideal" rotation axis
-		// So guess one; any will do as long as it's perpendicular to start
+		// ベクトルが反対方向を向いている特殊なケース：
+		// 単位回転軸はないので、垂直なものを見つけます。
 		rotationAxis = cross(vec3(0.0f, 0.0f, 1.0f), start);
-		if (gtx::norm::length2(rotationAxis) < 0.01 ) // bad luck, they were parallel, try again!
+		if (gtx::norm::length2(rotationAxis) < 0.01 ) // 残念、平行なのでもう一度！
 			rotationAxis = cross(vec3(1.0f, 0.0f, 0.0f), start);
 
 		rotationAxis = normalize(rotationAxis);
@@ -229,46 +229,45 @@ quat RotationBetweenVectors(vec3 start, vec3 dest){
 
 }
 {% endhighlight %}
-(You can find this function in common/quaternion_utils.cpp)
+この関数はcommon/quaternion_utils.cppにあります。
 
-##I need an equivalent of gluLookAt. How do I orient an object towards a point ?
+##gluLookAtと同じように、オブジェクトをある点の方向へ向けさせたい。
 
-Use RotationBetweenVectors !
+RotationBetweenVectorsを使いましょう！
 {% highlight cpp linenos %}
-// Find the rotation between the front of the object (that we assume towards +Z,
-// but this depends on your model) and the desired direction
+// オブジェクトの前方（通常は+Z方向ですが、場合によります）と目的の方向との回転を見つけます。
 quat rot1 = RotationBetweenVectors(vec3(0.0f, 0.0f, 1.0f), direction);
 {% endhighlight %}
-Now, you might also want to force your object to be upright:
+ここでオブジェクトをまっすぐ向かせたい場合を考えます。
 {% highlight cpp linenos %}
-// Recompute desiredUp so that it's perpendicular to the direction
-// You can skip that part if you really want to force desiredUp
+// 方向と垂直するように、目的の上方向を再計算します。
+// もし本当に目的の上方向に向かせたいなら、このパートはスキップできます。
 vec3 right = cross(direction, desiredUp);
 desiredUp = cross(right, direction);
 
-// Because of the 1rst rotation, the up is probably completely screwed up.
-// Find the rotation between the "up" of the rotated object, and the desired up
+// 最初の回転のため、上はたぶん失敗します。
+//オブジェクトの上と目的の上との間の角度を見つけます。
 vec3 newUp = rot1 * vec3(0.0f, 1.0f, 0.0f);
 quat rot2 = RotationBetweenVectors(newUp, desiredUp);
 {% endhighlight %}
-Now, combine them:
+これらをあわせます。
 {% highlight cpp linenos %}
-quat targetOrientation = rot2 * rot1; // remember, in reverse order.
+quat targetOrientation = rot2 * rot1; // 逆順になります。
 {% endhighlight %}
-Beware, "direction" is, well, a direction, not the target position ! But you can compute the direction simply: targetPos - currentPos.
+"方向"は方向であって目標とする点ではありません。しかし次のように位置は計算できます。目標点-現在点。
 
-Once you have this target orientation, you will probably want to interpolate between startOrientation and targetOrientation.
+一度目的の方向を得たなら、startOrientationとtargetOrientationの間の補間が欲しいと思います。
 
-(You can find this function in common/quaternion_utils.cpp)
+（この関数はcommon/quaternion_utils.cppにあります。）
 
-##How do I use LookAt, but limit the rotation at a certain speed ?
+##特定の回転スピードに制限したLookAtの使い方
 
-The basic idea is to do a SLERP ( = use glm::mix ), but play with the interpolation value so that the angle is not bigger than the desired value:
+基本的な考え方はSLERP( = use glm::mix )と同じです。しかし回転角が目的の値より大きくならないように補間します。
 {% highlight cpp linenos %}
 float mixFactor = maxAllowedAngle / angleBetweenQuaternions;
 quat result = glm::gtc::quaternion::mix(q1, q2, mixFactor);
 {% endhighlight %}
-Here is a more complete implementation, which deals with many special cases. Note that it doesn't use mix() directly as an optimization.
+以下に特殊なケースにも対応した完璧な実装を示します。最適化のためmix()を直接は使っていません。
 {% highlight cpp linenos %}
 quat RotateTowards(quat q1, quat q2, float maxAngle){
 
@@ -279,13 +278,13 @@ quat RotateTowards(quat q1, quat q2, float maxAngle){
 
 	float cosTheta = dot(q1, q2);
 
-	// q1 and q2 are already equal.
-	// Force q2 just to be sure
+	// q1とq2は既に同じです。
+	// q2を返します。
 	if(cosTheta > 0.9999f){
 		return q2;
 	}
 
-	// Avoid taking the long path around the sphere
+	// 球の周りの長いパスを取るのを防ぎます。
 	if (cosTheta < 0){
 	    q1 = q1*-1.0f;
 	    cosTheta *= -1.0f;
@@ -293,8 +292,7 @@ quat RotateTowards(quat q1, quat q2, float maxAngle){
 
 	float angle = acos(cosTheta);
 
-	// If there is only a 2&deg; difference, and we are allowed 5&deg;,
-	// then we arrived.
+	// もし5度ずつ回転させてるときに2度しかない場合は到着させます。
 	if (angle < maxAngle){
 		return q2;
 	}
@@ -308,12 +306,12 @@ quat RotateTowards(quat q1, quat q2, float maxAngle){
 
 }
 {% endhighlight %}
-You can use it like that:
+これは次のように使います。
 {% highlight cpp linenos %}
 CurrentOrientation = RotateTowards(CurrentOrientation, TargetOrientation, 3.14f * deltaTime );
 {% endhighlight %}
-(You can find this function in common/quaternion_utils.cpp)
+この関数はcommon/quaternion_utils.cppにあります。
 
-##How do I...
+##他の方法は…
 
-If you can't figure it out, drop us an email, and we'll add it to the list !
+もしこれで解決しないなら、メールを送ってください、それをリストに追加します。

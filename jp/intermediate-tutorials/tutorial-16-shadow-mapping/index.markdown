@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: 'Tutorial 16 : Shadow mapping'
+title: 'チュートリアル16：シャドウマッピング'
 date: '2011-08-17 18:29:32 +0200'
 date_gmt: '2011-08-17 18:29:32 +0200'
 categories: [tuto]
@@ -11,39 +11,40 @@ tags: []
 language: jp
 ---
 
-In Tutorial 15 we learnt how to create lightmaps, which encompasses static lighting. While it produces very nice shadows, it doesn't deal with animated models.
+チュートリアル15では静的な光で囲うライトマップの作りかたを学びました。これは結構いい感じの影を作りますが、動的なモデルには対応していません。
 
-Shadow maps are the current (as of 2012) way to make dynamic shadows. The great thing about them is that it's fairly easy to get to work. The bad thing is that it's terribly difficult to get to work *right*.
+シャドウマップは(2012年）現在、動的に影を作り出す最新の方法です。この方法の良い点は動かすことが簡単という点です。悪い点は”正しく”動かすのがとても難しい点です。
 
-In this tutorial, we'll first introduce the basic algorithm, see its shortcomings, and then implement some techniques to get better results. Since at time of writing (2012) shadow maps are still a heavily researched topic, we'll give you some directions to further improve your own shadowmap, depending on your needs.
+このチュートリアルではまず基本的なアルゴリズムを導入し、欠点を見て、より良い結果を出すような技術を実装していきます。これを書いているのは2012年時点で、シャドウマッピングは現在も重要な研究対象となっています。そのため必要と在れば自分自身で調査できるように、いくつかの指針を示します。
 
-#Basic shadowmap
+#基本的なシャドウマップ
 
-The basic shadowmap algorithm consists in two passes. First, the scene is rendered from the point of view of the light. Only the depth of each fragment is computed. Next, the scene is rendered as usual, but with an extra test to see it the current fragment is in the shadow.
+基本的なシャドウマップアルゴリズムは二つのプロセスから構成されています。まずは光の視点からシーンを描画します。各フラグメントでデプスのみを計算します。次に、いつもどおりシーンを描画します。ただし現在のフラグメントがかげの中にあるかを見るための追加のテストを行います。
 
-The "being in the shadow" test is actually quite simple. If the current sample is further from the light than the shadowmap at the same point, this means that the scene contains an object that is closer to the light. In other words, the current fragment is in the shadow.
+”影の中にある”かをテストするのはとてもシンプルです。現在のサンプルが同じ位置のシャドウマップよりも遠くにあれば、これはよりライトに近いオブジェクトがあることを意味します。言い換えれば現在のフラグメントは影の中にありま
 
-The following image might help you understand the principle :
+以下のイメージが原理の理解の助けとなるでしょう。
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/shadowmapping.png)
 
 
-##Rendering the shadow map
+##シャドウマップの描画
 
-In this tutorial, we'll only consider directional lights - lights that are so far away that all the light rays can be considered parallel. As such, rendering the shadow map is done with an orthographic projection matrix. An orthographic matrix is just like a usual perspective projection matrix, except that no perspective is taken into account - an object will look the same whether it's far or near the camera.
+このチュートリアルでは、ライトの方向のみを考えます。ライトは遠くにあり、すべての光線が平行であるとします。そういうものとして、正射投影行列によりシャドウマップを描画します。正射投影行列とは、パースペクティブを考慮しない透視投影行列のようなものです。つまり、カメラに近くても遠くても同じとしてオブジェクトを見るということです。
 
-###Setting up the rendertarget and the MVP matrix
+###描画対象とMVP行列のセットアップ
 
-Since Tutorial 14, you know how to render the scene into a texture in order to access it later from a shader.
+チュートリアル14で、あとでシェーダからアクセスするために、シーンをテクスチャに描画する方法を学びました。
 
-Here we use a 1024x1024 16-bit depth texture to contain the shadow map. 16 bits are usually enough for a shadow map. Feel free to experiment with these values. Note that we use a depth texture, not a depth renderbuffer, since we'll need to sample it later.
+ここでシャドウマップを格納するために、1024x1024で16ビットのデプステクスチャを使います。通常シャドウマップには16ビットで十分です。この値を変えて、適当に実験してみても良いでしょう。
+デプステクスチャを使うのであって、デプスrenderbuffeではありませね。なぜなら後でそれをサンプルする必要があるからです。
 {% highlight cpp linenos %}
-// The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
+// フレームバッファ、0か1かそれ以上のテクスチャと0か1のバッファを再編成する
  GLuint FramebufferName = 0;
  glGenFramebuffers(1, &FramebufferName);
  glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
 
- // Depth texture. Slower than a depth buffer, but you can sample it later in your shader
+ // デプステクスチャ。デプスバッファより遅いが、シェーダで後からサンプルできます。
  GLuint depthTexture;
  glGenTextures(1, &depthTexture);
  glBindTexture(GL_TEXTURE_2D, depthTexture);
@@ -55,85 +56,87 @@ Here we use a 1024x1024 16-bit depth texture to contain the shadow map. 16 bits 
 
  glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTexture, 0);
 
- glDrawBuffer(GL_NONE); // No color buffer is drawn to.
+ glDrawBuffer(GL_NONE); // カラーバッファが描画されない
 
- // Always check that our framebuffer is ok
+ // 常にフレームバッファが正しいかをチェックする
  if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
  return false;
 {% endhighlight %}
-The MVP matrix used to render the scene from the light's point of view is computed as follows :
+ライトの位置からシーンを描画するために使うMVP行列は次のように計算できます。
 
-* The Projection matrix is an orthographic matrix which will encompass everything in the axis-aligned box (-10,10),(-10,10),(-10,20) on the X,Y and Z axes respectively. These values are made so that our entire *visible *scene is always visible ; more on this in the Going Further section.
-* The View matrix rotates the world so that in camera space, the light direction is -Z (would you like to re-read [Tutorial 3](http://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/) ?)
-* The Model matrix is whatever you want.
+* プロジェクション行列は正射行列で、 X、Y、Z軸それぞれが(-10,10),(-10,10),(-10,20)に位置合わせされた座標内ですべてを囲みます。
+* ビュー行列はカメラ空間となるように回転します。ライトの方向は-Zです。( [チュートリアル3](http://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/) 参照)
+* モデル行列はあなたが決めます。
 
 {% highlight cpp linenos %}
 glm::vec3 lightInvDir = glm::vec3(0.5f,2,2);
 
- // Compute the MVP matrix from the light's point of view
+ // ライトの視点からMVP行列を計算します。
  glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10,-10,20);
  glm::mat4 depthViewMatrix = glm::lookAt(lightInvDir, glm::vec3(0,0,0), glm::vec3(0,1,0));
  glm::mat4 depthModelMatrix = glm::mat4(1.0);
  glm::mat4 depthMVP = depthProjectionMatrix * depthViewMatrix * depthModelMatrix;
 
- // Send our transformation to the currently bound shader,
- // in the "MVP" uniform
+ // 現在バインドされているシェーダへ変換行列を送ります。MVPユニフォームで。
  glUniformMatrix4fv(depthMatrixID, 1, GL_FALSE, &depthMVP[0][0])
 {% endhighlight %}
 
-###The shaders
+###シェーダ
 
-The shaders used during this pass are very simple. The vertex shader is a pass-through shader which simply compute the vertex' position in homogeneous coordinates :
+シェーダはこの過程ではとてもシンプルです。頂点シェーダは同次座標系で頂点の座標を単に計算するだけです。
 {% highlight glsl linenos cssclass=highlightglslvs %}
 #version 330 core
 
-// Input vertex data, different for all executions of this shader.
+// 入力頂点データ。このシェーダのすべての実行で異なる
 layout(location = 0) in vec3 vertexPosition_modelspace;
 
-// Values that stay constant for the whole mesh.
+// メッシュ全体で固定した値
 uniform mat4 depthMVP;
 
 void main(){
  gl_Position =  depthMVP * vec4(vertexPosition_modelspace,1);
 }
 {% endhighlight %}
-The fragment shader is just as simple : it simply writes the depth of the fragment at location 0 (i.e. in our depth texture).
+フラグメントシェーダもシンプルです。
+location0のフラグメントのデプスを単に書くだｋです。（つまりデプステクスチャです。）
 {% highlight glsl linenos cssclass=highlightglslfs %}
 #version 330 core
 
-// Ouput data
+// 出力データ
 layout(location = 0) out float fragmentdepth;
 
 void main(){
-    // Not really needed, OpenGL does it anyway
+    // OpenGLがやってくれるので、本当は必要ない
     fragmentdepth = gl_FragCoord.z;
 }
 {% endhighlight %}
-Rendering a shadow map is usually more than twice as fast as the normal render, because only low precision depth is written, instead of both the depth and the color; Memory bandwidth is often the biggest performance issue on GPUs.
+シャドウマップを描画するのは通常の描画より2倍早くなります。なぜならデプスと色の両方の代わりに、低精度のデプスだけが書かれるからです。GPUではメモリ帯域幅が性能に大きくかかわります。
 
-###Result
 
-The resulting texture looks like this :
+###結果
+
+結果のテクスチャは次のとおりです。
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/DepthTexture.png)
 
 
-A dark colour means a small z ; hence, the upper-right corner of the wall is near the camera. At the opposite, white means z=1 (in homogeneous coordinates), so this is very far.
+暗い色は小さなzを意味します。だから壁の右上隅はカメラに近いということです。反対に白いところは（同次座標で）z=1を意味します。だからとても遠くにあります
 
-##Using the shadow map
+##シャドウマップを使う
 
 
-###Basic shader
+###基本的なシェーダ
 
-Now we go back to our usual shader. For each fragment that we compute, we must test whether it is "behind" the shadow map or not.
+ここでいつものシェーダに立ち返ってみましょう。
+私たちが計算する各シェーダに対して、シャドウマップの"後"かそうでないかをテストしなければなりません。
 
-To do this, we need to compute the current fragment's position *in the same space that the one we used when creating the shadowmap*. So we need to transform it once with the usual MVP matrix, and another time with the depthMVP matrix.
+これをするためには、現在のフラグメントの位置を、 *シャドウマップを作ったときと同じ空間で* 計算する必要があります。だから一度いつものMVP行列で変換し、次にデプスMVP行列で変換する必要があります。
 
-There is a little trick, though. Multiplying the vertex' position by depthMVP will give homogeneous coordinates, which are in [-1,1] ; but texture sampling must be done in [0,1].
+ここにちょっとしたトリックがあります。頂点の位置にデプスMVP行列を掛けると同次座標が得られます。それは[-1,1]の範囲です。しかしテクスチャサンプリングは[0,1]の範囲で行われます。
 
-For instance, a fragment in the middle of the screen will be in (0,0) in homogeneous coordinates ; but since it will have to sample the middle of the texture, the UVs will have to be (0.5, 0.5).
+例えば、画面中央にあるフラグメントは同次座標では(0,0)ですが、テクスチャの中央からサンプルする場合はUVは(0,5,0.5)となります。
 
-This can be fixed by tweaking the fetch coordinates directly in the fragment shader but it's more efficient to multiply the homogeneous coordinates by the following matrix, which simply divides coordinates by 2 ( the diagonal : [-1,1] -> [-0.5, 0.5] ) and translates them ( the lower row : [-0.5, 0.5] -> [0,1] ).
+これはフラグメントシェーダで取り出す座標を直接変更することでも実現できますが、同次座標に次のような行列を掛ける事でより効率的に実現できます。つまり、座標を2分の1にして(対角要素は[-1,1]->[-0.5,0.5])平行移動するような(一番下の行は[-0.5,0.5]->[0,1])行列です。
 {% highlight cpp linenos %}
 glm::mat4 biasMatrix(
 0.5, 0.0, 0.0, 0.0,
@@ -143,66 +146,66 @@ glm::mat4 biasMatrix(
 );
 glm::mat4 depthBiasMVP = biasMatrix*depthMVP;
 {% endhighlight %}
-We can now write our vertex shader. It's the same as before, but we output 2 positions instead of 1 :
+これで頂点シェーダを書くことができます。以前と同じですが、出力位置を一つから二つに変更します。
 
-* gl_Position is the position of the vertex as seen from the current camera
-* ShadowCoord is the position of the vertex as seen from the last camera (the light)
+* gl_Positionは現在のカメラから見た頂点の位置です。
+* ShadowCoordは最後のカメラ（ライト）から見た頂点の位置です。
 
 {% highlight glsl linenos cssclass=highlightglslvs %}
-// Output position of the vertex, in clip space : MVP * position
+// クリップ空間での頂点の出力位置：MVP * position
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
-// Same, but with the light's view matrix
+// 同じ、ただしライトのビューマトリックス
 ShadowCoord = DepthBiasMVP * vec4(vertexPosition_modelspace,1);
 {% endhighlight %}
-The fragment shader is then very simple :
+フラグメントシェーダはとてもシンプルです。
 
-* texture( shadowMap, ShadowCoord.xy ).z is the distance between the light and the nearest occluder
-* ShadowCoord.z is the distance between the light and the current fragment
+* texture( shadowMap, ShadowCoord.xy ).zはライトと最も近い遮蔽物との距離です。
+* ShadowCoord.zはライトと現在のフラグメントとの距離です。
 
-... so if the current fragment is further than the nearest occluder, this means we are in the shadow (of said nearest occluder) :
+だから現在のフラグメントが最も近い遮蔽物よりも遠ければ、これは（最も近い遮蔽物の）影の中にあるということを意味します。
 {% highlight glsl linenos cssclass=highlightglslfs %}
 float visibility = 1.0;
 if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z){
     visibility = 0.5;
 }
 {% endhighlight %}
-We just have to use this knowledge to modify our shading. Of course, the ambient colour isn't modified, since its purpose in life is to fake some incoming light even when we're in the shadow (or everything would be pure black)
+この知識を使ってシェーディングを修正します。もちろん環境光の色は変更しません。なぜなら環境光は、影の中に居ようとも、いくつかの向かってくる光をごまかすためにあるからです。（そうしなければ、すべてのものは真っ黒となります。）
 {% highlight glsl linenos cssclass=highlightglslfs %}
 color =
- // Ambient : simulates indirect lighting
+ // 環境光：向かってくる光をシミュレートする
  MaterialAmbientColor +
- // Diffuse : "color" of the object
+ // 拡散光：オブジェクトの色
  visibility * MaterialDiffuseColor * LightColor * LightPower * cosTheta+
- // Specular : reflective highlight, like a mirror
+ // 鏡面光：鏡のように反射するハイライト
  visibility * MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5);
 {% endhighlight %}
 
-###Result - Shadow acne
+###結果-シャドウアクネ
 
-Here's the result of the current code. Obviously, the global idea it there, but the quality is unacceptable.
+現在のコードの実行結果は以下のとおりです。明らかにクオリティに問題があります。
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/1rstTry.png)
 
 
-Let's look at each problem in this image. The code has 2 projects : shadowmaps and shadowmaps_simple; start with whichever you like best. The simple version is just as ugly as the image above, but is simpler to understand.
+この画像の問題点を見ていきましょう。コードは二つのプロジェクトがあります。shadowmapsとshadowmaps_simpleです。どちらでも好きなほうからはじめて下さい。シンプル版のほうは上の画像と同程度にひどいですが、よりシンプルに理解しやすいです。
 
-#Problems
+#問題点
 
 
-##Shadow acne
+##シャドウアクネ
 
-The most obvious problem is called *shadow acne* :
+最も明らかな問題は *シャドウアクネ* と呼ばれています。
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/ShadowAcne.png)
 
 
-This phenomenon is easily explained with a simple image :
+この現象はシンプルな画像で簡単に説明できます。
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/shadow-acne.png)
 
 
-The usual "fix" for this is to add an error margin : we only shade if the current fragment's depth (again, in light space) is really far away from the lightmap value. We do this by adding a bias :
+一般的な修正方法はエラーマージンを追加することです。現在のフラグメントの（ライト空間での）デプスがライトマップの値よりも遠くにあれば影ます。これにバイアスを追加します。
 {% highlight glsl linenos cssclass=highlightglslfs %}
 float bias = 0.005;
 float visibility = 1.0;
@@ -210,81 +213,80 @@ if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z-bias){
     visibility = 0.5;
 }
 {% endhighlight %}
-The result is already much nicer :
+結果はよりよくなったでしょう。
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/FixedBias.png)
 
 
-However, you can notice that because of our bias, the artefact between the ground and the wall has gone worse. What's more, a bias of 0.005 seems too much on the ground, but not enough on curved surface : some artefacts remain on the cylinder and on the sphere.
+しかしこのバイアスのせいで地面と壁の間の部分がより悪くなりました。さらに、0.005というバイアスは地面にとっては大きすぎますが、曲面では十分ではないようです。シャドウアクネが円柱や球には残っています。
 
-A common approach is to modify the bias according to the slope :
+一般的なアプローチは傾斜にしたがってバイアスを修正することです。
 {% highlight glsl linenos cssclass=highlightglslfs %}
-float bias = 0.005*tan(acos(cosTheta)); // cosTheta is dot( n,l ), clamped between 0 and 1
+float bias = 0.005*tan(acos(cosTheta)); // cosThetaはdot( n,l )で0と1の間にします。
 bias = clamp(bias, 0,0.01);
 {% endhighlight %}
-Shadow acne is now gone, even on curved surfaces.
+シャドウアクネは曲面以外ではなくなりました。
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/VariableBias.png)
 
 
-Another trick, which may or may not work depending on your geometry, is to render only the back faces in the shadow map. This forces us to have a special geometry ( see next section - Peter Panning ) with thick walls, but at least, the acne will be on surfaces which are in the shadow :
+うまく機能するかは幾何学的な形に依存しますが、もう一つのトリックとしてはシャドウマップのバックフェイスのみ描画するという方法があります。これは厚い壁のような特別な幾何学(次のセクション-ピーターパニング)をもつことを強制します。しかし少なくとも、影の中にある面にアクネはあるでしょう。
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/shadowmapping-backfaces.png)
 
 
-When rendering the shadow map, cull front-facing triangles :
+シャドウマップを描画するとき、前面向きの三角形をカリングします。
 {% highlight cpp linenos %}
-        // We don't use bias in the shader, but instead we draw back faces,
-        // which are already separated from the front faces by a small distance
-        // (if your geometry is made this way)
-        glCullFace(GL_FRONT); // Cull front-facing triangles -> draw only back-facing triangles
+        // シェーダでバイアスは使いません。しかし代わりに、小さな距離によって既に前面から分離されているバックフェースを描画します。
+        // （もし幾何学的な形がこのように作られているなら。）
+        glCullFace(GL_FRONT); // 前面をカリング->後ろ向きの三角形のみ描画する。
 {% endhighlight %}
-And when rendering the scene, render normally (backface culling)
+シーンを描画するとき普通に描画します。（バックフェースカリング）
 {% highlight cpp linenos %}
-         glCullFace(GL_BACK); // Cull back-facing triangles -> draw only front-facing triangles
+         glCullFace(GL_BACK); // 背面をカリング->表向きの三角形のみ描画する。
 {% endhighlight %}
-This method is used in the code, in addition to the bias.
+この方法はバイアスとともにコードで使われています。
 
-##Peter Panning
+##ピーターパニング
 
-We have no shadow acne anymore, but we still have this wrong shading of the ground, making the wall to look as if it's flying (hence the term "Peter Panning"). In fact, adding the bias made it worse.
+既にシャドウアクネはありませんが、地面の影はまだ間違ったままです。壁が少し浮かんでいるようになっています。それゆえピーターパニング(Peter Panning)と呼ばれています。実は、バイアスを加えるとより悪化します。
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/PeterPanning.png)
 
 
-This one is very easy to fix : simply avoid thin geometry. This has two advantages :
+これは簡単に修正できます。単純に薄い形を避ければ良いだけです。これには二つの利点があります。
 
-* First, it solves Peter Panning : it the geometry is more deep than your bias, you're all set.
-* Second, you can turn on backface culling when rendering the lightmap, because now, there is a polygon of the wall which is facing the light, which will occlude the other side, which wouldn't be rendered with backface culling.
+* 一つ目は、ピーターパニングを解決できます。厚さがバイアスよりも大きければ、すべてに適応できます。
+* 二つ目は、ライトマップを描画するときにバックフェースカリングを有効にできます。なぜなら、ライトに向かっている壁のポリゴンがあるからです。これによりもう一方を隠してしまいます。そしてバックフェースカリングで描画されません。
 
-The drawback is that you have more triangles to render ( two times per frame ! )
+欠点はより多くの三角形を描画しなければいけないことです。（1フレームで2倍！）
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/NoPeterPanning.png)
 
 
-##Aliasing
+##エイリアシング
 
-Even with these two tricks, you'll notice that there is still aliasing on the border of the shadow. In other words, one pixel is white, and the next is black, without a smooth transition inbetween.
+これらの二つのトリックを使っても、影の境界にはエイリアシングがあることに気づくでしょう。言い換えれば、あるピクセルが白で次のピクセルは黒で、間にスムーズにする変換が入っていません。
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/Aliasing.png)
 
 
 ###PCF
 
-The easiest way to improve this is to change the shadowmap's sampler type to *sampler2DShadow*. The consequence is that when you sample the shadowmap once, the hardware will in fact also sample the neighboring texels, do the comparison for all of them, and return a float in [0,1] with a bilinear filtering of the comparison results.
+最も簡単な改善法はシャドウマップのサンプルタイプを *sampler2DShadow* に変えることです。これはシャドウマップから一度サンプルするとき、ハードウェアが周りのテクセルも同様にサンプルし、それらと比較し、比較結果のバイリニアフィルタリングによって[0,1]の範囲の浮動小数点を返します。
 
-For instance, 0.5 means that 2 samples are in the shadow, and 2 samples are in the light.
+例えば、0.5は二つのサンプルが影の中にあり、二つのサンプルが光の中にあることを意味します。
 
-Note that it's not the same than a single sampling of a filtered depth map ! A comparison always returns true or false; PCF gives a interpolation of 4 "true or false".
+これはフィルタされたデプスマップの単一のサンプルと同じではありません。比較はいつもtrueかfalseで返します。PCFは4つの"trueかfalse"の補間を与えます。
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/PCF_1tap.png)
 
 
-As you can see, shadow borders are smooth, but shadowmap's texels are still visible.
+ご覧のように、影の境界はスムーズになりましたが、シャドウマップのテクセルはまだ見えています。
 
-###Poisson Sampling
+###ポアソンサンプリング
 
-An easy way to deal with this is to sample the shadowmap N times instead of once. Used in combination with PCF, this can give very good results, even with a small N. Here's the code for 4 samples :
+簡単な方法はシャドウマップをサンプルする回数を一回からN回にするという方法です。PCFとの併用により、たとえ小さなNだとしても、とても良い結果を与えてくれます。ここに4サンプルのコードを示します。
 {% highlight glsl linenos cssclass=highlightglslfs %}
 for (int i=0;i<4;i++){
   if ( texture( shadowMap, ShadowCoord.xy + poissonDisk[i]/700.0 ).z  <  ShadowCoord.z-bias ){
@@ -292,7 +294,7 @@ for (int i=0;i<4;i++){
   }
 }
 {% endhighlight %}
-poissonDisk is a constant array defines for instance as follows :
+poissonDiskは定数配列で次のように定義されています。
 {% highlight glsl linenos cssclass=highlightglslfs %}
 vec2 poissonDisk[4] = vec2[](
   vec2( -0.94201624, -0.39906216 ),
@@ -301,12 +303,12 @@ vec2 poissonDisk[4] = vec2[](
   vec2( 0.34495938, 0.29387760 )
 );
 {% endhighlight %}
-This way, depending on how many shadowmap samples will pass, the generated fragment will be more or less dark :
+このように、いくつのシャドウマップのサンプルが通過するかによりますが、作成されるフラグメントは多少なりとも暗くなります。
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/SoftShadows.png)
 
 
-The 700.0 constant defines how much the samples are "spread". Spread them too little, and you'll get aliasing again; too much, and you'll get this :* banding *(this screenshot doesn't use PCF for a more dramatic effect, but uses 16 samples instead)*
+700.0という定数はどの程度サンプルを"広げるか"ということを定義しています。広げるのがあまりにも小さいと再びエイリアシングになるでしょう。あまりにも大きすぎれば次のようになるでしょう。*バンディング（このスクリーンショットはPCFは使っていません、しかし代わりに16サンプルを使っています。）* 
 *
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/SoftShadows_Close.png)
@@ -317,115 +319,116 @@ The 700.0 constant defines how much the samples are "spread". Spread them too li
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/SoftShadows_Wide.png)
 
 
-###Stratified Poisson Sampling
+###ポアソンサンプリングの階層化
 
-We can remove this banding by choosing different samples for each pixel. There are two main methods : Stratified Poisson or Rotated Poisson. Stratified chooses different samples; Rotated always use the same, but with a random rotation so that they look different. In this tutorial I will only explain the stratified version.
+各ピクセルで異なるサンプルを選ぶことでこのバンディングは取り除けます。主に二つの方法があります。階層ポアソンあるいは回転ポアソンです。階層は異なるサンプルを選び、回転は同じサンプルを使うが違うように見せるめにランダムに回転させます。このチュートリアルでは階層版を説明します。
 
-The only difference with the previous version is that we index *poissonDisk* with a random index :
+前のバージョンと違う点は *poissonDisk* をランダムにインデックスする点だけです。
 {% highlight glsl linenos cssclass=highlightglslfs %}
     for (int i=0;i<4;i++){
-        int index = // A random number between 0 and 15, different for each pixel (and each i !)
+        int index = // 0から15のうちのランダムな数字、各ピクセル（と各i)で違うようにする。
         visibility -= 0.2*(1.0-texture( shadowMap, vec3(ShadowCoord.xy + poissonDisk[index]/700.0,  (ShadowCoord.z-bias)/ShadowCoord.w) ));
     }
 {% endhighlight %}
-We can generate a random number with a code like this, which returns a random number in [0,1[ :
+次のコードのように[0,1[の間の乱数を生成します。
 {% highlight glsl linenos cssclass=highlightglslfs %}
     float dot_product = dot(seed4, vec4(12.9898,78.233,45.164,94.673));
     return fract(sin(dot_product) * 43758.5453);
 {% endhighlight %}
-In our case, seed4 will be the combination of i (so that we sample at 4 different locations) and ... something else. We can use gl_FragCoord ( the pixel's location on the screen ), or Position_worldspace :
+このケースでは（4つの異なる点をサンプルするために）seed4はiのコンビネーションです。そしてgl_FragCoord（画面上のピクセルの位置）あるいはPosition_worldspaceを使います。
 {% highlight glsl linenos cssclass=highlightglslfs %}
-        //  - A random sample, based on the pixel's screen location.
-        //    No banding, but the shadow moves with the camera, which looks weird.
+        //  -ピクセルの画面上の位置に応じて、ランダムにサンプルしたもの
+        //    バンディングはありません。しかしカメラが移動すると影も動きます。
         int index = int(16.0*random(gl_FragCoord.xyy, i))%16;
-        //  - A random sample, based on the pixel's position in world space.
-        //    The position is rounded to the millimeter to avoid too much aliasing
+        //  - ワールド空間でのピクセルの位置に応じてランダムにサンプルしたもの
+        //    位置は大きなエイリアシングを避けるためにミリメータに直されます。
         //int index = int(16.0*random(floor(Position_worldspace.xyz*1000.0), i))%16;
 {% endhighlight %}
-This will make patterns such as in the picture above disappear, at the expense of visual noise. Still, a well-done noise is often less objectionable than these patterns.
+これは上の画像のようなパターンを作ります。ただし、良くできたノイズはあまりこのようなパターンにはなりません。
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/PCF_stratified_4tap.png)
 
 
-See tutorial16/ShadowMapping.fragmentshader for three example implementions.
+tutorial16/ShadowMapping.fragmentshaderの3つの実装例を見てください。
 
-#Going further
+#さらに先へ
 
-Even with all these tricks, there are many, many ways in which our shadows could be improved. Here are the most common :
+これらのトリックのほかにも数多くの影を改善する方法があります。
+ここでいくつか紹介します。
 
-##Early bailing
+##アーリーベイリング
 
-Instead of taking 16 samples for each fragment (again, it's a lot), take 4 distant samples. If all of them are in the light or in the shadow, you can probably consider that all 16 samples would have given the same result : bail early. If some are different, you're probably on a shadow boundary, so the 16 samples are needed.
+各フラグメントで16サンプル取る代わりに、離れた4サンプルを取ります。もしそのすべてが光の中あるいは影の中にあれば、回りの16サンプルすべてが同じような状況にあると考えられるでしょう。もしすべてが同じでなければ、影の境界にあるので16サンプルを取る必要があります。
 
-##Spot lights
+##スポットライト
 
-Dealing with spot lights requires very few changes. The most obvious one is to change the orthographic projection matrix into a perspective projection matrix :
+スポットライトを扱うには少し変更を加えるだけで良いです。最も明らかな変更は正射投影行列をパースペクティブ投影行列に変えることです。
 {% highlight cpp linenos %}
 glm::vec3 lightPos(5, 20, 20);
 glm::mat4 depthProjectionMatrix = glm::perspective<float>(45.0f, 1.0f, 2.0f, 50.0f);
 glm::mat4 depthViewMatrix = glm::lookAt(lightPos, lightPos-lightInvDir, glm::vec3(0,1,0));
 {% endhighlight %}
-same thing, but with a perspective frustum instead of an orthographic frustum. Use texture2Dproj to account for perspective-divide (see footnotes in tutorial 4 - Matrices)
+同じように、しかしパースペクティブ円錐台を正射円錐台の変わりに使います。texture2Dprojをパースペクティブ分割のために使います。（チュートリアル4を見てください。）
 
-The second step is to take into account the perspective in the shader. (see footnotes in tutorial 4 - Matrices. In a nutshell, a perspective projection matrix actually doesn't do any perspective at all. This is done by the hardware, by dividing the projected coordinates by w. Here, we emulate the transformation in the shader, so we have to do the perspective-divide ourselves. By the way, an orthographic matrix always generates homogeneous vectors with w=1, which is why they don't produce any perspective)
+二つ目のステップはシェーダにおいてパースペクティブを考慮に入れることです。（チュートリアル4を見てください。ナットシェルの中は、パースペクティブ投影行列はもはやパースペクティブしないでしょう。これは射影された座標をwで割ることによってハードウェアによって行われます。ここで、シェーダ内で変換をエミュレートします。だからパースペクティブ分割を自分自身でします。ところで、正射投影行列は常にw=1の同次ベクトルを生成します。そのためどんなパースペクティブも作り出しません。）
 
-Here are two way to do this in GLSL. The second uses the built-in textureProj function, but both methods produce exactly the same result.
+GLSLで行うには二つの方法が在ります。二つ目はtextureProjという組み込み関数を使います。しかし二つの関数はまったく同じ結果を出します。
 {% highlight glsl linenos cssclass=highlightglslfs %}
 if ( texture( shadowMap, (ShadowCoord.xy/ShadowCoord.w) ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 if ( textureProj( shadowMap, ShadowCoord.xyw ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 {% endhighlight %}
  
 
-##Point lights
+##ポイントライト
 
-Same thing, but with depth cubemaps. A cubemap is a set of 6 textures, one on each side of a cube; what's more, it is not accessed with standard UV coordinates, but with a 3D vector representing a direction.
+同様に、しかしデプスキューブマップを使った方法を紹介します。キューブマップは6つのテクスチャがセットに成ったもので、立方体の各面に対応しています。さらにいうと、通常のUV座標の酔うにはアクセスしません。かわりに方向を表す3次元ベクトルによってアクセスします。
 
-The depth is stored for all directions in space, which make possible for shadows to be cast all around the point light.
+デプスは空間内のすべての方向に格納されています。これにより、ポイントライトの周辺で影をキャストすることを可能にします。
 
-##Combination of several lights
+##ライトの組み合わせ
 
-The algorithm handles several lights, but keep in mind that each light requires an additional rendering of the scene in order to produce the shadowmap. This will require an enormous amount of memory when applying the shadows, and you might become bandwidth-limited very quickly.
+このアルゴリズムはいくつかのライトを取り扱います。しかし各ライトはシャドウマップを生成するために追加のシーンの描画が必要となることを頭に入れて置いてください。これは影を適用するときに多くのメモリを要求します。そして帯域幅の上限にすぐ達してしまうでしょう。
 
-##Automatic light frustum
+##自動ライト円錐台
 
-In this tutorial, the light frustum hand-crafted to contain the whole scene. While this works in this restricted example, it should be avoided. If your map is 1Km x 1Km, each texel of your 1024x1024 shadowmap will take 1 square meter; this is lame. The projection matrix of the light should be as tight as possible.
+このチュートリアルでは、全シーンを含むライト円錐台を手作業で作ります。ここでは制限された例ですが、それは避けるべきです。もしマップが1km x 1kmだとすると、1024x1024のシャドウマップの各テクセルは1平方メートルを扱います。ライトの射影行列は可能な限り締まった状態になります。
 
-For spot lights, this can be easily changed by tweaking its range.
+スポットライトでは、この範囲を簡単に変更できました。
 
-Directional lights, like the sun, are more tricky : they really *do* illuminate the whole scene. Here's a way to compute a the light frustum :
+太陽のような指向性ライトではもう少しトリッキーです。それらのライトはシーン全体を照らそうとします。ライト円錐台を計算する方法は次のようになります。
 
-Potential Shadow Receivers, or PSRs for short, are objects which belong at the same time to the light frustum, to the view frustum, and to the scene bounding box. As their name suggest, these objects are susceptible to be shadowed : they are visible by the camera and by the light.
+潜在影レシーバー(略してPSRs)は同時にライト円錐台とビュー円錐台とシーン領域に所属しているオブジェクトです。その名前が示すように、これらのオブジェクトは影の影響を受けやすいです。それらはカメラとライトによって可視化されます。
 
-Potential Shadow Casters, or PCFs, are all the Potential Shadow Receivers, plus all objects which lie between them and the light (an object may not be visible but still cast a visible shadow).
+潜在影キャスター(略してPCFs)はすべての潜在影レシーバーと、それらとライトの間にあるすべてのオブジェクトを指します。（オブジェクトは見えないかもしれませんが、可視化した影にキャストできます。）
 
-So, to compute the light projection matrix, take all visible objects, remove those which are too far away, and compute their bounding box; Add the objects which lie between this bounding box and the light, and compute the new bounding box (but this time, aligned along the light direction).
+だから、ライト射影行列はすべてかしかでき、遠くにあるものを取り除き、その領域を計算できます。ライトと領域の間にあるオブジェクトを加え、あらたな領域を計算します。（しかしこのとき、ライトの方向に位置合わせされます。）
 
-Precise computation of these sets involve computing convex hulls intersections, but this method is much easier to implement.
+これらのセットの実際の計算は凸包インターセクションの計算が関わってきますが、実装はより簡単にできます。
 
-This method will result in popping when objects disappear from the frustum, because the shadowmap resolution will suddenly increase. Cascaded Shadow Maps don't have this problem, but are harder to implement, and you can still compensate by smoothing the values over time.
+この方法はオブジェクトが円錐台から消えたときポピングを起こします。なぜならシャドウマップの解像度が急に増えるからです。カスケードシャドウマップはこのような問題がありません。しかし実装するのが難しく、ずっと値をスムージングすることによって補い続けなければなりません。
 
-##Exponential shadow maps
+##指数シャドウマップ
 
-Exponential shadow maps try to limit aliasing by assuming that a fragment which is in the shadow, but near the light surface, is in fact "somewhere in the middle". This is related to the bias, except that the test isn't binary anymore : the fragment gets darker and darker when its distance to the lit surface increases.
+指数シャドウマップは、影の中にあるがライトの面の近くにあるフラグメントが実はその中間のどこかにあるものと仮定することで、エイリアシングを制限する方法です。これはテストが二値ということを除けばバイアスと似ています。フラグメントはライトの面との距離が増えれば増えるほどより暗くなります。
 
-This is cheating, obviously, and artefacts can appear when two objects overlap.
+これは明らかにずるく、二つのオブジェクトが重なったとき乱れが現れます。
 
-##Light-space perspective Shadow Maps
+##ライト空間パースペクティブシャドウマップ
 
-LiSPSM tweaks the light projection matrix in order to get more precision near the camera. This is especially important in case of "duelling frustra" : you look in a direction, but a spot light "looks" in the opposite direction. You have a lot of shadowmap precision near the light, i.e. far from you, and a low resolution near the camera, where you need it the most.
+LiSPSMはカメラ付近でより正確に成ろうとするためにライト射影行列を微調整する方法です。これは特に円錐台が争うときに重要となります。あなたが向いてる方向とスポットライトが向いてる方向が反対のときを意味します。ライト付近で多くのシャドウマップの精度があります。つまりあなたから遠くなればカメラの近くの解像度が低くなります。
 
-However LiSPM is tricky to implement. See the references for details on the implementation.
+しかしKLiSPMは実装が難しく、詳しくは参考文献を見てください。
 
-##Cascaded shadow maps
+##カスケードシャドウマップ
 
-CSM deals with the exact same problem than LiSPSM, but in a different way. It simply uses several (2-4) standard shadow maps for different parts of the view frustum. The first one deals with the first meters, so you'll get great resolution for a quite little zone. The next shadowmap deals with more distant objects. The last shadowmap deals with a big part of the scene, but due tu the perspective, it won't be more visually important than the nearest zone.
+CSMはLiSPSMと同様の問題を扱いますが、異なる方法で対処します。ビュー円錐台の異なる部分でいくつか(2つから4つ)の基本的なシャドウマップを使います。最初のシャドウマップが最初の数メートルを扱いうため、とても狭い範囲の解像度がとてもよくなります。次のシャドウマップはより遠くのオブジェクトを扱います。最後のシャドウマップはシーンの大部分を扱いますがパースペクティブのため、近くにあるものほど可視化には重要ではありません。
 
-Cascarded shadow maps have, at time of writing (2012), the best complexity/quality ratio. This is the solution of choice in many cases.
+カスケードシャドウマップは2012年時点では、複雑度とクオリティの比が最もよいものだといえます。これは多くのケースで使われています。
 
-#Conclusion
+#結論
 
-As you can see, shadowmaps are a complex subject. Every year, new variations and improvement are published, and to day, no solution is perfect.
+これまで見てきたようにシャドウマップは複雑です。毎年新たな種類の実装が出てきます。ただし今はまだ完璧な解決策はありません。
 
-Fortunately, most of the presented methods can be mixed together : It's perfectly possible to have Cascaded Shadow Maps in Light-space Perspective, smoothed with PCF... Try experimenting with all these techniques.
+幸運にも上で上げた手法は組み合わせが可能で、ライト空間パースペクティブでカスケードシャドウマップをつかい、PCFでスムージングして…といったことが可能です。これらのすべての手法を実験してみてください。
 
-As a conclusion, I'd suggest you to stick to pre-computed lightmaps whenever possible, and to use shadowmaps only for dynamic objects. And make sure that the visual quality of both are equivalent : it's not good to have a perfect static environment and ugly dynamic shadows, either.
+結論として可能なときはあらかじめ計算したライトマップを使い、動的に動くものにのみシャドウマップを使うべきだといえます。覚えておいて欲しいのは視覚的なクオリティはどちらも同じだということです。完璧な静的な環境とひどい動的な影はどちらかだけに絞るのは良い選択ではありません。
