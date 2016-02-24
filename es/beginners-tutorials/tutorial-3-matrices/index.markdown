@@ -215,124 +215,126 @@ Al hacer esto tus vertices estan en el _espacio de mundo_. Este es el significad
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/model_to_world.png)
 
-We can sum this up with the following diagram :
+Podemos verlo todo en el siguiente diagrama :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/M.png)
 
-## The View matrix
+## La matriz vista
 
-Let's quote Futurama again :
+Vamos a citar a "Futurama" otra vez:
 
-> _The engines don't move the ship at all. The ship stays where it is and the engines move the universe around it._
+> _El motor no mueve la nave. La nave se queda donde esta y los motores mueven el universo a su alrededor._
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/camera.png)
 
-When you think about it, the same applies to cameras. It you want to view a moutain from another angle, you can either move the camera... or move the mountain. While not practical in real life, this is really simple and handy in Computer Graphics.
+Cuando lo piensas, esto se aplica a las camaras. Si quieres ver una montaña desde otro angulo, puedes mover la camara... o mover la montaña. No es práctico en la vida real, es solo que asi es mas facil en computación gráfica.
 
-So initially your camera is at the origin of the World Space. In order to move the world, you simply introduce another matrix. Let's say you want to move your camera of 3 units to the right (+X). This is equivalent to moving your whole world (meshes included) 3 units to the LEFT ! (-X). While you brain melts, let's do it :
+Inicialmente, la camara esta en el origen del espacio mundo. Para mover el mundo, simplemente se introduce otra matriz. Digamos que quieres mover tu camara 3 unidades a la derecha (+X). Esto es equivalente a mover todo el mundo (y lo que contenga) 3 unidades a la izquierda !. Mientras tu cerebro se derrite, vamos a hacerlo :
 
-Again, the image below illustrates this : _We went from World Space (all vertices defined relatively to the center of the world, as we made so in the previous section) to Camera Space (all vertices defined relatively to the camera)._
+Una vez mas, la imagen abajo ilustra esto : _Fuimos del espacio mundo (todos los vertices estan definidos relativamente al centro del mundo) al espacio camara (todos los vertices se definen relativamente a la camara)._
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/model_to_world_to_camera.png)
 
-Before you head explodes from this, enjoy GLM's great glm::lookAt function:
+Antes que tu cabeza explote con todo esto, disfruta la gran función de GLM : glm::lookAt :
 
 {% highlight cpp linenos %}
 glm::mat4 CameraMatrix = glm::lookAt(
-    cameraPosition, // the position of your camera, in world space
-    cameraTarget,   // where you want to look at, in world space
-    upVector        // probably glm::vec3(0,1,0), but (0,-1,0) would make you looking upside-down, which can be great too
+    cameraPosition, // La posición de tu camara en el espaio mundo
+    cameraTarget,   // Hacia donde quieres mirar, en el espacio mundo
+    upVector        // Probablemente glm::vec3(0,1,0), porque (0,-1,0) te haría mirar cabeza abajo, aunque puede ser divertido.
 );
 {% endhighlight %}
 
-Here's the compulsory diagram :
+Aquí esta el diagrama obligatorio :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/MV.png)
 
-This is not over yet, though.
+Pero aun no hemos acabado.
 
-## The Projection matrix
+## La matriz proyección
 
-We're now in Camera Space. This means that after all theses transformations, a vertex that happens to have x==0 and y==0 should be rendered at the center of the screen. But we can't use only the x and y coordinates to determine where an object should be put on the screen : its distance to the camera (z) counts, too ! For two vertices with similar x and y coordinates, the vertex with the biggest z coordinate will be more on the center of the screen than the other.
+Ahora estamos en el espacio camara. Esto significa que despues de todas las transformaciones, un vertice que tenga coordenadas x==0 y y==0 debe pintarse en el centro de la pantalla. Pero no solo usamos las coordenadas x y y para determinar la posicion de un objeto en la pantalla : su distancia a la camara (z) también cuenta ! Para dos vertices con las mismas coordenadas x y y, el vertice con mayor (z) estará mas en el centro de la pantalla que el otro.
 
-This is called a perspective projection :
+Esto es lo que se llama una perspectiva de proyección :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/model_to_world_to_camera_to_homogeneous.png)
 
-And luckily for us, a 4x4 matrix can represent this projection[^projection] :
+Y por suerte para nosotros, una matriz 4x4 puede representar esta proyección [^projection] :
 
 {% highlight cpp linenos %}
-// Generates a really hard-to-read matrix, but a normal, standard 4x4 matrix nonetheless
+// Genera una matriz dificil de leer pero almenos es 4x4
 glm::mat4 projectionMatrix = glm::perspective(
-    FoV,         // The horizontal Field of View, in degrees : the amount of "zoom". Think "camera lens". Usually between 90° (extra wide) and 30° (quite zoomed in)
-    4.0f / 3.0f, // Aspect Ratio. Depends on the size of your window. Notice that 4/3 == 800/600 == 1280/960, sounds familiar ?
-    0.1f,        // Near clipping plane. Keep as big as possible, or you'll get precision issues.
-    100.0f       // Far clipping plane. Keep as little as possible.
+    FoV,         // El campo de visión horizontal, en grados : la cantidad de "zoom". Piensa en el lente de la camara. Usualmente esta entre 90° (extra ancho) y 30° (zoom aumentado)
+    4.0f / 3.0f, // Proporción. Depende del tamaño de tu ventana 4/3 == 800/600 == 1280/960, Parece familiar?
+    0.1f,        // Plano de corte cercano. Tan grande como sea posible o tendrás problemas de precisión.
+    100.0f       // Plano de corte lejano. Tan pequeño como se pueda.
 );
 {% endhighlight %}
 
-One last time :
+Una ultima vez :
 
-_We went from Camera Space (all vertices defined relatively to the camera) to Homogeneous Space (all vertices defined in a small cube. Everything inside the cube is onscreen)._
 
-And the final diagram :
+_Fuimos del espacio de la camara (todos los vertices definidos relativamente a la camara) al espacio homogeneo (todos los vertices definidos en un pequeño cubo. Todo aquello que esta dentro del cubo esta dentro de la pantalla)._
+
+Y el diagrama final :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/MVP.png)
 
-Here's another diagram so that you understand better what happens with this Projection stuff. Before projection, we've got our blue objects, in Camera Space, and the red shape represents the frustum of the camera : the part of the scene that the camera is actually able to see.
+Aquí hay otro diagrama para que entiendas mejor lo que pasa con todo esto de la proyección. Antes de la proyección, tenemos nuestros objetos azules, en el espacio de la camara, y la forma roja representa la pirmide de la camara : la parte de la escena que la camara ve en efecto. 
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/nondeforme.png)
 
-Multiplying everything by the Projection Matrix has the following effect :
+Multiplicar todo por la matriz de proyección tiene el siguiente efecto :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/homogeneous.png)
 
-In this image, the frustum is now a perfect cube (between -1 and 1 on all axes, it's a little bit hard to see it), and all blue objects have been deformed in the same way. Thus, the objects that are near the camera ( = near the face of the cube that we can't see) are big, the others are smaller. Seems like real life !
+En esta imagen el cono es ahora un cubo perfecto (entre -1 y 1 en todos los ejes, es un poco dificil de entender), y todos los objetos azules ahora parecen deformados de algun modo. Los objetos cercanos a la camara (cerca de la cara del cubo de -1 a 1) son mas grandes, los otros son mas pequeños. Tal como en la vida real.
 
-Let's see what it looks like from the "behind" the frustum :
+Veamos ahora como se ve por "detras" de la piramide :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/projected1.png)
 
-Here you get your image ! It's just a little bit too square, so another mathematical transformation is applied (this one is automatic, you don't have to do it yourself in the shader) to fit this to the actual window size :
+He aquí tu imagen ! Es un poco cuadrada, así que otra transformación matemática es aplicada (es automatica, no tienes que hacerla en el shader) para quedar del tamaño de la pantalla correctamente.
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/final1.png)
 
-And this is the image that is actually rendered !
+Y esta imagen de hecho es el render !
 
-## Cumulating transformations : the ModelViewProjection matrix
+## Acumulando transformaciones : La matriz ModeloVistaProyección
 
-... Just a standard matrix multiplication as you already love them !
+... Solo una multiplicación estándar, así como te gustan !
 
 {% highlight cpp linenos %}
-// C++ : compute the matrix
-glm::mat4 MVPmatrix = projection * view * model; // Remember : inverted !
+// C++ : calcular la matriz
+glm::mat4 MVPmatrix = projection * view * model; // Recurda : invertida !
 {% endhighlight %}
 
 {% highlight glsl linenos cssclass=highlightglslfs %}
-// GLSL : apply it
+// GLSL : aplicala
 transformed_vertex = MVP * in_vertex;
 {% endhighlight %}
 
 
-# Putting it all together
+# Uniendo todo
 
-*  First step : generating our MVP matrix. This must be done for each model you render.
-*  Second step : give it to GLSL
-* Third step : use it in GLSL to transform our vertices
-* Done ! Here is the same triangle as in tutorial 2, still at the origin (0,0,0), but viewed in perspective from point (4,3,3), heads up (0,1,0), with a 45° field of view.
+*  Primer paso : generar la matriz MVP. Esto se hace para cada modelo que se renderice.
+*  Segundo paso : entregarle todo a GLSL.
+*  Tercer paso : usar GLSL para transformar nuestros vertices.
+*  Listo ! He aquí el mismo triangulo del tutorial 2, aún en el origen (0,0,0), pero visto desde la perspectiva del punto (4,3,3), cabeza arriba (0,1,0), con un campo de visión de 45°.
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/perspective_red_triangle.png)
 
-In tutorial 6 you'll learn how to modify these values dynamically using the keyboard and the mouse to create a game-like camera, but first, we'll learn how to give our 3D models some colour (tutorial 4) and textures (tutorial 5).
 
-# Exercises
+En el tutorial 6 aprenderás a modificar estos valores de forma dinámica usando el teclado y el mouse para crear una camara como de los juegos. Pero primero, vamos a aprender a darle un colo a nuestros modelos 3D (tutorial 4) y usar texturas (tutorial 5).
 
-*   Try changing the glm::perspective
-*   Instead of using a perspective projection, use an orthographic projection (glm::ortho)
-*   Modify ModelMatrix to translate, rotate, then scale the triangle
-*   Do the same thing, but in different orders. What do you notice ? What is the "best" order that you would want to use for a character ?
+# Ejercicios
+
+*   Intenta cambiar la glm::perspective.
+*   En  lugar de usar una perspectiva de proyección, usa una proyección ortográfica (glm::ortho).
+*   Modifica la matriz de modelo para transladar, rotar y luego escalar el triangulo.
+*   Haz lo mismo en diferentes ordenes. Qué notas? cual es el "mejor" orden que se debe usar para un personaje?
 
 _Addendum_
 
 
-[^projection]: [...]luckily for us, a 4x4 matrix can represent this projection : Actually, this is not correct. A perspective transformation is not affine, and as such, can't be represented entirely by a matrix. After beeing multiplied by the ProjectionMatrix, homogeneous coordinates are divided by their own W component. This W component happens to be -Z (because the projection matrix has been crafted this way). This way, points that are far away from the origin are divided by a big Z; their X and Y coordinates become smaller; points become more close to each other, objects seem smaller; and this is what gives the perspective. This transformation is done in hardware, and is not visible in the shader.
+[^proyección]: [...]por suerte para nosotros, una matriz 4x4 puede representar esta proyección : De hecho esto no es correcto. Una transformación de perspectiva no es una transformación afín, y como tal, no puede ser representada en su totalidad por una matriz. Luego de ser multiplicadas por una matriz de proyección, las coordenadas homogeneas deben ser divididas por su propio componente w. Esta componente W suele se -Z. De esta forma, los puntos que estan lejos del origen se dividen por una gran Z; sus componentes X y Y se vuelven mas pequeñas y los puntos se acercan entre ellos, los objetos se vuelven mas pequeños y eso es lo que produce la perspectiva. Esta transformación se hace en hardware y no se nota en el shader.

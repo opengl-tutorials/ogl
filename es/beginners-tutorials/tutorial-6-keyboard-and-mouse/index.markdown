@@ -11,15 +11,15 @@ tags: []
 language: es
 ---
 
-Welcome for our 6th tutorial !
+Bienvenidos a nuestro sexto tutorial !
 
-We will now learn how to use the mouse and the keyboard to move the camera just like in a FPS.
+Aquí aprenderemos como usar el ratón y el teclado para mover la cámara justo como un juego de disparos en primera persona.
 
-#The interface
+#La Interfaz
 
-Since this code will be re-used throughout the tutorials, we will put the code in a separate file : common/controls.cpp, and declare the functions in common/controls.hpp so that tutorial06.cpp knows about them.
+Dado que este código será reutilizado a través de distintos tutoriales de aquí en adelante, lo pondremos en un archivo separado: common/controls.cpp, y declararemos la función en common/controls.hpp para que tutorial06.cpp sepa del código.
 
-The code of tutorial06.cpp doesn't change much from the previous tutorial. The major modification is that instead of computing the MVP matrix once, we now have to do it every frame. So let's move this code inside the main loop :
+El código de tutorial06.cpp no es muy diferente de nuestro anterior tutorial. La modificación más grande presente es que en lugar de calcular la matriz  de Modelo Vista Proyección una vez, lo haremos en cada cuadro. Así que pongamos  este código en el ciclo principal de la aplicación:
 {% highlight cpp linenos %}
 do{
 
@@ -35,15 +35,15 @@ do{
     // ...
 }
 {% endhighlight %}
-This code needs 3 new functions :
+Este código necesita 3 nuevas funciones :
 
-* computeMatricesFromInputs() reads the keyboard and mouse and computes the Projection and View matrices. This is where all the magic happens.
-* getProjectionMatrix() just returns the computed Projection matrix.
-* getViewMatrix() just returns the computed View matrix.
+* computeMatricesFromInputs() que lee las entradas del teclado y el ratón y calcula las matrices de la Vista y la Proyección. Aquí es en donde toda la magia tiene lugar.
+* getProjectionMatrix() retorna la matrix de Proyección calculada.
+* getViewMatrix() retorna la matrix de Vista calculada.
 
-This is just one way to do it, of course. If you don't like these functions, go ahead and change them.
+Esta es sólo una de las formas para hacerlo, claro está. Si no te gusta la manera en como están implementadas estas funciones, cámbialas con completa libertad.
 
-Let's see what's inside controls.cpp.
+Veamos ahora que hay dentro de controls.cpp.
 
 #The actual code
 
@@ -61,13 +61,13 @@ float initialFoV = 45.0f;
 float speed = 3.0f; // 3 units / second
 float mouseSpeed = 0.005f;
 {% endhighlight %}
-FoV is the level of zoom. 80&deg; = very wide angle, huge deformations. 60&deg; - 45&deg; : standard. 20&deg; : big zoom.
+FoV es el nivel de acercamiento. 80&deg; = ángulo muy amplio, con enormes deformaciones. 60&deg; - 45&deg; : estándar. 20&deg; : gran acercamiento.
 
-We will first recompute position, horizontalAngle, verticalAngle and FoV according to the inputs, and then compute the View and Projection matrices from position, horizontalAngle, verticalAngle and FoV.
+Lo primero que haremos es recalcular position, horizontalAngle, verticalAngle y FoV a partir de las entradas y luego evaluaremos las matrices de Vista y Proyección a partir de dichas variables.
 
-##Orientation
+##Orientación
 
-Reading the mouse position is easy :
+Leer la posición del ratón es fácil:
 {% highlight cpp linenos %}
 // Get mouse position
 int xpos, ypos;
@@ -78,22 +78,22 @@ but we have to take care to put the cursor back to the center of the screen, or 
 // Reset mouse position for next frame
 glfwSetMousePos(1024/2, 768/2);
 {% endhighlight %}
-Notice that this code assumes that the window is 1024*768, which of course is not necessarily the case. You can use glfwGetWindowSize if you want, too.
+Observa que este código asume que la ventana de la aplicación es de 1024*768, lo cual no podría no ser en el caso en tu aplicación. Puedes usar glfwGetWindowSize si quieres.
 
-We can now compute our viewing angles :
+Vamos ahora a calcular los ángulos de visión :
 {% highlight cpp linenos %}
 // Compute new orientation
 horizontalAngle += mouseSpeed * deltaTime * float(1024/2 - xpos );
 verticalAngle   += mouseSpeed * deltaTime * float( 768/2 - ypos );
 {% endhighlight %}
-Let's read this from right to left :
+Leamos esto de derecha a izquierda :
 
-* 1024/2 - xpos means : how far is the mouse from the center of the window ? The bigger this value, the more we want to turn.
-* float(...) converts it to a floating-point number so that the multiplication goes well.
-* mouseSpeed is just there to speed up or slow down the rotations. Finetune this at will, or let the user choose it.
-* += : If you didn't move the mouse, 1024/2-xpos will be 0, and horizontalAngle+=0 doesn't change horizontalAngle. If you had a "=" instead, you would be forced back to your original orientation each frame, which isn't good.
+* 1024/2 - xpos indica que tan lejos está el ratón del centro de la ventana. Entre más grande sea este valor, más querremos girar.
+* float(...) convierte esta posición en un número de punto flotante para que podamos multiplicarlo sin problemas.
+* mouseSpeed sirve para acelerar o ralentizar las rotaciones. Ajusta esto según tu gusto o mejor aún, deja que el usuario lo haga.
+* += : Si no mueves el ratón, 1024/2-xpos será igual a 0, y horizontalAngle+=0 no cambia la variable horizontalAngle. Si en lugar de esto tuvieses un "=", te verías forzado a regresar a la orientación original con cada cuadro, lo cual no es bueno.
 
-We can now compute a vector that represents, in World Space, the direction in which we're looking
+Podemos ahora calcular un vector que representa, en Coordenadas del Mundo, la dirección en la que estamos mirando.
 {% highlight cpp linenos %}
 // Direction : Spherical coordinates to Cartesian coordinates conversion
 glm::vec3 direction(
@@ -102,15 +102,16 @@ glm::vec3 direction(
     cos(verticalAngle) * cos(horizontalAngle)
 );
 {% endhighlight %}
-This is a standard computation, but if you don't know about cosine and sinus, here's a short explanation :
+Éste es un cálculo básico, pero si no sabes qué es un coseno o un seno, dale clic al siguiente link para obtener una corta explicación:
 
 <img class="alignnone whiteborder" title="Trigonometric circle" src="http://www.numericana.com/answer/trig.gif" alt="" width="150" height="150" />
 
-The formula above is just the generalisation to 3D.
+La fórmula arriba es tan sólo una generalización para tres dimensiones.
 
-Now we want to compute the "up" vector reliably. Notice that "up" isn't always towards +Y : if you look down, for instance, the "up" vector will be in fact horizontal. Here is an example of to cameras with the same position, the same target, but a different up.
+Ahora queremos calcular el vector "arriba" de manera confiable. Observa que "arriba" no está siempre apuntando en la dirección +Y : si miras hacia abajo, por ejemplo, el vector "arriba" estará en posición horizontal. Aquí hay un ejemplo de cámera con la misma posición, el mismo objetivo, pero diferente vector "arriba".
 
-In our case, the only constant is that the vector goes to the right of the camera is always horizontal. You can check this by putting your arm horizontal, and looking up, down, in any direction. So let's define the "right" vector : its Y coordinate is 0 since it's horizontal, and its X and Z coordinates are just like in the figure above, but with the angles rotated by 90&deg;, or Pi/2 radians.
+En nuestro caso, la única constante es que el vector que va hacia la derecha de la cámara será siemrpe horizontal. Puedes verificar esto poniendo tu brazo en posición horizontal, mirando hacia arriba, abajo y en cualquier dirección. Definamos entonces nuestro vector "derecho": Sus coordenada en Y es 0 ya que siempre será horizontal. Sus coordenadas X y Z son las que se muestran en la figura más abajo, pero con lso ángulos rotados 90&deg, o Pi/2 radianes.
+
 {% highlight cpp linenos %}
 // Right vector
 glm::vec3 right = glm::vec3(
@@ -119,16 +120,17 @@ glm::vec3 right = glm::vec3(
     cos(horizontalAngle - 3.14f/2.0f)
 );
 {% endhighlight %}
-We have a "right" vector and a "direction", or "front" vector. The "up" vector is a vector that is perpendicular to these two. A useful mathematical tool makes this very easy : the cross product.
+Tenemos entonces un vector "derecho" y una "dirección" o vector "frontal". El vector "arriba" es un vector que es perpendicular a estos dos. Existe una herramienta matemática que nos facilita éste calculo: El producto cruz:
+
 {% highlight cpp linenos %}
 // Up vector : perpendicular to both direction and right
 glm::vec3 up = glm::cross( right, direction );
 {% endhighlight %}
-To remember what the cross product does, it's very simple. Just recall the Right Hand Rule from Tutorial 3. The first vector is the thumb; the second is the index; and the result is the middle finger. It's very handy.
+En resumen, lo que hace el producto cruz es muy simple: Recuerda la Regla de la Mano Derecha del Tutorial 3: El primer vector es el pulgar, el segundo es el dedo índice y el tercero es el dedo corazón. Esta astucia es bastante útil para que recordemos cómo funciona éste cálculo.
 
-##Position
+##Posición
 
-The code is pretty straightforward. By the way, I used the up/down/right/left keys instead of the awsd because on my azerty keyboard, awsd is actually zqsd. And it's also different with qwerZ keyboards, let alone korean keyboards. I don't even know what layout korean people have, but I guess it's also different.
+El código es bastante directo. Por cierto, Por cierto, aquí usamos las teclas de las flechas arriba/abajo/derecha en lugar de AWSD dado que en mi teclado, AWSD es en realidad ZQSD, al igual que los teclado QUERZ, eso sin mencionar los teclados coreanos. No tengo idea de cómo son los teclados coreanos, pero voy a suponer que también son diferentes.
 {% highlight cpp linenos %}
 // Move forward
 if (glfwGetKey( GLFW_KEY_UP ) == GLFW_PRESS){
@@ -147,32 +149,32 @@ if (glfwGetKey( GLFW_KEY_LEFT ) == GLFW_PRESS){
     position -= right * deltaTime * speed;
 }
 {% endhighlight %}
-The only special thing here is the deltaTime. You don't want to move from 1 unit each frame for a simple reason :
+El único elemento especial aquí es la variable deltaTime. No vas a querer moverte en una unidad para cada cuadro por una simple razón :
 
-* If you have a fast computer, and you run at 60 fps, you'd move of 60*speed units in 1 second
-* If you have a slow computer, and you run at 20 fps, you'd move of 20*speed units in 1 second
+* Si tienes un ordenador rápido y corre la aplicación a 60 cuadros por segundo, te moverás a 60*speed unidades en 1 segundo.
+* Si tienes un ordeandor lento y corre la aplicación a 20 cuadros por segundo, te moverás el equivalente a 20*speed unidades en 1 segundo.
 
-Since having a better computer is not an excuse for going faster, you have to scale the distance by the "time since the last frame", or "deltaTime".
+Dado que tener un mejor ordenador no es una excusa para ir más rápido, tienes que ajustar la distancia a una escala diferente, definida por el "tiempo desde el último del cuadro" o "deltaTime".
 
-* If you have a fast computer, and you run at 60 fps, you'd move of 1/60 * speed units in 1 frame, so 1*speed in 1 second.
-* If you have a slow computer, and you run at 20 fps, you'd move of 1/20 * speed units in 1 second, so 1*speed in 1 second.
+*  Si tienes un ordenador rápido y corre la aplicación a 60 cuadros por segundo, te moverás a 1/60 * speed unidades en 1 cuadro, es decir 1*speed en 1 segundo.
+*  Si tienes un ordeandor lento y corre la aplicación a 20 cuadros por segundo, te moverás a 1/20 * speed unidades en 1 cuadro, es decir 1*speed en 1 segundo.
 
-which is much better. deltaTime is very simple to compute :
+Lo cual es mucho mejor. deltaTime es bastante sencillo de calcular :
 {% highlight cpp linenos %}
 double currentTime = glfwGetTime();
 float deltaTime = float(currentTime - lastTime);
 {% endhighlight %}
 
-##Field Of View
+##Campo de Visión
 
-For fun, we can also bind the wheel of the mouse to the Field Of View, so that we can have a cheap zoom :
+Sólo por diversión, vamos a ligar la rueda del ratón al Campo de Visión, para obtener una manera simple de hacer zoom:
 {% highlight cpp linenos %}
 float FoV = initialFoV - 5 * glfwGetMouseWheel();
 {% endhighlight %}
 
-##Computing the matrices
+##Calculando las matrices
 
-Computing the matrices is now straightforward. We use the exact same functions than before, but with our new parameters.
+Con todo lo que hemos hecho, hallar las matrices es bastante directo. Usaremos exactamente las mismas funciones que antes, pero con nuestros nuevos parámetros.
 {% highlight cpp linenos %}
 // Projection matrix : 45&deg; Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 ProjectionMatrix = glm::perspective(FoV, 4.0f / 3.0f, 0.1f, 100.0f);
@@ -184,32 +186,32 @@ ViewMatrix       = glm::lookAt(
 );
 {% endhighlight %}
 
-#Results
+#Resultados
 
 ![]({{site.baseurl}}/assets/images/tuto-6-mouse-keyboard/moveanim.gif)
 
 
-##Backface Culling
+##Backface Culling (Ocultación de las caras posteriores)
 
-Now that you can freely move around, you'll notice that if you go inside the cube, polygons are still displayed. This can seem obvious, but this remark actually opens an opportunity for optimisation. As a matter of fact, in a usual application, you are never _inside_ a cube.
+Ahora que puedes moverte libremente alrededor, puedes darte cuenta que si vas dentro del cubo, los polígonos aún se muestran. Esto puedo parecer obvio, pero darse cuenta de esto nos da la oportunidad de optimizar nuestra aplicación. De hecho, en una aplicación tradicional, nunca deberías estar _dentro_ del cubo.
 
-The idea is to let the GPU check if the camera is behind, or in front of, the triangle. If it's in front, display the triangle; if it's behind, *and* the mesh is closed, *and* we're not inside the mesh, *then* there will be another triangle in front of it, and nobody will notice anything, except that everything will be faster : 2 times less triangles on average !
+La idea es dejar que la GPU verifique si la cámara está detrás o en frente de un triángulo. Si está en frente, se muestra el triángulo, si está detrás y la malla es cerrada y no estamos dentro de la mallo, entonces habrá otro triángulo en frenten de ella y nadie se dará cuenta de nada excepto que todo irá más rápido: pintaremos en promedio dos veces menos triángulos!
 
-The best thing is that it's very easy to check this. The GPU computes the normal of the triangle (using the cross product, remember ?) and checks whether this normal is oriented towards the camera or not.
+Lo mejor de todo, es que verificar esto es muy fácil. La GPU calcula el vector normal de un triángulo (usando el producto cruz, ¿recuerdas?) y verifica si dicha normal apunta hacia la cámara o no.
 
-This comes at a cost, unfortunately : the orientation of the triangle is implicit. This means that is you invert two vertices in your buffer, you'll probably end up with a hole. But it's generally worth the little additional work. Often, you just have to click "invert normals" in your 3D modeler (which will, in fact, invert vertices, and thus normals) and everything is just fine.
+Desafortunadamente, esto tiene un costo: La orientación del triángulo es implícita. Esto significa que si inviertes dos vértices en tu buffer, probablemente terminarás con un agujero en donde no debería haberlo. Sin embargo, y por lo general, el esfuerzo adicional vale la pena. A menudo, puedes sólo hacer clic en "invertir normales" en tu herramienta de modelado 3D (lo cual invertirá los vértices y con ellos, las normales) y todo se arreglará.
 
-Enabling backface culling is a breeze :
+Habilitando backface culling en un abrir y cerrar de ojos:
 {% highlight cpp linenos %}
 // Cull triangles which normal is not towards the camera
 glEnable(GL_CULL_FACE);
 {% endhighlight %}
 
-#Exercices
+#Ejercicios
 
 
-* Restrict verticalAngle so that you can't go upside-down
-* Create a camera that rotates around the object ( position = ObjectCenter + ( radius * cos(time), height, radius * sin(time) ) ); bind the radius/height/time to the keyboard/mouse, or whatever
-* Have fun !
+* Restringe verticalAngle de tal manera que la cámara no pueda quedar de cabeza
+* Crea una cámara que gire alrededor de un objeto en particular ( position = ObjectCenter + ( radius * cos(time), height, radius * sin(time) ) ); liga el radio/altura/tiempo al teclado o al ratón o lo que quieras.
+* Diviértete !
 
  
