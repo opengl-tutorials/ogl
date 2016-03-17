@@ -10,27 +10,26 @@ order: 40
 tags: []
 language: es
 ---
+Bienvenido al cuarto tutorial ! Aqui vas a aprender a :
 
-Welcome for the 4rth tutorial ! You will do the following :
+* Dibujar un cubo en vez de un triángulo aburrido
+* Añadir colores geniales
+* Apreder qué cosa es un z-buffer
 
-* Draw a cube instead of the boring triangle
-* Add some fancy colors
-* Learn what the Z-Buffer is
+#Dibujar un cubo
 
+Un cubo tiene seis caras cuadradas. Dado que OpenGl solo sabe de triangulos, tendrémos que dibujar 12 triangulos : dos por cada cara. Definimos los vertices de la misma forma que lo hicimos para los triangulos.
 
-#Draw a cube
-
-A cube has six square faces. Since OpenGL only knows about triangles, we'll have to draw 12 triangles : two for each face. We just define our vertices in the same way as we did for the triangle.
 {% highlight cpp linenos %}
-// Our vertices. Three consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
-// A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
+// Nuestros vertices. Tres flotantes consecutivos hacen un vertice 3D; tres vertices consecutivos hacen un triangulo.
+// Un cubo tiene 6 caras con 2 triangulos cada una, esto significa 6*2=12 triangulos, y 12*3 vertices
 static const GLfloat g_vertex_buffer_data[] = {
-    -1.0f,-1.0f,-1.0f, // triangle 1 : begin
+    -1.0f,-1.0f,-1.0f, // triangulo 1 : comienza
     -1.0f,-1.0f, 1.0f,
-    -1.0f, 1.0f, 1.0f, // triangle 1 : end
-    1.0f, 1.0f,-1.0f, // triangle 2 : begin
+    -1.0f, 1.0f, 1.0f, // triangulo 1 : termina
+    1.0f, 1.0f,-1.0f, // triangulo 2 : comienza
     -1.0f,-1.0f,-1.0f,
-    -1.0f, 1.0f,-1.0f, // triangle 2 : end
+    -1.0f, 1.0f,-1.0f, // triangulo 2 : termina
     1.0f,-1.0f, 1.0f,
     -1.0f,-1.0f,-1.0f,
     1.0f,-1.0f,-1.0f,
@@ -63,25 +62,29 @@ static const GLfloat g_vertex_buffer_data[] = {
     1.0f,-1.0f, 1.0f
 };
 {% endhighlight %}
-The OpenGL buffer is created, bound, filled and configured with the standard functions (glGenBuffers, glBindBuffer, glBufferData, glVertexAttribPointer) ; see Tutorial 2 for a quick reminder. The draw call does not change either, you just have to set the right number of vertices that must be drawn :
+
+
+El buffer OpenGl es creado, asociado, llenado y configurado con las funciones estándar (glGenBuffers, glBindBuffer, glBufferData, glVertexAttribPointer) ; Mira el tutorial 2 para repasar. La función para pintar tampoco cambia, solo se le debe indicar el numero adecuado de vertices a dibujar :
 {% highlight cpp linenos %}
-// Draw the triangle !
-glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles -> 6 squares
+// Dibujar el triangulo !
+glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 los indices comienzan en 0 -> 12 triangulos -> 6 cuadrados
 {% endhighlight %}
-A few remarks on this code :
+Unos apuntes sobre este código :
 
-* For now, our 3D model is fixed : in order to change it, you have to modify the source code, recompile the application, and hope for the best. We'll learn how to load dynamic models in tutorial 7.
-* Each vertex is actually written at least 3 times (search "-1.0f,-1.0f,-1.0f" in the code above). This is an awful waste of memory. We'll learn how to deal with this in tutorial 9.
+* Por ahora, nuestro modelo 3D es fijo : para cambiarlo, se debe modificar el código, recompilar la aplicación y esperar lo mejor. Vamos a aprender a cargar modelos de forma dinámica en el tutorial7
+* Cada vertice esta siendo escrito almenos 3 veces (busca "-1.0f,-1.0f,-1.0f" en el código arriba). Es un espacio terrible en memoria y vamos a lidiar con esto en el tutorial 9.
 
-You now have all the needed pieces to draw the cube in white. Make the shaders work ! go on, at least try :)
+Ahora que tenemos las piezas para dibujar el cubo en blanco, vamos a hacer funcionar los shaders ! Vamos, por lo menos intenta :)
 
-#Adding colors
+#Añadiendo colores
 
-A color is, conceptually, exactly the same as a position : it's just data. In OpenGL terms, they are "attributes". As a matter of fact, we already used this with glEnableVertexAttribArray() and glVertexAttribPointer(). Let's add another attribute. The code is going to be very similar.
 
-First, declare your colors : one RGB triplet per vertex. Here I generated some randomly, so the result won't look that good, but you can do something better, for instance by copying the vertex's position into its own color.
+Conceptualmente, un color es lo mismo que una posición : solo son datos. En términos de OpenGL son “atributos”. De hecho, ya usamos esto en las funciones glEnableVertexAttribArray() y glVertexAttribPointer(). Vamos a añadir otro atributo. El código va a ser muy parecido 
+
+Primero, declara tus colores : una tripla RGB por vértice. Aquí generé unos al azar, así que el resultado no se va a ver muy bien. Se puede hacer algo mejor, copiar la posición del vertice en el color.
+
 {% highlight cpp linenos %}
-// One color for each vertex. They were generated randomly.
+// Un color por vertice. Fueron generados al azar.
 static const GLfloat g_color_buffer_data[] = {
     0.583f,  0.771f,  0.014f,
     0.609f,  0.115f,  0.436f,
@@ -121,120 +124,119 @@ static const GLfloat g_color_buffer_data[] = {
     0.982f,  0.099f,  0.879f
 };
 {% endhighlight %}
-The buffer is created, bound and filled in the exact same way as the previous one :
+El buffer es creado, asociado y llenado en la misma forma que el anterior :
 {% highlight cpp linenos %}
 GLuint colorbuffer;
 glGenBuffers(1, &colorbuffer);
 glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
 {% endhighlight %}
-The configuration is also identical :
+La configuración también es idéntica :
 {% highlight cpp linenos %}
-// 2nd attribute buffer : colors
+// 2do atributo del buffer : colores
 glEnableVertexAttribArray(1);
 glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 glVertexAttribPointer(
-    1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-    3,                                // size
-    GL_FLOAT,                         // type
-    GL_FALSE,                         // normalized?
-    0,                                // stride
-    (void*)0                          // array buffer offset
+    1,                                // Atributo. No hay razón especial para el 1, pero debe corresponder al número en el shader.
+    3,                                // tamaño
+    GL_FLOAT,                         // tipo
+    GL_FALSE,                         // normalizado?
+    0,                                // corrimiento
+    (void*)0                          // corrimiento de buffer
 );
 {% endhighlight %}
-Now, in the vertex shader, we have access to this additional buffer :
+Ahora en el vertex shader, tenemos que acceder a este buffer adicional :
 {% highlight glsl linenos cssclass=highlightglslvs %}
-// Notice that the "1" here equals the "1" in glVertexAttribPointer
+// Nota que “1” aquí es igual al “1” en glVertexAttribPointer
 layout(location = 1) in vec3 vertexColor;
 {% endhighlight %}
-In our case, we won't do anything fancy with it in the vertex shader. We will simply forward it to the fragment shader :
+En nuestro caso, no hacemos nada extraño con el en el vertex shader, simplemente se lo mandamos al fragment shader :
 {% highlight glsl linenos cssclass=highlightglslvs %}
-// Output data ; will be interpolated for each fragment.
+// Datos de salida, serán interpolados para cada fragmento.
 out vec3 fragmentColor;
 
 void main(){
-
     [...]
 
-    // The color of each vertex will be interpolated
-    // to produce the color of each fragment
+    // El color de cada vertice será interpolado
+    // para producir el color de cada fragmento
     fragmentColor = vertexColor;
 }
 {% endhighlight %}
-In the fragment shader, you declare fragmentColor again :
+En el fragment shader, se declara fragmentColor de nuevo:
 {% highlight glsl linenos cssclass=highlightglslfs %}
-// Interpolated values from the vertex shaders
+// Valores interpolados de los vertex shaders
 in vec3 fragmentColor;
 {% endhighlight %}
-... and copy it in the final output color :
+... y es copiado en el color final
 {% highlight glsl linenos cssclass=highlightglslfs %}
-// Ouput data
+// datos de salida
 out vec3 color;
 
 void main(){
-    // Output color = color specified in the vertex shader,
-    // interpolated between all 3 surrounding vertices
+    // Color de salida = color especificado en el vertex shader,
+    // Interpolado entre los 3 vertices alrededor
     color = fragmentColor;
 }
 {% endhighlight %}
-And that's what we get :
+Y esto es lo que obtenemos :
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/missing_z_buffer.png)
 
 
-Urgh. Ugly. To understand what happens, here's what happens when you draw a "far" triangle and a "near" triangle :
+Urgh. Qué feo. Para entender lo que pasa, vamos a ver como se ve un triángulo “lejano” y uno “cercano” : 
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/FarNear.png)
-
-
-Seems OK. Now draw the "far" triangle last :
+ 
+Parece bien. Ahora  pinta el triangulo “lejano” de último :
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/NearFar.png)
 
+El lejano se esta pintando sobre el “cercano” aun cuando se supone que debería estar atrás ! Esto es lo que pasa con nuestro cubo : algunas caras se supone estan escondidas, pero como se dibujan al final, se ven encima. ¿ Ahora, quién podrá defendernos ? El Z-Buffer al rescate !
 
-It overdraws the "near" one, even though it's supposed to be behind it ! This is what happens with our cube : some faces are supposed to be hidden, but since they are drawn last, they are visible. Let's call the Z-Buffer to the rescue !
+* Nota 1: Si no ves cual es el problema, cambia la posición de la camara a (4,3,-3)
 
-*Quick Note 1* : If you don't see the problem, change your camera position to (4,3,-3)
+* Nota 2* : Si color, como la posición, es un atributo, ¿por qué necesitamos declarar out vec3 fragmentColor e in vec3 fragmentColor para el color y no para la posición? Porque la posición es especial : Es la única cosa obligatoria en OpenGL (de lo contrario no sabría dónde pintar el triangulo). Así que en el vertex shader la variable gl_Position es una variable incorporada, viene declarada dentro de OpenGL.
 
-*Quick Note 2* : if "color is like position, it's an attribute", why do we need to declare out vec3 fragmentColor; and in vec3 fragmentColor; for the color, and not for the position ? Because the position is actually a bit special : It's the only thing that is compulsory (or OpenGL wouldn't know where to draw the triangle !). So in the vertex shader, gl_Position is a "built-in" variable.
+#El Z-Buffer
 
-#The Z-Buffer
 
-The solution to this problem is to store the depth (i.e. "Z") component of each fragment in a buffer, and each and every time you want to write a fragment, you first check if you should (i.e the new fragment is closer than the previous one).
+La solución a este problema es guardar el componente “Z” o profundidad para cada fragmento en un buffer, y cada vez que se quiere escribir un fragmento, primero se debe revisar si se debe pintar o estaba detrás y no debe ser pintado.
 
-You can do this yourself, but it's so much simpler to just ask the hardware to do it itself :
+Tu puedes hacer esto por ti mismo, pero es mucho más fácil pedirle al hardware que lo haga por ti :
 {% highlight cpp linenos %}
-// Enable depth test
+// Habilidad el test de profundidad
 glEnable(GL_DEPTH_TEST);
-// Accept fragment if it closer to the camera than the former one
+// Aceptar el fragmento si esta mas cerca de la cámara que el fragmento anterior
 glDepthFunc(GL_LESS);
 {% endhighlight %}
-You also need to clear the depth each frame, instead of only the color :
+También necesitas tanto la profunidad como el color de cada fragmento :
 {% highlight cpp linenos %}
-// Clear the screen
+// Limpiar la ventana
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 {% endhighlight %}
-And this is enough to solve all your problems.
+Y esto es suficiente para resolver todos los problemas. 
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/one_color_per_vertex.png)
 
 
-#Exercises
+#Ejercicios
 
+* Dibujar el cubo Y el triángulo en diferentes ubicaciones. Necesitarás generar 2 matrices MVP para hacer 2 llamadas en el bucle principal, pero solo se necesita un shader.
 
-* Draw the cube AND the triangle, at different locations. You will need to generate 2 MVP matrices, to make 2 draw calls in the main loop, but only 1 shader is required.
-
-
-* Generate the color values yourself. Some ideas : At random, so that colors change at each run; Depending on the position of the vertex; a mix of the two; Some other creative idea :) In case you don't know C, here's the syntax :
+* Genera los valores de colores tu mismo. Algunas ideas : al azar para que veas los colores cambiar en cada ejecución del programa. Dependiendo de la posición del vértice. Combinando los dos. Cualquier otra idea creativa :) Si sabes C, aquí está la sintáxis :
 
 {% highlight cpp linenos %}
 static GLfloat g_color_buffer_data[12*3*3];
 for (int v = 0; v < 12*3 ; v++){
-    g_color_buffer_data[3*v+0] = your red color here;
-    g_color_buffer_data[3*v+1] = your green color here;
-    g_color_buffer_data[3*v+2] = your blue color here;
+    g_color_buffer_data[3*v+0] = tu color rojo aquí;
+    g_color_buffer_data[3*v+1] = tu color verde aquí;
+    g_color_buffer_data[3*v+2] = tu color azul aquí;
 }
 {% endhighlight %}
 
-* Once you've done that, make the colors change each frame. You'll have to call glBufferData each frame. Make sure the appropriate buffer is bound (glBindBuffer) before !
+* Una vez hayas hecho eso, haz que los colores cambien en cada cuadro. Tendrás que llamar a call glBufferData en cada cuadro. Asegurate de que el buffer esté correctamente asociado (usando glBindBuffer) con anterioridad !
+
+
+
 

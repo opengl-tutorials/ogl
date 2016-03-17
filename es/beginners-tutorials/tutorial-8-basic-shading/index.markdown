@@ -11,270 +11,269 @@ tags: []
 language: es
 ---
 
-In this 8th tutorial, we will learn how to do some basic shading. This includes :
+En este octavo tutorial, vamos a aprender a hacer un shader. Esto incluye :
 
-* Beeing more bright when closer to a light source
-* Having highlights when looking in the reflection of a light (specular lighting)
-* Beeing darker when light is not directly towards the model (diffuse lighting)
-* Cheating a lot (ambient lighting)
+* Ser mas brillante cuando se esta cerca de una fuente de luz
+* Tener reflejos de luz (Iluminación especular)
+* Ser mas oscuro cuando la luz no cae directamente sobre el modelo (Iluminación difusa)
+* Hacer mucha trampa (Iluminación ambiental)
 
-This does NOT include :
+Esto NO incluye:
 
-* Shadows. This is a broad topic that deserves its own tutorial(s)
-* Mirror-like reflections (this includes water)
-* Any sophisticated light-matter interaction like subsurface scattering (like wax)
-* Anisotrophic materials (like brushed metal)
-* Physically based shading, which tries to mimic the reality closely
-* Ambient Occlusion (it's darker in a cave)
-* Color Bleeding (a red carpet will make a white ceiling a litte bit red)
-* Transparency
-* Any kind of Global Illumination whatsoever (it's the name that regroups all previous ones)
+* Sombras. Este es un tema muy amplio y merece sus propios tutoriales.
+* Reflejos de espejo (esto incluye el agua)
+* Interacción de luz y materia muy complicada (como la cera)
+* Materiales Anisotropicos (lComo metal raspado)
+* Shading basado en fisica y realismo
+* Oclusión ambiental (Es mas oscuro en una cueva)
+* Reflejo de color (un tapete rojo haría que una pared blanca se viera un poquito roja)
+* Transparencias
+* Cualquier clase de ilumincación global (Es el nombre que se le da a todo lo anterior)
 
-In a word : Basic.
+En una palabra: Basico.
 
-#Normals
+#Normales
 
-During the last few tutorials you've been dealing with normal without really knowing what they were.
+En los ultimos tutoriales, hemos estado hablando de normales y probablemente aun no entiendas qué son.
 
-##Triangle normals
+##Normal de un triángulo
 
-The normal of a plane is a vector of length 1 that is perpendicular to this plane.
+La normal de un plano es un vector de longitud 1 que es perpendicular a ese plano.
 
-The normal of a triangle is a vector of length 1 that is perpendicular to this triangle. It is easily computed by taking the cross product of two of its edges (the cross product of a and b produces a vector that is perpendicular to both a and b, remember ?), and normalized : its length is brought back to 1. In pseudo-code :
+La normal de un triangulo es un vector de longitud 1 que es perpendicular a ese triangulo. Es facilmente calculada encontrando el producto cruz de dos de sus lados (el producto cruz produce un vector perpendiculas a A y B , recuerdas?) y normalizado : su longitud es 1. En psuedo código : 
+
 {% highlight text linenos %}
 triangle ( v1, v2, v3 )
 edge1 = v2-v1
 edge2 = v3-v1
 triangle.normal = cross(edge1, edge2).normalize()
 {% endhighlight %}
-Don't mix up normal and normalize(). Normalize() divides a vector (any vector, not necessarily a normal) by its length so that its new length is 1. normal is just the name for some vectors that happen to represent, well, a normal.
 
-##Vertex normals
+No confundas normal con normalize(). Normalize() divide un vector (cualquier vector, no solo una normal) por su  longitud para que de como resultado 1. Normal es solamente el nombre que se le da a los vectores que representan, pues, una normal.
 
-By extension, we call the normal of a vertex the combination of the normals of the surroundings triangles. This is handy because in vertex shaders, we deal with vertices, not triangles, so it's better to have information on the vertex. And any way, we can't have information on triangles in OpenGL. In pseudo-code :
+##Normal de un vértice
+
+Por extensión, llamamos normal de un vértice a la combinación de las normales de las caras triangulares que rodean al vertice. Esto se vuelve útil por que en los vertex shaders, lidiamos con vertices, no triangulos, asi que es mejor tener información de un vertice. Ademas, en OpenGL no tenemos nunca información sobre triangulos. Aqui el pseudo código.
+
 {% highlight text linenos %}
 vertex v1, v2, v3, ....
 triangle tr1, tr2, tr3 // all share vertex v1
 v1.normal = normalize( tr1.normal + tr2.normal + tr3.normal )
 {% endhighlight %}
 
-##Using vertex normals in OpenGL
+##Usando normales en OpenGL
 
-To use normals in OpenGL, it's very easy. A normal is an attribute of a vertex, just like its position, its color, its UV coordinates... so just do the usual stuff. Our loadOBJ function from Tutorial 7 already reads them from the OBJ file.
+Usar normales en OpenGL es muy fácil. Una normal es un atributo de un vértice, como lo es su posición, su color y sus coordenadas UV. Así que sólo hacemos lo usual. Nuestra función loadOBJ del tutorial 7 ya sabe traer esta información del archivo OBJ.
+
+
 {% highlight cpp linenos %}
 GLuint normalbuffer;
  glGenBuffers(1, &normalbuffer);
  glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
  glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
 {% endhighlight %}
-and
+y
 {% highlight cpp linenos %}
- // 3rd attribute buffer : normals
+ // 3er buffer de atributos : normales
  glEnableVertexAttribArray(2);
  glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
  glVertexAttribPointer(
-     2,                                // attribute
-     3,                                // size
-     GL_FLOAT,                         // type
-     GL_FALSE,                         // normalized?
-     0,                                // stride
-     (void*)0                          // array buffer offset
+     2,                                // atributo
+     3,                                // tamaño
+     GL_FLOAT,                         // tipo
+     GL_FALSE,                         // normalizado?
+     0,                                
+     (void*)0                          // desplazamiento del buffer 
  );
 {% endhighlight %}
-and this is enough to get us started.
+y esto es suficiente para empezar.
 
-#The Diffuse part
+#La parte difusa
 
+##La importancia de una normal a la superficie
 
-##The importance of the surface normal
-
-When light hits an object, an important fraction of it is reflected in all directions. This is the "diffuse component". (We'll see what happens with the other fraction soon)
+Cuando la luz toca un objeto, una gran parte de ella es reflejada en todas las direcciones. Este es el “componente difuso”. Ya veremos que pasa con el resto de la luz.
 
 ![]({{site.baseurl}}/assets/images/tuto-8-basic-shading/diffuseWhite1.png)
 
+Cuando un cierto flujo de luz llega a la superficie es iluminada de forma diferente de acuerdo al angulo de incidencia.
 
-When a certain flux of light arrives at the surface, this surface is illuminated differently according to the angle at which the light arrives.
-
-If the light is perpendicular to the surface, it is concentrated on a small surface. If it arrives at a gazing angle, the same quantity of light spreads on a greater surface :
+Si la luz es perpendicular a la cara, se concentra en una pequeña superficie, si llega en un angulo, la misma cantidad se esparce por una mayor superficie :
 
 ![]({{site.baseurl}}/assets/images/tuto-8-basic-shading/diffuseAngle.png)
 
+Esto significa que cada punto de la superficie se verá mas oscuro con la luz en angulo (pero recuerda, mas puntos serán iluminados, la cantidad de luz es la misma en total).
 
-This means that each point of the surface will look darker with gazing light (but remember, more points will be illuminated, to the total quantity of light will remain the same)
-
-This means that when we compute the colour of a pixel, the angle between the incoming light and the surface normal matters.We thus have :
+Esto significa que cuando calculamos el color de un pixel, el angulo entre la luz entrante y la normal de la superficie importan, y mucho, resultando :
 {% highlight glsl linenos cssclass=highlightglslfs %}
-// Cosine of the angle between the normal and the light direction,
-// clamped above 0
-//  - light is at the vertical of the triangle -> 1
-//  - light is perpendicular to the triangle -> 0
+// Coseno del angulo entre la normal y la dirección de la luz ,
+// restringido a mayor que 0
+//  - la luz esta en la vertical del triangulo -> 1
+//  - la luz es perpendicular al triangulo -> 0
 float cosTheta = dot( n,l );
 
 color = LightColor * cosTheta;
 {% endhighlight %}
-In this code, n is the surface normal and l is the unit vector that goes from the surface to the light (and not the contrary, even if it's non inuitive. It makes the math easier).
+En este codigo, n es la normal y I es el vector unitario que va de la superficie hacia la luz (y no al contrario. Pueda que no sea intuitivo pero las matemáticas son mas fáciles).
 
-##Beware of the sign
+##Cuidado con el signo
 
-Something is missing in the formula of our cosTheta. If the light is behind the triangle, n and l will be opposed, so n.l will be negative. This would mean that colour = someNegativeNumber, which doesn't mean much. So we have to clamp cosTheta to 0 :
+Falta algo en nuestra formula de coseno de teta. Si la luz esta detras del triangulo, n y I seràn opuestos asi que n.I será negativo. Esto significa que el color resultará un número negativo. Por eso limitamos la función a todo lo que es mayor que 0 :
 {% highlight glsl linenos cssclass=highlightglslfs %}
-// Cosine of the angle between the normal and the light direction,
-// clamped above 0
-//  - light is at the vertical of the triangle -> 1
-//  - light is perpendicular to the triangle -> 0
-//  - light is behind the triangle -> 0
+// Coseno del angulo entre la normal y la dirección de la luz ,
+// restringido a mayor que 0
+//  - la luz esta en la vertical del triangulo -> 1
+//  - la luz es perpendicular al triangulo -> 0
+//  - la luz esta detrás del triángulo -> 0
 float cosTheta = clamp( dot( n,l ), 0,1 );
 
 color = LightColor * cosTheta;
 {% endhighlight %}
 
-##Material Color
+##Color del material
 
-Of course, the output colour also depends on the colour of the material. In this image, the white light is made out of green, red and blue light. When colliding with the red material, green and blue light is absorbed, and only the red remains.
+Por supuesto que el color de salida depende del color del material. En esta imagen, la luz blanca esta hecha de verde rojo y azul. Cuando toca material rojo, la luz verde y azul son absorbidas reflejando solo el rojo.
 
 ![]({{site.baseurl}}/assets/images/tuto-8-basic-shading/diffuseRed.png)
 
-
-We can model this by a simple multiplication :
+Podemos modelar esto con una multiplicaión simple :
 {% highlight glsl linenos cssclass=highlightglslfs %}
 color = MaterialDiffuseColor * LightColor * cosTheta;
 {% endhighlight %}
 
-##Modeling the light
+##Modelando la luz
 
-We will first assume that we have a punctual light that emits in all directions in space, like a candle.
+Primero asumiremos que tenemos una luz puntual que emite luz en todas las direcciónes en el espacio, como una vela.
 
-With such a light, the luminous flux that our surface will receive will depend on its distance to the light source: the further away, the less light. In fact, the amount of light will diminish with the square of the distance :
+Con esa luz, el flujo que nuestra superficie recibe depende de la disancia de la luz al objeto. Entre mas lejos, menos luz. De hecho, la cantidad de luz decrece con el cudrado de la distancia :
 {% highlight glsl linenos cssclass=highlightglslfs %}
 color = MaterialDiffuseColor * LightColor * cosTheta / (distance*distance);
 {% endhighlight %}
-Lastly, we need another parameter to control the power of the light. This could be encoded into LightColor (and we will in a later tutorial), but for now let's just have a color (e.g. white) and a power (e.g. 60 Watts).
+Por ultimo, necesitamos otro parámetro para controla la potencia de la luz. Esto se puede hcer con LightColor (y lo haremos en otro tutorial), por ahora vamos a tener un color (por ejemplo blanco) y una potencia (ejemplo 60 Watts).
 {% highlight glsl linenos cssclass=highlightglslfs %}
 color = MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance);
 {% endhighlight %}
 
-##Putting it all together
+##Uniendo todo
 
-For this code to work, we need a handful of parameters (the various colours and powers) and some more code.
+Para que este código funcione, necesitamos varios parámetros (varios colores y potencias)  y más código.
 
-MaterialDiffuseColor is simply fetched from the texture.
+MaterialDiffuseColor  trae de la textura.
 
-LightColor and LightPower are set in the shader through GLSL uniforms.
+LightColor y LightPower se agregan al shader a traves de uniforms de GLSL.
 
-cosTheta depends on n and l. We can express them in any space provided it's the same for both. We choose the camera space because it's easy to compute the light's position in this space :
+cosTheta depende de n y l. Podemos expresarlos en cualquier espacio que sea el mismo para los dos. Escogemos el espacio de camara por que es mas facil calcular la posición de la luz en este espacio :
 {% highlight glsl linenos cssclass=highlightglslfs %}
-// Normal of the computed fragment, in camera space
+// La normal del fragmento en espacio de la camara.
  vec3 n = normalize( Normal_cameraspace );
- // Direction of the light (from the fragment to the light)
+ // Dirección de la luz (del fragmento hacia la luz)
  vec3 l = normalize( LightDirection_cameraspace );
 {% endhighlight %}
-with Normal_cameraspace and LightDirection_cameraspace computed in the Vertex shader and passed to the fragment shader :
+Con Normal_cameraspace y LightDirection_cameraspace calculados en el the Vertex shader y enviados al fragment shader :
 {% highlight glsl linenos cssclass=highlightglslvs %}
-// Output position of the vertex, in clip space : MVP * position
+// Posición de salida del vertice : MVP * position
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
-// Position of the vertex, in worldspace : M * position
+// Posición del vertice en el mundo : M * position
 Position_worldspace = (M * vec4(vertexPosition_modelspace,1)).xyz;
 
-// Vector that goes from the vertex to the camera, in camera space.
-// In camera space, the camera is at the origin (0,0,0).
+// Vector que va del vertice a la camara, en el espacio de camara.
+// En el espaci de la camara, la camara esta en el origen (0,0,0).
 vec3 vertexPosition_cameraspace = ( V * M * vec4(vertexPosition_modelspace,1)).xyz;
 EyeDirection_cameraspace = vec3(0,0,0) - vertexPosition_cameraspace;
 
-// Vector that goes from the vertex to the light, in camera space. M is ommited because it's identity.
+// Vector que va del vertice a la luz, en espacio de camara. Se omite M por que es la identidad.
 vec3 LightPosition_cameraspace = ( V * vec4(LightPosition_worldspace,1)).xyz;
 LightDirection_cameraspace = LightPosition_cameraspace + EyeDirection_cameraspace;
 
-// Normal of the the vertex, in camera space
-Normal_cameraspace = ( V * M * vec4(vertexNormal_modelspace,0)).xyz; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
+// Normal del vertice en espacio de camara
+Normal_cameraspace = ( V * M * vec4(vertexNormal_modelspace,0)).xyz; // Solo es correcto si  ModelMatrix no escala el modelo ! De lo contrario use su transpuesta inversa
 {% endhighlight %}
-This code can seem impressive but it's nothing we didn't learn in Tutorial 3 : Matrices. I paid attention to write the name of the space in each vector's name, so that keeping track of what is happening is much easier. **You should do that, too.**
+Este código puede parece impresionante, pero no es nada que no hayamos aprendido en el tutorial 3 : Matrices. Yo me tomé la molestia de poner el nombre del espacio en el que esta cada vector para que puedas seguir el proceso de transformaciones. ** Ponle mucha atención. **
 
-M and V are the Model and View matrices, which are passed to the shader in the exact same way as MVP.
+M y V son las matrices Modelo y Vista, que son enviadas al shader de la misma forma que MVP.
 
-##Time for work
+##Hora de trabajar
 
-You've got everything you need to code a diffuse lighting. Go ahead, and learn the hard way :)
+En este momento sabes todo lo que necesitas saber para hacer el código de una iluminación difusa. Ve y aprende de la forma dificil ;)
 
-##Result
+##Resultado
 
-With only the Diffuse component, we have the following result (sorry for the lame texture again) :
+Solo con el componente difuso tenemos el siguiente resultado (disculpa la textura fea nuevamente) :
 
 ![]({{site.baseurl}}/assets/images/tuto-8-basic-shading/diffuse_only.png)
 
+Se ve mejor que antes, pero aun falta mucho. En particular, la parte de atras de Suzanne es completamente negra, ya que usamos clamp().
 
-It's better than before, but there is still much missing. In particular, the back of Suzanne is completely black since we used clamp().
+#El componente “ ambiente ”
 
-#The Ambient component
+El componente de ambiente es una de las trampas mas grandes.
 
-The Ambient component is the biggest cheat ever.
+Estamos esperando que la parte de atras de Suzanne reciba mas luz por que en la vida real, la lampara alumbra la pared de atras que a su vez ilumina (levemente) la parte de atras del objeto
 
-We expect the back of Suzanne to be receive more light because in real life, the lamp would light the wall behind it, which would in turn (slightly less) light the back of the object.
+Pero eso toma mucho poder computacional.
 
-This is awfully expensive to compute.
+Asi que vamos a crear una luz falsa. De hecho simplemente hace que el modelo 3D *emita *luz para que no aparezca completamente negro.
 
-So the usual hack is to simply fake some light. In fact, is simply makes the 3D model *emit *light so that it doesn't appear completely black.
-
-This can be done this way :
+Se puede hacer asi :
 {% highlight glsl linenos cssclass=highlightglslfs %}
 vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
 {% endhighlight %}
 {% highlight glsl linenos cssclass=highlightglslfs %}
 color =
- // Ambient : simulates indirect lighting
+ // Ambiente : simulates luz indirecta
  MaterialAmbientColor +
  // Diffuse : "color" of the object
  MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) ;
 {% endhighlight %}
-Let's see what it gives
+Veamos en qué resulta 
 
-##Results
+##Resultados
 
-Ok so that's a little bit better. You can adjust the (0.1, 0.1, 0.1) if you want better results.
+Ok, se ve un poco mejor. Puedes ajustar el (0.1, 0.1, 0.1) si quieres mejores resultados.
 
 ![]({{site.baseurl}}/assets/images/tuto-8-basic-shading/diffuse_ambiant.png)
 
+#El componente especular
 
-#The Specular component
-
-The other part of light that is reflected is reflected mostly in the direction that is the reflection of the light on the surface. This is the specular component.
+La otra parte de la luz es reflejada en la dirección del angulo saliente del angulo en que la luz toca la superficie. Esto se denomina componente especular.
 
 ![]({{site.baseurl}}/assets/images/tuto-8-basic-shading/specular.png)
 
+Como puedes ver en la imagen, se forma algo como un circulo de reflejo. En casos extremos el componente puede ser nulo, lo que resulta en que el reflejo es muy pequeño y brillante (porque toda la luz se refleja en una sola dirección) y obtienes un espejo.
 
-As you can see in the image, it forms a kind of lobe. In extreme cases, the diffuse component can be null, the lobe can be very very very narrow (all the light is reflected in a single direction) and you get a mirror.
-
-(*we can indeed tweak the parameters to get a mirror, but in our case, the only thing we take into account in this mirror is the lamp. So this would make for a weird mirror)*
+(*Podemos variar los parametros para obtener un espejo, pero en nuestro caso , lo unico que debemos tener en cuenta en este espejo es la lampara, lo que haría un espejo muy raro*
 {% highlight glsl linenos cssclass=highlightglslfs %}
-// Eye vector (towards the camera)
+// Vector del ojo (hacia la camara)
 vec3 E = normalize(EyeDirection_cameraspace);
-// Direction in which the triangle reflects the light
+// Direccion en la que el triangulo refleja la luz
 vec3 R = reflect(-l,n);
-// Cosine of the angle between the Eye vector and the Reflect vector,
-// clamped to 0
-//  - Looking into the reflection -> 1
-//  - Looking elsewhere -> < 1
+// Coseno del angulo entre la normal y la dirección de la luz ,
+// restringido a mayor que 0
+//  - la luz esta en la vertical del triangulo -> 1
+//  - la luz es perpendicular al triangulo -> 0
 float cosAlpha = clamp( dot( E,R ), 0,1 );
 
 color =
-    // Ambient : simulates indirect lighting
+    // Ambiente : Simula la luz indirecta
     MaterialAmbientColor +
-    // Diffuse : "color" of the object
+    // Difuso : El "color" del objeto
     MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) ;
-    // Specular : reflective highlight, like a mirror
+    // Especular : Reflejo resaltado, como un espejo
     MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance*distance);
 {% endhighlight %}
-R is the direction in which the light reflects. E is the inverse direction of the eye (just like we did for "l"); If the angle between these two is little, it means we are looking straight into the reflection.
+R es la direccion en la que la luz se refleja. E es el inverso de la direccion del ojo (así como lo hicimos para “l”). Si el angulo entre estos dos es pequeño significa que estamos viendo directo al reflejo.
 
-pow(cosAlpha,5) is used to control the width of the specular lobe. Increase 5 to get a thinner lobe.
+pow(cosAlpha,5) se usa para controlar el ancho del reflejo especular, aumenta en 5 para obtener un reflejo mas pequeño.
 
-##Final result
+##Resultado final
 
 ![]({{site.baseurl}}/assets/images/tuto-8-basic-shading/diffuse_ambiant_specular.png)
 
+Nota los reflejos especulares restaldaos en la nariz y las cejas.
 
-Notice the specular highlights on the nose and on the eyebrows.
+Este modelo de shading se ha usado durante años debido a su simplicidad. Tiene bastantes problemas, por eso se reemplaza por modelos basados en física como microfacetas BRDF, pero eso lo veremos luego.
 
-This shading model has been used for years due to its simplicity. It has a number of problems, so it is replaced by physically-based models like the microfacet BRDF, but we will see this later.
+En el siguiente tutorial vamos a mejorar el rendimiento de tu VBO. Será el inmediatamente siguiente !
 
-In the next tutorial, we'll learn how to improve the performance of your VBO. This will be the first Intermediate tutorial !
+

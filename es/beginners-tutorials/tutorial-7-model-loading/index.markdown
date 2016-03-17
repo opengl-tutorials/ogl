@@ -11,15 +11,16 @@ tags: []
 language: es
 ---
 
-Until now, we hardcoded our cube directly in the source code. I'm sure you will agree that this was cumbersome and not very handy.
+Hasta ahora, hemos escrito directamente nuestro cubo en el codigo fuente. Y podemos estar de acuerdo en que ésta es una forma muy engorrosa y poco práctica de hacerlo.
 
-In this tutorial we will learn how to load 3D meshes from files. We will do this just like we did for the textures : we will write a tiny, very limited loader, and I'll give you some pointers to actual libraries that can do this better that us.
+En este tutorial, aprenderemos como cargar mallas 3D desde archivo. Lo haremos de la misma manera en que lo hicimos para las texturas: escribiremos una pequeña y muy limitada función para cargar las mallas y luego le daremos un vistazo a las libreríes que pueden hacer esto mucho mejor que nosotros.
 
-To keep this tutorial as simple as possible, we'll use the OBJ file format, which is both very simple and very common. And once again, to keep things simple, we will only deal with OBJ files with 1 UV coordinate and 1 normal per vertex (you don't have to know what a normal is right now).
+Para mantener este tutorial lo más simple que sea posible, usaremos el formato OBJ, que resulta ser bastante simple y común. Y una vez más, para mantener las cosas simples, sólo trataremos con archivos OBJ con una coordenada UV y una normal por vértice (Y no necesitamos preocuparnos por lo que es una normal justo ahora).
 
-#Loading the OBJ
+#Cargando el OBJ
 
-Our function, located in common/objloader.cpp and declared in common/objloader.hpp, will have the following signature :
+Nuestra función, ubicada en common/objloader.cpp y declarada en common/objloader.hpp tendrá la siguiente declaración:
+ :
 {% highlight cpp linenos %}
 bool loadOBJ(
     const char * path,
@@ -28,11 +29,12 @@ bool loadOBJ(
     std::vector < glm::vec3 > & out_normals
 )
 {% endhighlight %}
-We want loadOBJ to read the file "path", write the data in out_vertices/out_uvs/out_normals, and return false if something went wrong. std::vector is the C++ way to declare an array of glm::vec3 which size can be modified at will: it has nothing to do with a mathematical vector. Just an array, really. And finally, the & means that function will be able to modify the std::vectors.
 
-##Example OBJ file
+Queremos que loadObj lea el archivo en "path", escriba la información en out_vertices/out_uvs/out_normals, y devuelva falso si algo sale mal. std::vector es la manera que tiene C++ para declarar un arreglo de tipo glm::vec3 cuyo tamaño puede ser modificado a voluntad: No tiene nada que ver con un vector en el sentido matemático. Es sólo un arreglo, de verdad. Finalmente, el símbolo & significa que la función será capaz de modificar los std::vectors.
 
-An OBJ file looks more or less like this :
+##Archivo OBJ de ejemplo
+
+Un archivo OBJ se ve más o menos así :
 {% highlight text linenos %}
 # Blender3D v249 OBJ File: untitled.blend
 # www.blender3d.org
@@ -84,43 +86,42 @@ f 1/2/8 3/13/8 4/14/8
 {% endhighlight %}
 So :
 
-* `#` is a comment, just like // in C++
-* usemtl and mtllib describe the look of the model. We won't use this in this tutorial.
-* v is a vertex
-* vt is the texture coordinate of one vertex
-* vn is the normal of one vertex
-* f is a face
+* `#` señala la ubicación de un comentario, así como lo hacen los // en C++
+* usemtl y mtllib describen la apariencia del modelo. No lo usaremos en este tutorial.
+* v es un vértice
+* vt es la coordenada de textura de un vértice
+* vn es la normal de un vértice
+* f es una cara
 
-v, vt and vn are simple to understand. f is more tricky. So, for f 8/11/7 7/12/7 6/10/7 :
+v, vt y vn son simples de entender. f es algo más complicado. Así, para f 8/11/7 7/12/7 6/10/7 :
 
-* 8/11/7 describes the first vertex of the triangle
-* 7/12/7 describes the second vertex of the triangle
-* 6/10/7 describes the third vertex of the triangle (duh)
-* For the first vertex, 8 says which vertex to use. So in this case, -1.000000 1.000000 -1.000000 (index start to 1, not to 0 like in C++)
-* 11 says which texture coordinate to use. So in this case, 0.748355 0.998230
-* 7 says which normal to use. So in this case, 0.000000 1.000000 -0.000000
+* 8/11/7 describe el primer vértice del triángulo
+* 7/12/7 describe el segundo vértice del triángulo 
+* 6/10/7 describe el tercer vértice del  triángulo (duh)
+* Para el primer vértice, el 8 indica qué vértice utitlizar. Así que en este caso, -1.000000 1.000000 -1.000000 (los índices comienzan con 1, y no con 0 como en C++)
+* 11 dice que coordenada de textura utilizar. En este caso, 0.748355 0.998230
+* 7 dice que normal utilizar. En este caso, 0.000000 1.000000 -0.000000
 
-These numbers are called indices. It's handy because if several vertices share the same position, you just have to write one "v" in the file, and use it several times. This saves memory.
+Estos números son llamados índices. Esto es útil dado que si varios vértices comparten la misma posición, sólo tiene que escribir una vez un "v" en el archivo y usarlo varias veces, ahorrando espacio en memoria.
 
-The bad news is that OpenGL can't be told to use one index for the position, another for the texture, and another for the normal. So the approach I took for this tutorial is to make a standard, non-indexed mesh, and deal with indexing later, in Tutorial 9, which will explain how to work around this.
+La mala noticia es que no es posible decirle a OpenGL que use un índice para la posición, otro para la tectura y otro para la normal. Así que para este tutorial hice una malla estandar, sin indexación y más adelante me ocupo del indexamiento en el Tutorial 9, que explica como esquivar esto.
+##Crear un archivo OBJ en Blender
 
-##Creating an OBJ file in Blender
-
-Since our toy loader will severely limited, we have to be extra careful to set the right options when exporting the file. Here's how it should look in Blender :
+Dado que nuestra pequeña función de carga es bastante limitada, tenemos que ser extremadamente cuidadosos para activar las opaciones adecuadas cuando exportemos el archivo. Así es como debería verse en Blender:
 
 ![]({{site.baseurl}}/assets/images/tuto-7-model-loading/Blender.png)
 
 
-##Reading the file
+##Leyendo el archivo
 
-Ok, down with the actual code. We need some temporary variables in which we will store the contents of the .obj :
+Bien, ahora vamos al código en cuestión. Necesitamos algunas variables temporales en las que almacenaremos los contenidos del .obj :
 {% highlight cpp linenos %}
 std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;
 std::vector< glm::vec3 > temp_vertices;
 std::vector< glm::vec2 > temp_uvs;
 std::vector< glm::vec3 > temp_normals;
 {% endhighlight %}
-Since Tutorial 5 : A Textured Cube, you know how to open a file :
+Desde el Tutorial 5 : Un cubo con texturas, sabemos como abrir un archivo :
 {% highlight cpp linenos %}
 FILE * file = fopen(path, "r");
 if( file == NULL ){
@@ -128,44 +129,44 @@ if( file == NULL ){
     return false;
 }
 {% endhighlight %}
-Let's read this file until the end :
+Leamos este archivo hasta el final:
 {% highlight cpp linenos %}
 while( 1 ){
 
     char lineHeader[128];
-    // read the first word of the line
+    // Lee la primera palabra de la línea
     int res = fscanf(file, "%s", lineHeader);
     if (res == EOF)
-        break; // EOF = End Of File. Quit the loop.
+        break; // EOF = End Of File, es decir, el final del archivo. Se finaliza el ciclo.
 
-    // else : parse lineHeader
+    // else : analizar el lineHeader
 {% endhighlight %}
-(notice that we assume that the first word of a line won't be longer than 128, which is a very silly assumption. But for a toy parser, it's all right)
+(Es importante notar que asumimos que la primera palabra de la línea no tendrá más de 128 caracteres, lo cual es un supuesto algo ridículo. Pero para una función de carga de juguete como la nuestra, está bien.)
 
-Let's deal with the vertices first :
+Tratemos los vértices primero :
 {% highlight cpp linenos %}
 if ( strcmp( lineHeader, "v" ) == 0 ){
     glm::vec3 vertex;
     fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z );
     temp_vertices.push_back(vertex);
 {% endhighlight %}
-i.e : If the first word of the line is "v", then the rest has to be 3 floats, so create a glm::vec3 out of them, and add it to the vector.
+i.e : Si la primera palabra de la línea es "v", entonces el resto tiene que tener 3 flotantes, así que creamos un glm::vec3 a partir de estos y lo añadimos al vector.
 {% highlight cpp linenos %}
 }else if ( strcmp( lineHeader, "vt" ) == 0 ){
     glm::vec2 uv;
     fscanf(file, "%f %f\n", &uv.x, &uv.y );
     temp_uvs.push_back(uv);
 {% endhighlight %}
-i.e if it's not a "v" but a "vt", then the rest has to be 2 floats, so create a glm::vec2 and add it to the vector.
+i.e si no es "v" sino "vt", entonces el resto tiene que tener dos flotantes, así que creamos un glm::vec2 y lo añadimos al vector.
 
-same thing for the normals :
+lo mismo para las normales :
 {% highlight cpp linenos %}
 }else if ( strcmp( lineHeader, "vn" ) == 0 ){
     glm::vec3 normal;
     fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z );
     temp_normals.push_back(normal);
 {% endhighlight %}
-And now the "f", which is more difficult :
+Y ahora la "f", lo cual es más difícil :
 {% highlight cpp linenos %}
 }else if ( strcmp( lineHeader, "f" ) == 0 ){
     std::string vertex1, vertex2, vertex3;
@@ -185,55 +186,55 @@ And now the "f", which is more difficult :
     normalIndices.push_back(normalIndex[1]);
     normalIndices.push_back(normalIndex[2]);
 {% endhighlight %}
-This code is in fact very similar to the previous one, except that there is more data to read.
+Este código es bastante similar al anterior, excepto que hay más información para leer.
 
-##Processing the data
+##Procesando la información
 
-So what we did there was simply to change the "shape" of the data. We had a string, we now have a set of std::vectors. But it's not enough, we have to put this into a form that OpenGL likes. Namely, removing the indexes and have plain glm::vec3 instead. This operation is called indexing.
+Lo que hicimos fue, simplemente, cambiar la forma general de la información. Teníamos un string y ahora tenemos un conjunto de std::vectors. No obstante, esto no es suficiente, y tenemos que organizarla de tal manera que a OpenGl le guste. Es decir, removeremos los índices y tendremos objetos glm::vec3 simplemente. Esta operación es lo que se denomina "indexar".
 
-We go through each vertex ( each v/vt/vn ) of each triangle ( each line with a "f" ) :
+Vamos a través de cada vértice ( cada v/vt/vn ) de cada tríangulo ( cada línea marcada con una "f" ) :
 {% highlight cpp linenos %}
-    // For each vertex of each triangle
+    // Para cada vértice de cada triángulo
     for( unsigned int i=0; i<vertexIndices.size(); i++ ){
 
 {% endhighlight %}
-the index to the vertex' position is vertexIndices[i] :
+El índice a la posición del vértice es vertexIndices[i] :
 {% highlight cpp linenos %}
 unsigned int vertexIndex = vertexIndices[i];
 {% endhighlight %}
-so the position is temp_vertices[ vertexIndex-1 ] (there is a -1 because C++ indexing starts at 0 and OBJ indexing starts at 1, remember ?) :
+así que la posición es temp_vertices[ vertexIndex-1 ] (aquí tenemos que poner el -1 porque en C++ el indexamiento comienza en 0 y para los OBJ comienza en 1, como lo mencioné anteriormente) :
 {% highlight cpp linenos %}
 glm::vec3 vertex = temp_vertices[ vertexIndex-1 ];
 {% endhighlight %}
-And this makes the position of our new vertex
+Y con esto tenemos la posición de nuestro nuevo vértice
 {% highlight cpp linenos %}
 out_vertices.push_back(vertex);
 {% endhighlight %}
-The same is applied for UVs and normals, and we're done !
+Aplicamos lo mismo para las coordenadas UV y las normales y hemos finalizado!
 
-#Using the loaded data
+#Usando la información cargada
 
-Once we've got this, almost nothing changes. Instead of declaring our usual static const GLfloat g_vertex_buffer_data[] = {...}, you declare a std::vector vertices instead (same thing for UVS and normals). You call loadOBJ with the right parameters :
+Una vez tenemos esto, casi nada cambia. En lugar de declarar nuestro usual static const GLfloat g_vertex_buffer_data[] = {...}, declararemos en su lugar un std::vector vertices (y lo mismo haremos para las coordenadas UV y las normales). Llamamos a la función loadOBJ con los parámetros neesarios :
 {% highlight cpp linenos %}
 // Read our .obj file
 std::vector< glm::vec3 > vertices;
 std::vector< glm::vec2 > uvs;
-std::vector< glm::vec3 > normals; // Won't be used at the moment.
+std::vector< glm::vec3 > normals; // No las usaremos por ahora
 bool res = loadOBJ("cube.obj", vertices, uvs, normals);
 {% endhighlight %}
-and give your vectors to OpenGL instead of your arrays :
+Y le daremos nuestros vectores a OpenGL en lugar de nuestros arreglos :
 {% highlight cpp linenos %}
 glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
 {% endhighlight %}
-And that's it !
+Y eso es todo !
 
-#Results
+#Resultados
 
-Sorry for the lame texture, I'm NOT a good artist :( Any contribution welcome !
+Me disculpo por la textura sosa, no soy un buen artísta. Sin embargo, cualquier contribución será más que bienvenida.
 
 ![]({{site.baseurl}}/assets/images/tuto-7-model-loading/ModelLoading.png)
 
 
-#Other formats/loaders
+#Otros formatos/funciones de carga
 
-This tiny loader should give you enough to get started, but won't want to use this in real life. Have a look at our [Useful Links & Tools](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) page for some tools you can use. Note, however, that you'd better wait for tutorial 9 before *actually *trying to use them.
+Esta pequeña función de carga es suficiente para comenzar, pero en realidad no es lo que querríamos utilizar en la vida real. Aquí hay algunos links a [herramientas útiles](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) con herramientas que podemos usar. Sin embargo, lo mejor sería esperar hasta el tutorial 9 para que las usemos de verdad.
