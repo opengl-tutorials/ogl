@@ -160,7 +160,7 @@ layout(location = 1) in vec3 vertexColor;
 
 In our case, we won't do anything fancy with it in the vertex shader. We will simply forward it to the fragment shader :
 
-``` glsl vs
+{% highlight glsl linenos cssclass=highlightglslvs %}
 // Output data ; will be interpolated for each fragment.
 out vec3 fragmentColor;
 
@@ -172,7 +172,7 @@ void main(){
     // to produce the color of each fragment
     fragmentColor = vertexColor;
 }
-```
+{% endhighlight %}
 
 In the fragment shader, you declare fragmentColor again :
 
@@ -242,6 +242,7 @@ And this is enough to solve all your problems.
 # Exercises
 
 * Draw the cube AND the triangle, at different locations. You will need to generate 2 MVP matrices, to make 2 draw calls in the main loop, but only 1 shader is required.
+
 
 * Generate the color values yourself. Some ideas : At random, so that colors change at each run; Depending on the position of the vertex; a mix of the two; Some other creative idea :) In case you don't know C, here's the syntax :
 
