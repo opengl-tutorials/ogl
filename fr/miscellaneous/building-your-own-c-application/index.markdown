@@ -37,6 +37,7 @@ void main(){
 Il ouvre simplement le fichier MyHeader.h et copie-colle son contenu dans le fichier MyCode.c.
 
 ```
+
 // Begin of MyCode.c
 // Begin of MyHeader.h
 #ifndef MYHEADER_H
@@ -63,6 +64,7 @@ Par exemple, voici le fichier main.cpp du sixième tutoriel, complètement prét
 ##Compilation
 
 Le compilateur traduit le code C++ en une représentation que le CPU peut comprendre directement. Par exemple, le code suivant :
+
 ``` cpp
 int i=3;
 int j=4*i+2;
@@ -71,6 +73,7 @@ int j=4*i+2;
 sera traduit en ces opcodes x86 :
 
 ```
+
 mov         dword ptr [i],3
 mov         eax,dword ptr [i]
 lea         ecx,[eax*4+2]
@@ -168,6 +171,7 @@ Utilise les options par défaut.
 Utilise l'interface, ou ajoute un fichier dans le .pro :
 
 ```
+
 SOURCES += main.cpp \
            other.cpp \
            foo.cpp
@@ -178,6 +182,7 @@ SOURCES += main.cpp \
 Dans le fichier .pro :
 
 ```
+
 INCLUDEPATH += [ton chemin] \ [ton autre chemin]
 ```
 
@@ -219,6 +224,7 @@ CMake créera les projets et cela pour pratiquement tous les IDE : Visual, Qt Cr
 Crée un fichier CMakeLists.txt et écris ceci (adapte au besoin) :
 
 ```
+
 cmake_minimum_required (VERSION 2.6)
 project (your_project_name)
 
@@ -240,6 +246,7 @@ Ajoute simplement une ligne dans la commande *add_executable*.
 ###Ajouter des répertoires d'inclusion
 
 ```
+
 include_directories(
     external/AntTweakBar-1.15/include/
     external/glfw-2.7.2/include/
@@ -252,6 +259,7 @@ include_directories(
 ###Lier une bibliothèque
 
 ```
+
 set(ALL_LIBS
     ${OPENGL_LIBRARY}
     GLFW_272
@@ -281,6 +289,7 @@ Cela peut être intéressant de compiler un petit projet « à la main » afin d
 Compile chaque fichier .cpp séparément :
 
 ```
+
 g++ -c main.cpp
 g++ -c tools.cpp
 ```
@@ -288,12 +297,14 @@ g++ -c tools.cpp
 Comme indiqué précédemment, tu vas obtenir des fichiers main.o et tools.o. Link-les :
 
 ```
+
 g++ main.o tools.o
 ```
 
 un fichier *a.out* apparaît ; c'est ton exécutable. Exécute-le :
 
 ```
+
 ./a.out
 ```
 
@@ -395,6 +406,7 @@ De plus, c'est une bonne chose d'utiliser des chemins relatifs (./external/glew/
 Par exemple, voici ce que contiennent les fichiers de CMake de ces tutoriels :
 
 ```
+
 external/glfw-2.7.2/include
 external/glm-0.9.1
 external/glew-1.5.8/include
@@ -409,6 +421,7 @@ Répéte ça jusqu'à ce que tous les fichiers soient trouvés.
 Ça signifie que la bibliothèque n'est pas installée. Si tu es chanceux, la bibliothèque est connue et tu n'a qu'à l'installer. C'est le cas pour GLFW, GLEW et GLM :
 
 ```
+
 sudo apt-get install libglfw-dev libglm-dev libglew1.6-dev
 ```
 
@@ -425,6 +438,7 @@ Les fonctions GLFW se trouvent dans une bibliothèque externe. Tu dois indiquer 
 Par **exemple**, voici ce que le projet Visual Studio utilise. Les noms sont quelque peu inhabituels, car c'est une compilation personnalisée. De plus, GLM ne nécessite pas d'être compilée ou liée, donc elle n'est pas là.
 
 ```
+
 external\Debug\GLFW_272.lib
 external\Debug\GLEW_158.lib
 ```
@@ -432,6 +446,7 @@ external\Debug\GLEW_158.lib
 Si tu télécharges ces bibliothèques à partir de SourceForge ([GLFW](http://www.glfw.org/download.html), [GLEW](http://glew.sourceforge.net/index.html)) et les compile toi-même, tu devras spécifier le chemin adéquat. Par exemple :
 
 ```
+
 C:\Where\You\Put\The\Library\glfw.lib
 C:\Where\You\Put\The\Other\Library\glew32.lib
 ```
@@ -453,9 +468,10 @@ Même réponse que pour Visual Studio ci-dessus.
 Ça signifie que la bibliothèque (dans ce cas, glew) a été compilée comme bibliothèque statique, mais tu essayes de l'utiliser comme bibliothèque dynamique. Ajoute simplement la définition pour le préprocesseur suivante dans les options du compilateur (pour ton propre projet, et non celui de glew) :
 
 ```
+
 GLEW_STATIC
 ```
- 
+
 ###J'ai quelques problèmes étranges avec GLFW
 
 Peut-être, car GLFW a été compilée comme bibliothèque dynamique, mais tu essayes de l'utiliser comme bibliothèque statique ?
@@ -463,6 +479,7 @@ Peut-être, car GLFW a été compilée comme bibliothèque dynamique, mais tu es
 Essaye d'ajouter la définition pour le préprocesseur suivante :
 
 ```
+
 GLFW_DLL
 ```
 
@@ -535,6 +552,7 @@ if ( fopen("test.txt", "r" ) == NULL ){
     printf("I'm probably running my program from a wrong folder");
 }
 ```
+
 <span style="color: #ff0000;">UTILISE LE DÉBOGUEUR !!!!</span>
 Sincèrement ! Ne débogue pas avec printf() ; utilise un bon EDI. [http://www.dotnetperls.com/debugging](http://www.dotnetperls.com/debugging) est pour le C# mais c'est aussi valide pour le C++. Cela peut être différent pour XCode ou Qt Creator, mais les concepts restent exactement les mêmes.
 

@@ -22,6 +22,7 @@ language: jp
 この方法はとっても簡単です。
 
 画面上でのあなたの位置を計算し、この位置に2Dテキストを表示します。（チュートリアル11を見てください。）
+
 ``` cpp
 // ここでやってることはすべてチュートリアル3で説明済みです。新しいことはありません。
 glm::vec4 BillboardPos_worldspace(x,y,z, 1.0f);
@@ -63,12 +64,13 @@ if (BillboardPos_screenspace.z < 0.0f){
 
 これは次のように簡単に表現できます。
 ```
+
 CameraRight_worldspace = {ViewMatrix[0][0], ViewMatrix[1][0], ViewMatrix[2][0]}
 CameraUp_worldspace = {ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]}
 ```
- 
 
 一度これを得れば、最終的な頂点位置を計算するのはとても簡単です。
+
 ``` glsl vs
 vec3 vertexPosition_worldspace =
     particleCenter_wordspace
@@ -87,6 +89,7 @@ vec3 vertexPosition_worldspace =
  
 
 squareVerticesは次のように作ります。
+
 ``` cpp
 // VBOは粒子の4つのベクトルを保持しています。
  static const GLfloat g_vertex_buffer_data[] = {
@@ -96,13 +99,13 @@ squareVerticesは次のように作ります。
  0.5f, 0.5f, 0.0f,
  };
 ```
- 
 
 #解決策3：固定サイズでの3Dでの方法
 
 上で見たように、ビルボードのサイズはカメラとの距離に応じて変わります。こういう感じにしたい場合もあるでしょうが、ライフゲージのように固定サイズにしたい場合もあるでしょう。
 
 画面空間で中心とコーナーの配置を固定したいので次のようにします。画面空間での中心位置とそのオフセットを計算します。
+
 ``` cpp
 vertexPosition_worldspace = particleCenter_wordspace;
 // 粒子の中心の座標を空間座標で得る。
@@ -113,6 +116,7 @@ gl_Position /= gl_Position.w;
 // 頂点を直接画面空間へ移動します。CameraUp/Right_worlspaceはここではいりません。
 gl_Position.xy += squareVertices.xy * vec2(0.2, 0.05);
 ```
+
 描画パイプラインのこのステージは正規化デバイス座標にあることを覚えて置いてください。
 つまり各軸は-1と1の間にあり、ピクセルではありません。
 

@@ -17,11 +17,13 @@ Dans ce tutoriel, on va apprendre à afficher un texte en 2D par-dessus le conte
 #L'API
 
 On va implémenter cette simple interface (dans *common/text2D.h*) :
+
 ``` cpp
 void initText2D(const char * texturePath);
 void printText2D(const char * text, int x, int y, int size);
 void cleanupText2D();
 ```
+
 Afin que le code fonctionne, que ce soit en 640 x 480 ou 1080p, x et y seront des coordonnées dans l'espace [0-800][0-600]. Le vertex shader adaptera les coordonnées pour correspondre à la taille de l'écran.
 
 Regarde *common/text2D.cpp* pour voir l'implémentation complète.
@@ -39,11 +41,14 @@ Le but de *printText2D* sera donc de générer des rectangles avec les positions
 #L'affichage
 
 On doit remplir ces tampons :
+
 ``` cpp
 std::vector<glm::vec2> vertices;
 std::vector<glm::vec2> UVs;
 ```
+
 Pour chaque caractère, on calcule les coordonnées des quatre sommets définissant le rectangle puis on ajoute les deux triangles qui le compose :
+
 ``` cpp
 for ( unsigned int i=0 ; i<length ; i++ ){
 
@@ -60,7 +65,9 @@ for ( unsigned int i=0 ; i<length ; i++ ){
     vertices.push_back(vertex_up_right);
     vertices.push_back(vertex_down_left);
 ```
+
 Maintenant les coordonnées UV. La coordonnée du coin supérieur gauche est calculée comme suit :
+
 ``` cpp
     char character = text[i];
     float uv_x = (character%16)/16.0f;
@@ -76,6 +83,7 @@ Cela fonctionne (en quelque sorte - voyez ci-dessous) car le [code ASCII](http:/
 Les deux sont divisés par 16.0 pour rentrer dans l'échelle [0.0 - 1.0] nécessaire aux textures OpenGL.
 
 Et maintenant, on doit faire une chose très proche de ce que nous faisions pour les sommets, mais pour les coordonnées de texture :
+
 ``` cpp
     glm::vec2 uv_up_left    = glm::vec2( uv_x           , 1.0f - uv_y );
     glm::vec2 uv_up_right   = glm::vec2( uv_x+1.0f/16.0f, 1.0f - uv_y );
@@ -109,7 +117,9 @@ void main(){
     UV = vertexUV;
 }
 ```
+
 Le fragment shader ne fait que très peu de choses aussi :
+
 ``` glsl fs
 void main(){
     color = texture( myTextureSampler, UV );

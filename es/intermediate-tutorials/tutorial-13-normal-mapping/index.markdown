@@ -23,9 +23,11 @@ A "normal texture" looks like this :
 
 
 In each RGB texel is encoded a XYZ vector : each colour component is between 0 and 1, and each vector component is between -1 and 1, so this simple mapping goes from the texel to the normal :
+
 ``` c
 normal = (2*color)-1 // on each component
 ```
+
 The texture has a general blue tone because overall, the normal is towards the "outside of the surface"; as usual, X is right and Y is up.
 
 This texture is mapped just like the diffuse one; The big problem is how to convert our normal, which is expressed in the space each individual triangle ( tangent space, also called image space), in model space (since this is what is used in our shading equation).
@@ -55,10 +57,12 @@ Since we need 3 vectors to define a basis, we must also compute the bitangent B 
  
 
 Here is the algorithm : if we note deltaPos1 and deltaPos2 two edges of our triangle, and deltaUV1 and deltaUV2 the corresponding differences in UVs, we can express our problem with the following equation :
+
 ``` c
 deltaPos1 = deltaUV1.x * T + deltaUV1.y * B
 deltaPos2 = deltaUV2.x * T + deltaUV2.y * B
 ```
+
 Just solve this system for T and B, and you have your vectors ! (See code below)
 
 Once we have our T, B, N vectors, we also have this nice matrix which enables us to go from Tangent Space to Model Space :
@@ -69,9 +73,11 @@ Once we have our T, B, N vectors, we also have this nice matrix which enables us
 With this TBN matrix, we can transform normals (extracted from the texture) into model space. However, it's usually done the other way around : transform everything from Model Space to Tangent Space, and keep the extracted normal as-is. All computations are done in Tangent Space, which doesn't changes anything.
 
 Do have this inverse transformation, we simply have to take the matrix inverse, which in this case (an orthogonal matrix, i.e each vector is perpendicular to the others. See "going further" below) is also its transpose, much cheaper to compute :
+
 ``` c
 invTBN = transpose(TBN)
 ```
+
 , i.e. :
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/transposeTBN.png)
 
@@ -82,6 +88,7 @@ invTBN = transpose(TBN)
 ##Computing the tangents and bitangents
 
 Since we need our tangents and bitangents on top of our normals, we have to compute them for the whole mesh. We'll do this in a separate function :
+
 ``` cpp
 void computeTangentBasis(
     // inputs
@@ -93,7 +100,9 @@ void computeTangentBasis(
     std::vector<glm::vec3> & bitangents
 ){
 ```
+
 For each triangle, we compute the edge (deltaPos) and the deltaUV
+
 ``` cpp
     for ( int i=0; i<vertices.size(); i+=3){
 
@@ -115,13 +124,17 @@ For each triangle, we compute the edge (deltaPos) and the deltaUV
         glm::vec2 deltaUV1 = uv1-uv0;
         glm::vec2 deltaUV2 = uv2-uv0;
 ```
+
 We can now use our formula to compute the tangent and the bitangent :
+
 ``` cpp
         float r = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV1.y * deltaUV2.x);
         glm::vec3 tangent = (deltaPos1 * deltaUV2.y   - deltaPos2 * deltaUV1.y)*r;
         glm::vec3 bitangent = (deltaPos2 * deltaUV1.x   - deltaPos1 * deltaUV2.x)*r;
 ```
+
 Finally, we fill the *tangents *and *bitangents *buffers. Remember, these buffers are not indexed yet, so each vertex has its own copy.
+
 ``` cpp
         // Set the same tangent for all three vertices of the triangle.
         // They will be merged later, in vboindexer.cpp
@@ -142,6 +155,7 @@ Finally, we fill the *tangents *and *bitangents *buffers. Remember, these buffer
 Indexing our VBO is very similar to what we used to do, but there is a subtle difference.
 
 If we find a similar vertex (same position, same normal, same texture coordinates), we don't want to use its tangent and binormal too ; on the contrary, we want to average them. So let's modify our old code a bit :
+
 ``` cpp
         // Try to find a similar vertex in out_XXXX
         unsigned int index;
@@ -158,6 +172,7 @@ If we find a similar vertex (same position, same normal, same texture coordinate
             [...]
         }
 ```
+
 Note that we don't normalize anything here. This is actually handy, because this way, small triangles, which have smaller tangent and bitangent vectors, will have a weaker effect on the final vectors than big triangles (which contribute more to the final shape).
 
 #The shader
@@ -166,6 +181,7 @@ Note that we don't normalize anything here. This is actually handy, because this
 ##Additional buffers & uniforms
 
 We need two new buffers : one for the tangents, and one for the bitangents :
+
 ``` cpp
     GLuint tangentbuffer;
     glGenBuffers(1, &tangentbuffer);
@@ -177,18 +193,24 @@ We need two new buffers : one for the tangents, and one for the bitangents :
     glBindBuffer(GL_ARRAY_BUFFER, bitangentbuffer);
     glBufferData(GL_ARRAY_BUFFER, indexed_bitangents.size() * sizeof(glm::vec3), &indexed_bitangents[0], GL_STATIC_DRAW);
 ```
+
 We also need a new uniform for our new normal texture :
+
 ``` cpp
     [...]
     GLuint NormalTexture = loadTGA_glfw("normal.tga");
     [...]
     GLuint NormalTextureID  = glGetUniformLocation(programID, "NormalTextureSampler");
 ```
+
 And one for the 3x3 ModelView matrix. This is strictly speaking not necessary, but it's easier ; more about this later. We just need the 3x3 upper-left part because we will multiply directions, so we can drop the translation part.
+
 ``` cpp
     GLuint ModelView3x3MatrixID = glGetUniformLocation(programID, "MV3x3");
 ```
+
 So the full drawing code becomes :
+
 ``` cpp
         // Clear the screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -312,21 +334,26 @@ So the full drawing code becomes :
 ##Vertex shader
 
 As said before, we'll do everything in camera space, because it's simpler to get the fragment's position in this space. This is why we multiply our T,B,N vectors with the ModelView matrix.
+
 ``` glsl fs
     vertexNormal_cameraspace = MV3x3 * normalize(vertexNormal_modelspace);
     vertexTangent_cameraspace = MV3x3 * normalize(vertexTangent_modelspace);
     vertexBitangent_cameraspace = MV3x3 * normalize(vertexBitangent_modelspace);
 ```
+
 These three vector define a the TBN matrix, which is constructed this way :
 ```
+
     mat3 TBN = transpose(mat3(
         vertexTangent_cameraspace,
         vertexBitangent_cameraspace,
         vertexNormal_cameraspace
     )); // You can use dot products instead of building this matrix and transposing it. See References for details.
 ```
+
 This matrix goes from camera space to tangent space (The same matrix, but with XXX_modelspace instead, would go from model space to tangent space). We can use it to compute the light direction and the eye direction, in tangent space :
 ```
+
     LightDirection_tangentspace = TBN * LightDirection_cameraspace;
     EyeDirection_tangentspace =  TBN * EyeDirection_cameraspace;
 ```
@@ -334,11 +361,11 @@ This matrix goes from camera space to tangent space (The same matrix, but with X
 ##Fragment shader
 
 Our normal, in tangent space, is really straightforward to get : it's our texture :
+
 ``` glsl fs
     // Local normal, in tangent space
     vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, UV ).rgb*2.0 - 1.0);
 ```
- 
 
 So we've got everything we need now. Diffuse lighting uses *clamp( dot( n,l ), 0,1 )*, with n and l expressed in tangent space (it doesn't matter in which space you make your dot and cross products; the important thing is that n and l are both expressed in the same space). Specular lighting uses *clamp( dot( E,R ), 0,1 )*, again with E and R expressed in tangent space. Yay !
 
@@ -358,9 +385,11 @@ Here is our result so far. You can notice that :
 ##Orthogonalization
 
 In our vertex shader we took the transpose instead of the inverse because it's faster. But it only works if the space that the matrix represents is orthogonal, which is not yet the case. Luckily, this is very easy to fix : we just have to make the tangent perpendicular to the normal at he end of computeTangentBasis() :
+
 ``` glsl vs
 t = glm::normalize(t - n * glm::dot(n, t));
 ```
+
 This formula may be hard to grasp, so a little schema might help :
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/gramshmidt.png)
@@ -379,11 +408,13 @@ To check whether it must be inverted or not, the check is simple : TBN must form
 In mathematics, "Vector A has the same orientation as Vector B" translates as dot(A,B)>0, so we need to check if dot( cross(n,t) , b ) > 0.
 
 If it's false, just invert t :
+
 ``` c
 if (glm::dot(glm::cross(n, t), b) < 0.0f){
      t = t * -1.0f;
  }
 ```
+
 This is also done for each vertex at the end of computeTangentBasis().
 
 ##Specular texture
@@ -412,10 +443,13 @@ However, it also happens to be really handy for debugging :
 Here we visualize our tangent space with lines drawn in immediate mode.
 
 For this, you need to abandon the 3.3 core profile :
+
 ``` cpp
 glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 ```
+
 then give our matrices to OpenGL's old-school pipeline (you can write another shader too, but it's simpler this way, and you're hacking anyway) :
+
 ``` cpp
 glMatrixMode(GL_PROJECTION);
 glLoadMatrixf((const GLfloat*)&ProjectionMatrix[0]);
@@ -423,11 +457,15 @@ glMatrixMode(GL_MODELVIEW);
 glm::mat4 MV = ViewMatrix * ModelMatrix;
 glLoadMatrixf((const GLfloat*)&MV[0]);
 ```
+
 Disable shaders :
+
 ``` cpp
 glUseProgram(0);
 ```
+
 And draw your lines (in this case, normals, normalized and multiplied by 0.1, and applied at the correct vertex) :
+
 ``` cpp
 glColor3f(0,0,1);
 glBegin(GL_LINES);
@@ -440,14 +478,17 @@ for (int i=0; i<indices.size(); i++){
 }
 glEnd();
 ```
+
 Remember : don't use immediate mode in real world ! Only for debugging ! And don't forget to re-enable the core profile afterwards, it will make sure that you don't do such things.
 
 ##Debugging with colors
 
 When debugging, it can be useful to visualize the value of a vector. The easiest way to do this is to write it on the framebuffer instead of the actual colour. For instance, let's visualize LightDirection_tangentspace :
+
 ``` glsl fs
 color.xyz = LightDirection_tangentspace;
 ```
+
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/colordebugging.png)
 
 

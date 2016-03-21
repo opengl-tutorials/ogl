@@ -58,10 +58,11 @@ Dans l'espace caméra, le vecteur haut de celle-ci est (0, 1, 0). Pour l'obtenir
 Une façon plus simple de l'exprimer en mathématique est :
 
 ```
+
 CameraRight_worldspace = {ViewMatrix[0][0], ViewMatrix[1][0], ViewMatrix[2][0]}
 CameraUp_worldspace = {ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]}
 ```
- 
+
 Une fois que l'on a ça, il est très simple de calculer la position finale du sommet :
 
 ``` glsl vs
@@ -90,7 +91,7 @@ Pour information, voici comment squareVertices est définie :
  0.5f, 0.5f, 0.0f,
  };
 ```
- 
+
 #Solution n°3 : la méthode 3D avec taille fixe
 
 Comme tu peux le voir ci-dessus, la taille du billboard change suivant la distance de la caméra. Dans certains cas, cela est le résultat attendu, mais dans d'autres, tel que les barres de vies, tu veux probablement une taille fixe à la place.

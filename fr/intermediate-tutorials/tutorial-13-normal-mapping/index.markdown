@@ -25,6 +25,7 @@ Dans chaque texel RGB est encodé un vecteur XYZ : chacune des composantes d'une
 ``` c
 normal = (2*color)-1 // on each component
 ```
+
 La texture a une teinte bleue car après tout, la normale pointe vers « l'extérieur de la surface ». Comme toujours X va vers la droite ( dans le plan de la texture), Y vers le haut (toujours dans le plan de la texture), et donc, avec la règle de la main droite, Z pointe vers l'extérieur du plan de la texture.
 
 Cette texture est appliquée exactement comme la texture de diffusion ; le gros problème est la conversion de notre normale, qui est exprimée dans l'espace de chaque triangle (espace tangent, aussi appelé espace de l'image), vers l'espace modèle (car c'est ce que l'on utilise dans notre équation d'ombrage).
@@ -53,6 +54,7 @@ Voici l'algorithme : si on appelle deltaPos1 et deltaPos2 deux côtés de notre 
 deltaPos1 = deltaUV1.x * T + deltaUV1.y * B
 deltaPos2 = deltaUV2.x * T + deltaUV2.y * B
 ```
+
 Résoud les équations de ce système pour T et B et tu obtiens tes vecteurs ! Voir le code ci-dessous.
 
 Une fois que l'on a les vecteurs T, B et N, on obtient aussi cette jolie matrice qui nous permet de passer de l'espace tangent à l'espace modèle :
@@ -332,6 +334,7 @@ Comme dit précédemment, on va tout faire dans l'espace de la caméra, car il e
 Ces trois vecteurs définissent la matrice TBN, qui est créée de cette façon :
 
 ```
+
     mat3 TBN = transpose(mat3(
         vertexTangent_cameraspace,
         vertexBitangent_cameraspace,
@@ -342,6 +345,7 @@ Ces trois vecteurs définissent la matrice TBN, qui est créée de cette façon 
 Cette matrice passe de l'espace de la caméra à l'espace tangent (la même matrice, mais avec XXX_modelspace à la place, permettrai de passer de l'espace modèle à l'espace tangent). On peut l'utiliser pour calculer la direction de la lumière et la direction de l'œil, dans l'espace tangent :
 
 ```
+
     LightDirection_tangentspace = TBN * LightDirection_cameraspace;
     EyeDirection_tangentspace =  TBN * EyeDirection_cameraspace;
 ```
@@ -470,6 +474,7 @@ Lors du débogage, il peut être utile de visualiser la valeur d'un vecteur. La 
 ``` glsl fs
 color.xyz = LightDirection_tangentspace;
 ```
+
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/colordebugging.png)
 
 Cela signifie que :

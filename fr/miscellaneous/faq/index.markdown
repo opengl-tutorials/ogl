@@ -60,6 +60,7 @@ Lis le [premier tutoriel]({{site.baseurl}}/fr/beginners-tutorials/tutorial-1-ope
 Si tu as créé un programme à partir de rien, assure-toi d'avoir créé un VAO au moment de l'initialisation :
 
 ```
+
 GLuint VertexArrayID;
  glGenVertexArrays(1, &VertexArrayID);
  glBindVertexArray(VertexArrayID);

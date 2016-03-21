@@ -80,7 +80,7 @@ glBindBuffer(GL_ARRAY_BUFFER, particles_color_buffer);
 // Initialize with empty (NULL) buffer : it will be updated later, each frame.
 glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW);
 ```
- 
+
 Ce qui est habituel. Ils sont mis à jour de cette façon :
 
 ``` cpp
@@ -97,9 +97,10 @@ glBindBuffer(GL_ARRAY_BUFFER, particles_color_buffer);
 glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
 glBufferSubData(GL_ARRAY_BUFFER, 0, ParticlesCount * sizeof(GLubyte) * 4, g_particule_color_data);
 ```
- 
+
 Ce qui est aussi habituel. Ils sont liés avant le rendu de cette façon :
  
+
 ``` cpp
 // 1rst attribute buffer : vertices
 glEnableVertexAttribArray(0);
@@ -304,6 +305,7 @@ void SortParticles(){
 Maintenant, *std::sort* nécessite une fonction qui peut indiquer si une particule doit être placée avant ou après une autre particule dans le conteneur. Ça peut être fait avec Particle::operator< :
 
 ```
+
 // CPU representation of a particle
 struct Particle{
 

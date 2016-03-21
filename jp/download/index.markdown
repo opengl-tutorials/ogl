@@ -25,6 +25,7 @@ language: jp
 
 このサイト上のソースコード(ただしサードパーティライブラリは除きます)はWTFPL Public Licenceです。
 ```
+
            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
                    Version 2, December 2004
 
@@ -40,4 +41,5 @@ as the name is changed.
 
  0. You just DO WHAT THE FUCK YOU WANT TO.
 ```
+
 Creative-Common licenseの下でチュートリアル上のすべてのものは利用可能です。: CC-BY-NC-NDについては[ここ](http://creativecommons.org/licenses/by-nc-nd/3.0/fr/deed.en)を見てください。

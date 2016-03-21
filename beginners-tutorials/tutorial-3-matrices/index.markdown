@@ -166,7 +166,6 @@ So now we know how to rotate, translate, and scale our vectors. It would be grea
 TransformedVector = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalVector;
 ```
 
-
 **!!! BEWARE !!!** This lines actually performs the scaling FIRST, and THEN the rotation, and THEN the translation. This is how matrix multiplication works.
 
 Writing the operations in another order wouldn't produce the same result. Try it yourself :
@@ -376,6 +375,7 @@ void main(){
 
 }
 ```
+
 {: .highlightglslvs }
 
 * Done ! Here is the same triangle as in tutorial 2, still at the origin (0,0,0), but viewed in perspective from point (4,3,3), heads up (0,1,0), with a 45° field of view.

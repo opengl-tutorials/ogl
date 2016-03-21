@@ -42,6 +42,7 @@ La normale d'un plan est un vecteur de longueur 1 perpendiculaire à ce plan.
 La normale d'un triangle est un vecteur de longueur 1 qui est perpendiculaire à ce triangle. Il est facilement calculé en utilisant le produit vectoriel de deux de ses côtés (le produit vectoriel de a et b produit un vecteur qui est perpendiculaire aux deux vecteurs a et b, tu te souviens ?), normalisé : sa longueur est ramenée à 1. En pseudo code :
 
 ```
+
 triangle ( v1, v2, v3 )
 edge1 = v2-v1
 edge2 = v3-v1
@@ -55,6 +56,7 @@ Ne mélange pas la normale et *normalize()*. normalize() divise un vecteur (n'im
 Par extension, on appelle la normale d'un sommet la combinaison des normales des triangles alentour. Cela est pratique car dans un vertex shader, on gère des sommets, donc c'est mieux d'avoir l'information sur le sommet. Et en aucun cas, on ne peut avoir d'informations sur les triangles en OpenGL. En pseudo code :
 
 ```
+
 vertex v1, v2, v3, ....
 triangle tr1, tr2, tr3 // all share vertex v1
 v1.normal = normalize( tr1.normal + tr2.normal + tr3.normal )
@@ -70,7 +72,9 @@ GLuint normalbuffer;
  glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
  glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
 ```
+
 et
+
 ``` cpp
  // 3rd attribute buffer : normals
  glEnableVertexAttribArray(2);
@@ -84,6 +88,7 @@ et
      (void*)0                          // array buffer offset
  );
 ```
+
 et c'est suffisant pour démarrer.
 
 #La partie diffuse
@@ -113,6 +118,7 @@ float cosTheta = dot( n,l );
 
 color = LightColor * cosTheta;
 ```
+
 Dans ce code, *n* est la normale de la surface et *l* est le vecteur unitaire qui va de la surface vers la lumière (et non le contraire, même si ce n'est pas intuitif, cela rend les mathématiques plus simples).
 
 ##Méfie toi du signe
@@ -224,9 +230,11 @@ Ca serai affreusement coûteux à calculer.
 Donc, l'astuce habituelle est de simplement imiter cette lumière. En fait, le modèle 3D va *émettre* de la lumière afin de ne pas apparaître complètement noir.
 
 Cela peut être fait de cette façon :
+
 ``` glsl fs
 vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
 ```
+
 ``` glsl fs
 color =
  // Ambient : simulates indirect lighting

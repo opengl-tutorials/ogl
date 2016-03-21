@@ -19,6 +19,7 @@ In this tutorial, we will use the Bullet Physics Engine, but the concepts are ex
 # Bullet integration
 
 Lots of tutorials explain how to integrate Bullet; in particular, the [Bullet's wiki](http://bulletphysics.org/mediawiki-1.5.8/index.php/Main_Page) is very well done.
+
 ``` cpp
 // Initialize Bullet. This strictly follows http://bulletphysics.org/mediawiki-1.5.8/index.php/Hello_World, 
 // even though we won't use most of this stuff.
@@ -37,16 +38,20 @@ btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintS
 btDiscreteDynamicsWorld* dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
 dynamicsWorld->setGravity(btVector3(0,-9.81f,0));
 ```
+
 Each object must have a *Collision Shape*. While this collision shape can be the mesh itself, it's often a bad idea for performance. Instead, one usually use much simpler shapes as boxes, spheres or capsules. Here are a few collision shapes. From left to right : sphere, cube, convex hull of the mesh, original mesh. Spheres are less precise than the full mesh, but much much faster to test.
 
 ![]({{site.baseurl}}/assets/images/tuto-picking-physics-library/CollisionShapes.png)
 
 
 In this example, all meshes will use the same box :
+
 ``` cpp
 btCollisionShape* boxCollisionShape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
 ```
+
 Physics engines don't know anything about OpenGL; and in fact, all of them can run without any 3D visualization at all. So you can't directly give Bullet your VBO. You have to add a *Rigid Body* in the simulation instead.
+
 ``` cpp
 btDefaultMotionState* motionstate = new btDefaultMotionState(btTransform(
 	btQuaternion(orientations[i].x, orientations[i].y, orientations[i].z, orientations[i].w), 
@@ -63,9 +68,11 @@ btRigidBody *rigidBody = new btRigidBody(rigidBodyCI);
 
 dynamicsWorld->addRigidBody(rigidBody);
 ```
+
 Notice that the Rigid Body use the Collision Shape to determine its shape.
 
 We also keep track of this rigid body, but as the comment says, a real engine would somehow have a MyGameObject class with the position, the orientation, the OpenGL mesh, and a pointer to the Rigid Body.
+
 ``` cpp
 rigidbodies.push_back(rigidBody);
 
@@ -74,6 +81,7 @@ rigidbodies.push_back(rigidBody);
 // A real program would probably pass a "MyGameObjectPointer" instead.
 rigidBody->setUserPointer((void*)i);
 ```
+
 In other words : please don't use the above code in real life ! It's just for demo purpose.
 
 # Raycasting
@@ -84,6 +92,7 @@ In other words : please don't use the above code in real life ! It's just for de
 First, we need to find a ray which starts at the camera and goes "through the mouse". This is done in the *ScreenPosToWorldRay()* function.
 
 First, we find the ray's start and end position in Normalized Device Coordinates. We do it in this space because it's very easy :
+
 ``` cpp
 // The ray Start and End positions, in Normalized Device Coordinates (Have you read Tutorial 4 ?)
 glm::vec4 lRayStart_NDC(
@@ -99,6 +108,7 @@ glm::vec4 lRayEnd_NDC(
 	1.0f
 );
 ```
+
 To understand this code, let's have a look at this picture from Tutorial 4 again :
 
 ![]({{site.baseurl}}/assets/images/tuto-picking-physics-library/homogeneous.png)
@@ -107,6 +117,7 @@ To understand this code, let's have a look at this picture from Tutorial 4 again
 NDC is a 2*2*2 cube centered on the origin, so in this space, the ray going "trough the mouse" is just a straight line, perpendicular to the near plane! Which makes lRayStart_NDC and lEndStart_NDC so easy to compute.
 
 Now we simply have to apply the inverse transformation as the usual one :
+
 ``` cpp
 // The Projection matrix goes from Camera Space to NDC.
 // So inverse(ProjectionMatrix) goes from NDC to Camera Space.
@@ -126,7 +137,9 @@ glm::vec4 lRayEnd_world    = InverseViewMatrix       * lRayEnd_camera;   lRayEnd
 //glm::vec4 lRayStart_world = M * lRayStart_NDC; lRayStart_world/=lRayStart_world.w;
 //glm::vec4 lRayEnd_world   = M * lRayEnd_NDC  ; lRayEnd_world  /=lRayEnd_world.w;
 ```
+
 With lRayStart_worldspace and lRayEnd_worldspace, the ray's direction (in world space) is straightforward to compute :
+
 ``` cpp
 glm::vec3 lRayDir_world(lRayEnd_world - lRayStart_world);
 lRayDir_world = glm::normalize(lRayDir_world);
@@ -135,6 +148,7 @@ lRayDir_world = glm::normalize(lRayDir_world);
 ## Using rayTest()
 
 Raycasting is very simple, no need for special comments :
+
 ``` cpp
 glm::vec3 out_end = out_origin + out_direction*1000.0f;
 
@@ -156,6 +170,7 @@ if(RayCallback.hasHit()) {
 	message = "background";
 }
 ```
+
 The only thing is that for some weird reason, you have to set the ray's start and direction twice.
 
 That's it, you know how to implement picking with Bullet !

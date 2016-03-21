@@ -28,6 +28,7 @@ Alternatively, you have access to the latest version of the code on the Git repo
 
 All the source code on this site (except third-party libraries) is released under the WTFPL Public Licence :
 ```
+
            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
                    Version 2, December 2004
 

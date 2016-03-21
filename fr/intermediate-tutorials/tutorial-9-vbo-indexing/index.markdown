@@ -64,6 +64,7 @@ Et pour dessiner le modèle, remplaces simplement glDrawArrays par :
      (void*)0           // element array buffer offset
  );
 ```
+
 >Il est préférable d'utiliser des « unsigned short » que des « unsigned int », car cela utilise moins de mémoire et du coup accélère le programme.
 
 #Remplir le buffer (tampon) d'indices
@@ -73,6 +74,7 @@ On a maintenant un problème. Comme je l'ai dit avant, OpenGL ne peut utiliser q
 L'algorithme pour ce faire est le suivant :
 
 ```
+
 Pour chaque sommet en entrée
     Essayer de trouver un sommet similaire ( = identique pour tous les attributs) parmi ceux déjà en sortie
     Si trouvé : 

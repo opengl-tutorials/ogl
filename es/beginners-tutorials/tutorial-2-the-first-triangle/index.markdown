@@ -248,7 +248,6 @@ La función que se llamará para cada vertice es llamada main, tal como en C :
 void main(){
 ```
 
-
 Nuestra primera función simplemente le dara al vertice la posición guardada en el buffer. Asi que si le dimos (1,1), el triangulo tendrá uno de sus vertices arriba a la derecha en la pantalla. En el siguiente tutorial veremos cómo hacer calculos mas interesantes con la posición de entrada.
 
 ``` glsl

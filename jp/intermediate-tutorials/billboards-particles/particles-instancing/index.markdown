@@ -50,6 +50,7 @@ language: jp
 * 粒子の色用の一つのバッファ
 
 これらは基本的なバッファで、次のように作ります。
+
 ``` cpp
 // このVBOは粒子の4頂点を持っている。
 // インスタンス化のおかげで、すべての粒子で共有できます。
@@ -78,11 +79,11 @@ glBindBuffer(GL_ARRAY_BUFFER, particles_color_buffer);
 //空の(NULL)バッファで初期化します。各フレームで後で更新します。
 glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW);
 ```
- 
 
 これらは通常、次のようにして更新します。
 
  
+
 ``` cpp
 // OpenGLが描画用に使うバッファを更新する
 // CPUからGPUへ向かうデータを流すようなより洗練された意味もありますが、このチュートリアルの範囲外です。
@@ -96,11 +97,11 @@ glBindBuffer(GL_ARRAY_BUFFER, particles_color_buffer);
 glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
 glBufferSubData(GL_ARRAY_BUFFER, 0, ParticlesCount * sizeof(GLubyte) * 4, g_particule_color_data);
 ```
- 
 
 これはいつもどおりです。描画の前に次のようにバインドします。
 
  
+
 ``` cpp
 // 一つ目の属性バッファ：頂点
 glEnableVertexAttribArray(0);
@@ -138,11 +139,15 @@ glVertexAttribPointer(
  (void*)0 // 配列バッファオフセット
 );
 ```
+
 これもいつもどおり。描画のときに違う処理が必要になります。glDrawArrays（あるいはベースメッシュがインデックスバッファを持っている場合はglDrawElements）を使う代わりにglDrawArrraysInstanced / glDrawElementsInstancedを使います。これらはglDrawArraysをN回呼ぶのと同じです。（Nは最後のパラメータ、ここではParticlesCountを指します。）
+
 ``` cpp
 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticlesCount);
 ```
+
 気をつけることは、ベースメッシュ用のバッファは呼ばず、異なるインスタンス用のバッファを呼ぶ点です。これはglVertexAttribDivisorで実現でき、以下にコメントつきのコードを示します。
+
 ``` cpp
 // これらの関数はglDrawArrays *Instanced* 特有です。
 // 最初のパラメータは注目してる属性バッファです。
@@ -158,6 +163,7 @@ glVertexAttribDivisor(2, 1); // 色：四角形ごとに一つ->1
 // for(i in ParticlesCount) : glDrawArrays(GL_TRIANGLE_STRIP, 0, 4),
 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticlesCount);
 ```
+
 これまで見てきたようにインスタンス化は本当にいろいろな用途に使えます。なぜならAttribDivisorとして整数をパスできるからです。例えばglVertexAttribDivisor(2, 10)では各10個の連続したインスタンスが同じ色を持ちます。
 
 ##どういう意味か？
@@ -173,6 +179,7 @@ glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticlesCount);
 ##新しい粒子を作る
 
 ここでは、大きな粒子コンテナを作ります。
+
 ``` cpp
 // 粒子のCPUでの表現
 struct Particle{
@@ -186,7 +193,9 @@ struct Particle{
 const int MaxParticles = 100000;
 Particle ParticlesContainer[MaxParticles];
 ```
+
 新たな粒子を作る方法が必要です。この関数はParticlesContainerを線形サーチします。これは一般的にはひどいアイディアですが、最後の位置からサーチを始めることにより、通常この関数は迅速に返してくれます。
+
 ``` cpp
 int LastUsedParticle = 0;
 
@@ -210,12 +219,16 @@ int FindUnusedParticle(){
     return 0; // すべての粒子が使用中なので、一番最初のものにオーバーライドする。
 }
 ```
+
 ParticlesContainer[particleIndex] を“life”と“color”と“speed”と“position”で満たします。
 より詳しくコードを見ると、ここでいろいろなことができます。問題は各フレームでいくつの粒子を生成すべきかということです。これはアプリケーション次第で、1秒間に10000個のような大量の新しい粒子を生成することを考えます。
+
 ``` cpp
 int newparticles = (int)(deltaTime*10000.0);
 ```
+
 固定した値になるように切り捨てを行います。
+
 ``` cpp
 // 1ミリ秒に10個の新しい粒子を生成します。
 // しかし60fpsという条件を満たすようにします。
@@ -234,6 +247,7 @@ if (newparticles > (int)(0.016f*10000.0))
 ParticlesContainerはアクティブな粒子と死んだ粒子を含んでいます。しかしGPUへ送る必要があるのは生きている粒子だけです。
 
 そこで各パーティクルを繰り返し、生死をチェックして、すべてが問題なければ重力を付加し、最終的にGPU特有のバッファにコピーします。
+
 ``` cpp
 // 全粒子をシミュレートする
 int ParticlesCount = 0;
@@ -275,6 +289,7 @@ for(int i=0; i<MaxParticles; i++){
     }
 }
 ```
+
 これが結果です。ただし問題点があります。
 
 <img class="alignnone size-full wp-image-963" title="particles_unsorted" src="http://www.opengl-tutorial.org/wp-content/uploads/2013/10/particles_unsorted.png" alt="" width="905" height="751" />
@@ -282,13 +297,16 @@ for(int i=0; i<MaxParticles; i++){
 ##ソート
 
 [チュートリアル10](http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-10-transparency/)で説明したように、ブレンドを正しくするには後から前面に向かって半透明オブジェクトをソートする必要があります。
+
 ``` cpp
 void SortParticles(){
     std::sort(&ParticlesContainer[0], &ParticlesContainer[MaxParticles]);
 }
 ```
+
 ここでstd::sortにコンテナのどの粒子を前に置いて、どの粒子を後に置くかを伝える必要があります。そこでParticle::operator<を定義します。
 ```
+
 // 粒子のGPUでの表現
 struct Particle{
 
@@ -300,6 +318,7 @@ struct Particle{
     }
 };
 ```
+
 これでParticleContainerはソートされ、粒子は正しく表示されます。
 
 ![]({{site.baseurl}}/assets/images/tuto-particules/particles_final.gif)

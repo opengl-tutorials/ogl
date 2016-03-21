@@ -390,7 +390,7 @@ Voici deux façons de faire cela en GLSL. La seconde utilise la fonction du lang
 if ( texture( shadowMap, (ShadowCoord.xy/ShadowCoord.w) ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 if ( textureProj( shadowMap, ShadowCoord.xyw ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 ```
- 
+
 ##Lumières ponctuelles
 
 Même chose, mais avec une cubemap (carte cubique) de profondeur. Une cubemap est un ensemble de six textures, une pour chaque côté du cube. De plus, l'accès ne se fait pas avec des coordonnées UV standard, mais avec un vecteur 3D représentant une direction.

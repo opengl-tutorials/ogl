@@ -36,16 +36,21 @@ Remarque comment la texture est déformée sur le triangle.
 Connaître le format de fichier BMP n'est pas important : nombreuses sont les bibliothèques pouvant le faire pour toi. Mais il est très simple et il peut t'aider à comprendre comment les choses fonctionnent en interne. Donc, on va écrire un chargeur de fichier BMP à partir de rien, afin que tu saches comment ça fonctionne, et ensuite on l'utilisera *plus jamais* !
 
 Voici la déclaration de la fonction de chargement :
+
 ``` cpp
 GLuint loadBMP_custom(const char * imagepath);
 ```
+
 Et elle s'utilise comme ça :
+
 ``` cpp
 GLuint image = loadBMP_custom("./my_texture.bmp");
 ```
+
 Maintenant, comment lire un fichier BMP ?
 
 Premièrement, on a besoin de quelques données. Ces variables seront définies lors de la lecture du fichier.
+
 ``` cpp
 // Data read from the header of the BMP file
 unsigned char header[54]; // Each BMP file begins by a 54-bytes header
@@ -55,31 +60,39 @@ unsigned int imageSize;   // = width*height*3
 // Actual RGB data
 unsigned char * data;
 ```
+
 On doit maintenant ouvrir le fichier :
+
 ``` cpp
 // Open the file
 FILE * file = fopen(imagepath,"rb");
 if (!file){printf("Image could not be opened\n"); return 0;}
 ```
+
 La première chose dans le fichier est un en-tête de 54 octets. Il contient les informations telles que « est-ce vraiment un fichier BMP ? », la taille de l'image, le nombre de bits par pixel, etc. Donc, on lit l'en-tête :
+
 ``` cpp
 if ( fread(header, 1, 54, file)!=54 ){ // If not 54 bytes read : problem
     printf("Not a correct BMP file\n");
     return false;
 }
 ```
+
 L'en-tête démarre toujours avec BM. En fait, voici ce que tu obtiens lorsque tu ouvres un fichier .BMP dans un éditeur hexadécimal :
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/hexbmp.png)
 
 Donc, on vérifier si les deux premiers octets valent vraiment 'B' et 'M' :
+
 ``` cpp
 if ( header[0]!='B' || header[1]!='M' ){
     printf("Not a correct BMP file\n");
     return 0;
 }
 ```
+
 Maintenant, on peut lire la taille de l'image, l'emplacement des données dans le fichier, etc :
+
 ``` cpp
 // Read ints from the byte array
 dataPos    = *(int*)&(header[0x0A]);
@@ -87,13 +100,17 @@ imageSize  = *(int*)&(header[0x22]);
 width      = *(int*)&(header[0x12]);
 height     = *(int*)&(header[0x16]);
 ```
+
 On doit compléter les informations pour les cas où elles sont manquantes :
+
 ``` cpp
 // Some BMP files are misformatted, guess missing information
 if (imageSize==0)    imageSize=width*height*3; // 3 : one byte for each Red, Green and Blue component
 if (dataPos==0)      dataPos=54; // The BMP header is done that way
 ```
+
 Maintenant que la taille de l'image est connue, on peut allouer de la mémoire pour la remplir avec l'image lue :
+
 ``` cpp
 // Create a buffer
 data = new unsigned char [imageSize];
@@ -104,6 +121,7 @@ fread(data,1,imageSize,file);
 //Everything is in memory now, the file can be closed
 fclose(file);
 ```
+
 On arrive à la vrai section OpenGL. La création de textures est très similaire à la création de tampons : créer une texture, la lier, la remplir et la configurer.
 
 Dans glTexImage2D, GL_RGB indique que l'on utilise une couleur ayant trois composantes et GL_BGR indique comment les données sont réellement disposées en mémoire. En fait, le fichier BMP ne stocke pas les pixels en Rouge->Vert->Bleu mais Bleu->Vert->Rouge, donc on doit en informer OpenGL.
@@ -122,7 +140,9 @@ glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 ```
+
 On va expliquer les deux dernières lignes plus tard. Dorénavant, du côté C++, vous pouvez utiliser la nouvelle fonction pour charger une texture :
+
 ``` cpp
 GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 ```
@@ -135,6 +155,7 @@ GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 #Utiliser une texture dans OpenGL
 
 On commence par le fragment shader. Il est globalement simple :
+
 ``` glsl fs
 #version 330 core
 
@@ -153,12 +174,14 @@ void main(){
     color = texture( myTextureSampler, UV ).rgb;
 }
 ```
+
 Trois choses :
 * Le fragment shader a besoin des coordonnées UV. Cela semble logique
 * Il a aussi besoin d'un « sampler2D » pour savoir à quelle texture accéder (vous pouvez accéder à plusieurs textures dans le même shader) ;
 * Finalement, l'accès à la texture est effectué avec texture(), renvoyant un vec4 contenant (R,G,B,A). On va voir ce qu'est le A, prochainement.
 
 Le vertex shader est simple aussi, vous devez juste passer les coordonnées UV au fragment shader :
+
 ``` glsl vs
 #version 330 core
 
@@ -181,7 +204,9 @@ void main(){
     UV = vertexUV;
 }
 ```
+
 Te souviens-tu du « layout(location = 1) in vec2 vertexUV » du [quatrième tutoriel]({{site.baseurl}}}/fr/beginners-tutorials/tutorial-4-a-colored-cube/) ? Eh bien, on doit faire exactement la même chose ici, mais au lieu de donner un tampon de triplets (R,G,B), on va donner une paire (U,V).
+
 ``` cpp
 // Two UV coordinatesfor each vertex. They were created with Blender. You'll learn shortly how to do this yourself.
 static const GLfloat g_uv_buffer_data[] = {
@@ -223,6 +248,7 @@ static const GLfloat g_uv_buffer_data[] = {
     0.667979f, 1.0f-0.335851f
 };
 ```
+
 Les coordonnées UV ci-dessus correspondent à ce modèle :
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/uv_mapping_blender.png)
@@ -240,10 +266,12 @@ et en zoomant un peu :
 #Que sont le filtrage et les MIP maps et comment les utiliser
 
 Comme tu peux le voir dans la capture ci-dessus, la qualité de la texture n'est pas superbe. C'est dû à ce que l'on a écrit dans la fonction loadBMP_custom :
+
 ``` cpp
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 ```
+
 Ça signifie que dans le fragment shader, la fonction texture() prend le texel qui est aux coordonnées (U, V) et continue joyeusement avec :
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearest.png)
@@ -276,6 +304,7 @@ Les filtrages linéaire et anisotrope ont tous les deux un souci. Si la texture 
 * Pour une qualité supérieure, on peut aussi échantillonner deux niveau de mipmaps et mélanger le résultat.
 
 Heureusement, tout cela est très simple à faire, OpenGL sait le faire pour toi si tu lui demandez gentiment :
+
 ``` cpp
 // When MAGnifying the image (no bigger mipmap available), use LINEAR filtering
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -339,6 +368,7 @@ Il y a une meilleures options : les textures compressées.
 ##Utiliser la texture compressée
 
 Voici comment charger l'image. C'est très proche du code pour le BMP, sauf que l'en-tête est organisé différemment :
+
 ``` cpp
 GLuint loadDDS(const char * imagepath){
 
@@ -368,8 +398,10 @@ GLuint loadDDS(const char * imagepath){
     unsigned int mipMapCount = *(unsigned int*)&(header[24]);
     unsigned int fourCC      = *(unsigned int*)&(header[80]);
 ```
+
 Les données de l'image se trouvent après l'en-tête : tous les niveaux de MIP maps, les uns après les autres. On peut les lire en une fois :
  
+
 ``` cpp
     unsigned char * buffer;
     unsigned int bufsize;
@@ -380,7 +412,9 @@ Les données de l'image se trouvent après l'en-tête : tous les niveaux de MIP 
     /* close the file pointer */
     fclose(fp);
 ```
+
 Ici, on doit gérer trois formats différents : DXT1, DXT3 et DXT5. On doit convertir l'indicateur « fourCC » en une valeur que comprend OpenGL.
+
 ``` cpp
     unsigned int components  = (fourCC == FOURCC_DXT1) ? 3 : 4;
     unsigned int format;
@@ -400,7 +434,9 @@ Ici, on doit gérer trois formats différents : DXT1, DXT3 et DXT5. On doit conv
         return 0;
     }
 ```
+
 La création de texture est effectuée comme d'habitude :
+
 ``` cpp
     // Create one OpenGL texture
     GLuint textureID;
@@ -409,7 +445,9 @@ La création de texture est effectuée comme d'habitude :
     // "Bind" the newly created texture : all future texture functions will modify this texture
     glBindTexture(GL_TEXTURE_2D, textureID);
 ```
+
 Et maintenant, on peut remplir chaque MIP map l'une après l'autre :
+
 ``` cpp
     unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
     unsigned int offset = 0;

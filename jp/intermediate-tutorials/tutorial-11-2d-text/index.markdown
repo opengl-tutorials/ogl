@@ -19,11 +19,13 @@ language: jp
 #API
 
 これから以下の単純なインターフェースを実装していきます。（common/text2D.hにあります。）
+
 ``` cpp
 void initText2D(const char * texturePath);
 void printText2D(const char * text, int x, int y, int size);
 void cleanupText2D();
 ```
+
 640*480と1080pの双方で動くようなコードにするため、xとyの座標は[0-800]と[0-600]とします。この座標を頂点シェーダがスクリーンの実際のサイズに合わせてくれます。実装していくためにcommon/text2D.cppを見てみましょう。
 
 #テクスチャ
@@ -40,11 +42,14 @@ printText2Dの目標は適切なスクリーンの位置とテクスチャの座
 #描画
 
 以下のバッファを使います。
+
 ``` cpp
 std::vector<glm::vec2> vertices;
 std::vector<glm::vec2> UVs;
 ```
+
 各文字ごとに、四角形を定義するために四個の頂点の座標を計算し、二つの三角形を追加します。
+
 ``` cpp
 for ( unsigned int i=0 ; i<length ; i++ ){
 
@@ -61,12 +66,15 @@ for ( unsigned int i=0 ; i<length ; i++ ){
     vertices.push_back(vertex_up_right);
     vertices.push_back(vertex_down_left);
 ```
+
 UV座標のため、左上の座標は次のように計算します。
+
 ``` cpp
     char character = text[i];
     float uv_x = (character%16)/16.0f;
     float uv_y = (character/16)/16.0f;
 ```
+
 [ASCII code for A](http://www.asciitable.com/)は65なのでこれで機能します。
 
 65%16=1、だからAは1番目の行です。(行番号は0から始まります。)
@@ -76,6 +84,7 @@ UV座標のため、左上の座標は次のように計算します。
 OpenGLのテクスチャにあわせるために16で割って[0.0 - 1.0]となるようにします。
 
 そして頂点以外は前にやったことと同じようにします。
+
 ``` cpp
     glm::vec2 uv_up_left    = glm::vec2( uv_x           , 1.0f - uv_y );
     glm::vec2 uv_up_right   = glm::vec2( uv_x+1.0f/16.0f, 1.0f - uv_y );
@@ -91,11 +100,13 @@ OpenGLのテクスチャにあわせるために16で割って[0.0 - 1.0]とな�
     UVs.push_back(uv_down_left);
  }
 ```
+
 あとはいつもどおりやっていきます。
 バッファをバインドして、満たして、シェーダプログラムを選んで、テクスチャをバインドして、頂点属性を有効化/バインド/設定し、ブレンドを有効にして、glDrawArraysを呼ぶだけです。
 これで完成！
 
 ここで重要なことを言っておきます。座標は[0,800][0,600]で作られています。言い換えればここでは行列は必要ありません。頂点シェーダは単に[-1,1][-1,1]の範囲になるように置くだけです。（これはC++で簡単に実装できます。）
+
 ``` glsl vs
 void main(){
 
@@ -109,12 +120,15 @@ void main(){
     UV = vertexUV;
 }
 ```
+
 フラグメントシェーダも簡単に書けます。
+
 ``` glsl fs
 void main(){
     color = texture( myTextureSampler, UV );
 }
 ```
+
 ところで、製品ではこのコードを使わないでください。なぜならこれはラテンアルファベットのみに対応しているからです。あるいはインドや中国、日本、（画像中に &szlig; がないのでドイツにさえ）に製品を販売しないでください。このテクスチャはフランスでは動きます。(notice the &eacute;, &agrave;, &ccedil; などがあるため。) なぜならこのテクスチャは私のロケールで作られたからです。またOpenGL2には対応していないので注意してください。残念ながらUTF-8をいい感じに扱えるライブラリを私は知りません。
 
 ところでJoel Spolskyの [The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets (No Excuses!)](http://www.joelonsoftware.com/articles/Unicode.html) は読んでおくべきです。

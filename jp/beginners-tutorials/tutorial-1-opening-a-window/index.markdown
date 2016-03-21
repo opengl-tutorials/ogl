@@ -154,32 +154,43 @@ IDEから実行したければ、上で説明したように正しいワーキ�
 ええと、実際は違います。すべてのチュートリアルでは、マジックを使わず、"low level"な方法を見せます。しかし、このパートはとてもつまらなく役に立ちません。だから、私たちの代わりにこれをやってくれる、外部のライブラリのGLFWを使います。もし本当にやりたいならば、WindowsではWin32 API、LinuxではX11 API、MacではCocoa APIを使ってください。あるいはSFML、FreeGLUT、SDL、... を使ってください。[Links](/?page_id=210)ページを見てください。
 
 OK、それでは行きましょう。まず、依存関係に対処します。コンソールにメッセージを表示するための基本的なものが必要となります。
+
 ``` cpp
 // 標準ヘッダをインクルードします。
 #include
 #include 
 ```
+
 最初のGLEWです。だからこれはちょっとしたマジックです。しかし後のために残しておきましょう。
+
 ``` cpp
 // GLEWをインクルードする。常にgl.hとglfw.hより先にインクルードしましょう。これはちょっとしたマジックです。
 #include 
 ```
+
 GLFWでウィンドウとキーボードを扱うため、次のものもインクルードしましょう。
+
 ``` cpp
 // GLFWをインクルードします。
 #include 
 ```
+
 このライブラリは実際はすぐには使いません。これは3D数学のためのライブラリです。すぐに、とても便利なことが分かるでしょう。GLMにはマジックはありません。必要があれば自分自身でも書けます。ですが、GLMはとても使いやすいです。"using namespace"があることで"glm::vec3"と書く代わりに、"vec3"と書けます。
+
 ``` cpp
 // GLMをインクルードします。
 #include
 using namespace glm;
 ```
+
 これらの#includeをplayground.cppにコピー＆ペーストしたならば、コンパイラはmain()関数がないと言うでしょう。だから作りましょう。
+
 ``` cpp
 int main(){
 ```
+
 最初にGLFWを初期化します。
+
 ``` cpp
 // GLFWを初期化します。
 if( !glfwInit() )
@@ -188,7 +199,9 @@ if( !glfwInit() )
     return -1;
 }
 ```
+
 それでは、最初のOpenGLウィンドウを作りましょう！
+
 ``` cpp
 glfwWindowHint(GLFW_SAMPLES, 4); // 4x アンチエイリアス
 glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // OpenGL3.3を使います。
@@ -211,7 +224,9 @@ if (glewInit() != GLEW_OK) {
     return -1;
 }
 ```
+
 するとウィンドウが出てきますが、すぐに閉じてしまいます。もちろん！ユーザがエスケープキーを押すまで待っている必要があります。
+
 ``` cpp
 // 下でエスケープキーが押されるのを捉えるのを保証します。
 glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
@@ -227,5 +242,6 @@ do{
 while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
 glfwWindowShouldClose(window) == 0 );
 ```
+
 これで最初のチュートリアルは終了です。チュートリアル2では、実際に三角形を描く方法を学びます。
 // 

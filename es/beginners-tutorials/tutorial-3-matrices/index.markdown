@@ -55,6 +55,7 @@ No es tan terrible como se ve. Pon tu dedo izquierdo sobre la a y tu dedo derech
 Esto es aburrido de calcular, y lo haremos frecuentemente, asi que mejor digamosle al computador que lo haga en nuestro lugar.
 
 **En C++, con GLM:**
+
 ``` cpp
 glm::mat4 myMatrix;
 glm::vec4 myVector;
@@ -63,6 +64,7 @@ glm::vec4 transformedVector = myMatrix * myVector; // En este orden, es importan
 ```
 
 **En GLSL :**
+
 ``` glsl
 mat4 myMatrix;
 vec4 myVector;
@@ -98,6 +100,7 @@ Como se traduce esto a codigo?
 
 
 **En C++, con GLM:**
+
 ``` cpp
 #include <glm/gtx/transform.hpp> // after <glm/glm.hpp>
  
@@ -107,6 +110,7 @@ glm::vec4 transformedVector = myMatrix * myVector; // guess the result
 ```
 
 **En GLSL :**
+
 ``` glsl
 vec4 transformedVector = myMatrix * myVector;
 ```
@@ -120,6 +124,7 @@ Esta es especial. No hace nada. Pero la menciono por que es importante sabe que 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/identityExample.png)
 
 **En C++ :**
+
 ``` cpp
 glm::mat4 myIdentityMatrix = glm::mat4(1.0f);
 ```
@@ -139,6 +144,7 @@ Y la w no cambia. Te preguntaras cual es el significado de "escalar una direcci�
 (Nota que la matriz identidad es solo un caso especial de escalamiento de matrices con (X,Y,Z) = (1,1,1). También es un caso especial, la translación con una matriz (X,Y,Z)=(0,0,0) )
 
 **En C++ :**
+
 ``` cpp
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
 glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
@@ -149,6 +155,7 @@ glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
 Estas son un poco mas complicadas. Omitiré detalles por simplicidad. Para mas información mira [Matrices and Quaternions FAQ](http://www.cs.princeton.edu/~gewang/projects/darth/stuff/quat_faq.html) (recurso popular en varios idiomas). Y puedes mirar también los [Rotations tutorials]({{site.baseurl }}{{intermediate-tutorials/tutorial-17-quaternions}}) 
 
 **En C++ :**
+
 ``` cpp
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
 glm::vec3 myRotationAxis( ??, ??, ??);
@@ -162,7 +169,6 @@ Ya sabemos rotar , transladar y escalar nuestros vectores. Seria genial combinar
 ``` cpp
 TransformedVector = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalVector;
 ```
-
 
 **!!! ATENCIÓN !!!** Estas lineas primero hacen el ESCALAMIENTO, luego la ROTACIÓN y luego la TRANSLACIÓN. Asi es como funciona la multiplicación.
 
@@ -185,11 +191,14 @@ De hecho, el orden de arriba es el que usualmente necesitaras para personajes de
 La multiplicación matriz-matriz es muy similar a la multiplicación matriz-vector, asiq ue vamos a saltarnos esa parte y si tienes dudas consulta las preguntas frecuentes de Matrices y cuaterniones. Por ahora le diremos al computador que lo haga por nosotros :
 
 **En C++, con GLM :**
+
 ``` cpp
 glm::mat4 myModelMatrix = myTranslationMatrix * myRotationMatrix * myScaleMatrix;
 glm::vec4 myTransformedVector = myModelMatrix * myOriginalVector;
 ```
+
 **En GLSL :**
+
 ``` glsl
 mat4 transform = mat2 * mat1;
 vec4 out_vec = transform * in_vec;
@@ -313,7 +322,6 @@ glm::mat4 MVPmatrix = projection * view * model; // Recurda : invertida !
 // GLSL : aplicala
 transformed_vertex = MVP * in_vertex;
 ```
-
 
 # Uniendo todo
 

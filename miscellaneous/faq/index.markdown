@@ -61,6 +61,7 @@ Please note that the .exe is compiled in the *build* directory, but automaticall
 
 If you created a program from scratch, make sure you created a VAO :
 ```
+
 GLuint VertexArrayID;
  glGenVertexArrays(1, &VertexArrayID);
  glBindVertexArray(VertexArrayID);
@@ -73,12 +74,14 @@ GLEW has a bug which make it impossible to use a core context (except when you u
 * Ask GLFW for a Compatibility Profile instead:
 
 ```
+
 glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 ```
 
 * Use glewExperimental; this is the recommended way:
 
 ```
+
 glewExperimental = true;
 ```
 

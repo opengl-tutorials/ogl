@@ -152,32 +152,43 @@ Finally ! OpenGL code !
 Well, not really. All tutorials show you the "low level" way to do things, so that you can see that no magic happens. But this part is actually very boring and useless, so we will use GLFW, an external library, to do this for us instead. If you really wanted to, you could use the Win32 API on Windows, the X11 API on Linux, and the Cocoa API on Mac; or use another high-level library like SFML, FreeGLUT, SDL, ... see the [Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) page.
 
 Ok, let's go. First, we'll have to deal with dependencies : we need some basic stuff to display messages in the console :
+
 ``` cpp
 // Include standard headers
 #include <stdio.h>
 #include <stdlib.h>
 ```
+
 First, GLEW. This one actually is a little bit magic, but let's leave this for later.
+
 ``` cpp
 // Include GLEW. Always include it before gl.h and glfw.h, since it's a bit magic.
 #include <GL/glew.h>
 ```
+
 We decided to let GLFW handle the window and the keyboard, so let's include it too :
+
 ``` cpp
 // Include GLFW
 #include <GL/glfw3.h>
 ```
+
 We don't actually need this one right now, but this is a library for 3D mathematics. It will prove very useful soon. There is no magic in GLM, you can write your own if you want; it's just handy. The "using namespace" is there to avoid typing "glm::vec3", but "vec3" instead.
+
 ``` cpp
 // Include GLM
 #include <glm/glm.hpp>
 using namespace glm;
 ```
+
 If you cut'n paste all these #include's in playground.cpp, the compiler will complain that there is no main() function. So let's create one :
+
 ``` cpp
 int main(){
 ```
+
 First thing to do it to initialize GLFW :
+
 ``` cpp
 // Initialise GLFW
 if( !glfwInit() )
@@ -186,9 +197,11 @@ if( !glfwInit() )
     return -1;
 }
 ```
+
 We can now create our first OpenGL window !
 
  
+
 ``` cpp
 glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
@@ -211,7 +224,9 @@ if (glewInit() != GLEW_OK) {
     return -1;
 }
 ```
+
 Build this and run. A window should appear, and be closed right away. Of course ! We need to wait until the user hits the Escape key :
+
 ``` cpp
 // Ensure we can capture the escape key being pressed below
 glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
@@ -227,6 +242,7 @@ do{
 while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
 glfwWindowShouldClose(window) == 0 );
 ```
+
 And this concludes our first tutorial ! In Tutorial 2, you will learn how to actually draw a triangle.
 
 

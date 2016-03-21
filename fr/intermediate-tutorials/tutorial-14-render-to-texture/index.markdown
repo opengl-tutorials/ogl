@@ -158,7 +158,7 @@ void main(){
     color = texture( renderedTexture, UV + 0.005*vec2( sin(time+1024.0*UV.x),cos(time+768.0*UV.y)) ).xyz;
 }
 ```
- 
+
 Ce code échantillonne simplement la texture, mais ajoute un léger décalage dépendant du temps.
 
 #Results

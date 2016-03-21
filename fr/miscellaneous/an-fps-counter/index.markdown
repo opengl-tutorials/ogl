@@ -15,6 +15,7 @@ Dans le monde des graphismes en temps réel, il est important de garder un œil 
 Un compteur de FPS ressemble à cela :
 
 ```
+
  double lastTime = glfwGetTime();
  int nbFrames = 0;
 

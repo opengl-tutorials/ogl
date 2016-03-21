@@ -22,6 +22,7 @@ language: cn
 
 立方体有六个方形表面，而OpenGL只支持画三角形，因此需要画12个三角形，每个面两个。我们用定义三角形顶点的方式来定义这些顶点。
 ```
+
 // Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
 // A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
 static const GLfloat g_vertex_buffer_data[] = {
@@ -63,11 +64,14 @@ static const GLfloat g_vertex_buffer_data[] = {
 1.0f,-1.0f, 1.0f
 };
 ```
+
 OpenGL的缓冲由一些标准的函数（glGenBuffers, glBindBuffer, glBufferData, glVertexAttribPointer）来创建、绑定、填充和配置；这些可参阅第二课。若有遗忘，可参见第二课。绘制的调用也没变，只需改变绘制的点的个数：
 ```
+
 // Draw the triangle !
 glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles -> 6 squares
 ```
+
 关于这段代码，有几点要说明一下：
 
 * 截至目前我们使用的三维模型都是固定的：只能在源码中修改模型，重新编译，然后祈祷不要出什么差错。我们将在第七课中学习如何动态地加载模型。
@@ -81,6 +85,7 @@ glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangl
 
 首先声明颜色：每个顶点一个RGB三元组。这里随机生成一些颜色，所以效果看起来可能不太好；您可以调整得更好些，例如把顶点的位置作为颜色值。
 ```
+
 // One color for each vertex. They were generated randomly.
 static const GLfloat g_color_buffer_data[] = {
 0.583f, 0.771f, 0.014f,
@@ -121,15 +126,19 @@ static const GLfloat g_color_buffer_data[] = {
 0.982f, 0.099f, 0.879f
 };
 ```
+
 缓冲的创建、绑定和填充方法与之前一样：
 ```
+
 GLuint colorbuffer;
 glGenBuffers(1, &colorbuffer);
 glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
 ```
+
 配置也一样：
 ```
+
 // 2nd attribute buffer : colors
 glEnableVertexAttribArray(1);
 glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
@@ -142,13 +151,17 @@ GL_FALSE, // normalized?
 (void*)0 // array buffer offset
 );
 ```
+
 现在在顶点着色器中已经能访问这个新增的缓冲了：
 ```
+
 // Notice that the "1" here equals the "1" in glVertexAttribPointer
 layout(location = 1) in vec3 vertexColor;
 ```
+
 这一课的顶点着色器没有什么复杂的效果，仅仅是简单地把颜色传递到片段着色器：
 ```
+
 // Output data ; will be interpolated for each fragment.
 out vec3 fragmentColor;
 
@@ -161,17 +174,22 @@ void main(){
 fragmentColor = vertexColor;
 }
 ```
+
 在片段着色器中要再次声明片段颜色：
 ```
+
 // Interpolated values from the vertex shaders
 in vec3 fragmentColor;
 ```
+
 然后将其拷贝到输出颜色：
 ```
+
 // Output color = color specified in the vertex shader,
 // interpolated between all 3 surrounding vertices
 color = fragmentColor;
 ```
+
 于是得到：
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/missing_z_buffer.png)
@@ -201,11 +219,13 @@ color = fragmentColor;
 
 您可以自己实现深度缓冲，但让硬件自动完成更简单：
 ```
+
 // Enable depth test
 glEnable(GL_DEPTH_TEST);
 // Accept fragment if it closer to the camera than the former one
 glDepthFunc(GL_LESS);
 ```
+
 问题解决了。
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/one_color_per_vertex.png)
@@ -220,6 +240,7 @@ glDepthFunc(GL_LESS);
 * 自己生成颜色值。一些点子：随机生成颜色，这样每次运行时颜色都不同；根据顶点位置生成颜色；把前面两种思路结合起来；或其他创意:)。若您不了解C，参考以下语法：
 
 ```
+
 static GLfloat g_color_buffer_data[12*3*3];
 for (int v = 0; v < 12*3 ; v++){
 g_color_buffer_data[3*v+0] = your red color here;

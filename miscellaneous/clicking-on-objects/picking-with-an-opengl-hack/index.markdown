@@ -43,25 +43,30 @@ In the accompanying source code, 100 objects are created and stored in a std::ve
 ## Detecting the click
 
 In this simple example, the picking is done each frame where the left mouse button is down :
+
 ``` cpp
 		if (glfwGetMouseButton(GLFW_MOUSE_BUTTON_LEFT)){
 ```
+
 In a real application, you probably want to do this only when the user just released the button, so you'll have to store a bool wasLeftMouseButtonPressedLastFrame; or, better, use *glfwSetMouseButtonCallback()* (read GLFW's manual to know how to use this).
 
 ## Convert your ID into a special color
 
 Since we're going to render each mesh with a different color, the first step is to compute this color. An easy way to do this is to put the least signifying bits in the red channels, and the most significant bits in the blue channel :
+
 ``` cpp
 // Convert "i", the integer mesh ID, into an RGB color
 int r = (i & 0x000000FF) >>  0;
 int g = (i & 0x0000FF00) >>  8;
 int b = (i & 0x00FF0000) >> 16;
 ```
+
 This might seem scary, but it's standard bit-manipulation code. You end up with 3 integers, each in the [0-255] range. With this scheme, you can represent 255^3 = 16 million different meshes, which is probably enough.
 
 ## Drawing the scene with this color
 
 We now need a shader to use this color. It's very simple. The vertex shader does nothing :
+
 ``` glsl vs
 #version 330 core
 
@@ -78,7 +83,9 @@ void main(){
 
 }
 ```
+
 and the fragment shader simply writes the desired color in the framebuffer :
+
 ``` glsl fs
 #version 330 core
 
@@ -94,15 +101,16 @@ void main(){
 
 }
 ```
- 
 
 Easy !
 
 The only trick is that you have to send your color as floats (in [0,1]) but you have integers (in [0,255]), so you have to make a small division when calling *glUniformXX()* :
+
 ``` cpp
 // OpenGL expects colors to be in [0,1], so divide by 255.
 glUniform4f(pickingColorID, r/255.0f, g/255.0f, b/255.0f, 1.0f);
 ```
+
 You can now draw the meshes as usual (*glBindBuffer, glVertexAttribPointer, glDrawElements*) and you'll get the weird picture above.
 
  
@@ -118,6 +126,7 @@ Then, you need to call *glFinish()*, which will wait until everything is really 
 You also need to configure how *glReadPixels* will behave with respect to memory alignment. This is a bit off-topic, but you simply need to call *glPixelStorei(GL_UNPACK_ALIGNMENT, 1)*.
 
 And finally, you can call *glReadPixels* ! Here is the full code :
+
 ``` cpp
 // Wait until all the pending drawing commands are really done.
 // Ultra-mega-over slow ! 
@@ -135,6 +144,7 @@ glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 unsigned char data[4];
 glReadPixels(1024/2, 768/2,1,1, GL_RGBA, GL_UNSIGNED_BYTE, data);
 ```
+
 Your color is now in the 'data' array. Here, you can see that the ID is 19.
 
 ![]({{site.baseurl}}/assets/images/tuto-picking-color/DataArray.png)
@@ -143,6 +153,7 @@ Your color is now in the 'data' array. Here, you can see that the ID is 19.
 ## Convert the color back to an ID
 
 You can now reconstruct your ID from the 'data' buffer. The code is the complete opposite from the id-to-color code :
+
 ``` cpp
 // Convert the color back to an integer ID
 int pickedID = 
@@ -154,6 +165,7 @@ int pickedID =
 ## Use this ID
 
 You can now use this ID for whatever you need. In the example, the text in the GUI is updated, but of course, you can do whatever you want.
+
 ``` cpp
 if (pickedID == 0x00ffffff){ // Full white, must be the background !
 	message = "background";
@@ -163,7 +175,6 @@ if (pickedID == 0x00ffffff){ // Full white, must be the background !
 	message = oss.str();
 }
 ```
- 
 
 # Pros and cons
 

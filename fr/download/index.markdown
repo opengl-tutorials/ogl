@@ -24,6 +24,7 @@ Sinon tu peux aussi prendre la dernière version du code sur le repo GitHub :
 
 Tout le code source sur ce site (à l'exception des libraries externes) est licensié avec la WTFPL Public license :
 ```
+
            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
                    Version 2, December 2004
 

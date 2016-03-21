@@ -42,6 +42,7 @@ language: jp
 #OpenGLでのインデックスVBO
 
 インデックスは簡単に使うことができます。まず正しいインデックスで満たした追加のバッファを作ります。コードは以前と同じですが、ARRAY_BUFFERではなくELEMENT_ARRAY_BUDFFERです。
+
 ``` cpp
 std::vector<unsigned int> indices;
 
@@ -53,7 +54,9 @@ std::vector<unsigned int> indices;
  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 ```
+
 そしてメッシュを描画するために、このようにglDrawArraysを単純に置き換えます。
+
 ``` cpp
 // インデックスバッファ
  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
@@ -66,6 +69,7 @@ std::vector<unsigned int> indices;
      (void*)0           // element array buffer offset
  );
 ```
+
 （メモ：unsigned intの代わりにunsigned shortを使うほうが、メモリの節約にも高速化にもつながります。）
 
 #インデックスバッファを満たす
@@ -74,6 +78,7 @@ std::vector<unsigned int> indices;
 
 これを行うアルゴリズムは以下のとおりです。
 ```
+
 各頂点に対して
     すでに出力したすべての頂点と比較してまったく同じ属性を持つ頂点を探す。
     存在するならば :
@@ -81,6 +86,7 @@ std::vector<unsigned int> indices;
     存在しないならば :
         VBOに頂点を追加します。
 ```
+
 実際のC++コードはcommon/vboindexer.cppにあります。そこにはたくさんのコメントがあるので、上記のアルゴリズムを理解したなら、それで良いでしょう。
 
 同じであるということの基準は、頂点の位置・UV・法線が等しいということです。他の属性も入れたければ、これを改造すれば良いでしょう。

@@ -21,6 +21,7 @@ Para mantener este tutorial lo más simple que sea posible, usaremos el formato 
 
 Nuestra función, ubicada en common/objloader.cpp y declarada en common/objloader.hpp tendrá la siguiente declaración:
  :
+
 ``` cpp
 bool loadOBJ(
     const char * path,
@@ -36,6 +37,7 @@ Queremos que loadObj lea el archivo en "path", escriba la información en out_ve
 
 Un archivo OBJ se ve más o menos así :
 ```
+
 # Blender3D v249 OBJ File: untitled.blend
 # www.blender3d.org
 mtllib cube.mtl
@@ -84,6 +86,7 @@ f 8/11/7 7/12/7 6/10/7
 f 1/2/8 2/9/8 3/13/8
 f 1/2/8 3/13/8 4/14/8
 ```
+
 So :
 
 * `#` señala la ubicación de un comentario, así como lo hacen los // en C++
@@ -115,13 +118,16 @@ Dado que nuestra pequeña función de carga es bastante limitada, tenemos que se
 ##Leyendo el archivo
 
 Bien, ahora vamos al código en cuestión. Necesitamos algunas variables temporales en las que almacenaremos los contenidos del .obj :
+
 ``` cpp
 std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;
 std::vector< glm::vec3 > temp_vertices;
 std::vector< glm::vec2 > temp_uvs;
 std::vector< glm::vec3 > temp_normals;
 ```
+
 Desde el Tutorial 5 : Un cubo con texturas, sabemos como abrir un archivo :
+
 ``` cpp
 FILE * file = fopen(path, "r");
 if( file == NULL ){
@@ -129,7 +135,9 @@ if( file == NULL ){
     return false;
 }
 ```
+
 Leamos este archivo hasta el final:
+
 ``` cpp
 while( 1 ){
 
@@ -141,32 +149,40 @@ while( 1 ){
 
     // else : analizar el lineHeader
 ```
+
 (Es importante notar que asumimos que la primera palabra de la línea no tendrá más de 128 caracteres, lo cual es un supuesto algo ridículo. Pero para una función de carga de juguete como la nuestra, está bien.)
 
 Tratemos los vértices primero :
+
 ``` cpp
 if ( strcmp( lineHeader, "v" ) == 0 ){
     glm::vec3 vertex;
     fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z );
     temp_vertices.push_back(vertex);
 ```
+
 i.e : Si la primera palabra de la línea es "v", entonces el resto tiene que tener 3 flotantes, así que creamos un glm::vec3 a partir de estos y lo añadimos al vector.
+
 ``` cpp
 }else if ( strcmp( lineHeader, "vt" ) == 0 ){
     glm::vec2 uv;
     fscanf(file, "%f %f\n", &uv.x, &uv.y );
     temp_uvs.push_back(uv);
 ```
+
 i.e si no es "v" sino "vt", entonces el resto tiene que tener dos flotantes, así que creamos un glm::vec2 y lo añadimos al vector.
 
 lo mismo para las normales :
+
 ``` cpp
 }else if ( strcmp( lineHeader, "vn" ) == 0 ){
     glm::vec3 normal;
     fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z );
     temp_normals.push_back(normal);
 ```
+
 Y ahora la "f", lo cual es más difícil :
+
 ``` cpp
 }else if ( strcmp( lineHeader, "f" ) == 0 ){
     std::string vertex1, vertex2, vertex3;
@@ -186,6 +202,7 @@ Y ahora la "f", lo cual es más difícil :
     normalIndices.push_back(normalIndex[1]);
     normalIndices.push_back(normalIndex[2]);
 ```
+
 Este código es bastante similar al anterior, excepto que hay más información para leer.
 
 ##Procesando la información
@@ -193,28 +210,37 @@ Este código es bastante similar al anterior, excepto que hay más información 
 Lo que hicimos fue, simplemente, cambiar la forma general de la información. Teníamos un string y ahora tenemos un conjunto de std::vectors. No obstante, esto no es suficiente, y tenemos que organizarla de tal manera que a OpenGl le guste. Es decir, removeremos los índices y tendremos objetos glm::vec3 simplemente. Esta operación es lo que se denomina "indexar".
 
 Vamos a través de cada vértice ( cada v/vt/vn ) de cada tríangulo ( cada línea marcada con una "f" ) :
+
 ``` cpp
     // Para cada vértice de cada triángulo
     for( unsigned int i=0; i<vertexIndices.size(); i++ ){
 
 ```
+
 El índice a la posición del vértice es vertexIndices[i] :
+
 ``` cpp
 unsigned int vertexIndex = vertexIndices[i];
 ```
+
 así que la posición es temp_vertices[ vertexIndex-1 ] (aquí tenemos que poner el -1 porque en C++ el indexamiento comienza en 0 y para los OBJ comienza en 1, como lo mencioné anteriormente) :
+
 ``` cpp
 glm::vec3 vertex = temp_vertices[ vertexIndex-1 ];
 ```
+
 Y con esto tenemos la posición de nuestro nuevo vértice
+
 ``` cpp
 out_vertices.push_back(vertex);
 ```
+
 Aplicamos lo mismo para las coordenadas UV y las normales y hemos finalizado!
 
 #Usando la información cargada
 
 Una vez tenemos esto, casi nada cambia. En lugar de declarar nuestro usual static const GLfloat g_vertex_buffer_data[] = {...}, declararemos en su lugar un std::vector vertices (y lo mismo haremos para las coordenadas UV y las normales). Llamamos a la función loadOBJ con los parámetros neesarios :
+
 ``` cpp
 // Read our .obj file
 std::vector< glm::vec3 > vertices;
@@ -222,10 +248,13 @@ std::vector< glm::vec2 > uvs;
 std::vector< glm::vec3 > normals; // No las usaremos por ahora
 bool res = loadOBJ("cube.obj", vertices, uvs, normals);
 ```
+
 Y le daremos nuestros vectores a OpenGL en lugar de nuestros arreglos :
+
 ``` cpp
 glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
 ```
+
 Y eso es todo !
 
 #Resultados

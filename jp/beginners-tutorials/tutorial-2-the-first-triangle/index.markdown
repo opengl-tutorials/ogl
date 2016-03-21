@@ -26,11 +26,13 @@ OpenGL3は複雑なものを簡単に書くことができます。しかし、�
 #VAO
 
 ここでは詳しく述べません。しかし配列バッファオブジェクト(Vertex Array Object)を作り、現在のものとしてセットする必要があります。
+
 ``` cpp
 GLuint VertexArrayID;
 glGenVertexArrays(1, &VertexArrayID);
 glBindVertexArray(VertexArrayID);
 ```
+
 ウィンドウが作られたときにいったんこれを行います。(つまりOpenGLコンテキストを作った後です。)そしてどのOpenGLのコールも呼ぶ前です。
 
 VAOについて詳しく知りたいならば、他のチュートリアルもあります。ただし、これはそれほど重要ではありません。
@@ -54,6 +56,7 @@ Zをこの方向にするのは奇妙に感じます。なぜそうしたので�
 ところで、右手を自由に動かすことができます。つまりX、Y、Zも同様に動きます。詳しくは後で述べます。
 
 だから三角形を作るためには、3つの3Dの点が必要となります。それでは見ていきましょう。
+
 ``` cpp
 // 3頂点を表す3つのベクトルの配列
 static const GLfloat g_vertex_buffer_data[] = {
@@ -62,6 +65,7 @@ static const GLfloat g_vertex_buffer_data[] = {
    0.0f,  1.0f, 0.0f,
 };
 ```
+
 最初の点は(-1,-1,0)です。これは、*何らかの方法で変換しなければ*、スクリーン上の(-1,-1)に表示されることを意味します。これはどういう意味でしょう？スクリーンの原点は中心にあり、Xはいつもどおり右側にあり、Yは上側にあります。これはワイドスクリーン上を指すものとなります。
 
 ![]({{site.baseurl}}/assets/images/tuto-2-first-triangle/screenCoordinates.png)
@@ -72,6 +76,7 @@ static const GLfloat g_vertex_buffer_data[] = {
 #三角形を描く
 
 次のステップはこの三角形をOpenGLに渡すことです。これはバッファを作ることで行います。
+
 ``` cpp
 
 // これが頂点バッファを指し示すものとなります。
@@ -86,9 +91,11 @@ glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 // 頂点をOpenGLに渡します。
 glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 ```
+
 これは一度だけ行われる必要があります。
 
 今、メインループ内の、"何も描かなかった"場所に、私たちの素晴らしい三角形を描けます。
+
 ``` cpp
 // 最初の属性バッファ：頂点
 glEnableVertexAttribArray(0);
@@ -107,6 +114,7 @@ glDrawArrays(GL_TRIANGLES, 0, 3); // 頂点0から始まります。合計3つ�
 
 glDisableVertexAttribArray(0);
 ```
+
 もし運がよければ、次のような結果を見られます。 (<span style="color: #ff0000">出てこなくてもあせらないでください。</span>) :
 
 ![]({{site.baseurl}}/assets/images/tuto-2-first-triangle/triangle_no_shader1.png)
@@ -126,6 +134,7 @@ glDisableVertexAttribArray(0);
 2つのシェーダは通常異なるファイルに書きます。この例では、SimpleFragmentShader.fragmentshaderとSimpleVertexShader.vertexshaderです。拡張子は重要ではありません。だから.txtや.glslでも良いです。
 
 ここでコードを示します。完全に理解するのは重要では在りません。なぜならこれはプログラム内で一度しか使わないからです。だからコメントだけで充分でしょう。これは他のすべてのチュートリアルで使われます。そのため別のファイル(common/loadShader.cpp)に置いておきます。バッファのように、シェーダは直接アクセスできませんないことに注意してください。IDがあります。実際の実装はドライバの中に隠されています。
+
 ``` cpp
 GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path){
 
@@ -208,13 +217,17 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 
 まず頂点シェーダを書いていきましょう。
 最初の行はコンパイラにOpenGL3のシンタックスを使うことを知らせています。
+
 ``` glsl vs
 #version 330 core
 ```
+
 2行目はインプットデータを宣言します。
+
 ``` glsl vs
 layout(location = 0) in vec3 vertexPosition_modelspace;
 ```
+
 これをより詳しく説明しましょう。
 
 * "vec3"はGLSLでの3つの要素を持つベクトルです。三角形を宣言するときに使ったglm::vec3と似ていますが違うものです。重要なことはC++で3要素を使ったら、GLSLでも3要素を使わなければいけないことです。
@@ -224,20 +237,25 @@ layout(location = 0) in vec3 vertexPosition_modelspace;
 
 
 各頂点で呼ばれるこの関数はmainで呼ばれます。Cのように。
+
 ``` glsl vs
 void main(){
 ```
+
 メイン関数では単に頂点位置にバッファ内に何があるかをセットします。だから(1,1)を与えれば、三角形はスクリーンの右上を頂点の一つとして持つということになります。次のチュートリアルでは、インプット位置上の、より興味深い処理を見ていきます。
+
 ``` glsl vs
     gl_Position.xyz = vertexPosition_modelspace;
     gl_Position.w = 1.0;
  }
 ```
+
 gl_Position is one of the few built-in variables : you *have *to assign some value to it. Everything else is optional; we'll see what "everything else" means in Tutorial 4.
 
 ##フラグメントシェーダ
 
 最初のフラグメントシェーダは、とてもシンプルなものとなります。各フラグメントに赤をセットします。(注意してほしいのは、4x AAを使っているので、各ピクセルごとに4つのフラグメントがあります。)
+
 ``` glsl fs
 #version 330 core
 out vec3 color;
@@ -246,26 +264,33 @@ void main(){
     color = vec3(1,0,0);
 }
 ```
+
 だから、vec3(1,0,0)は赤を意味します。これはコンピュータスクリーンでは色は赤、緑、青の順番の3つ組で表されるからです。だから(1,0,0)はすべて赤で、緑と青はありません。
 
 #すべてを合わせる
 
 メインループの前で、LoadShaders関数を呼びましょう。
+
 ``` cpp
 // シェーダからGLSLプログラムを作りコンパイルする。
 GLuint programID = LoadShaders( "SimpleVertexShader.vertexshader", "SimpleFragmentShader.fragmentshader" );
 ```
+
 メインループの中で、まずスクリーンをクリアしています。これは背景色をダークブルーに変更しています。なぜならメインループの上でglClearColor(0.0f, 0.0f, 0.4f, 0.0f)を読んでいるからです。
+
 ``` cpp
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 ```
+
 そしてOpenGLに使いたいシェーダを伝えます。
+
 ``` cpp
 // シェーダを使う
 glUseProgram(programID);
 
 // 三角形を描く...
 ```
+
 ... さぁ、ここに赤い三角形があります！
 
 ![]({{site.baseurl}}/assets/images/tuto-2-first-triangle/red_triangle.png)

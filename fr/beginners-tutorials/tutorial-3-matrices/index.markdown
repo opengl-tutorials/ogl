@@ -52,6 +52,7 @@ Ce n'est pas aussi effrayant qu'il y paraît. Place un doigt de ta main gauche s
 Comme c'est vraiment ennuyeux à calculer et qu'on va le faire souvent, on va laisser l'ordinateur le faire pour nous.
 
 **En C++, avec GLM :**
+
 ``` cpp
 glm::mat4 myMatrix;
 glm::vec4 myVector;
@@ -60,6 +61,7 @@ glm::vec4 transformedVector = myMatrix * myVector; // Again, in this order ! thi
 ```
 
 **En GLSL :**
+
 ``` glsl
 mat4 myMatrix;
 vec4 myVector;
@@ -94,6 +96,7 @@ Voyons voir maintenant ce qui se passe pour un vecteur qui représente une direc
 Donc, qu'est ce que ca donne dans le code ?
 
 **En C++, avec GLM :**
+
 ``` cpp
 #include <glm/gtx/transform.hpp> // after <glm/glm.hpp>
  
@@ -116,6 +119,7 @@ Celle-ci est spéciale. Elle ne fait rien. Mais on la mentionne car c'est import
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/identityExample.png)
 
 **En C++ :**
+
 ``` cpp
 glm::mat4 myIdentityMatrix = glm::mat4(1.0f);
 ```
@@ -135,6 +139,7 @@ et la valeur de w ne change pas. Tu peux te demander : quel est le sens d'une mi
 >La matrice d'identité n'est qu'un cas spécifique des matrices de redimensionnement, avec (X, Y, Z) = (1, 1, 1). C'est aussi un cas spécifique des matrices de translation avec (X, Y, Z) = (0, 0, 0).
 
 **En C++ :**
+
 ``` cpp
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
 glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
@@ -145,6 +150,7 @@ glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
 Elles sont assez compliquées. Je vais passer les détails ici, sachant qu'il n'est pas important de connaître leur fonctionnement pour un usage quotidien. Pour plus d'informations, jete un oeil à cette populaire [FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html) sur les matrices et quaternions (en anglais). Tu peux aussi regarder le [tutoriel sur les rotations]({{site.baseurl}}{{intermediate-tutorials/tutorial-17-quaternions}}).
 
 **En C++ :**
+
 ``` cpp
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
 glm::vec3 myRotationAxis( ??, ??, ??);
@@ -179,15 +185,19 @@ En fait, l'ordre utilisé ci-dessus est celui que l'on va utiliser pour les pers
 Les multiplications de matrices * matrices sont très proches des multiplications matrices * vecteur, donc encore une fois, je vais passer quelques détails et te rediriger vers la [FAQ des matrices]({{site.baseurl}}/assets/faq_quaternions/index.html#Q11) si nécessaire. Pour le moment, on demande simplement à l'ordinateur de le faire :
 
 **En C++, avec GLM :**
+
 ``` cpp
 glm::mat4 myModelMatrix = myTranslationMatrix * myRotationMatrix * myScaleMatrix;
 glm::vec4 myTransformedVector = myModelMatrix * myOriginalVector;
 ```
+
 **En GLSL :**
+
 ``` glsl
 mat4 transform = mat2 * mat1;
 vec4 out_vec = transform * in_vec;
 ```
+
 #Les matrices de modèle, de vue et de projection
 
 _Pour la suite du tutoriel, on supposera savoir comment dessiner le modèle 3D favori de Blender : le singe Suzanne. Même si c'est pas encore le cas_
@@ -314,6 +324,7 @@ transformed_vertex = MVP * in_vertex;
 # Mettre tout ensemble
 
 * Première étape : générer la matrice ModelViewProjection (MVP). Cela doit être fait pour chaque modèle que vous affichez.
+
 ``` cpp
 // Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float) width / (float)height, 0.1f, 100.0f);
@@ -333,7 +344,9 @@ glm::mat4 Model = glm::mat4(1.0f);
 // Our ModelViewProjection : multiplication of our 3 matrices
 glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is the other way around
 ```
+
 * Seconde étape : passez les matrices au GLSL
+
 ``` cpp
 // Get a handle for our "MVP" uniform
 // Only during the initialisation
@@ -343,7 +356,9 @@ GLuint MatrixID = glGetUniformLocation(program_id, "MVP");
 // This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
 glUniformMatrix4fv(mvp_handle, 1, GL_FALSE, &mvp[0][0]);
 ```
+
 * Third step : use it in GLSL to transform our vertices
+
 ``` glsl vs
 // Input vertex data, different for all executions of this shader.
 layout(location = 0) in vec3 vertexPosition_modelspace;
@@ -358,6 +373,7 @@ void main(){
 
 }
 ```
+
 * Fini ! Voici le triangle du second tutoriel, toujours à l'origine (0, 0, 0), mais vu en perspective à partir du point (4, 3, 3), la tête en haut (0, 1, 0), avec un champ de vision de 45°.
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/perspective_red_triangle.png)

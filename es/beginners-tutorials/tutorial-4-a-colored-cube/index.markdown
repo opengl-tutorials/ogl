@@ -63,12 +63,13 @@ static const GLfloat g_vertex_buffer_data[] = {
 };
 ```
 
-
 El buffer OpenGl es creado, asociado, llenado y configurado con las funciones estándar (glGenBuffers, glBindBuffer, glBufferData, glVertexAttribPointer) ; Mira el tutorial 2 para repasar. La función para pintar tampoco cambia, solo se le debe indicar el numero adecuado de vertices a dibujar :
+
 ``` cpp
 // Dibujar el triangulo !
 glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 los indices comienzan en 0 -> 12 triangulos -> 6 cuadrados
 ```
+
 Unos apuntes sobre este código :
 
 * Por ahora, nuestro modelo 3D es fijo : para cambiarlo, se debe modificar el código, recompilar la aplicación y esperar lo mejor. Vamos a aprender a cargar modelos de forma dinámica en el tutorial7
@@ -124,14 +125,18 @@ static const GLfloat g_color_buffer_data[] = {
     0.982f,  0.099f,  0.879f
 };
 ```
+
 El buffer es creado, asociado y llenado en la misma forma que el anterior :
+
 ``` cpp
 GLuint colorbuffer;
 glGenBuffers(1, &colorbuffer);
 glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
 ```
+
 La configuración también es idéntica :
+
 ``` cpp
 // 2do atributo del buffer : colores
 glEnableVertexAttribArray(1);
@@ -145,12 +150,16 @@ glVertexAttribPointer(
     (void*)0                          // corrimiento de buffer
 );
 ```
+
 Ahora en el vertex shader, tenemos que acceder a este buffer adicional :
+
 ``` glsl vs
 // Nota que “1” aquí es igual al “1” en glVertexAttribPointer
 layout(location = 1) in vec3 vertexColor;
 ```
+
 En nuestro caso, no hacemos nada extraño con el en el vertex shader, simplemente se lo mandamos al fragment shader :
+
 ``` glsl vs
 // Datos de salida, serán interpolados para cada fragmento.
 out vec3 fragmentColor;
@@ -163,12 +172,16 @@ void main(){
     fragmentColor = vertexColor;
 }
 ```
+
 En el fragment shader, se declara fragmentColor de nuevo:
+
 ``` glsl fs
 // Valores interpolados de los vertex shaders
 in vec3 fragmentColor;
 ```
+
 ... y es copiado en el color final
+
 ``` glsl fs
 // datos de salida
 out vec3 color;
@@ -179,6 +192,7 @@ void main(){
     color = fragmentColor;
 }
 ```
+
 Y esto es lo que obtenemos :
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/missing_z_buffer.png)
@@ -204,17 +218,21 @@ El lejano se esta pintando sobre el “cercano” aun cuando se supone que deber
 La solución a este problema es guardar el componente “Z” o profundidad para cada fragmento en un buffer, y cada vez que se quiere escribir un fragmento, primero se debe revisar si se debe pintar o estaba detrás y no debe ser pintado.
 
 Tu puedes hacer esto por ti mismo, pero es mucho más fácil pedirle al hardware que lo haga por ti :
+
 ``` cpp
 // Habilidad el test de profundidad
 glEnable(GL_DEPTH_TEST);
 // Aceptar el fragmento si esta mas cerca de la cámara que el fragmento anterior
 glDepthFunc(GL_LESS);
 ```
+
 También necesitas tanto la profunidad como el color de cada fragmento :
+
 ``` cpp
 // Limpiar la ventana
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 ```
+
 Y esto es suficiente para resolver todos los problemas. 
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/one_color_per_vertex.png)

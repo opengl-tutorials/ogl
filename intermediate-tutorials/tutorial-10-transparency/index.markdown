@@ -13,13 +13,17 @@ tags: []
 # The alpha channel
 
 The concept of the alpha channel is pretty simple. Instead of a writing an RGB result, you write an RGBA :
+
 ``` glsl fs// Ouput data : it's now a vec4
 out vec4 color;
 ```
+
 the first 3 components are still accessed with the .xyz swizzle operator, while the last one is accessed with .a :
+
 ``` glsl fs
 color.a = 0.3;
 ```
+
 Unintuitively, alpha = opaqueness, so alpha = 1 means fully opaque while alpha = 0 means fully transparent.
 
 Here, we simply hardcode the alpha channel at 0.3, but you probably want to use a uniform, or read it from a RGBA texture ( TGA supports the alpha channel, and GLFW supports TGA )
@@ -89,22 +93,26 @@ Note that even a recent game like Little Big Planet, which ran on a powerful con
 # The blend function
 
 In order for the previous code to work, you need to setup your blend function.
+
 ``` cpp
 // Enable blending
 glEnable(GL_BLEND);
 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 ```
+
 Which means :
 ```
+
 New color in framebuffer =
            current alpha in framebuffer * current color in framebuffer +
            (1 - current alpha in framebuffer) * shader's output color
 ```
+
 Example from the image above, with red on top :
+
 ``` cpp
 new color = 0.5*(0,1,0) + (1-0.5)*(1,0.5,0.5); // (the red was already blended with the white background)
 new color = (1, 0.75, 0.25) = the same orange
 ```
- 
 
  

@@ -98,7 +98,7 @@ void main(){
 
 }
 ```
- 
+
 Facile !
 
 La seule astuce est que tu dois envoyer tes couleurs en nombres flottants (compris dans [0, 1]) alors que tu as des entiers (compris dans [0, 255]), donc tu dois effectuer une petite division lors de l'appel à *glUniformXX()* :
@@ -169,7 +169,6 @@ if (pickedID == 0x00ffffff){ // Full white, must be the background !
 	message = oss.str();
 }
 ```
- 
 
 #Avantages et inconvénients
 

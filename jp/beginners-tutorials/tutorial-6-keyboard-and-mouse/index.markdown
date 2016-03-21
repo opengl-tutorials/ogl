@@ -21,6 +21,7 @@ order: 60
 このコードはチュートリアルを通して使うので、別のファイルで保存します。ファイルはcommon/controls.cppにあります。またtutorial06.cppにそれらを知らせるために、common/controls.hppで関数を宣言しておきます。
 
 tutorial06.cppのコードは前のチュートリアルからあまり変えません。大きな変更点は、MVP行列を一度計算するのではなく、毎フレーム計算する必要がある点です。だからこのコードをメインループ内に移しましょう。
+
 ``` cpp
 do{
 
@@ -36,6 +37,7 @@ do{
     // ...
 }
 ```
+
 このコードには3つの新しい関数があります。
 
 * computeMatricesFromInputs()はキーボードとマウスを読み込み、射影行列とビュー行列を計算します。この関数が手品のタネです。
@@ -49,6 +51,7 @@ controls.cpp内で何が起きているのか見ていきましょう。
 #実際のコード
 
 いくつかの変数が必要となります。
+
 ``` cpp
 // 位置
 glm::vec3 position = glm::vec3( 0, 0, 5 );
@@ -62,6 +65,7 @@ float initialFoV = 45.0f;
 float speed = 3.0f; // 3 units / second
 float mouseSpeed = 0.005f;
 ```
+
 FoVはズームレベルです。80&deg;= 超広角,大きなゆがみがあります。60&deg;-45&deg;は一般的です。20&deg;はすごいズームです。
 
 最初にインプットに応じて位置、水平角、鉛直角と視野を再計算します。そして、その情報を元にビュー行列と射影行列を計算します。
@@ -69,24 +73,30 @@ FoVはズームレベルです。80&deg;= 超広角,大きなゆがみがあり�
 ##方向
 
 マウスの位置を読み込むのは簡単です。
+
 ``` cpp
 // マウスの位置を取得します。
 int xpos, ypos;
 glfwGetMousePos(&xpos, &ypos);
 ```
+
 一方で、マウスをスクリーンの中心に戻すときには注意が必要です。そうしなければ、すぐにウィンドウの外に出てしまい、それ以上動かせなくなってしまいます。
+
 ``` cpp
 // 次のフレームのためにマウス位置をリセットします。
 glfwSetMousePos(1024/2, 768/2);
 ```
+
 このコードはウィンドウサイズを1024&times;768と仮定しています。もちろんこのサイズでなくても良いです。必要ならばglfwGetWindowSizeを使っても良いです。
 
 これで視野角を計算できます。
+
 ``` cpp
 // 新たな方向を計算します。
 horizontalAngle += mouseSpeed * deltaTime * float(1024/2 - xpos );
 verticalAngle   += mouseSpeed * deltaTime * float( 768/2 - ypos );
 ```
+
 右から左に読んでみましょう。
 
 * 1024/2 - xpos はマウスがウィンドウの中心からどの程度離れているかを意味します。この値が大きいほど、より動かしたいということを意味します。
@@ -95,6 +105,7 @@ verticalAngle   += mouseSpeed * deltaTime * float( 768/2 - ypos );
 * += マウスを動かさなければ 1024/2-xpos は0で、水平角は +=0 となり、水平角は変わりません。もし"+="の代わりに"="を使うと、毎フレーム、元の方向に戻ることになります。これはよくありません。
 
 これで、ワールド空間でどちらの方向を向いているかを表現するベクトルを計算できます。
+
 ``` cpp
 // 方向：球面座標から直角座標に変換します。
 glm::vec3 direction(
@@ -103,6 +114,7 @@ glm::vec3 direction(
     cos(verticalAngle) * cos(horizontalAngle)
 );
 ```
+
 これは一般的な計算です。コサインとサインを知らないならば、ここに簡単な説明を示します。
 
 <img class="alignnone whiteborder" title="Trigonometric circle" src="http://www.numericana.com/answer/trig.gif" alt="" width="150" height="150" />
@@ -113,6 +125,7 @@ glm::vec3 direction(
 ![]({{site.baseurl}}/assets/images/tuto-6-mouse-keyboard/CameraUp.png)
 
 私たちのケースでは、カメラの右方向へ向かうベクトルは常に水平、ということは変化しません腕を水平にして、上や下やいろんな角度を見ることで、これを確認できるでしょう。だから"右"ベクトルを次のように定義しましょう。そのベクトルは水平なのでY座標は0で、XとYは上で示したような感じです。ただし、角度は90&deg;あるいはPi/2ラジアンずつ回転しています。
+
 ``` cpp
 // 右ベクトル
 glm::vec3 right = glm::vec3(
@@ -121,16 +134,20 @@ glm::vec3 right = glm::vec3(
     cos(horizontalAngle - 3.14f/2.0f)
 );
 ```
+
 これで"右"ベクトルと"方向・前"ベクトルを持っていることになります。"上"ベクトルはこれら2つのベクトルに垂直です。外積という便利な数学ツールで簡単に計算できます。
+
 ``` cpp
 // 上ベクトル：右と前ベクトルに垂直
 glm::vec3 up = glm::cross( right, direction );
 ```
+
 外積が何をやっているか思い出してください。とてもシンプルなことを行っています。チュートリアル3の右手の法則を思い出してください。最初のベクトルは親指、2つ目は人差し指、結果は中指です。とっても便利でしょ？
 
 ##位置
 
 コードはとても簡単です。ところで、a/w/s/dキーの代わりに上/下/右/左キーを使います。なぜなら私のキーボードはazertyなので、a/w/s/dの位置ははz/q/s/dだからです。また韓国で使われているqwerZキーボードもまた配置が異なります。実のところ韓国人がどんなキーボードを使っているかは知りませんが、たぶんawsdとは違う配置のものを使っているでしょう。
+
 ``` cpp
 // 前へ動きます。
 if (glfwGetKey( GLFW_KEY_UP ) == GLFW_PRESS){
@@ -149,6 +166,7 @@ if (glfwGetKey( GLFW_KEY_LEFT ) == GLFW_PRESS){
     position -= right * deltaTime * speed;
 }
 ```
+
 ここで特別なものはdeltaTimeです。次のような理由から、各フレームに1単位だけ動くのはあまり好ましくないでしょう。
 
 * 60fpsで動くような早いコンピュータを使っていると、1秒で60&times;speedだけ動きます。
@@ -160,6 +178,7 @@ if (glfwGetKey( GLFW_KEY_LEFT ) == GLFW_PRESS){
 * 20fpsで動くような遅いコンピュータを使っていると、1フレームで1/20&times;speed単位だけ動きます。だから1秒で1&times;speedだけ動きます。.
 
 こうするほうが好ましいでしょう。また、deltaTimeは簡単に計算できます。
+
 ``` cpp
 double currentTime = glfwGetTime();
 float deltaTime = float(currentTime - lastTime);
@@ -168,6 +187,7 @@ float deltaTime = float(currentTime - lastTime);
 ##視野
 
 よりおもしろくするために、マウスのホイールを視野に割り当てましょう。これにより安っぽいズーム機能を付けられます。
+
 ``` cpp
 float FoV = initialFoV - 5 * glfwGetMouseWheel();
 ```
@@ -175,6 +195,7 @@ float FoV = initialFoV - 5 * glfwGetMouseWheel();
 ##行列の計算
 
 行列を計算するのは簡単です。以前とは違うパラメータを使って、前と同じような関数を使います。
+
 ``` cpp
 // 射影行列：視野45&deg;、4:3比、描画範囲0.1単位100単位
 ProjectionMatrix = glm::perspective(FoV, 4.0f / 3.0f, 0.1f, 100.0f);
@@ -202,6 +223,7 @@ ViewMatrix       = glm::lookAt(
 残念なことに、これはコストがかかります。つまり三角形の向きは暗黙的です。もしバッファ内の二つの頂点をひっくり返すと、間違いに終わるでしょう。しかし少しの追加の仕事をさせる価値があります。しばしば、3Dモデラーでは"法線を逆さまに"をクリックする必要があります。(実はこれは頂点を逆さまにし、そして法線です。)そしてすべてうまくいきます。
 
 バックフェースカリングを有効にするのは簡単です。
+
 ``` cpp
 // カメラのほうを向いていない法線の三角形をカリングします。
 glEnable(GL_CULL_FACE);

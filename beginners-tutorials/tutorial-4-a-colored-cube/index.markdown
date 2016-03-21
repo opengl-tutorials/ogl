@@ -157,6 +157,7 @@ Now, in the vertex shader, we have access to this additional buffer :
 // Notice that the "1" here equals the "1" in glVertexAttribPointer
 layout(location = 1) in vec3 vertexColor;
 ```
+
 {: .highlightglslvs }
 
 In our case, we won't do anything fancy with it in the vertex shader. We will simply forward it to the fragment shader :
@@ -174,6 +175,7 @@ void main(){
     fragmentColor = vertexColor;
 }
 ```
+
 {: .highlightglslvs }
 
 In the fragment shader, you declare fragmentColor again :
@@ -182,6 +184,7 @@ In the fragment shader, you declare fragmentColor again :
 // Interpolated values from the vertex shaders
 in vec3 fragmentColor;
 ```
+
 {: .highlightglslfs }
 
 ... and copy it in the final output color :
@@ -196,6 +199,7 @@ void main(){
     color = fragmentColor;
 }
 ```
+
 {: .highlightglslfs }
 
 And that's what we get :

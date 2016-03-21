@@ -20,6 +20,7 @@ To keep this tutorial as simple as possible, we'll use the OBJ file format, whic
 #Loading the OBJ
 
 Our function, located in common/objloader.cpp and declared in common/objloader.hpp, will have the following signature :
+
 ``` cpp
 bool loadOBJ(
     const char * path,
@@ -28,12 +29,14 @@ bool loadOBJ(
     std::vector < glm::vec3 > & out_normals
 )
 ```
+
 We want loadOBJ to read the file "path", write the data in out_vertices/out_uvs/out_normals, and return false if something went wrong. std::vector is the C++ way to declare an array of glm::vec3 which size can be modified at will: it has nothing to do with a mathematical vector. Just an array, really. And finally, the & means that function will be able to modify the std::vectors.
 
 ##Example OBJ file
 
 An OBJ file looks more or less like this :
 ```
+
 # Blender3D v249 OBJ File: untitled.blend
 # www.blender3d.org
 mtllib cube.mtl
@@ -82,6 +85,7 @@ f 8/11/7 7/12/7 6/10/7
 f 1/2/8 2/9/8 3/13/8
 f 1/2/8 3/13/8 4/14/8
 ```
+
 So :
 
 * # is a comment, just like // in C++
@@ -114,13 +118,16 @@ Since our toy loader will severely limited, we have to be extra careful to set t
 ##Reading the file
 
 Ok, down with the actual code. We need some temporary variables in which we will store the contents of the .obj :
+
 ``` cpp
 std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;
 std::vector< glm::vec3 > temp_vertices;
 std::vector< glm::vec2 > temp_uvs;
 std::vector< glm::vec3 > temp_normals;
 ```
+
 Since Tutorial 5 : A Textured Cube, you know how to open a file :
+
 ``` cpp
 FILE * file = fopen(path, "r");
 if( file == NULL ){
@@ -128,7 +135,9 @@ if( file == NULL ){
     return false;
 }
 ```
+
 Let's read this file until the end :
+
 ``` cpp
 while( 1 ){
 
@@ -140,32 +149,40 @@ while( 1 ){
 
     // else : parse lineHeader
 ```
+
 (notice that we assume that the first word of a line won't be longer than 128, which is a very silly assumption. But for a toy parser, it's all right)
 
 Let's deal with the vertices first :
+
 ``` cpp
 if ( strcmp( lineHeader, "v" ) == 0 ){
     glm::vec3 vertex;
     fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z );
     temp_vertices.push_back(vertex);
 ```
+
 i.e : If the first word of the line is "v", then the rest has to be 3 floats, so create a glm::vec3 out of them, and add it to the vector.
+
 ``` cpp
 }else if ( strcmp( lineHeader, "vt" ) == 0 ){
     glm::vec2 uv;
     fscanf(file, "%f %f\n", &uv.x, &uv.y );
     temp_uvs.push_back(uv);
 ```
+
 i.e if it's not a "v" but a "vt", then the rest has to be 2 floats, so create a glm::vec2 and add it to the vector.
 
 same thing for the normals :
+
 ``` cpp
 }else if ( strcmp( lineHeader, "vn" ) == 0 ){
     glm::vec3 normal;
     fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z );
     temp_normals.push_back(normal);
 ```
+
 And now the "f", which is more difficult :
+
 ``` cpp
 }else if ( strcmp( lineHeader, "f" ) == 0 ){
     std::string vertex1, vertex2, vertex3;
@@ -185,6 +202,7 @@ And now the "f", which is more difficult :
     normalIndices.push_back(normalIndex[1]);
     normalIndices.push_back(normalIndex[2]);
 ```
+
 This code is in fact very similar to the previous one, except that there is more data to read.
 
 ##Processing the data
@@ -192,28 +210,37 @@ This code is in fact very similar to the previous one, except that there is more
 So what we did there was simply to change the "shape" of the data. We had a string, we now have a set of std::vectors. But it's not enough, we have to put this into a form that OpenGL likes. Namely, removing the indexes and have plain glm::vec3 instead. This operation is called indexing.
 
 We go through each vertex ( each v/vt/vn ) of each triangle ( each line with a "f" ) :
+
 ``` cpp
     // For each vertex of each triangle
     for( unsigned int i=0; i<vertexIndices.size(); i++ ){
 
 ```
+
 the index to the vertex' position is vertexIndices[i] :
+
 ``` cpp
 unsigned int vertexIndex = vertexIndices[i];
 ```
+
 so the position is temp_vertices[ vertexIndex-1 ] (there is a -1 because C++ indexing starts at 0 and OBJ indexing starts at 1, remember ?) :
+
 ``` cpp
 glm::vec3 vertex = temp_vertices[ vertexIndex-1 ];
 ```
+
 And this makes the position of our new vertex
+
 ``` cpp
 out_vertices.push_back(vertex);
 ```
+
 The same is applied for UVs and normals, and we're done !
 
 #Using the loaded data
 
 Once we've got this, almost nothing changes. Instead of declaring our usual static const GLfloat g_vertex_buffer_data[] = {...}, you declare a std::vector vertices instead (same thing for UVS and normals). You call loadOBJ with the right parameters :
+
 ``` cpp
 // Read our .obj file
 std::vector< glm::vec3 > vertices;
@@ -221,10 +248,13 @@ std::vector< glm::vec2 > uvs;
 std::vector< glm::vec3 > normals; // Won't be used at the moment.
 bool res = loadOBJ("cube.obj", vertices, uvs, normals);
 ```
+
 and give your vectors to OpenGL instead of your arrays :
+
 ``` cpp
 glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
 ```
+
 And that's it !
 
 #Results

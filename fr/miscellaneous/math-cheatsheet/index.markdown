@@ -70,6 +70,7 @@ Comme pour une distance cartésienne : racine carrée(x&sup2; + y&sup2; + z&sup2
 
 Pour chaque composante (x, y, ...) :
 ```
+
 res.x = A.x + B.x
 res.y = A.y + B.y
 ...
@@ -79,6 +80,7 @@ res.y = A.y + B.y
 
 Pour chaque composante (x, y, ...) :
 ```
+
 res.x = A.x * B.x
 res.y = A.y * B.y
 ...
@@ -88,6 +90,7 @@ res.y = A.y * B.y
 
 On divise le vecteur par sa longueur
 ```
+
 normalizedVector = vec * ( 1.0f / vec.length() )
 ```
 

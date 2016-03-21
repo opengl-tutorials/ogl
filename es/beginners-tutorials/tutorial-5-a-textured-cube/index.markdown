@@ -37,16 +37,21 @@ Nota como la textura se distorsiona en el triángulo.
 Conocer el formato BMP no es crucial : Hay muchas librerías que pueden cargar archivos BMP por ti. Sin embargo, el formato es bastante simple y conocerlo podría ayudarte a entender como funcionan las cosas por debajo. Así que escribermos un cargador de archivos BMP desde cero, para que puedas entender como funciona y luego<span style="text-decoration: underline;">no vuelvas a usarlo nunca más</span>.
 
 Aquí se declara la función para cargar la imagen :
+
 ``` cpp
 GLuint loadBMP_custom(const char * imagepath);
 ```
+
 y se utiliza así :
+
 ``` cpp
 GLuint image = loadBMP_custom("./my_texture.bmp");
 ```
+
 Veamos ahora como leer un archivo en formato BMP.
 
 Primero, necesitaremos alguna información. Estas variables serán asignadas cuando leamos el archivo
+
 ``` cpp
 // Lectura de información del encabezado del archivo
 unsigned char header[54]; // Each BMP file begins by a 54-bytes header
@@ -56,31 +61,39 @@ unsigned int imageSize;   // = width*height*3
 // Información RGB
 unsigned char * data;
 ```
+
 We now have to actually open the file
+
 ``` cpp
 // Apertura del archivo
 FILE * file = fopen(imagepath,"rb");
 if (!file){printf("Image could not be opened\n"); return 0;}
 ```
+
 The first thing in the file is a 54-bytes header. It contains information such as "Is this file really a BMP file?", the size of the image, the number of bits per pixel, etc. So let's read this header :
+
 ``` cpp
 if ( fread(header, 1, 54, file)!=54 ){ // If not 54 bytes read : problem
     printf("Not a correct BMP file\n");
     return false;
 }
 ```
+
 El encabezado siempre comienza con BM. De hecho, esto es lo que obtienes cuando abres un archivo de extensión .BMP en un editor hexadecimal:
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/hexbmp.png)
 
 Es por esto que tenemos que verificar que los dos primeros bytes son realmente las letras 'B' y 'M' :
+
 ``` cpp
 if ( header[0]!='B' || header[1]!='M' ){
     printf("Not a correct BMP file\n");
     return 0;
 }
 ```
+
 Ahora podemos leer el tamaño de la imagen, la ubicación de la información en el archivo, etc :
+
 ``` cpp
 // Lectura de los enteros desde el arreglo de bytes
 dataPos    = *(int*)&(header[0x0A]);
@@ -88,13 +101,17 @@ imageSize  = *(int*)&(header[0x22]);
 width      = *(int*)&(header[0x12]);
 height     = *(int*)&(header[0x16]);
 ```
+
 Tenemos que rellenar algunas piezas de información en caso de que estén ausentes :
+
 ``` cpp
 // Algunos archivos BMP tienen un mal formato, así que adivinamos la información faltante
 if (imageSize==0)    imageSize=width*height*3; // 3 : un byte por cada componente Rojo (Red), Verde (Green) y Azul(Blue)
 if (dataPos==0)      dataPos=54; // El encabezado del BMP está hecho de esta manera
 ```
+
 Ahora que sabemos el tamaño de la imagen, podemos reservar algo de memoria para la imagen que vamos a leer :
+
 ``` cpp
 // Se crea un buffer
 data = new unsigned char [imageSize];
@@ -105,9 +122,11 @@ fread(data,1,imageSize,file);
 //Todo está en memoria ahora, así que podemos cerrar el archivo
 fclose(file);
 ```
+
 Llegamos ahora entonces a la verdadera parte del OpenGL. Crear texturas es muy similar a crear buffers de vértices: Se crea una textura, se ata, se rellena y se configura.
 
 En glTexImage2D, La opción GL_RGB indica que estamos hablando de un color en 3 componentes, y GL_BGR señala cómo éste es representado exactamente en la memoria RAM. En realidad, BMP no almacena los colores de la forma Rojo->Verde->Azul sino de la forma Azul->Verde->Rojo, así que se lo tenemos que decir explícitamente a OpenGL.
+
 ``` cpp
 // Se Crea una textura OpenGL
 GLuint textureID;
@@ -122,10 +141,13 @@ glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 ```
+
 Explicaremos estas dos líneas más adelante. Mientras tanto, en el lado C++, puedes usar tu nueva función para cargar una textura :
+
 ``` cpp
 GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 ```
+
 Otro punto muy importante :** Usar texturas en potencias de dos !**
 
 * Bien : 128x128, 256x256, 1024x1024, 2x2...
@@ -136,6 +158,7 @@ Otro punto muy importante :** Usar texturas en potencias de dos !**
 #Usando la textura en OpenGL
 
 Le daremos unn vistazo primero al fragment shader. La mayor parte es bastante simple :
+
 ``` glsl fs
 #version 330 core
 
@@ -154,6 +177,7 @@ void main(){
     color = texture( myTextureSampler, UV ).rgb;
 }
 ```
+
 Tres cosas :
 
 * El fragment shader necesita coordenadas UV. Lo cual parece justo.
@@ -161,6 +185,7 @@ Tres cosas :
 * Finalmente, el acceso a una textura se realiza con la función texture() que retorna un vec4 de la forma (R,G,B,A) vec4. Más adelante hablaremos de lo que significa esa última A.
 
 El vertex shader es simple también. Sólo tienes que pasar coordeandas UV al fragment shader :
+
 ``` glsl vs
 #version 330 core
 
@@ -183,7 +208,9 @@ void main(){
     UV = vertexUV;
 }
 ```
+
 ¿Recuerdas la línea "layout(location = 1) in vec2 vertexUV" del Tutorial 4 ? Bien, tendremos que hacer exactamente lo mismo aquí, pero en lugar de darle un buffer de tripletas (R,G,B), le daremos un buffer de parejas (U,V).
+
 ``` cpp
 // Dos coordenadas UV para cada vértice. Éstas fueron creadas con Blender. Aprenderás en breve como hacer esto tu mismo.
 static const GLfloat g_uv_buffer_data[] = {
@@ -225,6 +252,7 @@ static const GLfloat g_uv_buffer_data[] = {
     0.667979f, 1.0f-0.335851f
 };
 ```
+
 Las coordeandas UV arriba correpsonden al siguiente modelo :
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/uv_mapping_blender.png)
@@ -242,10 +270,12 @@ Y esta es la versión aumentada :
 #¿Qué son el filtrado, los mapas MIP y cómo se usan?
 
 Cómo puedes ver en la captura de pantalla de arriba, la calidad de la textura no es la mejor. Esto es porque en nuestra función loadBMP_custom escribimos lo siguiente :
+
 ``` cpp
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 ```
+
 Esto significa que en nuestro fragment shader, texture() toma the texel que está en la coordenada (U,V) y continúa campante
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearest.png)
@@ -278,6 +308,7 @@ El filtrado lineal y el filtrado anisotrópico tienen un problema. Si la textura
 * Para calidad adicional, puedes muestrear dos mapas MIP y mezclar los resultados.
 
 Por suerte, todo esto es bastante simple de hacer. OpenGL es capaz de realizar todo esto por nosotros si se lo pedimos amablemente :
+
 ``` cpp
 // Cuando se MAGnifique la imagen (no hay un mapa MIP disponible), se usa filtrado Lineal
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -290,6 +321,7 @@ glGenerateMipmap(GL_TEXTURE_2D);
 #Cómo cargar una textura con GLFW
 
 Nuestra función loadBMP_custom es genial porque la hicimos nosotros mismos, pero usar una librería dedicada es aún mejor. GLFW2 puede hacer esto también (pero solo para archivos TGA y esta característica ha sido removida de GLFW3 que es que usaremos) :
+
 ``` cpp
 GLuint loadTGA_glfw(const char * imagepath){
 
@@ -340,6 +372,7 @@ En este munto, tu imagen está comprimida en un formato que es directamente comp
 ##Usando la Textura Comprimida
 
 Vamos ahora como cargar la imagen. El códig es muy similar al código de BMP, excepto que el encabezado está organizado de manera diferente :
+
 ``` cpp
 GLuint loadDDS(const char * imagepath){
 
@@ -373,6 +406,7 @@ GLuint loadDDS(const char * imagepath){
 Después del encabezado está la verdadera información: Todos los niveles de los mapas MIP uno después del otro. Podemos leerlos todos en una sola pasada :
 
  
+
 ``` cpp
     unsigned char * buffer;
     unsigned int bufsize;
@@ -383,7 +417,9 @@ Después del encabezado está la verdadera información: Todos los niveles de lo
     /* cerramos el puntero al archivo */
     fclose(fp);
 ```
+
 Aquí tratamos con tres formatos diferentes: DXT1, DXT3 y DXT5. Necesitamos convertir el flag "fourCC" en un valor que OpenGL pueda entender
+
 ``` cpp
     unsigned int components  = (fourCC == FOURCC_DXT1) ? 3 : 4;
     unsigned int format;
@@ -403,7 +439,9 @@ Aquí tratamos con tres formatos diferentes: DXT1, DXT3 y DXT5. Necesitamos conv
         return 0;
     }
 ```
+
 La creación de la textura se hace de la forma habitual :
+
 ``` cpp
     // Se crea una textura OpenGL
     GLuint textureID;
@@ -412,7 +450,9 @@ La creación de la textura se hace de la forma habitual :
     //  Se "Ata" la nueva textura : Todas las futuras funciones de texturas van a modificar esta textura
     glBindTexture(GL_TEXTURE_2D, textureID);
 ```
+
 Y ahora rellenamos cada mapa MIP uno después del otro :
+
 ``` cpp
     unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
     unsigned int offset = 0;

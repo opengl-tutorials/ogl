@@ -32,9 +32,11 @@ language: jp
 #オイラー角
 
 オイラー角は回転を考える上で最も簡単な方法です。基本的にX、Y、Z軸周りでの3つの回転を格納するだけです。理解しやすいシンプルな概念です。それを格納するためにvec3を使います。
+
 ``` cpp
 vec3 EulerAngles( RotationAroundXInRadians, RotationAroundYInRadians, RotationAroundZInRadians);
 ```
+
 これらの3つの回転は連続的に実行されます。通常はY軸、Z軸、X軸の順番です。（ただし絶対ではありません。）異なる順番では異なる結果となります。
 
 オイラー角のシンプルな使用方法の一つにキャラクターの方向をセットすることがあります。通常キャラクターはX軸やZ軸で回転せず、垂直軸だけで回転します。それゆえ、3つの異なる方向よりも、書くのも、理解するのも、軸を維持するのも簡単な方法となります。
@@ -56,6 +58,7 @@ vec3 EulerAngles( RotationAroundXInRadians, RotationAroundYInRadians, RotationAr
 #クォータニオン
 
 クォータニオンは4つの数字[x y z w]のセットで、次のように回転を表します。
+
 ``` cpp
 // RotationAngleはラジアンで表します。
 x = RotationAxis.x * sin(RotationAngle / 2)
@@ -63,6 +66,7 @@ y = RotationAxis.y * sin(RotationAngle / 2)
 z = RotationAxis.z * sin(RotationAngle / 2)
 w = cos(RotationAngle / 2)
 ```
+
 RotationAxisは名前が示すとおり、回転させたい軸を表します。
 
 RotationAngleはこの軸周りでの回転角度を示します。
@@ -114,7 +118,9 @@ MyQuaternion = gtx::quaternion::angleAxis(degrees(RotationAngle), RotationAxis);
 ``` cpp
 mat4 RotationMatrix = quaternion::toMat4(quaternion);
 ```
+
 これでいつもどおりモデル行列を作れます。
+
 ``` cpp
 mat4 RotationMatrix = quaternion::toMat4(quaternion);
 ...
@@ -151,23 +157,28 @@ mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScaleMatrix;
 内積をとればそれらのベクトルの角度を出してくれます。もし値が1ならば、同じ方向を向いています。
 
 クォータニオンでもまったく同じです。
+
 ``` cpp
 float matching = quaternion::dot(q1, q2);
 if ( abs(matching-1.0) < 0.001 ){
     // q1とq2は同じ
 }
 ```
+
 q1とq2間の角度を知りたい場合は内積のacos()を取れば良いです。
 
 ##頂点への回転の適用方法
 
 次のようにできます。
+
 ``` cpp
 rotated_point = orientation_quaternion *  point;
 ```
+
 しかしモデル行列で計算したい場合は、代わりに行列に変換すべきです。
 
 回転の中心は常に原点です。他の点で回転させたい場合には次のようにします。
+
 ``` cpp
 rotated_point = origin + (orientation_quaternion * (point-origin));
 ```
@@ -175,6 +186,7 @@ rotated_point = origin + (orientation_quaternion * (point-origin));
 ##二つのクォータニオンの補間方法
 
 これはSLERPと呼ばれています。球面線形補間とい言います。GLMではこれをミックスすることで行えます。
+
 ``` cpp
 glm::quat interpolatedquat = quaternion::mix(quat1, quat2, 0.5f); // or whatever factor
 ```
@@ -182,6 +194,7 @@ glm::quat interpolatedquat = quaternion::mix(quat1, quat2, 0.5f); // or whatever
 ##二つの回転の計算方法
 
 単純に二つのクォータニオンを掛け合わせるだけです。行列と同じで順番は同じです。つまり逆順です。
+
 ``` cpp
 quat combined_rotation = second_rotation * first_rotation;
 ```
@@ -196,6 +209,7 @@ quat combined_rotation = second_rotation * first_rotation;
 * 回転角の見つけ方：二つのベクトルの外積
 
 次のアルゴリズムがこれを行います。しかし特別なケースには対処が必要です。
+
 ``` cpp
 quat RotationBetweenVectors(vec3 start, vec3 dest){
 	start = normalize(start);
@@ -229,16 +243,20 @@ quat RotationBetweenVectors(vec3 start, vec3 dest){
 
 }
 ```
+
 この関数はcommon/quaternion_utils.cppにあります。
 
 ##gluLookAtと同じように、オブジェクトをある点の方向へ向けさせたい。
 
 RotationBetweenVectorsを使いましょう！
+
 ``` cpp
 // オブジェクトの前方（通常は+Z方向ですが、場合によります）と目的の方向との回転を見つけます。
 quat rot1 = RotationBetweenVectors(vec3(0.0f, 0.0f, 1.0f), direction);
 ```
+
 ここでオブジェクトをまっすぐ向かせたい場合を考えます。
+
 ``` cpp
 // 方向と垂直するように、目的の上方向を再計算します。
 // もし本当に目的の上方向に向かせたいなら、このパートはスキップできます。
@@ -250,10 +268,13 @@ desiredUp = cross(right, direction);
 vec3 newUp = rot1 * vec3(0.0f, 1.0f, 0.0f);
 quat rot2 = RotationBetweenVectors(newUp, desiredUp);
 ```
+
 これらをあわせます。
+
 ``` cpp
 quat targetOrientation = rot2 * rot1; // 逆順になります。
 ```
+
 "方向"は方向であって目標とする点ではありません。しかし次のように位置は計算できます。目標点-現在点。
 
 一度目的の方向を得たなら、startOrientationとtargetOrientationの間の補間が欲しいと思います。
@@ -263,11 +284,14 @@ quat targetOrientation = rot2 * rot1; // 逆順になります。
 ##特定の回転スピードに制限したLookAtの使い方
 
 基本的な考え方はSLERP( = use glm::mix )と同じです。しかし回転角が目的の値より大きくならないように補間します。
+
 ``` cpp
 float mixFactor = maxAllowedAngle / angleBetweenQuaternions;
 quat result = glm::gtc::quaternion::mix(q1, q2, mixFactor);
 ```
+
 以下に特殊なケースにも対応した完璧な実装を示します。最適化のためmix()を直接は使っていません。
+
 ``` cpp
 quat RotateTowards(quat q1, quat q2, float maxAngle){
 
@@ -306,10 +330,13 @@ quat RotateTowards(quat q1, quat q2, float maxAngle){
 
 }
 ```
+
 これは次のように使います。
+
 ``` cpp
 CurrentOrientation = RotateTowards(CurrentOrientation, TargetOrientation, 3.14f * deltaTime );
 ```
+
 この関数はcommon/quaternion_utils.cppにあります。
 
 ##他の方法は…

@@ -101,6 +101,7 @@ glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 Ce qui signifie :
 
 ```
+
 nouvelle couleur dans le buffer d'écran = 
     alpha actuel dans le buffer d'écran * couleur actuelle dans le buffer d'écran + 
     (1 - alpha actuel dans le tampon d'écran) * la couleur de sortie du shader
@@ -112,6 +113,5 @@ Exemple de l'image ci-dessus, avec le rouge au-dessus :
 new color = 0.5*(0,1,0) + (1-0.5)*(1,0.5,0.5); // (the red was already blended with the white background)
 new color = (1, 0.75, 0.25) = the same orange
 ```
- 
 
  

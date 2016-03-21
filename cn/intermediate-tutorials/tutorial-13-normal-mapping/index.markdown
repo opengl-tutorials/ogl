@@ -23,9 +23,11 @@ order: 50
 
 
 每个纹素的RGB值实际上表示的是XYZ向量：颜色的分量取值范围为0到1，而向量的分量取值范围是-1到1；可以建立从纹素到法线的简单映射
+
 ``` c
 normal = (2*color)-1 // on each component
 ```
+
 由于法线基本都是指向"曲面外侧"的（按照惯例，X轴朝右，Y轴朝上），因此法线纹理整体呈蓝色。
 
 法线纹理的映射方式和漫反射纹理相似。麻烦之处在于如何将法线从各三角形局部空间（切线空间tangent space，亦称图像空间image space）变换到模型空间（着色计算所采用的空间）。
@@ -49,10 +51,12 @@ normal = (2*color)-1 // on each component
 [<img class="alignnone size-full wp-image-824" title="NTBFromUVs" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/NTBFromUVs.png" alt="" width="480" height="270">]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/NTBFromUVs.png)
 
 算法如下：记三角形的两条边为deltaPos1和deltaPos2，deltaUV1和deltaUV2是对应的UV坐标下的差值；则问题可用如下方程表示：
+
 ``` c
 deltaPos1 = deltaUV1.x * T + deltaUV1.y * B
 deltaPos2 = deltaUV2.x * T + deltaUV2.y * B
 ```
+
 求解T和B就得到了切线和副切线！（代码见下文）
 
 已知T、B、N向量之后，即可得下面这个漂亮的矩阵，完成从切线空间到模型空间的变换：
@@ -65,9 +69,11 @@ deltaPos2 = deltaUV2.x * T + deltaUV2.y * B
 可我们需要的却是从切线空间到模型空间的变换，法线则保持不变。所有计算均在切线空间中进行，不会对其他计算产生影响。
 
 只需对上述矩阵求逆即可得逆变换。这个矩阵（正交阵，即各向量相互正交的矩阵，参见下文"延伸阅读"小节）的逆矩阵恰好也就是其转置矩阵，计算十分简单：
+
 ``` c
 invTBN = transpose(TBN)
 ```
+
 亦即：
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/transposeTBN.png)
 
@@ -78,6 +84,7 @@ invTBN = transpose(TBN)
 ##计算切线和副切线
 
 我们需要为整个模型计算切线、副切线和法线。我们用一个单独的函数完成这些计算
+
 ``` cpp
 void computeTangentBasis(
     // inputs
@@ -89,7 +96,9 @@ void computeTangentBasis(
     std::vector & bitangents
 ){
 ```
+
 为每个三角形计算边（deltaPos）和deltaUV
+
 ``` cpp
     for ( int i=0; i<vertices.size(); i+=3){
 
@@ -111,13 +120,17 @@ void computeTangentBasis(
         glm::vec2 deltaUV1 = uv1-uv0;
         glm::vec2 deltaUV2 = uv2-uv0;
 ```
+
 现在用公式来算切线和副切线：
+
 ``` cpp
         float r = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV1.y * deltaUV2.x);
         glm::vec3 tangent = (deltaPos1 * deltaUV2.y   - deltaPos2 * deltaUV1.y)*r;
         glm::vec3 bitangent = (deltaPos2 * deltaUV1.x   - deltaPos1 * deltaUV2.x)*r;
 ```
+
 最后，把这些*切线*和*副切线*缓存起来。记住，我们还没为这些缓存的数据生成索引，因此每个顶点都有一份拷贝
+
 ``` cpp
         // Set the same tangent for all three vertices of the triangle.
         // They will be merged later, in vboindexer.cpp
@@ -138,6 +151,7 @@ void computeTangentBasis(
 索引VBO的方法和之前类似，仅有些许不同。
 
 找到相似顶点（相同的坐标、法线、纹理坐标）后，我们不直接用它的切线、副法线，而是取其均值。因此，只需把老代码修改一下：
+
 ``` cpp
         // Try to find a similar vertex in out_XXXX
         unsigned int index;
@@ -154,6 +168,7 @@ void computeTangentBasis(
             [...]
         }
 ```
+
 注意，这里没有对结果归一化。这种做法十分便利。由于小三角形的切线、副切线向量较小；相对于大三角形来说，对模型外观的影响程度较小。
 
 #着色器
@@ -162,6 +177,7 @@ void computeTangentBasis(
 ##新增缓冲和uniform变量
 
 我们需要再加两个缓冲，分别存储切线和副切线：
+
 ``` cpp
     GLuint tangentbuffer;
     glGenBuffers(1, &tangentbuffer);
@@ -173,18 +189,24 @@ void computeTangentBasis(
     glBindBuffer(GL_ARRAY_BUFFER, bitangentbuffer);
     glBufferData(GL_ARRAY_BUFFER, indexed_bitangents.size() * sizeof(glm::vec3), &indexed_bitangents[0], GL_STATIC_DRAW);
 ```
+
 还需要一个uniform变量存储新增的法线纹理：
+
 ``` cpp
     [...]
     GLuint NormalTexture = loadTGA_glfw("normal.tga");
     [...]
     GLuint NormalTextureID  = glGetUniformLocation(programID, "NormalTextureSampler");
 ```
+
 另外一个uniform变量存储3x3的模型视图矩阵。严格地讲，这个矩阵可有可无，它仅仅是让计算更方便罢了；详见后文。由于仅仅计算旋转，不需要平移，因此只需矩阵左上角3x3的部分。
+
 ``` cpp
     GLuint ModelView3x3MatrixID = glGetUniformLocation(programID, "MV3x3");
 ```
+
 完整的绘制代码如下：
+
 ``` cpp
         // Clear the screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -308,21 +330,26 @@ void computeTangentBasis(
 ##顶点着色器
 
 如前所述，所有计算都摄像机空间中做，因为在这一空间中更容易获取片段坐标。这就是为什么要用模型视图矩阵乘T、B、N向量。
+
 ``` glsl fs
     vertexNormal_cameraspace = MV3x3 * normalize(vertexNormal_modelspace);
     vertexTangent_cameraspace = MV3x3 * normalize(vertexTangent_modelspace);
     vertexBitangent_cameraspace = MV3x3 * normalize(vertexBitangent_modelspace);
 ```
+
 这三个向量确定了TBN矩阵，其创建方式如下：
 ```
+
     mat3 TBN = transpose(mat3(
         vertexTangent_cameraspace,
         vertexBitangent_cameraspace,
         vertexNormal_cameraspace
     )); // You can use dot products instead of building this matrix and transposing it. See References for details.
 ```
+
 此矩阵是从摄像机空间到切线空间的变换（若矩阵名为XXX_modelspace，则是从模型空间到切线空间的变换）。我们可以利用它计算切线空间中的光线方向和视线方向。
 ```
+
     LightDirection_tangentspace = TBN * LightDirection_cameraspace;
     EyeDirection_tangentspace =  TBN * EyeDirection_cameraspace;
 ```
@@ -330,11 +357,11 @@ void computeTangentBasis(
 ##片段着色器
 
 切线空间中的法线很容易获取--就在纹理中：
+
 ``` glsl fs
     // Local normal, in tangent space
     vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, UV ).rgb*2.0 - 1.0);
 ```
- 
 
 一切准备就绪。漫反射光的值由切线空间中的n和l计算得来（在哪个空间中计算并不重要，关键是n和l必须位于同一空间中），并用*clamp( dot( n,l ), 0,1 )*截取。镜面光用*clamp( dot( E,R ), 0,1 )*截取，E和R也必须位于同一空间中。大功告成！
 
@@ -354,9 +381,11 @@ void computeTangentBasis(
 ##正交化（Orthogonalization）
 
 顶点着色器中，为了计算速度，我们没有进行矩阵求逆，而是进行了转置。这只有当矩阵表示的空间正交时才成立，而这个矩阵还不是正交的。好在这个问题很容易解决：只需在computeTangentBasis()末尾让切线与法线垂直。
+
 ``` glsl vs
 t = glm::normalize(t - n * glm::dot(n, t));
 ```
+
 这个公式有点难理解，来看看图：
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/gramshmidt.png)
@@ -375,11 +404,13 @@ n和t差不多是相互垂直的，只要把t沿-n方向稍微"推"一下，幅�
 用数学术语讲，"向量A和向量B同向"则有"dot(A,B)>0"；故只需检查dot( cross(n,t) , b )是否大于0。
 
 若dot( cross(n,t) , b ) < 0，就要翻转t：
+
 ``` c
 if (glm::dot(glm::cross(n, t), b) < 0.0f){
      t = t * -1.0f;
  }
 ```
+
 在computeTangentBasis()末对每个顶点都做这个操作。
 
 ##镜面纹理（Specular texture）
@@ -406,10 +437,13 @@ if (glm::dot(glm::cross(n, t), b) < 0.0f){
 这里，我们在立即模式下画了一些线条表示切线空间。
 
 要进入立即模式，必须先关闭3.3 Core Profile：
+
 ``` cpp
 glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 ```
+
 然后把矩阵传给旧式的OpenGL流水线（你也可以另写一个着色器，不过这样做更简单，反正都是在hacking）：
+
 ``` cpp
 glMatrixMode(GL_PROJECTION);
 glLoadMatrixf((const GLfloat*)&ProjectionMatrix[0]);
@@ -417,11 +451,15 @@ glMatrixMode(GL_MODELVIEW);
 glm::mat4 MV = ViewMatrix * ModelMatrix;
 glLoadMatrixf((const GLfloat*)&MV[0]);
 ```
+
 禁用着色器：
+
 ``` cpp
 glUseProgram(0);
 ```
+
 然后绘制线条（本例中法线都已被归一化，乘以0.1，置于对应顶点上）：
+
 ``` cpp
 glColor3f(0,0,1);
 glBegin(GL_LINES);
@@ -434,14 +472,17 @@ for (int i=0; i<indices.size(); i++){
 }
 glEnd();
 ```
+
 切记：实际项目中不要用立即模式！仅限调试时使用！别忘了之后恢复到Core Profile，它可以保证不启用立即模式！
 
 ##利用颜色进行调试
 
 调试时，将向量的值可视化很有用处。最简单的方法是把向量都写到帧缓冲。举个例子，我们把LightDirection_tangentspace可视化一下试试：
+
 ``` glsl fs
 color.xyz = LightDirection_tangentspace;
 ```
+
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/colordebugging.png)
 
 

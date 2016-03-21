@@ -14,14 +14,18 @@ order: 20
 #alpha通道
 
 alpha通道的概念很简单。我们以前的计算结果是RGB值，现在则是RGBA值：
+
 ``` glsl fs
 // Ouput data : it's now a vec4
 out vec4 color;
 ```
+
 前三个分量仍可以通过重组操作符（swizzle operator）.xyz访问，最后一个分量通过.a访问：
+
 ``` glsl fs
 color.a = 0.3;
 ```
+
 与直觉相反，alpha代表的是不透明度；因此alpha = 1代表完全不透明，alpha = 0为完全透明。
 
 这里我们简单地将alpha硬编码为0.3；但更常见的做法是用一个uniform变量表示它，或从RGBA纹理中读取（TGA格式支持alpha通道，而GLFW支持TGA格式）。
@@ -91,23 +95,27 @@ color.a = 0.3;
 #混合函数
 
 要让上述代码运行起来，得设置好混合函数。
+
 ``` cpp
 // Enable blending
 glEnable(GL_BLEND);
 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 ```
+
 这意味着
 ```
+
 New color in framebuffer =
            current alpha in framebuffer * current color in framebuffer +
            (1 - current alpha in framebuffer) * shader's output color
 ```
+
 上图红色方块居上的效果由如下等式得来：
 ```
+
 new color = 0.5*(0,1,0) + (1-0.5)*(1,0.5,0.5); // (the red was already blended with the white background)
 new color = (1, 0.75, 0.25) = the same orange
 
 ```
- 
 
  

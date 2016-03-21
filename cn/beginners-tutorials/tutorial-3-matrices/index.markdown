@@ -49,18 +49,22 @@ language: cn
 
 **用C++，GLM表示：**
 ```
+
 glm::mat4 myMatrix;
 glm::vec4 myVector;
 // fill myMatrix and myVector somehow
 glm::vec4 transformedVector = myMatrix * myVector; // Again, in this order ! this is important.
 ```
+
 **用GLSL表示：**
 ```
+
 mat4 myMatrix;
 vec4 myVector;
 // fill myMatrix and myVector somehow
 vec4 transformedVector = myMatrix * myVector; // Yeah, it's pretty much the same than GLM
 ```
+
 （还没把这些代码粘贴到程序里调试吗？赶紧试试！）
 
 ##平移矩阵（Translation matrices）
@@ -92,14 +96,17 @@ vec4 transformedVector = myMatrix * myVector; // Yeah, it's pretty much the same
 
 **用C++，GLM表示：**
 ```
+
 #include  // after 
 
 glm::mat4 myMatrix = glm::translate(10,0,0);
 glm::vec4 myVector(10,10,10,0);
 glm::vec4 transformedVector = myMatrix * myVector; // guess the result
 ```
+
 **用GLSL表示：**呃，实际中我们几乎不用GLSL计算变换矩阵。大多数情况下在C++代码中用glm::translate()算出矩阵，然后把它传给GLSL。在GLSL中只做一次乘法：
 ```
+
 vec4 transformedVector = myMatrix * myVector;
 ```
 
@@ -112,6 +119,7 @@ vec4 transformedVector = myMatrix * myVector;
 
 **用C++表示：**
 ```
+
 glm::mat4 myIdentityMatrix = glm::mat4(1.0);
 ```
 
@@ -131,6 +139,7 @@ w还是没变。您也许会问："缩放一个向量"有什么用？嗯，大�
 
 **用C++表示：**
 ```
+
 // Use #include  and #include
 glm::mat4 myScalingMatrix = glm::scale(2,2,2);
 ```
@@ -142,6 +151,7 @@ glm::mat4 myScalingMatrix = glm::scale(2,2,2);
 
 **用C++表示：**
 ```
+
 // Use #include  and #include
 glm::vec3 myRotationAxis( ??, ??, ??);
 glm::rotate( angle_in_degrees, myRotationAxis );
@@ -151,8 +161,10 @@ glm::rotate( angle_in_degrees, myRotationAxis );
 
 前面已经学习了如何旋转、平移和缩放向量。把这些矩阵相乘就能将它们组合起来，例如：
 ```
+
 TransformedVector = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalVector;
 ```
+
 ！！！注意！！！这行代码**首先**执行缩放，**接着**旋转，**最后**才是平移。这就是矩阵乘法的工作方式。
 
 变换的顺序不同，得出的结果也不同。您不妨亲自尝试一下：
@@ -180,11 +192,14 @@ TransformedVector = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalV
 
 **用C++，GLM表示：**
 ```
+
 glm::mat4 myModelMatrix = myTranslationMatrix * myRotationMatrix * myScaleMatrix;
 glm::vec4 myTransformedVector = myModelMatrix * myOriginalVector;
 ```
+
 **用GLSL表示：**
 ```
+
 mat4 transform = mat2 * mat1;
 vec4 out_vec = transform * in_vec;
 ```
@@ -229,9 +244,11 @@ vec4 out_vec = transform * in_vec;
 
 起初，摄像机位于世界坐标系的原点。移动世界只需乘一个矩阵。假如你想把摄像机向**右**（X轴正方向）移动3个单位，这和把整个世界（包括网格）向**左**（X轴负方向）移3个单位是等效的！脑子有点乱？来写代码吧：
 ```
+
 // Use #include  and #include
 glm::mat4 ViewMatrix = glm::translate(-3,0,0);
 ```
+
 下图展示了：*从世界空间（顶点都相对于世界空间中心定义）到摄像机空间（Camera Space，顶点都相对于摄像机定义）的变换。*
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/model_to_world_to_camera.png)
@@ -239,12 +256,14 @@ glm::mat4 ViewMatrix = glm::translate(-3,0,0);
 
 趁脑袋还没爆炸，来欣赏一下GLM强大的glm::LookAt函数吧：
 ```
+
 glm::mat4 CameraMatrix = glm::LookAt(
     cameraPosition, // the position of your camera, in world space
     cameraTarget,   // where you want to look at, in world space
     upVector        // probably glm::vec3(0,1,0), but (0,-1,0) would make you looking upside-down, which can be great too
 );
 ```
+
 下图解释了上述变换过程：
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/MV.png)
@@ -263,6 +282,7 @@ glm::mat4 CameraMatrix = glm::LookAt(
 
 好在用一个4x4矩阵就能表示这个投影&sup1; :
 ```
+
 // Generates a really hard-to-read matrix, but a normal, standard 4x4 matrix nonetheless
 glm::mat4 projectionMatrix = glm::perspective(
     FoV,         // The horizontal Field of View, in degrees : the amount of "zoom". Think "camera lens". Usually between 90&deg; (extra wide) and 30&deg; (quite zoomed in)
@@ -271,6 +291,7 @@ glm::mat4 projectionMatrix = glm::perspective(
     100.0f       // Far clipping plane. Keep as little as possible.
 );
 ```
+
 最后一个变换：
 
 *从摄像机空间（顶点都相对于摄像机定义）到齐次坐空间（Homogeneous Space）（顶点都在一个小立方体中定义。立方体内的物体都会在屏幕上显示）的变换。*
@@ -308,9 +329,11 @@ glm::mat4 projectionMatrix = glm::perspective(
 
 再来一连串深爱已久的标准矩阵乘法：
 ```
+
 // C++ : compute the matrix
 glm::mat3 MVPmatrix = projection * view * model; // Remember : inverted !
 ```
+
 ```
 // GLSL : apply it
 transformed_vertex = MVP * in_vertex;
@@ -322,6 +345,7 @@ transformed_vertex = MVP * in_vertex;
 * 第一步：创建模型观察投影（MVP）矩阵。任何要渲染的模型都要做这一步。
 
 ```
+
 // Projection matrix : 45&deg; Field of View, 4:3 ratio, display range : 0.1 unit  100 units
 glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 // Camera matrix
@@ -339,6 +363,7 @@ glm::mat4 MVP        = Projection * View * Model; // Remember, matrix multiplica
 * 第二步：把MVP传给GLSL
 
 ```
+
 // Get a handle for our "MVP" uniform.
 // Only at initialisation time.
 GLuint MatrixID = glGetUniformLocation(programID, "MVP");
@@ -352,6 +377,7 @@ glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 * 第三步：在GLSL中用MVP变换顶点
 
 ```
+
 in vec3 vertexPosition_modelspace;
 uniform mat4 MVP;
 

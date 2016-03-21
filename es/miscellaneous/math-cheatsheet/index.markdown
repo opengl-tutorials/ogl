@@ -73,16 +73,17 @@ Just like cartesian distance : sqrt( x&sup2; + y&sup2; + z&sup2; ). w doesn't co
 
 compontent-wise :
 ```
+
 res.x = A.x + B.x
 res.y = A.y + B.y
 ...
 ```
- 
 
 ##Multiplication
 
 compontent-wise :
 ```
+
 res.x = A.x * B.x
 res.y = A.y * B.y
 ...
@@ -92,6 +93,7 @@ res.y = A.y * B.y
 
 Divide the vector by its length :
 ```
+
 normalizedVector = vec * ( 1.0f / vec.length() )
 ```
 

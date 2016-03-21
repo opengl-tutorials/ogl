@@ -19,7 +19,6 @@ In this tutorial, you will learn :
 * How to load texture more robustly with GLFW
 * What the alpha channel is
 
-
 # About UV coordinates
 
 When texturing a mesh, you need a way to tell to OpenGL which part of the image has to be used for each triangle. This is done with UV coordinates.
@@ -29,8 +28,6 @@ Each vertex can have, on top of its position, a couple of floats, U and V. These
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/UVintro.png)
 
 Notice how the texture is distorted on the triangle.
-
- 
 
 # Loading .BMP images yourself
 
@@ -177,6 +174,7 @@ void main(){
     color = texture( myTextureSampler, UV ).rgb;
 }
 ```
+
 {: .highlightglslfs }
 
 Three things :
@@ -209,6 +207,7 @@ void main(){
     UV = vertexUV;
 }
 ```
+
 {: .highlightglslvs }
 
 Remember "layout(location = 1) in vec2 vertexUV" from Tutorial 4 ? Well, we'll have to do the exact same thing here, but instead of giving a buffer (R,G,B) triplets, we'll give a buffer of (U,V) pairs.
@@ -408,6 +407,7 @@ GLuint loadDDS(const char * imagepath){
 After the header is the actual data : all the mipmap levels, successively. We can read them all in one batch :
 
  
+
 ``` cpp
     unsigned char * buffer;
     unsigned int bufsize;
@@ -418,6 +418,7 @@ After the header is the actual data : all the mipmap levels, successively. We ca
     /* close the file pointer */
     fclose(fp);
 ```
+
 Here we'll deal with 3 different formats : DXT1, DXT3 and DXT5. We need to convert the "fourCC" flag into a value that OpenGL understands.
 
 ``` cpp

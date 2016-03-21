@@ -42,17 +42,20 @@ The normal of a plane is a vector of length 1 that is perpendicular to this plan
 
 The normal of a triangle is a vector of length 1 that is perpendicular to this triangle. It is easily computed by taking the cross product of two of its edges (the cross product of a and b produces a vector that is perpendicular to both a and b, remember ?), and normalized : its length is brought back to 1. In pseudo-code :
 ```
+
 triangle ( v1, v2, v3 )
 edge1 = v2-v1
 edge2 = v3-v1
 triangle.normal = cross(edge1, edge2).normalize()
 ```
+
 Don't mix up normal and normalize(). Normalize() divides a vector (any vector, not necessarily a normal) by its length so that its new length is 1. normal is just the name for some vectors that happen to represent, well, a normal.
 
 ##Vertex normals
 
 By extension, we call the normal of a vertex the combination of the normals of the surroundings triangles. This is handy because in vertex shaders, we deal with vertices, not triangles, so it's better to have information on the vertex. And any way, we can't have information on triangles in OpenGL. In pseudo-code :
 ```
+
 vertex v1, v2, v3, ....
 triangle tr1, tr2, tr3 // all share vertex v1
 v1.normal = normalize( tr1.normal + tr2.normal + tr3.normal )
@@ -61,13 +64,16 @@ v1.normal = normalize( tr1.normal + tr2.normal + tr3.normal )
 ##Using vertex normals in OpenGL
 
 To use normals in OpenGL, it's very easy. A normal is an attribute of a vertex, just like its position, its color, its UV coordinates... so just do the usual stuff. Our loadOBJ function from Tutorial 7 already reads them from the OBJ file.
+
 ``` cpp
 GLuint normalbuffer;
  glGenBuffers(1, &normalbuffer);
  glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
  glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
 ```
+
 and
+
 ``` cpp
  // 3rd attribute buffer : normals
  glEnableVertexAttribArray(2);
@@ -81,6 +87,7 @@ and
      (void*)0                          // array buffer offset
  );
 ```
+
 and this is enough to get us started.
 
 #The Diffuse part
@@ -103,6 +110,7 @@ If the light is perpendicular to the surface, it is concentrated on a small surf
 This means that each point of the surface will look darker with gazing light (but remember, more points will be illuminated, to the total quantity of light will remain the same)
 
 This means that when we compute the colour of a pixel, the angle between the incoming light and the surface normal matters.We thus have :
+
 ``` glsl fs
 // Cosine of the angle between the normal and the light direction,
 // clamped above 0
@@ -112,11 +120,13 @@ float cosTheta = dot( n,l );
 
 color = LightColor * cosTheta;
 ```
+
 In this code, n is the surface normal and l is the unit vector that goes from the surface to the light (and not the contrary, even if it's non inuitive. It makes the math easier).
 
 ##Beware of the sign
 
 Something is missing in the formula of our cosTheta. If the light is behind the triangle, n and l will be opposed, so n.l will be negative. This would mean that colour = someNegativeNumber, which doesn't mean much. So we have to clamp cosTheta to 0 :
+
 ``` glsl fs
 // Cosine of the angle between the normal and the light direction,
 // clamped above 0
@@ -136,6 +146,7 @@ Of course, the output colour also depends on the colour of the material. In this
 
 
 We can model this by a simple multiplication :
+
 ``` glsl fs
 color = MaterialDiffuseColor * LightColor * cosTheta;
 ```
@@ -145,10 +156,13 @@ color = MaterialDiffuseColor * LightColor * cosTheta;
 We will first assume that we have a punctual light that emits in all directions in space, like a candle.
 
 With such a light, the luminous flux that our surface will receive will depend on its distance to the light source: the further away, the less light. In fact, the amount of light will diminish with the square of the distance :
+
 ``` glsl fs
 color = MaterialDiffuseColor * LightColor * cosTheta / (distance*distance);
 ```
+
 Lastly, we need another parameter to control the power of the light. This could be encoded into LightColor (and we will in a later tutorial), but for now let's just have a color (e.g. white) and a power (e.g. 60 Watts).
+
 ``` glsl fs
 color = MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance);
 ```
@@ -162,13 +176,16 @@ MaterialDiffuseColor is simply fetched from the texture.
 LightColor and LightPower are set in the shader through GLSL uniforms.
 
 cosTheta depends on n and l. We can express them in any space provided it's the same for both. We choose the camera space because it's easy to compute the light's position in this space :
+
 ``` glsl fs
 // Normal of the computed fragment, in camera space
  vec3 n = normalize( Normal_cameraspace );
  // Direction of the light (from the fragment to the light)
  vec3 l = normalize( LightDirection_cameraspace );
 ```
+
 with Normal_cameraspace and LightDirection_cameraspace computed in the Vertex shader and passed to the fragment shader :
+
 ``` glsl vs
 // Output position of the vertex, in clip space : MVP * position
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
@@ -188,6 +205,7 @@ LightDirection_cameraspace = LightPosition_cameraspace + EyeDirection_cameraspac
 // Normal of the the vertex, in camera space
 Normal_cameraspace = ( V * M * vec4(vertexNormal_modelspace,0)).xyz; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
 ```
+
 This code can seem impressive but it's nothing we didn't learn in Tutorial 3 : Matrices. I paid attention to write the name of the space in each vector's name, so that keeping track of what is happening is much easier. **You should do that, too.**
 
 M and V are the Model and View matrices, which are passed to the shader in the exact same way as MVP.
@@ -216,9 +234,11 @@ This is awfully expensive to compute.
 So the usual hack is to simply fake some light. In fact, is simply makes the 3D model *emit *light so that it doesn't appear completely black.
 
 This can be done this way :
+
 ``` glsl fs
 vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
 ```
+
 ``` glsl fs
 color =
  // Ambient : simulates indirect lighting
@@ -226,6 +246,7 @@ color =
  // Diffuse : "color" of the object
  MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) ;
 ```
+
 Let's see what it gives
 
 ##Results
@@ -245,6 +266,7 @@ The other part of light that is reflected is reflected mostly in the direction t
 As you can see in the image, it forms a kind of lobe. In extreme cases, the diffuse component can be null, the lobe can be very very very narrow (all the light is reflected in a single direction) and you get a mirror.
 
 (*we can indeed tweak the parameters to get a mirror, but in our case, the only thing we take into account in this mirror is the lamp. So this would make for a weird mirror)*
+
 ``` glsl fs
 // Eye vector (towards the camera)
 vec3 E = normalize(EyeDirection_cameraspace);
@@ -264,6 +286,7 @@ color =
     // Specular : reflective highlight, like a mirror
     MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance*distance);
 ```
+
 R is the direction in which the light reflects. E is the inverse direction of the eye (just like we did for "l"); If the angle between these two is little, it means we are looking straight into the reflection.
 
 pow(cosAlpha,5) is used to control the width of the specular lobe. Increase 5 to get a thinner lobe.

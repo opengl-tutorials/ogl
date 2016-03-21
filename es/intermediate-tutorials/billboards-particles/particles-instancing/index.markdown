@@ -50,6 +50,7 @@ You have many, many options on what to put in each buffer. In our simple case, w
 * One buffer for the particles' colors.
 
 These are very standard buffers. They are created this way :
+
 ``` cpp
 // The VBO containing the 4 vertices of the particles.
 // Thanks to instancing, they will be shared by all particles.
@@ -78,11 +79,11 @@ glBindBuffer(GL_ARRAY_BUFFER, particles_color_buffer);
 // Initialize with empty (NULL) buffer : it will be updated later, each frame.
 glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW);
 ```
- 
 
 , which is as usual. They are updated this way :
 
  
+
 ``` cpp
 // Update the buffers that OpenGL uses for rendering.
 // There are much more sophisticated means to stream data from the CPU to the GPU,
@@ -97,11 +98,11 @@ glBindBuffer(GL_ARRAY_BUFFER, particles_color_buffer);
 glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
 glBufferSubData(GL_ARRAY_BUFFER, 0, ParticlesCount * sizeof(GLubyte) * 4, g_particule_color_data);
 ```
- 
 
 , which is as usual. Before render, they are bound this way :
 
  
+
 ``` cpp
 // 1rst attribute buffer : vertices
 glEnableVertexAttribArray(0);
@@ -139,11 +140,15 @@ glVertexAttribPointer(
  (void*)0 // array buffer offset
 );
 ```
+
 , which is as usual. The difference comes when rendering. Instead of using glDrawArrays (or glDrawElements if your base mesh has an index buffer), you use glDrawArrraysInstanced / glDrawElementsInstanced, which is equivalent to calling glDrawArrays N times (N is the last parameter, in our case ParticlesCount) :
+
 ``` cpp
 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticlesCount);
 ```
+
 Bue something is missing here. We didn't tell OpenGL which buffer was for the base mesh, and which were for the different instances. This is done with glVertexAttribDivisor. Here's the full commented code :
+
 ``` cpp
 // These functions are specific to glDrawArrays*Instanced*.
 // The first parameter is the attribute buffer we're talking about.
@@ -160,6 +165,7 @@ glVertexAttribDivisor(2, 1); // color : one per quad -> 1
 // but faster.
 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticlesCount);
 ```
+
 As you can see, instancing is very versatile, because you can pass any integer as the AttribDivisor. For instance, with glVertexAttribDivisor(2, 10), each 10 subsequent instances will have the same color.
 
 ##What's the point ?
@@ -175,6 +181,7 @@ On the contrary to most other objects in the scene, particles die and born at a 
 ##Creating new particles
 
 For this, we will have a big particles container :
+
 ``` cpp
 // CPU representation of a particle
 struct Particle{
@@ -188,7 +195,9 @@ struct Particle{
 const int MaxParticles = 100000;
 Particle ParticlesContainer[MaxParticles];
 ```
+
 Now, we need a way to create new ones. This function searches linearly in ParticlesContainer, which should be an horrible idea, except that it starts at the last known place, so this function usually returns immediately :
+
 ``` cpp
 int LastUsedParticle = 0;
 
@@ -213,11 +222,15 @@ int FindUnusedParticle(){
     return 0; // All particles are taken, override the first one
 }
 ```
+
 We can now fill ParticlesContainer[particleIndex] with interesting "life", "color", "speed" and "position" values. See the code for details, but you can do pretty much anything here. The only interesting bit is, how many particles should we generate each frame ? This is mostly application-dependant, so let's say 10000 new particles per second (yes, it's quite a lot) :
+
 ``` cpp
 int newparticles = (int)(deltaTime*10000.0);
 ```
+
 except that you should probably clamp this to a fixed number :
+
 ``` cpp
 // Generate 10 new particule each millisecond,
 // but limit this to 16 ms (60 fps), or if you have 1 long frame (1sec),
@@ -236,6 +249,7 @@ There's a trick, see below =)
 ParticlesContainer contains both active and "dead" particles, but the buffer that we send to the GPU needs to have only living particles.
 
 So we will iterate on each particle, check if it is alive, if it must die, and if everything is allright, add some gravity, and finally copy it in a GPU-specific buffer.
+
 ``` cpp
 // Simulate all particles
 int ParticlesCount = 0;
@@ -277,6 +291,7 @@ for(int i=0; i<MaxParticles; i++){
     }
 }
 ```
+
 This is what you get. Almost there, but there's a problem...
 
 ![]({{site.baseurl}}/assets/images/tuto-particules/particles_unsorted.png)
@@ -284,13 +299,16 @@ This is what you get. Almost there, but there's a problem...
 ##Sorting
 
 As explained in [Tutorial 10](http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-10-transparency/), you need to sort semi-transparent objects from back to front for the blending to be correct.
+
 ``` cpp
 void SortParticles(){
     std::sort(&ParticlesContainer[0], &ParticlesContainer[MaxParticles]);
 }
 ```
+
 Now, std::sort needs a function that can tell whether a Particle must be put before or after another Particle in the container. This can be done with Particle::operator< :
 ```
+
 // CPU representation of a particle
 struct Particle{
 
@@ -302,6 +320,7 @@ struct Particle{
     }
 };
 ```
+
 This will make ParticleContainer be sorted, and the particles now display correctly*:
 
 ![]({{site.baseurl}}/assets/images/tuto-particules/particles_final.gif)

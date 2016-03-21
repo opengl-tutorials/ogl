@@ -128,32 +128,43 @@ Finalement ! Du code OpenGL !
 Enfin, pas vraiment. Tous les tutoriels te montre la façon *bas niveau* de faire les choses afin que tu puisses voir qu'il n'y a pas de magie. Mais cette partie est très ennuyeuse et inutile, donc on va utiliser GLFW, une bibliothèque externe qui fera cela à notre place. Si tu le souhaite vraiment, tu peux utiliser l'api Win32 sous Windows, l'api X11 sous Linux et Cocoa sous Mac ; ou utiliser une autre bibliothèque comme SFML, FreeGLUT, SDL, … regarde la page des [liens]({{site.baseurl}}/miscellaneous/useful-tools-links/).
 
 Ok, allons-y. Premièrement, on doit gérer les dépendances : on a besoin de choses basiques pour afficher les messages dans la console :
+
 ``` cpp
 // Include standard headers
 #include <stdio.h>
 #include <stdlib.h>
 ```
+
 Premièrement, GLEW. Celle-ci est en faite un peu magique, alors on la laisse de côté pour plus tard.
+
 ``` cpp
 // Include GLEW. Always include it before gl.h and glfw.h, since it's a bit magic.
 #include <GL/glew.h>
 ```
+
 On a décidé de laisser GLFW gérer la fenêtre et le clavier, donc on l'inclue aussi :
+
 ``` cpp
 // Include GLFW
 #include <GL/glfw3.h>
 ```
+
 Pour l'instant, on n'a pas besoin du prochain include, mais c'est la bibliothèque pour les opérations mathématiques liées à la 3D. Elle va se montrer rapidement très utile. Il n'y a pas de magie dans GLM, tu peux écrire ta propre bibliothèque si tu veux, c'est juste pratique de pas réinventer la roue. Le *using namespace* permet d'éviter de taper *glm::vec3*, au lieu de *vec3*.
+
 ``` cpp
 // Include GLM
 #include <glm/glm.hpp>
 using namespace glm;
 ```
+
 Si tu copies/colles tout ces includes dans playground.cpp, le compilateur se plaindra, car il n'y a pas de fonction main(). Donc, créons-la :
+
 ``` cpp
 int main(){
 ```
+
 La première chose à faire est d'initialiser GLFW :
+
 ``` cpp
 // Initialise GLFW
 if( !glfwInit() )
@@ -162,7 +173,9 @@ if( !glfwInit() )
     return -1;
 }
 ```
+
 On peut maintenant créer notre premier fenêtre OpenGL !
+
 ``` cpp
 glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
@@ -185,7 +198,9 @@ if (glewInit() != GLEW_OK) {
     return -1;
 }
 ```
+
 Compile et exécute ce code. Une fenêtre devrait apparaître et se fermer immédiatement. Évidemment ! On doit attendre que l'utilisateur appuie sur la touche Échap :
+
 ``` cpp
 // Ensure we can capture the escape key being pressed below
 glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
@@ -201,4 +216,5 @@ do{
 while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
 glfwWindowShouldClose(window) == 0 );
 ```
+
 Et cela conclut notre premier tutoriel ! Dans le deuxième tutoriel, tu vas apprendre comment afficher un triangle.

@@ -27,6 +27,7 @@ This is what all those *#defines* and *#includes* are about.
 C preprocessing is a very simple process : cut'n pasting.
 
 When the preprocessor sees the following MyCode.c :
+
 ``` cpp
 #include "MyHeader.h"
 
@@ -34,8 +35,10 @@ void main(){
     FunctionDefinedInHeader();
 }
 ```
+
 , it simply opens the file MyHeader.h, and cut'n pastes its contents into MyCode.c :
 ```
+
 // Begin of MyCode.c
 // Begin of MyHeader.h
 #ifndef MYHEADER_H
@@ -52,6 +55,7 @@ void main(){
 
 // End of MyCode
 ```
+
 Similarly, *#define*s are cut'n pasted, *#if*s are analysed and potentially removed, etc.
 
 At the end of this step we have a preprocessed C++ file, without any #define, #if, #ifdef, #include, ready to be compiled.
@@ -61,17 +65,21 @@ As an example, here is the main.cpp file of the 6th tutorial, fully preprocessed
 ##Compilation
 
 The compiler translates C++ code into a representation that the CPU can directly understand. For instance, the following code :
+
 ``` cpp
 int i=3;
 int j=4*i+2;
 ```
+
 will be translated into this : x86 opcodes.
 ```
+
 mov         dword ptr [i],3
 mov         eax,dword ptr [i]
 lea         ecx,[eax*4+2]
 mov         dword ptr [j],ecx
 ```
+
 Each .cpp file is compiled separately, and the resulting binary code is written in .o/.obj files.
 
 ![]({{site.baseurl}}/assets/images/build-own-app/compilation.png)
@@ -171,6 +179,7 @@ Use default options.
 
 Use the GUI, or add the file in the .pro :
 ```
+
 SOURCES += main.cpp \
            other.cpp \
            foo.cpp
@@ -180,6 +189,7 @@ SOURCES += main.cpp \
 
 In the .pro file :
 ```
+
 <code>INCLUDEPATH += <your path> \ <other path> </code>
 ```
 
@@ -237,6 +247,7 @@ CMake will create projects for almost any software building tool : Visual, QtCre
 
 Create a CMakeLists.txt file and write the following inside (adapt if needed) :
 ```
+
 cmake_minimum_required (VERSION 2.6)
 project (your_project_name)
 
@@ -248,6 +259,7 @@ add_executable(your_exe_name
     common/shader.hpp
 )
 ```
+
 Launch the CMake GUI, browse to your .txt file, and select your build folder. Click Configure, then Generate. Your solution will be created in the build folder.
 
 ###Adding a source file in a project
@@ -257,6 +269,7 @@ Simply add a line in the add_executable command.
 ###Adding include directories
 
 ```
+
 include_directories(
     external/AntTweakBar-1.15/include/
     external/glfw-2.7.2/include/
@@ -269,6 +282,7 @@ include_directories(
 ###Link with a library
 
 ```
+
 set(ALL_LIBS
     ${OPENGL_LIBRARY}
     GLFW_272
@@ -297,18 +311,24 @@ Note that you can also do that on Windows using mingw.
 
 Compile each .cpp file separately :
 ```
+
 g++ -c main.cpp
 g++ -c tools.cpp
 ```
+
 <div id=":2v"></div>
 As said above, you will have a main.o and a tools.o files. Link them :
 ```
+
 g++ main.o tools.o
 ```
+
 a *a.out* file appeared; It's your executable, run it :
 ```
+
 ./a.out
 ```
+
 That's it !
 
 #Building your own C application
@@ -320,6 +340,7 @@ Armed with this knowledge, we can start building our own OpenGL application.
 * Create a new project with the IDE of your choice
 * Add a new .cpp file in the project
 * Copy and paste, for instance, the following code (this is actually playground.cpp) :
+
 ``` cpp
 #include <stdio.h>
 #include <stdlib.h>
@@ -405,10 +426,12 @@ Also, it's good practice to use relative paths ( ./external/glew/... instead of 
 
 As an example, this is what the tutorial's CMake use :
 ```
+
 external/glfw-2.7.2/include
 external/glm-0.9.1
 external/glew-1.5.8/include
 ```
+
 Repeat until all files are found.
 
 ##GCC - fatal error: GL/glew.h: No such file or directory
@@ -417,8 +440,10 @@ Repeat until all files are found.
 
 This means that the library is not installed. If you're lucky, the library is well-known and you just have to install it. This is the case for GLFW, GLEW and GLM :
 ```
+
 sudo apt-get install libglfw-dev libglm-dev libglew1.6-dev
 ```
+
 If this is not a widespread library, see the answer for Visual Studio above.
 
 ##Visual Studio - error LNK2019: unresolved external symbol glfwGetWindowParam referenced in function main
@@ -431,11 +456,14 @@ glfw functions are in an external library. You have to tell the linker about thi
 
 As an **example**, this is what the Visual project use. The names are a bit unusual because this is a custom build. What's more, GLM doesn't need to be compiled or linked, so it's not here.
 ```
+
 external\Debug\GLFW_272.lib
 external\Debug\GLEW_158.lib
 ```
+
 If you download these libraries from SourceForge ([GLFW](http://www.glfw.org/download.html), [GLEW](http://glew.sourceforge.net/index.html)) and build a library yourself, you have to specify the correct path. For instance :
 ```
+
 C:\Where\You\Put\The\Library\glfw.lib
 C:\Where\You\Put\The\Other\Library\glew32.lib
 ```
@@ -456,9 +484,9 @@ This might me tricky to track down. Here are several options:
 
 This means that the library (in this case, glew) has been compiled as a *static* library, but you're trying to use it as a *dynamic* library. Simply add the following preprocessor directive in your compiler's options (for your own project, not glew's) :
 ```
+
 GLEW_STATIC
 ```
- 
 
 ###I have some other weird problem with GLFW
 
@@ -466,6 +494,7 @@ Maybe GLFW was built as a dynamic library, but you're trying to use it as a stat
 
 Try adding the following preprocessor directive :
 ```
+
 GLFW_DLL
 ```
 
@@ -535,11 +564,13 @@ Three possible reasons :
 Setup your working directory correctly. See Tutorial 1.
 
 Create a test.txt file and try the following code :
+
 ``` cpp
 if ( fopen("test.txt", "r" ) == NULL ){
     printf("I'm probably running my program from a wrong folder");
 }
 ```
+
 <span style="color: #ff0000;">USE THE DEBUGGER !!!! </span>Seriously ! Don't debug with printf(); use a good IDE. [http://www.dotnetperls.com/debugging](http://www.dotnetperls.com/debugging) is for C# but is valid for C++ too. Will vary for XCode and QtCreator, but concepts remain exactly the same.
 
 ##Something else is wrong

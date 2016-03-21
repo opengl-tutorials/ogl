@@ -25,6 +25,7 @@ Alternatively, you have access to the latest version of the code on the Mercuria
 
 All the source code on this site (except third-party libraries) is released under the WTFPL Public Licence :
 ```
+
            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
                    Version 2, December 2004
 
@@ -39,4 +40,5 @@ as the name is changed.
 
  0. You just DO WHAT THE FUCK YOU WANT TO.
 ```
+
 All the tutorial material is available under Creative-Common license: CC-BY-NC-ND available [here](http://creativecommons.org/licenses/by-nc-nd/3.0/fr/deed.en)
