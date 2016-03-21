@@ -11,55 +11,54 @@ tags: []
 language: es
 ---
 
-In this tutorial, you will learn :
+En este tutorial aprenderás :
 
-* What are UV coordinates
-* How to load textures yourself
-* How to use them in OpenGL
-* What is filtering and mipmapping, and how to use them
-* How to load texture more robustly with GLFW
-* What the alpha channel is
+* Qué son las coordenadas UV
+* Cómo cargar texturas
+* Cómo usarlas en OpenGL
+* Qué es filtradro y qué son los mapas MIP y cómo se utilizan
+* Cómo cargar texturas de manera más robusta usando GLFW
+* Qué es el canal Alfa
 
 
-#About UV coordinates
+#Acerca de las coordenadas UV
 
-When texturing a mesh, you need a way to tell to OpenGL which part of the image has to be used for each triangle. This is done with UV coordinates.
+Cuando se le añade una textura a una malla, necesitas una manera de decirle a OpenGl qué parte de la imagen tiene que ser usada para cada triángulo y es para esto que se emplean las coordenadas UV.
 
-Each vertex can have, on top of its position, a couple of floats, U and V. These coordinates are used to access the texture, in the following way :
+Cada vértice puede tener, además de su posición, una pareja de números de punto flotante, U y V. Estas coordenadas son usadas para acceder a la tectura de la siguiente manera:
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/UVintro.png)
 
-Notice how the texture is distorted on the triangle.
-
+Nota como la textura se distorsiona en el triángulo.
  
 
-#Loading .BMP images yourself
+#Cargando imágenes BMP por ti mismo
 
-Knowing the BMP file format is not crucial : plenty of libraries can load BMP files for you. But it's very simple and can help you understand how things work under the hood. So we'll write a BMP file loader from scratch, so that you know how it works, <span style="text-decoration: underline;">and never use it again</span>.
+Conocer el formato BMP no es crucial : Hay muchas librerías que pueden cargar archivos BMP por ti. Sin embargo, el formato es bastante simple y conocerlo podría ayudarte a entender como funcionan las cosas por debajo. Así que escribermos un cargador de archivos BMP desde cero, para que puedas entender como funciona y luego<span style="text-decoration: underline;">no vuelvas a usarlo nunca más</span>.
 
-Here is the declaration of the loading function :
+Aquí se declara la función para cargar la imagen :
 {% highlight cpp linenos %}
 GLuint loadBMP_custom(const char * imagepath);
 {% endhighlight %}
-so it's used like this :
+y se utiliza así :
 {% highlight cpp linenos %}
 GLuint image = loadBMP_custom("./my_texture.bmp");
 {% endhighlight %}
-Let's see how to read a BMP file, then.
+Veamos ahora como leer un archivo en formato BMP.
 
-First, we'll need some data. These variable will be set when reading the file.
+Primero, necesitaremos alguna información. Estas variables serán asignadas cuando leamos el archivo
 {% highlight cpp linenos %}
-// Data read from the header of the BMP file
+// Lectura de información del encabezado del archivo
 unsigned char header[54]; // Each BMP file begins by a 54-bytes header
 unsigned int dataPos;     // Position in the file where the actual data begins
 unsigned int width, height;
 unsigned int imageSize;   // = width*height*3
-// Actual RGB data
+// Información RGB
 unsigned char * data;
 {% endhighlight %}
 We now have to actually open the file
 {% highlight cpp linenos %}
-// Open the file
+// Apertura del archivo
 FILE * file = fopen(imagepath,"rb");
 if (!file){printf("Image could not be opened\n"); return 0;}
 {% endhighlight %}
@@ -70,123 +69,123 @@ if ( fread(header, 1, 54, file)!=54 ){ // If not 54 bytes read : problem
     return false;
 }
 {% endhighlight %}
-The header always begins by BM. As a matter of fact, here's what you get when you open a .BMP file in a hexadecimal editor :
+El encabezado siempre comienza con BM. De hecho, esto es lo que obtienes cuando abres un archivo de extensión .BMP en un editor hexadecimal:
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/hexbmp.png)
 
-So we have to check that the two first bytes are really 'B' and 'M' :
+Es por esto que tenemos que verificar que los dos primeros bytes son realmente las letras 'B' y 'M' :
 {% highlight cpp linenos %}
 if ( header[0]!='B' || header[1]!='M' ){
     printf("Not a correct BMP file\n");
     return 0;
 }
 {% endhighlight %}
-Now we can read the size of the image, the location of the data in the file, etc :
+Ahora podemos leer el tamaño de la imagen, la ubicación de la información en el archivo, etc :
 {% highlight cpp linenos %}
-// Read ints from the byte array
+// Lectura de los enteros desde el arreglo de bytes
 dataPos    = *(int*)&(header[0x0A]);
 imageSize  = *(int*)&(header[0x22]);
 width      = *(int*)&(header[0x12]);
 height     = *(int*)&(header[0x16]);
 {% endhighlight %}
-We have to make up some info if it's missing :
+Tenemos que rellenar algunas piezas de información en caso de que estén ausentes :
 {% highlight cpp linenos %}
-// Some BMP files are misformatted, guess missing information
-if (imageSize==0)    imageSize=width*height*3; // 3 : one byte for each Red, Green and Blue component
-if (dataPos==0)      dataPos=54; // The BMP header is done that way
+// Algunos archivos BMP tienen un mal formato, así que adivinamos la información faltante
+if (imageSize==0)    imageSize=width*height*3; // 3 : un byte por cada componente Rojo (Red), Verde (Green) y Azul(Blue)
+if (dataPos==0)      dataPos=54; // El encabezado del BMP está hecho de esta manera
 {% endhighlight %}
-Now that we know the size of the image, we can allocate some memory to read the image into, and read :
+Ahora que sabemos el tamaño de la imagen, podemos reservar algo de memoria para la imagen que vamos a leer :
 {% highlight cpp linenos %}
-// Create a buffer
+// Se crea un buffer
 data = new unsigned char [imageSize];
 
-// Read the actual data from the file into the buffer
+// Leemos la información del archivo y la ponemos en el buffer
 fread(data,1,imageSize,file);
 
-//Everything is in memory now, the file can be closed
+//Todo está en memoria ahora, así que podemos cerrar el archivo
 fclose(file);
 {% endhighlight %}
-We arrive now at the real OpenGL part. Creating textures is very similar to creating vertex buffers : Create a texture, bind it, fill it, and configure it.
+Llegamos ahora entonces a la verdadera parte del OpenGL. Crear texturas es muy similar a crear buffers de vértices: Se crea una textura, se ata, se rellena y se configura.
 
-In glTexImage2D, the GL_RGB indicates that we are talking about a 3-component color, and GL_BGR says how exactly it is represented in RAM. As a matter of fact, BMP does not store Red->Green->Blue but Blue->Green->Red, so we have to tell it to OpenGL.
+En glTexImage2D, La opción GL_RGB indica que estamos hablando de un color en 3 componentes, y GL_BGR señala cómo éste es representado exactamente en la memoria RAM. En realidad, BMP no almacena los colores de la forma Rojo->Verde->Azul sino de la forma Azul->Verde->Rojo, así que se lo tenemos que decir explícitamente a OpenGL.
 {% highlight cpp linenos %}
-// Create one OpenGL texture
+// Se Crea una textura OpenGL
 GLuint textureID;
 glGenTextures(1, &textureID);
 
-// "Bind" the newly created texture : all future texture functions will modify this texture
+// Se "Ata" la nueva textura : Todas las futuras funciones de texturas van a modificar esta textura
 glBindTexture(GL_TEXTURE_2D, textureID);
 
-// Give the image to OpenGL
+// Se le pasa la imagen a OpenGL
 glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
 
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 {% endhighlight %}
-We'll explain those last two lines later. Meanwhile, on the C++-side, you can use your new function to load a texture :
+Explicaremos estas dos líneas más adelante. Mientras tanto, en el lado C++, puedes usar tu nueva función para cargar una textura :
 {% highlight cpp linenos %}
 GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 {% endhighlight %}
-Another very important point :** use power-of-two textures !**
+Otro punto muy importante :** Usar texturas en potencias de dos !**
 
-* good : 128x128, 256x256, 1024x1024, 2x2...
-* bad : 127x128, 3x5, ...
-* okay but weird : 128*256
+* Bien : 128x128, 256x256, 1024x1024, 2x2...
+* Mal : 127x128, 3x5, ...
+* Aceptable (aunque raro) : 128*256
 
 
-#Using the texture in OpenGL
+#Usando la textura en OpenGL
 
-We'll have a look at the fragment shader first. Most of it is straightforward :
+Le daremos unn vistazo primero al fragment shader. La mayor parte es bastante simple :
 {% highlight glsl linenos cssclass=highlightglslfs %}
 #version 330 core
 
-// Interpolated values from the vertex shaders
+// Valores interpolados de los vertex shaders
 in vec2 UV;
 
-// Ouput data
+// Valores de salida
 out vec3 color;
 
-// Values that stay constant for the whole mesh.
+// Valores que permanecen constantes para toda la malla.
 uniform sampler2D myTextureSampler;
 
 void main(){
 
-    // Output color = color of the texture at the specified UV
+    // Color de Salida = color de la textura en las coordenadas UV específicadas
     color = texture( myTextureSampler, UV ).rgb;
 }
 {% endhighlight %}
-Three things :
+Tres cosas :
 
-* The fragment shader needs UV coordinates. Seems fair.
-* It also needs a "sampler2D" in order to know which texture to access (you can access several texture in the same shader)
-* Finally, accessing a texture is done with texture(), which gives back a (R,G,B,A) vec4. We'll see about the A shortly.
+* El fragment shader necesita coordenadas UV. Lo cual parece justo.
+* También necesita un  "sampler2D" para saber qué textura debe acceder (puedes acceder varias texturas en el mismo shader).
+* Finalmente, el acceso a una textura se realiza con la función texture() que retorna un vec4 de la forma (R,G,B,A) vec4. Más adelante hablaremos de lo que significa esa última A.
 
-The vertex shader is simple too, you just have to pass the UVs to the fragment shader :
+El vertex shader es simple también. Sólo tienes que pasar coordeandas UV al fragment shader :
 {% highlight glsl linenos cssclass=highlightglslvs %}
 #version 330 core
 
-// Input vertex data, different for all executions of this shader.
+// Información de entrada de los vértices. Es diferente para cada una de las ejecuciones de este shader.
 layout(location = 0) in vec3 vertexPosition_modelspace;
 layout(location = 1) in vec2 vertexUV;
 
-// Output data ; will be interpolated for each fragment.
+// Valores de salida ; serán interpolados para cada fragmento.
 out vec2 UV;
 
-// Values that stay constant for the whole mesh.
+// Valores que permanecen constantes para toda la malla. .
 uniform mat4 MVP;
 
 void main(){
 
-    // Output position of the vertex, in clip space : MVP * position
+    // Posición de salida del vértice. En el espacio clip: MVP * position
     gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
-    // UV of the vertex. No special space for this one.
+    // UV de los vértices. No se necesita un espacio especial para esta línea.
     UV = vertexUV;
 }
 {% endhighlight %}
-Remember "layout(location = 1) in vec2 vertexUV" from Tutorial 4 ? Well, we'll have to do the exact same thing here, but instead of giving a buffer (R,G,B) triplets, we'll give a buffer of (U,V) pairs.
+¿Recuerdas la línea "layout(location = 1) in vec2 vertexUV" del Tutorial 4 ? Bien, tendremos que hacer exactamente lo mismo aquí, pero en lugar de darle un buffer de tripletas (R,G,B), le daremos un buffer de parejas (U,V).
 {% highlight cpp linenos %}
-// Two UV coordinatesfor each vertex. They were created with Blender. You'll learn shortly how to do this yourself.
+// Dos coordenadas UV para cada vértice. Éstas fueron creadas con Blender. Aprenderás en breve como hacer esto tu mismo.
 static const GLfloat g_uv_buffer_data[] = {
     0.000059f, 1.0f-0.000004f,
     0.000103f, 1.0f-0.336048f,
@@ -226,121 +225,121 @@ static const GLfloat g_uv_buffer_data[] = {
     0.667979f, 1.0f-0.335851f
 };
 {% endhighlight %}
-The UV coordinates above correspond to the following model :
+Las coordeandas UV arriba correpsonden al siguiente modelo :
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/uv_mapping_blender.png)
 
-The rest is obvious. Generate the buffer, bind it, fill it, configure it, and draw the Vertex Buffer as usual. Just be careful to use 2 as the second parameter (size) of glVertexAttribPointer instead of 3.
+El resto es obvio. Genera el buffer, atalo, llénalo, configúralo y dibuja el Vertex Buffer de la manera habitual. Solo ten cuidado y usa 2 como el segundo parámetro (el tamaño) del glVertexAttribPointer en lugar de 3.
 
-This is the result :
+Este es el resultado :
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearfiltering.png)
 
-and a zoomed-in version :
+Y esta es la versión aumentada :
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearfiltering_zoom.png)
 
-#What is filtering and mipmapping, and how to use them
+#¿Qué son el filtrado, los mapas MIP y cómo se usan?
 
-As you can see in the screenshot above, the texture quality is not that great. This is because in loadBMP_custom, we wrote :
+Cómo puedes ver en la captura de pantalla de arriba, la calidad de la textura no es la mejor. Esto es porque en nuestra función loadBMP_custom escribimos lo siguiente :
 {% highlight cpp linenos %}
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 {% endhighlight %}
-This means that in our fragment shader, texture() takes the texel that is at the (U,V) coordinates, and continues happily.
+Esto significa que en nuestro fragment shader, texture() toma the texel que está en la coordenada (U,V) y continúa campante
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearest.png)
 
-There are several things we can do to improve this.
+Hay varias maneras en las que podemos mejorar esto.
 
-##Linear filtering
+##Filtrado Lineal
 
-With linear filtering, texture() also looks at the other texels around, and mixes the colours according to the distance to each center. This avoids the hard edges seen above.
+Con el filtrado lineal, texture() también mira los otros texeles alrededor y mezcla los colores de acuerdo con su distancia al centro. Esto nos permite evitar los bordes duros que vemos en el ejemplo.
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/linear1.png)
 
-This is much better, and this is used a lot, but if you want very high quality you can also use anisotropic filtering, which is a bit slower.
+Así está mucho mejor. Esta es una solución muy utilizada, pero si quieres una mejor calidad, puedes emplear un filtrado anisotrópico, que es algo más lento.
 
-##Anisotropic filtering
+##Filtrado Anisotrópico
 
-This one approximates the  part of the image that is really seen through the fragment. For instance, if the following texture is seen from the side, and a little bit rotated, anisotropic filtering will compute the colour contained in the blue rectangle by taking a fixed number of samples (the "anisotropic level") along its main direction.
+Este aproxima la parte de la imagen que está siendo vista realmente a través del fragmento. Por ejemplo, si la siguiente textura está siendo vista de lado y de forma un poco rotada, el filtrado anisotr´pico calculará el color contenido en el rectángulo azul tomando un número fijo de muestras (el "nivel anisotrópico") en esa dirección.
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/aniso.png)
 
-##Mipmaps
+##Mapas MIP
 
-Both linear and anisotropic filtering have a problem. If the texture is seen from far away, mixing only 4 texels won't be enough. Actually, if your 3D model is so far away than it takes only 1 fragment on screen, ALL the texels of the image should be averaged to produce the final color. This is obviously not done for performance reasons. Instead, we introduce MipMaps :
+El filtrado lineal y el filtrado anisotrópico tienen un problema. Si la textura es vista desde una distancia muy lejana, mezclar solamente 4 texeles no será suficiente. De hecho, si tu modelo 3D está ubicado suficientemente lejos, sólo requerirá un fragmento en la pantalla. TODOS los texeles de la imagen deberían ser entonces promediados para producir el color final. Esto no se hace por razones obvias, pero en su lugar, presentamos los mapas MIP :
 
 ![](http://upload.wikimedia.org/wikipedia/commons/5/5c/MipMap_Example_STS101.jpg)
 
-* At initialisation tile, you scale down your image by 2, successively, until you only have a 1x1 image (which effectively is the average of all the texels in the image)
-* When you draw a mesh, you select which mipmap is the more appropriate to use given how big the texel should be.
-* You sample this mipmap with either nearest, linear or anisotropic filtering
-* For additional quality, you can also sample two mipmaps and blend the results.
+* En el cuadro de inicialización, reduces la escala de tu imagen en 2 sucesivamente hasta que tengas una imagen de 1x1 image (la cuál es efectivamente el promedio de todos los texeles presentes en la imagen original)
+* Cuando dibujas una malla, selecciona que mapa MIP es el más apropiado para usar en razón de qué tan grande debería ser el texel.
+* Muestrea este mapa MIP con el filtrado lineal o anisotrópico.
+* Para calidad adicional, puedes muestrear dos mapas MIP y mezclar los resultados.
 
-Luckily, all this is very simple to do, OpenGL does everything for us provided that you ask him nicely :
+Por suerte, todo esto es bastante simple de hacer. OpenGL es capaz de realizar todo esto por nosotros si se lo pedimos amablemente :
 {% highlight cpp linenos %}
-// When MAGnifying the image (no bigger mipmap available), use LINEAR filtering
+// Cuando se MAGnifique la imagen (no hay un mapa MIP disponible), se usa filtrado Lineal
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-// When MINifying the image, use a LINEAR blend of two mipmaps, each filtered LINEARLY too
+// Cuando se MINimice la imagen, se usa una combinación LINEAL de dos mapas MIP, cada uno filtrado LINEALMENTE también. 
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-// Generate mipmaps, by the way.
+// Generamos los mapas MIP, claro está.
 glGenerateMipmap(GL_TEXTURE_2D);
 {% endhighlight %}
 
-#How to load texture with GLFW
+#Cómo cargar una textura con GLFW
 
-Our loadBMP_custom function is great because we made it ourselves, but using a dedicated library is better. GLFW2 can do that too (but only for TGA files, and this feature has been removed in GLFW3, that we now use) :
+Nuestra función loadBMP_custom es genial porque la hicimos nosotros mismos, pero usar una librería dedicada es aún mejor. GLFW2 puede hacer esto también (pero solo para archivos TGA y esta característica ha sido removida de GLFW3 que es que usaremos) :
 {% highlight cpp linenos %}
 GLuint loadTGA_glfw(const char * imagepath){
 
-    // Create one OpenGL texture
+    // Creamos una textura OpenGL
     GLuint textureID;
     glGenTextures(1, &textureID);
 
-    // "Bind" the newly created texture : all future texture functions will modify this texture
+    // Se "Ata" la nueva textura : Todas las futuras funciones de texturas van a modificar esta textura
     glBindTexture(GL_TEXTURE_2D, textureID);
 
-    // Read the file, call glTexImage2D with the right parameters
+    // Se lee el archivo. Se hace el llamado a glTexImage2D con los parámetros correctos
     glfwLoadTexture2D(imagepath, 0);
 
-    // Nice trilinear filtering.
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    // Un bonito filtrado trilinear
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glGenerateMipmap(GL_TEXTURE_2D);
 
-    // Return the ID of the texture we just created
-    return textureID;
+    // Retornamos la ID de la textura que acabamos de crear
+	return textureID;
 }
 {% endhighlight %}
 
-#Compressed Textures
+#Texturas Comprimidas
 
-At this point, you're probably wondering how to load JPEG files instead of TGA.
+En este punto, te estarás preguntando como cargar archivos JPEG en lugar de TGA.
 
-Short answer : don't. GPUs can't understand JPEG. So you'll compress your original image in JPEG, and decompress it so that the GPU can understand it. You're back to raw images, but you lost image quality while compressing to JPEG.
+La respuesta corta a esta pregunta es : No lo hagas. Las GPUs no entienden JPEG, así que vas a comprimir tu imagen original en JPEG y luego a descomprimirla para que la GPU pueda entenderla. Así que al final, terminas trabajando con las mismas imágenes en bruto pero habiendo perdido calidad al haberla comprimido a JPEG.
 
-There's a better option.
+Hay una mejor opción
 
-##Creating compressed textures
+##Creación de Texturas Comprimidas
 
 
-* Download [The Compressonator](http://developer.amd.com/Resources/archive/ArchivedTools/gpu/compressonator/Pages/default.aspx), an AMD tool
-* Load a Power-Of-Two texture in it
-* Generate mipmaps so that you won't have to do it on runtime
-* Compress it in DXT1, DXT3 or in DXT5 (more about the differences between the various formats on [Wikipedia](http://en.wikipedia.org/wiki/S3_Texture_Compression)) :
+* Descarga [The Compressonator](http://developer.amd.com/Resources/archive/ArchivedTools/gpu/compressonator/Pages/default.aspx), una herramienta de AMD
+* Carga texturas de potencias de dos en él.
+* Genera mapas MIP para que no tengas que hacerlo en tiempo de ejecución.
+* Comprímelas en DXT1, DXT3 o en DXT5 (puedes encontrar más información sobre las diferencias entre estos formatos en [Wikipedia](http://en.wikipedia.org/wiki/S3_Texture_Compression)) :
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/TheCompressonator.png)
 
-* Export it as a .DDS file.
+* Expórtala como un archivo .DDS.
 
-At this point, your image is compressed in a format that is directly compatible with the GPU. Whenever calling texture() in a shader, it will uncompress it on-the-fly. This can seem slow, but since it takes a LOT less memory, less data needs to be transferred. But memory transfers are expensive; and texture decompression is free (there is dedicated hardware for that). Typically, using texture compression yields a 20% increase in performance. So you save on performance and memory, at the expense of reduced quality.
+En este munto, tu imagen está comprimida en un formato que es directamente compatible con la GPU. Cuando llames la función texture() en un shader, éste la descomprimirá por el camino. Esto puede parecer lento, pero dado que consume MUCHO menos memoria, habrá menos datos que necesiten ser transferidos. Las trasnferencias de memoria son costosas, pero la descompresión de texturas no tiene costo (hay hardware dedicado para ello). Típicamente, usar compresión de texturas aumenta el desemeño en un 20%. Así que mejoras rendimiento y disminuyes el uso de memoria a cambio de reducir un poco la calidad de tu textura.
 
-##Using the compressed texture
+##Usando la Textura Comprimida
 
-Let's see how to load the image. It's very similar to the BMP code, except that the header is organized differently :
+Vamos ahora como cargar la imagen. El códig es muy similar al código de BMP, excepto que el encabezado está organizado de manera diferente :
 {% highlight cpp linenos %}
 GLuint loadDDS(const char * imagepath){
 
@@ -348,12 +347,12 @@ GLuint loadDDS(const char * imagepath){
 
     FILE *fp;
 
-    /* try to open the file */
+    /* Tratando de abrir el archivo */
     fp = fopen(imagepath, "rb");
     if (fp == NULL)
         return 0;
 
-    /* verify the type of file */
+    /* Verificando el tipo de archivo */
     char filecode[4];
     fread(filecode, 1, 4, fp);
     if (strncmp(filecode, "DDS ", 4) != 0) {
@@ -361,7 +360,7 @@ GLuint loadDDS(const char * imagepath){
         return 0;
     }
 
-    /* get the surface desc */
+    /* Obtenemos la descripción de la superficie */
     fread(&header, 124, 1, fp); 
 
     unsigned int height      = *(unsigned int*)&(header[8 ]);
@@ -370,20 +369,21 @@ GLuint loadDDS(const char * imagepath){
     unsigned int mipMapCount = *(unsigned int*)&(header[24]);
     unsigned int fourCC      = *(unsigned int*)&(header[80]);
 {% endhighlight %}
-After the header is the actual data : all the mipmap levels, successively. We can read them all in one batch :
+
+Después del encabezado está la verdadera información: Todos los niveles de los mapas MIP uno después del otro. Podemos leerlos todos en una sola pasada :
 
  
 {% highlight cpp linenos %}
     unsigned char * buffer;
     unsigned int bufsize;
-    /* how big is it going to be including all mipmaps? */
+    /* ¿qué tan grande será si incluimos todos los mapas MIP? */
     bufsize = mipMapCount > 1 ? linearSize * 2 : linearSize;
     buffer = (unsigned char*)malloc(bufsize * sizeof(unsigned char));
     fread(buffer, 1, bufsize, fp);
-    /* close the file pointer */
+    /* cerramos el puntero al archivo */
     fclose(fp);
 {% endhighlight %}
-Here we'll deal with 3 different formats : DXT1, DXT3 and DXT5. We need to convert the "fourCC" flag into a value that OpenGL understands.
+Aquí tratamos con tres formatos diferentes: DXT1, DXT3 y DXT5. Necesitamos convertir el flag "fourCC" en un valor que OpenGL pueda entender
 {% highlight cpp linenos %}
     unsigned int components  = (fourCC == FOURCC_DXT1) ? 3 : 4;
     unsigned int format;
@@ -403,21 +403,21 @@ Here we'll deal with 3 different formats : DXT1, DXT3 and DXT5. We need to conve
         return 0;
     }
 {% endhighlight %}
-Creating the texture is done as usual :
+La creación de la textura se hace de la forma habitual :
 {% highlight cpp linenos %}
-    // Create one OpenGL texture
+    // Se crea una textura OpenGL
     GLuint textureID;
     glGenTextures(1, &textureID);
 
-    // "Bind" the newly created texture : all future texture functions will modify this texture
+    //  Se "Ata" la nueva textura : Todas las futuras funciones de texturas van a modificar esta textura
     glBindTexture(GL_TEXTURE_2D, textureID);
 {% endhighlight %}
-And now, we just have to fill each mipmap one after another :
+Y ahora rellenamos cada mapa MIP uno después del otro :
 {% highlight cpp linenos %}
     unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
     unsigned int offset = 0;
 
-    /* load the mipmaps */
+    /* se cargan los mapas MIP*/
     for (unsigned int level = 0; level < mipMapCount && (width || height); ++level)
     {
         unsigned int size = ((width+3)/4)*((height+3)/4)*blockSize;
@@ -433,25 +433,25 @@ And now, we just have to fill each mipmap one after another :
     return textureID;
 {% endhighlight %}
 
-##Inversing the UVs
+##Invirtiendo las coordenadas UV
 
-DXT compression comes from the DirectX world, where the V texture coordinate is inversed compared to OpenGL. So if you use compressed textures, you'll have to use ( coord.u, 1.0-coord.v) to fetch the correct texel. You can do this whenever you want : in your export script, in your loader, in your shader...
+La compresión DXT  viene del mundo DirectX, en dónde las la coordenada Vde la textura es invertida en comparación a OpenGL. Así que si usas texturas comprimidas, tendrás que usar ( coord.u, 1.0-coord.v) para localizar el texel correcto. Puedes hacer esto en dónde desees: En el script que importa la textura, en el método de carga, en el shader...
 
-#Conclusion
+#Conclusión
 
-You just learnt to create, load and use textures in OpenGL.
+Acabas de aprender a crear, cargar y usar texturas en OpenGL.
 
-In general, you should only use compressed textures, since they are smaller to store, almost instantaneous to load, and faster to use; the main drawback it that you have to convert your images through The Compressonator (or any similar tool)
+En general, deberías usar sólo texturas comprimidas, dado que ocupan menos espacio de almacenamiento, se cargan de forma casi instantánea y son muy rápidas de usar. La única desventaja es que tienes que utilizar The Compressonator (o cualquier herramienta similar) con todas las imágenes que pretendas utilizar.
 
-#Exercices
-
-
-* The DDS loader is implemented in the source code, but not the texture coordinate modification. Change the code at the appropriate place to display the cube correctly.
-* Experiment with the various DDS formats. Do they give different result ? Different compression ratios ?
-* Try not to generate mipmaps in The Compressonator. What is the result ? Give 3 different ways to fix this.
+#Ejercicios
 
 
-#References
+* El cargador DDS está implementado en el código fuente; no así la modificación de las coordenadas de la textura. Cambia el código en el lugar apropiada para que el cubo se muestre de manera correcta.
+* Experimenta con varios formatos DDS. ¿Dan diferentes resultados? ¿Diferentes niveles de compresión?
+* Trata de no generar mapas MIP en The Compressonator. ¿Cuál es el resultado?. Encuentra 3 maneras diferentes de solucionar esto.
+
+
+#Referencias
 
 
 * [Using texture compression in OpenGL](http://www.oldunreal.com/editing/s3tc/ARB_texture_compression.pdf) , S&eacute;bastien Domine, NVIDIA

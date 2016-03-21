@@ -12,17 +12,17 @@ language: es
 ---
 {:TOC}
 
-This will be another long tutorial.
+Este será otro tutorial largo .
 
-OpenGL 3 makes it easy to write complicated stuff, but at the expense that drawing a simple triangle is actually quite difficult.
+OpenGL 3 hace que sea facil escrbiir las cosas complicadas a cambio de dibujar un solo triangulo de forma un poco complicada.
 
-Don't forget to cut'n paste the code on a regular basis.
+No olvides copiar el código continuamente.
 
-**<span style="color: red">If the program crashes at startup, you're probably running from the wrong directory. Read CAREFULLY the first tutorial on how to configure Visual Studio !</span>**
+**<span style="color: red"> Si el programa no funciona al iniciar, es probable que lo estes intentando correr desde la carpeta incorrecta. Lee detenidamente el tutorial 1 y configura correctamente Visual Studio !</span>**
 
-## The VAO
+## El VAO
 
-I won't dig into details now, but you need to create a Vertex Array Object and set it as the current one :
+No vamos a entrar en detalles ahora, pero se necesita crear un arreglo de objetos (Vertex Array Object) y tenerlo como el actual :
 
 {% highlight cpp linenos %}
 GLuint VertexArrayID;
@@ -30,32 +30,33 @@ glGenVertexArrays(1, &VertexArrayID);
 glBindVertexArray(VertexArrayID);
 {% endhighlight %}
 
-Do this once your window is created (= after the OpenGL Context creation) and before any other OpenGL call.
+Haz esto una vez hayas creado tu ventana (= luego de haber creado el contexto OpenGL) y antes de cualquier llamada a una función OpenGL.
 
-If you really want to know more about VAOs, there are a few other tutorials out there, but this is not very important.
+Si realmente quieres saber sobre los VAO, hay tutoriales por doquier, pero no es realmente importante .
 
-## Screen Coordinates
+## Coordenadas de la pantalla
 
-A triangle is defined by three points. When talking about "points" in 3D graphics, we usually use the word "vertex" ( "vertices" on the plural ). A vertex has 3 coordinates : X, Y and Z. You can think about these three coordinates in the following way :
+Un triangulo es definido por tres puntos. Cuando hablamos de puntos en computación gráfica, usualmente usamos la palabra "vertice". Un vertice tiene 3 coordenadas : X, Y, y Z, puede pensar en estas tres coordenadas asi :
 
-- X in on your right
-- Y is up
-- Z is towards your back (yes, behind, not in front of you)
+- X es su derecha
+- Y es hacia arriba
+- Z es hacia atrás (si, hacia atrás, no hacia el frente)
 
-But here is a better way to visualize this : use the Right Hand Rule
+Pero hay una mejor forma de visualizar esto : la regla de la mano derecha
 
-- X is your thumb
-- Y is your index
-- Z is your middle finger. If you put your thumb to the right and your index to the sky, it will point to your back, too.
+- X es su pulgar
+- Y es su dedo indice
+- Z es su dedo corazón 
+- Si usted pone su dedo pulgar hacia la derecha y su dedo indice hacia arriba, su dedo corazón apuntará hacia usted.
 
-Having the Z in this direction is weird, so why is it so ? Short answer : because 100 years of Right Hand Rule Math will give you lots of useful tools. The only downside is an unintuitive Z.
+Tener la coordenada Z en esta dirección no es intuitivo, ¿Por qué? en resumen : porque 100 años de la regla de la mano derecha le va a dar a usted muchas herramientas matemáticas que le harán la vida mas sencilla, todo a cambio de esta pequeña incomodidad de tener el Z al revés.
 
-On a side note, notice that you can move your hand freely : your X, Y and Z will be moving, too. More on this later.
+Una nota aparte : Note que puedes mover tu mano libremente y con ella X, Y y Z. Le diremos mas el respecto luego.
 
-So we need three 3D points in order to make a triangle ; let's go :
+Asi que necesitamos puntos 3D para hacer un triangulo, empecemos :
 
 {% highlight cpp linenos %}
-// An array of 3 vectors which represents 3 vertices
+// Un arreglo de 3 vectores que representan 3 vertices
 static const GLfloat g_vertex_buffer_data[] = {
    -1.0f, -1.0f, 0.0f,
    1.0f, -1.0f, 0.0f,
@@ -63,73 +64,73 @@ static const GLfloat g_vertex_buffer_data[] = {
 };
 {% endhighlight %}
 
-The first vertex is (-1,-1,0). This means that _unless we transform it in some way_, it will be displayed at (-1,-1) on the screen. What does this mean ? The screen origin is in the middle, X is on the right, as usual, and Y is up. This is what it gives on a wide screen :
+El primer vertice es (-1,-1,0). Esto significa que _amenos que lo transformemos de alguna forma_, se mostrará en (-1,-1) en la pantalla. ¿qué significa esto? El origen de la pantalla esta en el medio, X es a la derecha, y Y es arriba. Esto es lo que aparece en una pantalla amplia :
 
 ![screenCoordinates]({{site.baseurl}}/assets/images/tuto-2-first-triangle/screenCoordinates.png){: height="165px" width="300px"}
 
-This is something you can't change, it's built in your graphics card. So (-1,-1) is the bottom left corner of your screen. (1,-1) is the bottom right, and (0,1) is the middle top. So this triangle should take most of the screen.
+Esto es algo que no se puede cambiar, viene asi desde la trajeta gráfica. Asi que (-1,-1) es la esquina inferior izquierda de su pantalla. (1,-1) es la esquina inferior derecha, y (0,1) es el medio arriba. Este triangulo va a tomar casi toda la pantalla.
 
-##Drawing our triangle
+##Dibujando nuestro triangulo
 
-The next step is to give this triangle to OpenGL. We do this by creating a buffer:
+El siguiente paso es entregarle este triangulo a OpenGL. Hacemos esto creando un buffer :
 
 {% highlight cpp linenos %}
-// This will identify our vertex buffer
+// Identificar el vertex buffer
 GLuint vertexbuffer;
-// Generate 1 buffer, put the resulting identifier in vertexbuffer
+// Generar un buffer, poner el resultado en el vertexbuffer que acabamos de crear
 glGenBuffers(1, &vertexbuffer);
-// The following commands will talk about our 'vertexbuffer' buffer
+// Los siguientes comandos le darán caractrtísticas especiales al 'vertexbuffer' 
 glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-// Give our vertices to OpenGL.
+// Darle nuestros vertices a  OpenGL.
 glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);{% endhighlight %}
 
-This needs to be done only once.
+Esto solo debe hacerse una vez.
 
-Now, in our main loop, where we used to draw "nothing", we can draw our magnificent triangle :
+Ahora en nuestro ciclo principal, donde antes no dibujabamos "nada" ahora podemos dibujar nuestro majestuoso triangulo :
 
 {% highlight cpp linenos %}
 // 1rst attribute buffer : vertices
 glEnableVertexAttribArray(0);
 glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 glVertexAttribPointer(
-   0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-   3,                  // size
-   GL_FLOAT,           // type
-   GL_FALSE,           // normalized?
-   0,                  // stride
-   (void*)0            // array buffer offset
+   0,                  // atributo 0. No hyar razon particular para el 0, pero debe corresponder en el shader.
+   3,                  // tamaño
+   GL_FLOAT,           // tipo
+   GL_FALSE,           // normalizado?
+   0,                  // Paso
+   (void*)0            // desfase del buffer
 );
-// Draw the triangle !
-glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
+// Dibujar el triangulo !
+glDrawArrays(GL_TRIANGLES, 0, 3); // Empezar desde el vertice 0S; 3 vertices en total -> 1 triangulo
 glDisableVertexAttribArray(0);
 {% endhighlight %}
 
-If you're on lucky, you can see the result (<span style="color: red">**don't panic if you don't**</span>) :
+Si tienes suerte veras el resultado (<span style="color: red">**No entres en panico si no.**</span>) :
 
 ![triangle_no_shader]({{site.baseurl}}/assets/images/tuto-2-first-triangle/triangle_no_shader1.png){: height="232px" width="300px"}
 
-Now this is some boring white. Let's see how we can improve it by painting it in red. This is done by using something called shaders.
+Este es un blanco aburrico. Vamos a ver cómo podemos mejorarlo pintando en rojo. Esto se hace con algo llamado shaders
 
 ## Shaders
 
-# Shader Compilation
+# Compilación de shaders
 
-In the simplest possible configuration, you will need two shaders : one called Vertex Shader, which will be executed for each vertex, and one called Fragment Shader, which will be executed for each sample. And since we use 4x antialising, we have 4 samples in each pixel.
+En su configuración mas simple, necesitaras dos shaders: Uno llamado "vertex shader" (que se ejecuta una vez por cada pixel) y otro llamado "Fragment shader" (que se ejecuta una vez por cada muestra). Ya que usamos antialiasing 4x necesitamos 4 muestras por cada pixel.
 
-Shaders are programmed in a language called GLSL : GL Shader Language, which is part of OpenGL. Unlike C or Java, GLSL has to be compiled at run time, which means that each and every time you launch your application, all your shaders are recompiled.
+Los shaders se programan en un lenguaje llamado GLSL, Gl Shader Language, que es parte de OpenGL. A diferencia de C o java, GLSL tiene que se compilado en tiempo de ejecución, lo que significa que cada vez que lances una aplicación, todos los shaders son recompilados.
 
-The two shaders are usually in separate files. In this example, we have SimpleFragmentShader.fragmentshader and SimpleVertexShader.vertexshader . The extension is irrelevant, it could be .txt or .glsl .
+Usualmente los dos shaders estan en archivos separados. En este ejemplo, tomamos SimpleFragmentShader.fragmentshader y SimpleVertexShader.vertexshader . La extensión es irrelevante, puede ser .txt o .glsl .
 
-So here's the code. It's not very important to fully understand it, since you often do this only once in a program, so comments should be enough. Since this function will be used by all other tutorials, it is placed in a separate file : common/loadShader.cpp . Notice that just as buffers, shaders are not directly accessible : we just have an ID. The actual implementation is hidden inside the driver.
+Y que aqui esta el cóodigo. No es tan importante que lo entiendas completamente, ya que es un programa que solo se mira una vez, los comentarios deberian ser suficientes. Ya que esta funcion la vamos a usar en otros programas, estara ubicada en common/loadShader.cpp . Nota que asi como los buffers, los shaders no son asequibles directamente, necesitamos un identificador. La implentación ya viene en el controlador.
 
 {% highlight cpp linenos %}
 GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path){
 
-	// Create the shaders
+	// Crear los shaders
 	GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 	GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
 
-	// Read the Vertex Shader code from the file
+	// Leer el Vertex Shader desde archivo
 	std::string VertexShaderCode;
 	std::ifstream VertexShaderStream(vertex_file_path, std::ios::in);
 	if(VertexShaderStream.is_open()){
@@ -143,7 +144,7 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 		return 0;
 	}
 
-	// Read the Fragment Shader code from the file
+	// Leer el Fragment Shader desde archivo
 	std::string FragmentShaderCode;
 	std::ifstream FragmentShaderStream(fragment_file_path, std::ios::in);
 	if(FragmentShaderStream.is_open()){
@@ -157,13 +158,13 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 	int InfoLogLength;
 
 
-	// Compile Vertex Shader
+	// Compilar Vertex Shader
 	printf("Compiling shader : %s\n", vertex_file_path);
 	char const * VertexSourcePointer = VertexShaderCode.c_str();
 	glShaderSource(VertexShaderID, 1, &VertexSourcePointer , NULL);
 	glCompileShader(VertexShaderID);
 
-	// Check Vertex Shader
+	// Revisar Vertex Shader
 	glGetShaderiv(VertexShaderID, GL_COMPILE_STATUS, &Result);
 	glGetShaderiv(VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if ( InfoLogLength > 0 ){
@@ -174,13 +175,13 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 
 
 
-	// Compile Fragment Shader
+	// Compilar Fragment Shader
 	printf("Compiling shader : %s\n", fragment_file_path);
 	char const * FragmentSourcePointer = FragmentShaderCode.c_str();
 	glShaderSource(FragmentShaderID, 1, &FragmentSourcePointer , NULL);
 	glCompileShader(FragmentShaderID);
 
-	// Check Fragment Shader
+	// Revisar Fragment Shader
 	glGetShaderiv(FragmentShaderID, GL_COMPILE_STATUS, &Result);
 	glGetShaderiv(FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if ( InfoLogLength > 0 ){
@@ -191,14 +192,14 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 
 
 
-	// Link the program
+	// Vincular el programa por medio del ID
 	printf("Linking program\n");
 	GLuint ProgramID = glCreateProgram();
 	glAttachShader(ProgramID, VertexShaderID);
 	glAttachShader(ProgramID, FragmentShaderID);
 	glLinkProgram(ProgramID);
 
-	// Check the program
+	// Revisar el programa
 	glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
 	glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if ( InfoLogLength > 0 ){
@@ -219,35 +220,36 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 
 {% endhighlight %}
 
-# Our Vertex Shader
+# Nuestro Vertex Shader
 
-Let's write our vertex shader first.
-The first line tells the compiler that we will use OpenGL 3's syntax.
+Vamos a escribir nuestro primer vertex shader.
+La primera linea le dice al compilador que usaremos la sintaxis de OpenGL 3
 
 {% highlight glsl linenos %}
 #version 330 core
 {% endhighlight %}
 
-The second line declares the input data :
+La segunda linea declara los datos de entrada :
 
 {% highlight glsl linenos %}
 layout(location = 0) in vec3 vertexPosition_modelspace;
 {% endhighlight %}
 
-Let's explain this line in detail :
+Vamos a explicar esto en detalle :
 
-- "vec3" is a vector of 3 components in GLSL. It is similar (but different) to the glm::vec3 we used to declare our triangle. The important thing is that if we use 3 components in C++, we use 3 components in GLSL too.
-- "layout(location = 0)" refers to the buffer we use to feed the *vertexPosition_modelspace* attribute. Each vertex can have numerous attributes : A position, one or several colours, one or several texture coordinates, lots of other things. OpenGL doesn't know what a colour is : it just sees a vec3. So we have to tell him which buffer corresponds to which input. We do that by setting the layout to the same value as the first parameter to glVertexAttribPointer. The value "0" is not important, it could be 12 (but no more than glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &v) ), the important thing is that it's the same number on both sides.
-- "vertexPosition_modelspace" could have any other name. It will contain the position of the vertex for each run of the vertex shader.
-- "in" means that this is some input data. Soon we'll see the "out" keyword.
+- "vec3" es un vector de 3 componentes en GLSL. Es similar al glm::vec3 que usamos para declarar nuestro triangulo. Lo importante es que si usamos 3 componentes en C++, usemos 3 componentes en GLSL también.
+- "layout(location = 0)" se refiere al buffer que usamos para el atributo *vertexPosition_modelspace* . Cada vertice tiene varios atributos : una posición, uno o mas colores, una o mas coordenadas de textura y muchas otras cosas. OpenGL no sabe lo que es un color, solo ve un vec3. Asi que tenemos que decirle qué buffer corresponde a cual entrada. Eso lo hacemos asignando el mismo numero en ambas partes el diseño (layout) y el glVertexAttribPointer. El valor "0" no es importante, podría ser 12 (pero no mas que glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &v) ), lo importante es que sea el mismo numero en ambas partes.
+- "vertexPosition_modelspace" puede tener otro nombre. Contendrá la posición del vertice para cada pasada del vertex shader.
+- "in" significa que es algun tipo de datos de entrada. Pronto veremos la palabra clave "out.
 
-The function that is called for each vertex is called main, just as in C :
+La función que se llamará para cada vertice es llamada main, tal como en C : 
 
 {% highlight glsl linenos %}
 void main(){
 {% endhighlight %}
 
-Our main function will merely set the vertex' position to whatever was in the buffer. So if we gave (1,1), the triangle would have one of its vertices at the top right corner of the screen. We'll see in the next tutorial how to do some more interesting computations on the input position.
+
+Nuestra primera función simplemente le dara al vertice la posición guardada en el buffer. Asi que si le dimos (1,1), el triangulo tendrá uno de sus vertices arriba a la derecha en la pantalla. En el siguiente tutorial veremos cómo hacer calculos mas interesantes con la posición de entrada.
 
 {% highlight glsl linenos %}
   gl_Position.xyz = vertexPosition_modelspace;
@@ -255,11 +257,11 @@ Our main function will merely set the vertex' position to whatever was in the bu
 }
 {% endhighlight %}
 
-gl_Position is one of the few built-in variables : you *have *to assign some value to it. Everything else is optional; we'll see what "everything else" means in Tutorial 4.
+gl_Position es una de las pocas variables internas : tienes que asignarle un valor. Todo lo demás es opcional; Veremos lo que significan todas las demás en el tutorial 4.
 
-# Our Fragment Shader
+# Nuestro Fragment Shader
 
-For our first fragment shader, we will do something really simple : set the color of each fragment to red. (Remember, there are 4 fragment in a pixel because we use 4x AA)
+Para nuestro primer fragment shader, haremos algo realmente simple : hacer que cada fragmento sea rojo. (Recuerda, hay 4 fragmentos por pixel por que usamos AA 4x)
 
 {% highlight glsl linenos %}
 #version 330 core
@@ -269,24 +271,24 @@ void main(){
 }
 {% endhighlight %}
 
-So yeah, vec3(1,0,0) means red. This is because on computer screens, colour is represented by a Red, Green, and Blue triplet, in this order. So (1,0,0) means Full Red, no green and no blue.
+Si, vec3(1,0,0) significa rojo. En las pantallas de computador, el color es representado por una tripla Rojo, verde y azul, en ese orden. Así que (1,0,0) significa solo rojo, no verde y no azul.
 
-## Putting it all together
+## Combinando todo
 
-Before the main loop, call our LoadShaders function :
+Antes del ciclo main, llamamos las funciones que cargan los shaders 'LoadShaders' :
 
 {% highlight cpp linenos %}
-// Create and compile our GLSL program from the shaders
+// Crear y compilar el programa GLSL desde los shaders
 GLuint programID = LoadShaders( "SimpleVertexShader.vertexshader", "SimpleFragmentShader.fragmentshader" );
 {% endhighlight %}
 
-Now inside the main loop, first clear the screen. This will change the background color to dark blue because of the previous glClearColor(0.0f, 0.0f, 0.4f, 0.0f) call:
+Ahora dentro del ciclo principal, primero limpiar la pantalla. Esto pondrá el fondo de color azul oscuro dada la llamada a la instrucción glClearColor(0.0f, 0.0f, 0.4f, 0.0f) :
 
 {% highlight cpp linenos %}
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 {% endhighlight %}
 
-and then tell OpenGL that you want to use your shader:
+y luego decirle a OpenGl que queremos usar el shader:
 
 {% highlight cpp linenos %}
 // Use our shader
@@ -294,8 +296,8 @@ glUseProgram(programID);
 // Draw triangle...
 {% endhighlight %}
 
-... and presto, here's your red triangle !
+Y helo ahí, el triangulo rojo !
 
 ![red_triangle]({{site.baseurl}}/assets/images/tuto-2-first-triangle/red_triangle.png){: height="231px" width="300px"}
 
-In the next tutorial we'll learn transformations : How to setup your camera, move your objects, etc.
+En el siguiente tutorial aprenderemos sobre transformaciones : Como iniciar la camara, mover objetos, etc.

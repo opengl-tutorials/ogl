@@ -12,89 +12,92 @@ language: es
 ---
 {:TOC}
 
-> _The engines don't move the ship at all. The ship stays where it is and the engines move the universe around it._
+> _Los motores no mueven la nave. La nave permanece en su lugar y el universo se mueve alrededor de ella._
 > 
 > Futurama
 
-**This is the single most important tutorial of the whole set. Be sure to read it at least eight times.**
+**Este es el tutorial mas importante de los tutoriales de principiante. Leelo almenos 8 veces.**
 
-#Homogeneous coordinates
+#Coordenadas homogeneas
 
-Until then, we only considered 3D vertices as a (x,y,z) triplet. Let's introduce w. We will now have (x,y,z,w) vectors.
+Hasta ahora, consideramos las coordenadas 3D como triplas (x,y,z). Vamos a introducir a 'w'. Ahora tendremos vectores (x,y,z,w).
 
-This will be more clear soon, but for now, just remember this :
+Sera mas sencillo despues, por ahora solo recuerda que:
 
-- If w == 1, then the vector (x,y,z,1) is a position in space.
-- If w == 0, then the vector (x,y,z,0) is a direction.
+- Si w==1 el vector es una posicion en el espacio.
+- Si w==0 el vector e suna direccion.
 
-(In fact, remember this forever.)
+(Recuerdelo para siempre)
 
-What difference does this make ? Well, for a rotation, it doesn't change anything. When you rotate a point or a direction, you get the same result. However, for a translation (when you move the point in a certain direction), things are different. What could mean "translate a direction" ? Not much.
+Que diferencia hace? Bueno, para una rotacion no hace la diferencia. Cuando usted rota un punto o una direccion, obtiene el mismo resultado. Sinembargo para una traslacion (mover un punto en una direccion), las cosas son diferentes. Que podria significar "traslacion de una direccion"? Nada.
 
-Homogeneous coordinates allow us to use a single mathematical formula to deal with these two cases.
+Las coordenadas homogeneas usan una unica formula matematica para lidiar con estos dos casos cases.
 
-# Transformation matrices
+# Transformacion de matrices
 
 
-## An introduction to matrices
+## Introduction a las matrices
 
-Simply put, a matrix is an array of numbers with a predefined number of rows and colums. For instance, a 2x3 matrix can look like this :
+En terminos simples, una matriz es un arreglo de numeros con un numero predefinido de filas y columnas. Por ejemplo, una matrix de 2x3 se ve asi
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/2X3.png)
 
-In 3D graphics we will mostly use 4x4 matrices. They will allow us to transform our (x,y,z,w) vertices. This is done by multiplying the vertex with the matrix :
+En computacion grafica se usan matrices de 4x4. Estas mastrices nos permitiran transformar nuestros vertices (x,y,z,w). 
+
+Esto se hace multiplicando el vertice con la matriz :
 
 **Matrix x Vertex (in this order !!) = TransformedVertex**
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/MatrixXVect.gif)
 
-This isn't as scary as it looks. Put your left finger on the a, and your right finger on the x. This is _ax_. Move your left finger to the next number (b), and your right finger to the next number (y). You've got _by_. Once again : _cz_. Once again : _dw_. ax + by + cz + dw. You've got your new x ! Do the same for each line, and you'll get your new (x,y,z,w) vector.
+No es tan terrible como se ve. Pon tu dedo izquierdo sobre la a y tu dedo derecho sobre la x. Esto es ax_. Mueve tu dedo izquierdo al siguiente numero (b), y tu dedo derecho a (y). ahora tienes _by_. Una vez mas, _cz_. Una vez mas : _dw_. ax + by + cz + dw. Tienes tu nueva x ! haz lo mismo para cada lina y obtendras tu vector (x,y,z,w).
 
-Now this is quite boring to compute, an we will do this often, so let's ask the computer to do it instead.
+Esto es aburrido de calcular, y lo haremos frecuentemente, asi que mejor digamosle al computador que lo haga en nuestro lugar.
 
-**In C++, with GLM:**
+**En C++, con GLM:**
 {% highlight cpp linenos %}
 glm::mat4 myMatrix;
 glm::vec4 myVector;
-// fill myMatrix and myVector somehow
-glm::vec4 transformedVector = myMatrix * myVector; // Again, in this order ! this is important.
+// Llene  myMatrix y myVector de alguna forma
+glm::vec4 transformedVector = myMatrix * myVector; // En este orden, es importante.
 {% endhighlight %}
 
-**In GLSL :**
+**En GLSL :**
 {% highlight glsl linenos %}
 mat4 myMatrix;
 vec4 myVector;
-// fill myMatrix and myVector somehow
-vec4 transformedVector = myMatrix * myVector; // Yeah, it's pretty much the same than GLM
+// Llene  myMatrix y myVector de alguna forma
+vec4 transformedVector = myMatrix * myVector; // Si basicamente es lo mismo que GLM
 {% endhighlight %}
 
-( have you cut'n pasted this in your code ? go on, try it)
+( Ya copiaste y pegaste el codigo? intentalo )
 
-##Translation matrices
+##Matrices de translacion\
 
-These are the most simple tranformation matrices to understand. A translation matrix look like this :
+Estas son las matrices mas faciles de entender. Una matriz de translacion se ve asi :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/translationMatrix.png)
 
-where X,Y,Z are the values that you want to add to your position.
+Donde X,Y,Z son los valores de tu posicion.
 
-So if we want to translate the vector (10,10,10,1) of 10 units in the X direction, we get :
+Asi que si queremos transladar el vector (10,10,10,1) 10 unidades en la direccion X, obtendremos :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/translationExamplePosition1.png)
 
-(do it ! doooooo it)
+(Intentalo! Inteeeeentalo)
 
-... and we get a (20,10,10,1) homogeneous vector ! Remember, the 1 means that it is a position, not a direction. So our transformation didn't change the fact that we were dealing with a position, which is good.
+... obtendremos un vector homogeneo (20,10,10,1) ! Recuerda el 1 significa que es una posicion no una direccion. La transformacion no ha cambiado eso, lo cual es bueno.
 
-Let's now see what happens to a vector that represents a direction towards the -z axis : (0,0,-1,0)
+Ahora veremos lo que le pasa a un vector direccion en direccion -z : (0,0,-1,0)
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/translationExampleDirection1.png)
 
-... ie our original (0,0,-1,0) direction, which is great because as I said ealier, moving a direction does not make sense.
+... es decir nuestra direccion original (0,0,-1,0), lo cual es genial por que como te dije antes, mover una direccion no tiene sentido.
 
-So, how does this translate to code ?
+Como se traduce esto a codigo?
 
-**In C++, with GLM:**
+
+**En C++, con GLM:**
 {% highlight cpp linenos %}
 #include <glm/gtx/transform.hpp> // after <glm/glm.hpp>
  
@@ -103,229 +106,235 @@ glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);
 glm::vec4 transformedVector = myMatrix * myVector; // guess the result
 {% endhighlight%}
 
-**In GLSL :**
+**En GLSL :**
 {% highlight glsl linenos %}
 vec4 transformedVector = myMatrix * myVector;
 {% endhighlight%}
-Well, in fact, you almost never do this in GLSL. Most of the time, you use glm::translate() in C++ to compute your matrix, send it to GLSL, and do only the multiplication :
 
-## The Identity matrix
+De hecho casi nunca se hace esto en GLSL. La mayoría de las veces se usa glm::translate() en C++ para calcular la matriz, enviarla a GLSL y solo hacer la multiplicación.
 
-This one is special. It doesn't do anything. But I mention it because it's as important as knowing that multiplying A by 1.0 gives A.
+## La matriz identidad
+
+Esta es especial. No hace nada. Pero la menciono por que es importante sabe que al multiplicar A por 1.0 te da 1.
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/identityExample.png)
 
-**In C++ :**
+**En C++ :**
 {% highlight cpp linenos %}
 glm::mat4 myIdentityMatrix = glm::mat4(1.0f);
 {% endhighlight%}
-## Scaling matrices
 
-Scaling matrices are quite easy too :
+## Escalando matrices
+
+Escalar es muy facil tambien :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/scalingMatrix.png)
 
-So if you want to scale a vector (position or direction, it doesn't matter) by 2.0 in all directions :
+Asi que si quieres escalar un vector (posición o dirección, no importa) por 2.0 en todas las direcciones :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/scalingExample.png)
 
-and the w still didn't change. You may ask : what is the meaning of "scaling a direction" ? Well, often, not much, so you usually don't do such a thing, but in some (rare) cases it can be handy.
+Y la w no cambia. Te preguntaras cual es el significado de "escalar una dirección"? Pues, con frecuencia no significa mucho, pero aveces resulta útil.
 
-(notice that the identity matrix is only a special case of scaling matrices, with (X,Y,Z) = (1,1,1). It's also a special case of translation matrix with (X,Y,Z)=(0,0,0), by the way)
+(Nota que la matriz identidad es solo un caso especial de escalamiento de matrices con (X,Y,Z) = (1,1,1). También es un caso especial, la translación con una matriz (X,Y,Z)=(0,0,0) )
 
-**In C++ :**
+**En C++ :**
 {% highlight cpp linenos %}
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
 glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
 {% endhighlight%}
-## Rotation matrices
 
-These are quite complicated. I'll skip the details here, as it's not important to know their exact layout for everyday use. For more information, please have a look to the [Matrices and Quaternions FAQ](http://www.cs.princeton.edu/~gewang/projects/darth/stuff/quat_faq.html) (popular resource, probably available in your language as well). You can also have a look at the [Rotations tutorials]({{site.baseurl }}{{intermediate-tutorials/tutorial-17-quaternions}}) 
+## Rotación de matrices
 
-**In C++ :**
+Estas son un poco mas complicadas. Omitiré detalles por simplicidad. Para mas información mira [Matrices and Quaternions FAQ](http://www.cs.princeton.edu/~gewang/projects/darth/stuff/quat_faq.html) (recurso popular en varios idiomas). Y puedes mirar también los [Rotations tutorials]({{site.baseurl }}{{intermediate-tutorials/tutorial-17-quaternions}}) 
+
+**En C++ :**
 {% highlight cpp linenos %}
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
 glm::vec3 myRotationAxis( ??, ??, ??);
 glm::rotate( angle_in_degrees, myRotationAxis );
 {% endhighlight %}
 
-## Cumulating transformations
+## Acumulando transformaciones
 
-So now we know how to rotate, translate, and scale our vectors. It would be great to combine these transformations. This is done by multiplying the matrices together, for instance :
+Ya sabemos rotar , transladar y escalar nuestros vectores. Seria genial combinar todas estas transformaciones. Esto se hace multiplicando las matrices, por ejemplo :
 
 {% highlight cpp linenos %}
 TransformedVector = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalVector;
 {% endhighlight %}
 
 
-**!!! BEWARE !!!** This lines actually performs the scaling FIRST, and THEN the rotation, and THEN the translation. This is how matrix multiplication works.
+**!!! ATENCIÓN !!!** Estas lineas primero hacen el ESCALAMIENTO, luego la ROTACIÓN y luego la TRANSLACIÓN. Asi es como funciona la multiplicación.
 
-Writing the operations in another order wouldn't produce the same result. Try it yourself :
+Escribir las operaciones en otro orden no produce el mismo resultado. Intentalo tu mismo :
 
-- make one step ahead ( beware of your computer ) and turn left;
+- Da un paso adelante (cuidado con tu computador) y voltea a la derecha.
 
-- turn left, and make one step ahead
+- Voltea a la derecha y da un paso al frente.
 
-As a matter of fact, the order above is what you will usually need for game characters and other items : Scale it first if needed; then set its direction, then translate it. For instance, given a ship model (rotations have been removed for simplification) :
+De hecho, el orden de arriba es el que usualmente necesitaras para personajes de un juego y otros items : Escala primero si es necesario, luego escoge una direccion y luego transladalo. Eliminemos rotación por simplicidad. Por ejemplo, dado un modelo de un barco  :
 
-* The wrong way :
-	- You translate the ship by (10,0,0). Its center is now at 10 units of the origin.
-	- You scale your ship by 2\. Every coordinate is multiplied by 2 _relative to the origin_, which is far away... So you end up with a big ship, but centered at 2*10 = 20. Which you don't want.
+* La forma incorrect :
+	- Transladar el barco en (10,0,0). Su centro esta ahora a 10 unidades del origen.
+	- Escalar el barco por 2\. Cada coordenada es multiplicada por 2 _con relación al origen_, que ya esta lejos de aqui.. Asi que vas a terminar con un barco grande pero centrado en 2*10 = 20. Y no quieres eso.
 
-* The right way :
-	- You scale your ship by 2\. You get a big ship, centered on the origin.
-	- You translate your ship. It's still the same size, and at the right distance.
+* La forma correcta :
+	- Escalar tu barco por 2\. Tienes un gran barco centrado en el origen.
+	- Transladas tu barco. Tendra el tamaño y la posición adecuada.
 
-Matrix-matrix multiplication is very similar to matrix-vector multiplication, so I'll once again skip some details and redirect you the the Matrices and Quaternions FAQ if needed. For now, we'll simply ask the computer to do it :
+La multiplicación matriz-matriz es muy similar a la multiplicación matriz-vector, asiq ue vamos a saltarnos esa parte y si tienes dudas consulta las preguntas frecuentes de Matrices y cuaterniones. Por ahora le diremos al computador que lo haga por nosotros :
 
-**in C++, with GLM :**
+**En C++, con GLM :**
 {% highlight cpp linenos %}
 glm::mat4 myModelMatrix = myTranslationMatrix * myRotationMatrix * myScaleMatrix;
 glm::vec4 myTransformedVector = myModelMatrix * myOriginalVector;
 {% endhighlight%}
-**in GLSL :**
+**En GLSL :**
 {% highlight glsl linenos %}
 mat4 transform = mat2 * mat1;
 vec4 out_vec = transform * in_vec;
 {% endhighlight%}
-# The Model, View and Projection matrices
 
-_For the rest of this tutorial, we will suppose that we know how to draw Blender's favourite 3d model : the monkey Suzanne._
+# Matrices modelo, vista y proyección
 
-The Model, View and Projection matrices are a handy tool to separate transformations cleanly. You may not use this (after all, that's what we did in tutorials 1 and 2). But you should. This is the way everybody does, because it's easier this way.
+_Para el resto del tutorial, vamos a suponer que todos conocen el famosisimo mono de Blender : El mono Suzanne._
 
-## The Model matrix
+Las matrices modelo, vista y proyección, son muy utiles para hacer las transformaciones limpiamente. Pueda que nunca uses esto (ya lo hicimos en los tutoriales 1 y 2). Pero deberías. Es como todos lo hacen, por que es la forma más fácil.
 
-This model, just as our beloved red triangle, is defined by a set of vertices. The X,Y,Z coordinates of these vertices are defined relative to the object's center : that is, if a vertex is at (0,0,0), it is at the center of the object.
+## La matriz modelo 
+
+Este modelo, como nuestro triangulo querido, esta definido por un set de vertices. Las coordenadas (x,y,z) de estos vertices, son definidas relativamente a un centro : un lugar llamado (0,0,0), es el centro del objeto.
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/model.png)
 
-We'd like to be able to move this model, maybe because the player controls it with the keyboard and the mouse. Easy, you just learnt do do so : `translation*rotation*scale`, and done. You apply this matrix to all your vertices at each frame (in GLSL, not in C++!) and everything moves. Something that doesn't move will be at the _center of the world_.
+Queremos poder mover este objeto, por ejemplo controlandolo con el teclado o el mouse. Ya sabes hacerlo, es facil : `translacion*rotacion*escala` y listo. Aplicas esta matriz a todos tus vertices en cada cuadro (en GLSL, no en C++!) y todo se mueve. Algo que no se mueve esta en el _centro del mundo_.
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/world.png)
 
-Your vertices are now in _World Space_. This is the meaning of the black arrow in the image below : _We went from Model Space (all vertices defined relatively to the center of the model) to World Space (all vertices defined relatively to the center of the world)._
+Al hacer esto tus vertices estan en el _espacio de mundo_. Este es el significado de la flecha negra de la imagen abajo : _Fuimos del espacio del model (todos los vertices estan definidos con respecto centro del modelo) al espacio del mundo (all vertices defined relatively to the center of the world)._
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/model_to_world.png)
 
-We can sum this up with the following diagram :
+Podemos verlo todo en el siguiente diagrama :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/M.png)
 
-## The View matrix
+## La matriz vista
 
-Let's quote Futurama again :
+Vamos a citar a "Futurama" otra vez:
 
-> _The engines don't move the ship at all. The ship stays where it is and the engines move the universe around it._
+> _El motor no mueve la nave. La nave se queda donde esta y los motores mueven el universo a su alrededor._
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/camera.png)
 
-When you think about it, the same applies to cameras. It you want to view a moutain from another angle, you can either move the camera... or move the mountain. While not practical in real life, this is really simple and handy in Computer Graphics.
+Cuando lo piensas, esto se aplica a las camaras. Si quieres ver una montaña desde otro angulo, puedes mover la camara... o mover la montaña. No es práctico en la vida real, es solo que asi es mas facil en computación gráfica.
 
-So initially your camera is at the origin of the World Space. In order to move the world, you simply introduce another matrix. Let's say you want to move your camera of 3 units to the right (+X). This is equivalent to moving your whole world (meshes included) 3 units to the LEFT ! (-X). While you brain melts, let's do it :
+Inicialmente, la camara esta en el origen del espacio mundo. Para mover el mundo, simplemente se introduce otra matriz. Digamos que quieres mover tu camara 3 unidades a la derecha (+X). Esto es equivalente a mover todo el mundo (y lo que contenga) 3 unidades a la izquierda !. Mientras tu cerebro se derrite, vamos a hacerlo :
 
-Again, the image below illustrates this : _We went from World Space (all vertices defined relatively to the center of the world, as we made so in the previous section) to Camera Space (all vertices defined relatively to the camera)._
+Una vez mas, la imagen abajo ilustra esto : _Fuimos del espacio mundo (todos los vertices estan definidos relativamente al centro del mundo) al espacio camara (todos los vertices se definen relativamente a la camara)._
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/model_to_world_to_camera.png)
 
-Before you head explodes from this, enjoy GLM's great glm::lookAt function:
+Antes que tu cabeza explote con todo esto, disfruta la gran función de GLM : glm::lookAt :
 
 {% highlight cpp linenos %}
 glm::mat4 CameraMatrix = glm::lookAt(
-    cameraPosition, // the position of your camera, in world space
-    cameraTarget,   // where you want to look at, in world space
-    upVector        // probably glm::vec3(0,1,0), but (0,-1,0) would make you looking upside-down, which can be great too
+    cameraPosition, // La posición de tu camara en el espaio mundo
+    cameraTarget,   // Hacia donde quieres mirar, en el espacio mundo
+    upVector        // Probablemente glm::vec3(0,1,0), porque (0,-1,0) te haría mirar cabeza abajo, aunque puede ser divertido.
 );
 {% endhighlight %}
 
-Here's the compulsory diagram :
+Aquí esta el diagrama obligatorio :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/MV.png)
 
-This is not over yet, though.
+Pero aun no hemos acabado.
 
-## The Projection matrix
+## La matriz proyección
 
-We're now in Camera Space. This means that after all theses transformations, a vertex that happens to have x==0 and y==0 should be rendered at the center of the screen. But we can't use only the x and y coordinates to determine where an object should be put on the screen : its distance to the camera (z) counts, too ! For two vertices with similar x and y coordinates, the vertex with the biggest z coordinate will be more on the center of the screen than the other.
+Ahora estamos en el espacio camara. Esto significa que despues de todas las transformaciones, un vertice que tenga coordenadas x==0 y y==0 debe pintarse en el centro de la pantalla. Pero no solo usamos las coordenadas x y y para determinar la posicion de un objeto en la pantalla : su distancia a la camara (z) también cuenta ! Para dos vertices con las mismas coordenadas x y y, el vertice con mayor (z) estará mas en el centro de la pantalla que el otro.
 
-This is called a perspective projection :
+Esto es lo que se llama una perspectiva de proyección :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/model_to_world_to_camera_to_homogeneous.png)
 
-And luckily for us, a 4x4 matrix can represent this projection[^projection] :
+Y por suerte para nosotros, una matriz 4x4 puede representar esta proyección [^projection] :
 
 {% highlight cpp linenos %}
-// Generates a really hard-to-read matrix, but a normal, standard 4x4 matrix nonetheless
+// Genera una matriz dificil de leer pero almenos es 4x4
 glm::mat4 projectionMatrix = glm::perspective(
-    FoV,         // The horizontal Field of View, in degrees : the amount of "zoom". Think "camera lens". Usually between 90° (extra wide) and 30° (quite zoomed in)
-    4.0f / 3.0f, // Aspect Ratio. Depends on the size of your window. Notice that 4/3 == 800/600 == 1280/960, sounds familiar ?
-    0.1f,        // Near clipping plane. Keep as big as possible, or you'll get precision issues.
-    100.0f       // Far clipping plane. Keep as little as possible.
+    FoV,         // El campo de visión horizontal, en grados : la cantidad de "zoom". Piensa en el lente de la camara. Usualmente esta entre 90° (extra ancho) y 30° (zoom aumentado)
+    4.0f / 3.0f, // Proporción. Depende del tamaño de tu ventana 4/3 == 800/600 == 1280/960, Parece familiar?
+    0.1f,        // Plano de corte cercano. Tan grande como sea posible o tendrás problemas de precisión.
+    100.0f       // Plano de corte lejano. Tan pequeño como se pueda.
 );
 {% endhighlight %}
 
-One last time :
+Una ultima vez :
 
-_We went from Camera Space (all vertices defined relatively to the camera) to Homogeneous Space (all vertices defined in a small cube. Everything inside the cube is onscreen)._
 
-And the final diagram :
+_Fuimos del espacio de la camara (todos los vertices definidos relativamente a la camara) al espacio homogeneo (todos los vertices definidos en un pequeño cubo. Todo aquello que esta dentro del cubo esta dentro de la pantalla)._
+
+Y el diagrama final :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/MVP.png)
 
-Here's another diagram so that you understand better what happens with this Projection stuff. Before projection, we've got our blue objects, in Camera Space, and the red shape represents the frustum of the camera : the part of the scene that the camera is actually able to see.
+Aquí hay otro diagrama para que entiendas mejor lo que pasa con todo esto de la proyección. Antes de la proyección, tenemos nuestros objetos azules, en el espacio de la camara, y la forma roja representa la pirmide de la camara : la parte de la escena que la camara ve en efecto. 
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/nondeforme.png)
 
-Multiplying everything by the Projection Matrix has the following effect :
+Multiplicar todo por la matriz de proyección tiene el siguiente efecto :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/homogeneous.png)
 
-In this image, the frustum is now a perfect cube (between -1 and 1 on all axes, it's a little bit hard to see it), and all blue objects have been deformed in the same way. Thus, the objects that are near the camera ( = near the face of the cube that we can't see) are big, the others are smaller. Seems like real life !
+En esta imagen el cono es ahora un cubo perfecto (entre -1 y 1 en todos los ejes, es un poco dificil de entender), y todos los objetos azules ahora parecen deformados de algun modo. Los objetos cercanos a la camara (cerca de la cara del cubo de -1 a 1) son mas grandes, los otros son mas pequeños. Tal como en la vida real.
 
-Let's see what it looks like from the "behind" the frustum :
+Veamos ahora como se ve por "detras" de la piramide :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/projected1.png)
 
-Here you get your image ! It's just a little bit too square, so another mathematical transformation is applied (this one is automatic, you don't have to do it yourself in the shader) to fit this to the actual window size :
+He aquí tu imagen ! Es un poco cuadrada, así que otra transformación matemática es aplicada (es automatica, no tienes que hacerla en el shader) para quedar del tamaño de la pantalla correctamente.
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/final1.png)
 
-And this is the image that is actually rendered !
+Y esta imagen de hecho es el render !
 
-## Cumulating transformations : the ModelViewProjection matrix
+## Acumulando transformaciones : La matriz ModeloVistaProyección
 
-... Just a standard matrix multiplication as you already love them !
+... Solo una multiplicación estándar, así como te gustan !
 
 {% highlight cpp linenos %}
-// C++ : compute the matrix
-glm::mat4 MVPmatrix = projection * view * model; // Remember : inverted !
+// C++ : calcular la matriz
+glm::mat4 MVPmatrix = projection * view * model; // Recurda : invertida !
 {% endhighlight %}
 
 {% highlight glsl linenos cssclass=highlightglslfs %}
-// GLSL : apply it
+// GLSL : aplicala
 transformed_vertex = MVP * in_vertex;
 {% endhighlight %}
 
 
-# Putting it all together
+# Uniendo todo
 
-*  First step : generating our MVP matrix. This must be done for each model you render.
-*  Second step : give it to GLSL
-* Third step : use it in GLSL to transform our vertices
-* Done ! Here is the same triangle as in tutorial 2, still at the origin (0,0,0), but viewed in perspective from point (4,3,3), heads up (0,1,0), with a 45° field of view.
+*  Primer paso : generar la matriz MVP. Esto se hace para cada modelo que se renderice.
+*  Segundo paso : entregarle todo a GLSL.
+*  Tercer paso : usar GLSL para transformar nuestros vertices.
+*  Listo ! He aquí el mismo triangulo del tutorial 2, aún en el origen (0,0,0), pero visto desde la perspectiva del punto (4,3,3), cabeza arriba (0,1,0), con un campo de visión de 45°.
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/perspective_red_triangle.png)
 
-In tutorial 6 you'll learn how to modify these values dynamically using the keyboard and the mouse to create a game-like camera, but first, we'll learn how to give our 3D models some colour (tutorial 4) and textures (tutorial 5).
 
-# Exercises
+En el tutorial 6 aprenderás a modificar estos valores de forma dinámica usando el teclado y el mouse para crear una camara como de los juegos. Pero primero, vamos a aprender a darle un colo a nuestros modelos 3D (tutorial 4) y usar texturas (tutorial 5).
 
-*   Try changing the glm::perspective
-*   Instead of using a perspective projection, use an orthographic projection (glm::ortho)
-*   Modify ModelMatrix to translate, rotate, then scale the triangle
-*   Do the same thing, but in different orders. What do you notice ? What is the "best" order that you would want to use for a character ?
+# Ejercicios
+
+*   Intenta cambiar la glm::perspective.
+*   En  lugar de usar una perspectiva de proyección, usa una proyección ortográfica (glm::ortho).
+*   Modifica la matriz de modelo para transladar, rotar y luego escalar el triangulo.
+*   Haz lo mismo en diferentes ordenes. Qué notas? cual es el "mejor" orden que se debe usar para un personaje?
 
 _Addendum_
 
 
-[^projection]: [...]luckily for us, a 4x4 matrix can represent this projection : Actually, this is not correct. A perspective transformation is not affine, and as such, can't be represented entirely by a matrix. After beeing multiplied by the ProjectionMatrix, homogeneous coordinates are divided by their own W component. This W component happens to be -Z (because the projection matrix has been crafted this way). This way, points that are far away from the origin are divided by a big Z; their X and Y coordinates become smaller; points become more close to each other, objects seem smaller; and this is what gives the perspective. This transformation is done in hardware, and is not visible in the shader.
+[^proyección]: [...]por suerte para nosotros, una matriz 4x4 puede representar esta proyección : De hecho esto no es correcto. Una transformación de perspectiva no es una transformación afín, y como tal, no puede ser representada en su totalidad por una matriz. Luego de ser multiplicadas por una matriz de proyección, las coordenadas homogeneas deben ser divididas por su propio componente w. Esta componente W suele se -Z. De esta forma, los puntos que estan lejos del origen se dividen por una gran Z; sus componentes X y Y se vuelven mas pequeñas y los puntos se acercan entre ellos, los objetos se vuelven mas pequeños y eso es lo que produce la perspectiva. Esta transformación se hace en hardware y no se nota en el shader.
