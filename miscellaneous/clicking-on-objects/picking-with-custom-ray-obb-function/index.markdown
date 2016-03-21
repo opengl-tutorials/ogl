@@ -14,7 +14,7 @@ This last method is a nice middleground between the "hacky" pure-OpenGL implemen
 
 This tutorial uses concepts and functions from the Bullet tutorial, so make sure you read it first.
 
-#The basic idea
+# The basic idea
 
 Instead of relying to Bullet intersect a ray with a *Collision Shape*, we're going to do this ourselves.
 
@@ -25,7 +25,7 @@ An OBB is a box that fits the mesh, and when the mesh is translated or rotated, 
 ![]({{site.baseurl}}/assets/images/tuto-picking-obb/OBB.png)
 
 
-#Ray-OBB intersection algorithm
+# Ray-OBB intersection algorithm
 
 *( The algorithm and the pictures are largely inspired from Real-Time Rendering 3. Buy this book ! )*
 
@@ -48,7 +48,7 @@ But if this order changes (you enter the green area -> you enter the red area), 
 
 Let's put this in practice.
 
-#Algorithm implementation
+# Algorithm implementation
 
 (full source code is available in [Misc05/misc05_picking_custom.cpp](https://github.com/opengl-tutorials/ogl/blob/master/misc05_picking/misc05_picking_custom.cpp))
 
@@ -106,7 +106,7 @@ This was for the X axis. On all other axes it's exactly the same !
 
  
 
-#Using the algorithm
+# Using the algorithm
 
 The TestRayOBBIntersection() functions enables us to test the intersection with only one OBB, so we have to test them all. In this tutorial, we simply test all boxes one after the other, but if you have many objects, you might need an additional acceleration structure like a Binary Space Partitionning Tree (BSP-Tree) or a Bounding Volume Hierarchy (BVH).
 {% highlight cpp linenos %}
@@ -140,7 +140,7 @@ for(int i=0; i<100; i++){
 {% endhighlight %}
 Note that this algorithm has a problem : it picks the first OBB it finds. But if this OBB is behind another OBB, this is wrong. So you would have to take only the nearest OBB ! Exercise left to the reader...
 
-#Pros and cons
+# Pros and cons
 
 Pros :
 
@@ -155,7 +155,7 @@ Cons :
 
  
 
-#Final remarks
+# Final remarks
 
 There are many other intersection routines available for all sorts of collision shapes; see [http://www.realtimerendering.com/intersections.html](http://www.realtimerendering.com/intersections.html) for instance.
 

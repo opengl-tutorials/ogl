@@ -10,7 +10,7 @@ order: 20
 tags: []
 ---
 
-#The alpha channel
+# The alpha channel
 
 The concept of the alpha channel is pretty simple. Instead of a writing an RGB result, you write an RGBA :
 {% highlight glsl linenos cssclass=highlightglslfs %}// Ouput data : it's now a vec4
@@ -29,11 +29,11 @@ Here's the result. Make sure to turn backface culling off (glDisable(GL_CULL_FAC
 ![]({{site.baseurl}}/assets/images/tuto-10-transparency/transparencyok.png)
 
 
-#Order matters !
+# Order matters !
 
 The previous screenshot looks okay-ish, but that's just because we're lucky.
 
-##The problem
+## The problem
 
 Here, I drew two squares with 50% alpha, one green and one red. You can see that order is important, the final colour gives an important clue to the eyes for proper depth perception.
 
@@ -47,7 +47,7 @@ This phenomena also happens in our scene. Let's change the viewpoint a bit :
 
 It turns out that this is a very hard problem. You never see lots of transparency in games, do you ?
 
-##Usual solution
+## Usual solution
 
 The usual solution is to sort all transparent triangles. Yes, ALL transparent triangles.
 
@@ -57,7 +57,7 @@ The usual solution is to sort all transparent triangles. Yes, ALL transparent tr
 
 You can sort whatever you want with qsort (in C) or std::sort (in C++). I won't dig in the details, because...
 
-##Caveat
+## Caveat
 
 Doing so will work ( more on this in the next section ), but :
 
@@ -74,7 +74,7 @@ A good enough solution is often to :
 * If you can avoid sorting, and it still doesn't look *too *bad, consider yourself lucky.
 
 
-##Order-Independent Transparency
+## Order-Independent Transparency
 
 A number of other techniques are worth investigating if your engine really, really needs state-of-the-art transparency :
 
@@ -86,7 +86,7 @@ A number of other techniques are worth investigating if your engine really, real
 
 Note that even a recent game like Little Big Planet, which ran on a powerful console, used only 1 layer of transparency.
 
-#The blend function
+# The blend function
 
 In order for the previous code to work, you need to setup your blend function.
 {% highlight cpp linenos %}

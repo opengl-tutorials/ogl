@@ -14,7 +14,7 @@ This technique is not really recommended, but it's an easy and fast way to add s
 
 Source code for this tutorial is available in [misc05_picking/misc05_picking_slow_easy.cpp](https://github.com/opengl-tutorials/ogl/blob/master/misc05_picking/misc05_picking_slow_easy.cpp), which is a quite meaningful name.
 
-#Basic idea
+# Basic idea
 
 The idea behind this technique is to render the scene as usual, but instead of using a nice shading, you render each mesh with a specific and unique color.
 
@@ -29,10 +29,10 @@ In this screenshot, each monkey has a slightly different color, which make is po
 
 Of course, you don't want to see the image with all these weird colors, so you also have to clear the screen and re-draw as usual.
 
-#Implementation
+# Implementation
 
 
-##Giving an ID to every object
+## Giving an ID to every object
 
 Each object of the scene will need a unique color. The easiest way to do this is to give each object an identifying integer, and convert it to a color. This color doesn't have to have a meaning; this technique is just a hack anyway.
 
@@ -40,7 +40,7 @@ In the accompanying source code, 100 objects are created and stored in a std::ve
 
  
 
-##Detecting the click
+## Detecting the click
 
 In this simple example, the picking is done each frame where the left mouse button is down :
 {% highlight cpp linenos %}
@@ -48,7 +48,7 @@ In this simple example, the picking is done each frame where the left mouse butt
 {% endhighlight %}
 In a real application, you probably want to do this only when the user just released the button, so you'll have to store a bool wasLeftMouseButtonPressedLastFrame; or, better, use *glfwSetMouseButtonCallback()* (read GLFW's manual to know how to use this).
 
-##Convert your ID into a special color
+## Convert your ID into a special color
 
 Since we're going to render each mesh with a different color, the first step is to compute this color. An easy way to do this is to put the least signifying bits in the red channels, and the most significant bits in the blue channel :
 {% highlight cpp linenos %}
@@ -59,7 +59,7 @@ int b = (i & 0x00FF0000) >> 16;
 {% endhighlight %}
 This might seem scary, but it's standard bit-manipulation code. You end up with 3 integers, each in the [0-255] range. With this scheme, you can represent 255^3 = 16 million different meshes, which is probably enough.
 
-##Drawing the scene with this color
+## Drawing the scene with this color
 
 We now need a shader to use this color. It's very simple. The vertex shader does nothing :
 {% highlight glsl linenos cssclass=highlightglslvs %}
@@ -107,7 +107,7 @@ You can now draw the meshes as usual (*glBindBuffer, glVertexAttribPointer, glDr
 
  
 
-##Get the color under the mouse
+## Get the color under the mouse
 
 When you have drawn all meshes (probably with a for() loop), you need to call *glReadPixels()*, which will retrieve the rasterized pixels on the CPU. But for this function to work, a few more calls are needed.
 
@@ -140,7 +140,7 @@ Your color is now in the 'data' array. Here, you can see that the ID is 19.
 ![]({{site.baseurl}}/assets/images/tuto-picking-color/DataArray.png)
 
 
-##Convert the color back to an ID
+## Convert the color back to an ID
 
 You can now reconstruct your ID from the 'data' buffer. The code is the complete opposite from the id-to-color code :
 {% highlight cpp linenos %}
@@ -151,7 +151,7 @@ int pickedID =
 	data[2] * 256*256;
 {% endhighlight %}
 
-##Use this ID
+## Use this ID
 
 You can now use this ID for whatever you need. In the example, the text in the GUI is updated, but of course, you can do whatever you want.
 {% highlight cpp linenos %}
@@ -165,7 +165,7 @@ if (pickedID == 0x00ffffff){ // Full white, must be the background !
 {% endhighlight %}
  
 
-#Pros and cons
+# Pros and cons
 
 Pros :
 
@@ -179,7 +179,7 @@ Cons :
 
  
 
-#Final remarks
+# Final remarks
 
 While not very recommended, this technique can be really useful; but it's quite restricted to picking. The methods in the two other tutorials can be used for other purposes, like detecting collisions, making an avatar walk on the ground, visibility queries for AIs, etc.
 

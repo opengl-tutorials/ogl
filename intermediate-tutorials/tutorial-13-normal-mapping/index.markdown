@@ -14,7 +14,7 @@ Welcome for our 13th tutorial ! Today we will talk about normal mapping.
 
 Since [Tutorial 8 : Basic shading](http://www.opengl-tutorial.org/beginners-tutorials/tutorial-8-basic-shading/) , you know how to get decent shading using triangle normals. One caveat is that until now, we only had one normal per vertex : inside each triangle, they vary smoothly, on the opposite to the colour, which samples a texture. The basic idea of normal mapping is to give normals similar variations.
 
-#Normal textures
+# Normal textures
 
 A "normal texture" looks like this :
 
@@ -29,7 +29,7 @@ The texture has a general blue tone because overall, the normal is towards the "
 
 This texture is mapped just like the diffuse one; The big problem is how to convert our normal, which is expressed in the space each individual triangle ( tangent space, also called image space), in model space (since this is what is used in our shading equation).
 
-#Tangent and Bitangent
+# Tangent and Bitangent
 
 You are now so familiar with matrices that you know that in order to define a space (in our case, the tangent space), we need 3 vectors. We already have our UP vector : it's the normal, given by Blender or computed from the triangle by a simple cross product. It's represented in blue, just like the overall color of the normal map :
 
@@ -75,10 +75,10 @@ invTBN = transpose(TBN)
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/transposeTBN.png)
 
 
-#Preparing our VBO
+# Preparing our VBO
 
 
-##Computing the tangents and bitangents
+## Computing the tangents and bitangents
 
 Since we need our tangents and bitangents on top of our normals, we have to compute them for the whole mesh. We'll do this in a separate function :
 {% highlight cpp linenos %}
@@ -136,7 +136,7 @@ Finally, we fill the *tangents *and *bitangents *buffers. Remember, these buffer
     }
 {% endhighlight %}
 
-##Indexing
+## Indexing
 
 Indexing our VBO is very similar to what we used to do, but there is a subtle difference.
 
@@ -159,10 +159,10 @@ If we find a similar vertex (same position, same normal, same texture coordinate
 {% endhighlight %}
 Note that we don't normalize anything here. This is actually handy, because this way, small triangles, which have smaller tangent and bitangent vectors, will have a weaker effect on the final vectors than big triangles (which contribute more to the final shape).
 
-#The shader
+# The shader
 
 
-##Additional buffers & uniforms
+## Additional buffers & uniforms
 
 We need two new buffers : one for the tangents, and one for the bitangents :
 {% highlight cpp linenos %}
@@ -308,7 +308,7 @@ So the full drawing code becomes :
         glfwSwapBuffers();
 {% endhighlight %}
 
-##Vertex shader
+## Vertex shader
 
 As said before, we'll do everything in camera space, because it's simpler to get the fragment's position in this space. This is why we multiply our T,B,N vectors with the ModelView matrix.
 {% highlight glsl linenos cssclass=highlightglslfs %}
@@ -330,7 +330,7 @@ This matrix goes from camera space to tangent space (The same matrix, but with X
     EyeDirection_tangentspace =  TBN * EyeDirection_cameraspace;
 {% endhighlight %}
 
-##Fragment shader
+## Fragment shader
 
 Our normal, in tangent space, is really straightforward to get : it's our texture :
 {% highlight glsl linenos cssclass=highlightglslfs %}
@@ -341,7 +341,7 @@ Our normal, in tangent space, is really straightforward to get : it's our textur
 
 So we've got everything we need now. Diffuse lighting uses *clamp( dot( n,l ), 0,1 )*, with n and l expressed in tangent space (it doesn't matter in which space you make your dot and cross products; the important thing is that n and l are both expressed in the same space). Specular lighting uses *clamp( dot( E,R ), 0,1 )*, again with E and R expressed in tangent space. Yay !
 
-#Results
+# Results
 
 Here is our result so far. You can notice that :
 
@@ -351,10 +351,10 @@ Here is our result so far. You can notice that :
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/normalmapping.png)
 
 
-#Going further
+# Going further
 
 
-##Orthogonalization
+## Orthogonalization
 
 In our vertex shader we took the transpose instead of the inverse because it's faster. But it only works if the space that the matrix represents is orthogonal, which is not yet the case. Luckily, this is very easy to fix : we just have to make the tangent perpendicular to the normal at he end of computeTangentBasis() :
 {% highlight glsl linenos cssclass=highlightglslvs %}
@@ -369,7 +369,7 @@ n and t are almost perpendicular, so we "push" t in the direction of -n by a fac
 
 [Here](http://www.cse.illinois.edu/iem/least_squares/gram_schmidt/)'s a little applet that explains it too (Use only 2 vectors).
 
-##Handedness
+## Handedness
 
 You usually don't have to worry about that, but in some cases, when you use symmetric models, UVs are oriented in the wrong way, and your T has the wrong orientation.
 
@@ -385,7 +385,7 @@ if (glm::dot(glm::cross(n, t), b) < 0.0f){
 {% endhighlight %}
 This is also done for each vertex at the end of computeTangentBasis().
 
-##Specular texture
+## Specular texture
 
 Just for fun, I added a specular texture to the code. It looks like this :
 
@@ -399,7 +399,7 @@ and is used instead of the simple "vec3(0.3,0.3,0.3)" grey that we used as specu
 
 Notice that now, cement is always black : the texture says that it has no specular component.
 
-##Debugging with the immediate mode
+## Debugging with the immediate mode
 
 The real aim of this website is that you DON'T use immediate mode, which is deprecated, slow, and problematic in many aspects.
 
@@ -441,7 +441,7 @@ glEnd();
 {% endhighlight %}
 Remember : don't use immediate mode in real world ! Only for debugging ! And don't forget to re-enable the core profile afterwards, it will make sure that you don't do such things.
 
-##Debugging with colors
+## Debugging with colors
 
 When debugging, it can be useful to visualize the value of a vector. The easiest way to do this is to write it on the framebuffer instead of the actual colour. For instance, let's visualize LightDirection_tangentspace :
 {% highlight glsl linenos cssclass=highlightglslfs %}
@@ -464,27 +464,27 @@ A few tips :
 
  
 
-##Debugging with variable names
+## Debugging with variable names
 
 As already stated before, it's crucial to exactly know in which space your vectors are. Don't take the dot product of a vector in camera space and a vector in model space.
 
 Appending the space of each vector in their names ("..._modelspace") helps fixing math bugs tremendously.
 
-##How to create a normal map
+## How to create a normal map
 
 Created by James O'Hare. Click to enlarge.
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/normalMapMiniTut.jpg)
 
 
-#Exercises
+# Exercises
 
 
 * Normalize the vectors in indexVBO_TBN before the addition and see what it does.
 * Visualize other vectors (for instance, EyeDirection_tangentspace) in color mode, and try to make sense of what you see
 
 
-#Tools & Links
+# Tools & Links
 
 
 * [Crazybump](http://www.crazybump.com/) , a great tool to make normal maps. Not free.
@@ -494,7 +494,7 @@ Created by James O'Hare. Click to enlarge.
 * Some more info on [matrix transpose](http://www.katjaas.nl/transpose/transpose.html)
 
 
-#References
+# References
 
 
 * [Lengyel, Eric. "Computing Tangent Space Basis Vectors for an Arbitrary Mesh". Terathon Software 3D Graphics Library, 2001.](http://www.terathon.com/code/tangent.html)

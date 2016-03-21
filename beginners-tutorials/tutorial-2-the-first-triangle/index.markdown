@@ -68,7 +68,7 @@ The first vertex is (-1,-1,0). This means that _unless we transform it in some w
 
 This is something you can't change, it's built in your graphics card. So (-1,-1) is the bottom left corner of your screen. (1,-1) is the bottom right, and (0,1) is the middle top. So this triangle should take most of the screen.
 
-##Drawing our triangle
+## Drawing our triangle
 
 The next step is to give this triangle to OpenGL. We do this by creating a buffer:
 

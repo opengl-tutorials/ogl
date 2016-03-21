@@ -17,7 +17,7 @@ tags: []
 
 **This is the single most important tutorial of the whole set. Be sure to read it at least eight times.**
 
-#Homogeneous coordinates
+# Homogeneous coordinates
 
 Until then, we only considered 3D vertices as a (x,y,z) triplet. Let's introduce w. We will now have (x,y,z,w) vectors.
 
@@ -69,7 +69,7 @@ vec4 transformedVector = myMatrix * myVector; // Yeah, it's pretty much the same
 
 ( have you cut'n pasted this in your code ? go on, try it)
 
-##Translation matrices
+## Translation matrices
 
 These are the most simple tranformation matrices to understand. A translation matrix look like this :
 

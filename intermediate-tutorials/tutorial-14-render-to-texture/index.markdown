@@ -14,11 +14,11 @@ Render-To-Texture is a handful method to create a variety of effects. The basic 
 
 Applications include in-game cameras, post-processing, and as many GFX as you can imagine.
 
-#Render To Texture
+# Render To Texture
 
 We have three tasks : creating the texture in which we're going to render ; actually rendering something in it ; and using the generated texture.
 
-##Creating the Render Target
+## Creating the Render Target
 
 What we're going to render to is called a Framebuffer. It's a container for textures and an optional depth buffer. It's created just like any other object in OpenGL :
 {% highlight cpp linenos %}
@@ -68,7 +68,7 @@ if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 return false;
 {% endhighlight %}
 
-##Rendering to the texture
+## Rendering to the texture
 
 Rendering to the texture is straightforward. Simply bind your framebuffer, and draw your scene as usual. Easy !
 {% highlight cpp linenos %}
@@ -93,7 +93,7 @@ Note : there is no layout(location=i) in OpenGL < 3.3, but you use glFragData[i]
 <div><span style="font-size: medium;"><span style="line-height: 24px;">
 </span></span></div>
 
-##Using the rendered texture
+## Using the rendered texture
 
 We're going to draw a simple quad that fills the screen. We need the usual buffers, shaders, IDs, ...
 {% highlight cpp linenos %}
@@ -146,17 +146,17 @@ void main(){
 
 This code simply sample the texture, but adds a tiny offset which depends on time.
 
-#Results
+# Results
 
  
 
 ![]({{site.baseurl}}/assets/images/tuto-14-render-to-texture/wavvy.png)
 
 
-#Going further
+# Going further
 
 
-##Using the depth
+## Using the depth
 
 In some cases you might need the depth when using the rendered texture. In this case, simply render to a texture created as follows :
 {% highlight cpp linenos %}
@@ -173,7 +173,7 @@ In this screenshot, the depth levels are artificially "prettified". Usually, its
 ![]({{site.baseurl}}/assets/images/tuto-14-render-to-texture/wavvydepth.png)
 
 
-##Multisampling
+## Multisampling
 
 You can write to multisampled textures instead of "basic" textures : you just have to replace glTexImage2D by [glTexImage2DMultisample](http://www.opengl.org/sdk/docs/man3/xhtml/glTexImage2DMultisample.xml) in the C++ code, and sampler2D/texture by sampler2DMS/texelFetch in the fragment shader.
 
@@ -183,7 +183,7 @@ So you may have to resolve the MS texture yourself, in another, non-MS texture, 
 
 Nothing difficult, but it's just bulky.
 
-##Multiple Render Targets
+## Multiple Render Targets
 
 You may write to several textures at the same time.
 
@@ -195,7 +195,7 @@ Hint : If you effectively need to output a vector in a texture, floating-point t
 
 Hint2 : For previous versions of OpenGL, use glFragData[1] = myvalue instead.
 
-#Exercices
+# Exercices
 
 
 * Try using glViewport(0,0,512,768); instead of glViewport(0,0,1024,768); (try with both the framebuffer and the screen)

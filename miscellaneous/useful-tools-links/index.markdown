@@ -10,11 +10,11 @@ order: 30
 tags: []
 ---
 
-#Documentation
+# Documentation
 
 
 
-##OpenGL references
+## OpenGL references
 
 
 * [OpenGL 3.2 Quick Reference](http://www.khronos.org/files/opengl-quick-reference-card.pdf)
@@ -24,7 +24,7 @@ tags: []
 * [List of all extensions](http://www.opengl.org/registry/) If your GPU is recent enough, some (many) of them will be available through GLEW
 
 
-##Other tutorials
+## Other tutorials
 
 
 * [http://arcsynthesis.org/gltut/](http://arcsynthesis.org/gltut/) A very thorough tutorial; high learning curve
@@ -33,7 +33,7 @@ tags: []
 * [NeHe ](http://nehe.gamedev.net/)Extensive OpenGL 1.1 programming tutorials and resources. Mostly deprecated now, but there are still a few intersting things.
 
 
-##Books
+## Books
 
 
 * [Real-time Rendering 3](http://www.realtimerendering.com/)
@@ -41,7 +41,7 @@ tags: []
 * [More Opengl Programming](http://glbook.gamedev.net/GLBOOK/glbook.gamedev.net/moglgp/index.html)
 
 
-##Others
+## Others
 
 
 * [A trip trough the graphic pipeline](http://fgiesen.wordpress.com/2011/07/09/a-trip-through-the-graphics-pipeline-2011-index/) : In-depth information about how the drivers & GPUs actually work. Fantastic source of information. Highly recommended.
@@ -49,7 +49,7 @@ tags: []
 * [Extensions stats](http://feedback.wildfiregames.com/report/opengl/) : More precise, but contains outdated data.
 
 
-#Debugging tools
+# Debugging tools
 
 
 * [glslDevil ](http://cumbia.informatik.uni-stuttgart.de/glsldevil/). Fantastic GLSL debugger - when it works. Even the website is often down.
@@ -58,10 +58,10 @@ tags: []
 * [NVidia Parallel NSight](http://developer.nvidia.com/nvidia-parallel-nsight) A wonderful tool which gives access to extremely precise performance numbers. Highly recommended. Visual Studio + NVidia only.
 
 
-#Libraries
+# Libraries
 
 
-##Windowing & misc
+## Windowing & misc
 
 * [GLFW ](http://www.glfw.org/), the one we use
 * GLUT, the oldest. Not maintained, horrible license. Not recommended.
@@ -69,7 +69,7 @@ tags: []
 * [SDL](http://www.libsdl.org/) I think this one is weird but some people like it.
 * [SFML](http://www.sfml-dev.org/index-fr.php). Includes a coffee machine, a washing machine, and a cellular.
 
-##Extension loading
+## Extension loading
 
 Beware, most extensions loading library don't work well with OpenGL 3+ Core. Actually, GLEW is the only one I managed to make work, with changes in the source code.
 
@@ -79,14 +79,14 @@ If unsure, simply use the GLEW version included in the source code.
 * [GLEE ](http://elf-stone.com/glee.php)I hear it's not bad either
 * [gl3w ](https://github.com/skaslev/gl3w/wiki). A Python scripts that generates a C++ file.
 
-##Math library
+## Math library
 
 * [GLM](http://glm.g-truc.net/), the one we use. Very complete. Directly OpenGL and CUDA compatible.
 * [Bullet's Vectormath](http://bulletphysics.com/Bullet/BulletFull/) Never used it but it seems to be SIMD'ed ( = faster, even if you seldom make big computations on the CPU side )
 * [Boost.ublas ](http://www.boost.org/). Heavyweight. I don't recommend it for OpenGL.
 * [MathFu](https://google.github.io/mathfu/) Google's tak on math libraries, SIMD optimised.
 
-##Image loading
+## Image loading
 
 * [stbimage](http://nothings.org/) A single .c file to include to your project, and you can load jpeg, bmp and png files !!!
 * [SOIL ](http://www.lonesock.net/soil.html)I recommend this one. Based on stbimage, provides handy functions for use with OpenGL, and a DDS loader.
@@ -96,17 +96,17 @@ If unsure, simply use the GLEW version included in the source code.
 * libjpg The usual library for .jpg loading. Quite hard to use, but plenty of examples on the net.
 * libpng Same thing here.
 
-##Static objects loading
+## Static objects loading
 
 * [ASSIMP ](http://assimp.sourceforge.net/)
 
-##Articulated objects loading & stuff
+## Articulated objects loading & stuff
 
 * Any Quake III or Quake IV loader around
 * [Cal3D](http://gna.org/projects/cal3d/)
 
 
-##Physics
+## Physics
 
 
 * [Bullet](http://bulletphysics.org/wordpress/) Open source, used by many games and even films

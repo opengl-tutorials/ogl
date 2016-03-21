@@ -20,7 +20,7 @@ In this tutorial, you will learn :
 * What the alpha channel is
 
 
-#About UV coordinates
+# About UV coordinates
 
 When texturing a mesh, you need a way to tell to OpenGL which part of the image has to be used for each triangle. This is done with UV coordinates.
 
@@ -32,7 +32,7 @@ Notice how the texture is distorted on the triangle.
 
  
 
-#Loading .BMP images yourself
+# Loading .BMP images yourself
 
 Knowing the BMP file format is not crucial : plenty of libraries can load BMP files for you. But it's very simple and can help you understand how things work under the hood. So we'll write a BMP file loader from scratch, so that you know how it works, <span style="text-decoration: underline;">and never use it again</span>.
 
@@ -133,7 +133,7 @@ Another very important point :** use power-of-two textures !**
 * okay but weird : 128*256
 
 
-#Using the texture in OpenGL
+# Using the texture in OpenGL
 
 We'll have a look at the fragment shader first. Most of it is straightforward :
 {% highlight glsl linenos cssclass=highlightglslfs %}
@@ -239,7 +239,7 @@ and a zoomed-in version :
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearfiltering_zoom.png)
 
-#What is filtering and mipmapping, and how to use them
+# What is filtering and mipmapping, and how to use them
 
 As you can see in the screenshot above, the texture quality is not that great. This is because in loadBMP_custom, we wrote :
 {% highlight cpp linenos %}
@@ -252,7 +252,7 @@ This means that in our fragment shader, texture() takes the texel that is at the
 
 There are several things we can do to improve this.
 
-##Linear filtering
+## Linear filtering
 
 With linear filtering, texture() also looks at the other texels around, and mixes the colours according to the distance to each center. This avoids the hard edges seen above.
 
@@ -260,13 +260,13 @@ With linear filtering, texture() also looks at the other texels around, and mixe
 
 This is much better, and this is used a lot, but if you want very high quality you can also use anisotropic filtering, which is a bit slower.
 
-##Anisotropic filtering
+## Anisotropic filtering
 
 This one approximates the  part of the image that is really seen through the fragment. For instance, if the following texture is seen from the side, and a little bit rotated, anisotropic filtering will compute the colour contained in the blue rectangle by taking a fixed number of samples (the "anisotropic level") along its main direction.
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/aniso.png)
 
-##Mipmaps
+## Mipmaps
 
 Both linear and anisotropic filtering have a problem. If the texture is seen from far away, mixing only 4 texels won't be enough. Actually, if your 3D model is so far away than it takes only 1 fragment on screen, ALL the texels of the image should be averaged to produce the final color. This is obviously not done for performance reasons. Instead, we introduce MipMaps :
 
@@ -287,7 +287,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 glGenerateMipmap(GL_TEXTURE_2D);
 {% endhighlight %}
 
-#How to load texture with GLFW
+# How to load texture with GLFW
 
 Our loadBMP_custom function is great because we made it ourselves, but using a dedicated library is better. GLFW2 can do that too (but only for TGA files, and this feature has been removed in GLFW3, that we now use) :
 {% highlight cpp linenos %}
@@ -315,7 +315,7 @@ GLuint loadTGA_glfw(const char * imagepath){
 }
 {% endhighlight %}
 
-#Compressed Textures
+# Compressed Textures
 
 At this point, you're probably wondering how to load JPEG files instead of TGA.
 
@@ -323,7 +323,7 @@ Short answer : don't. GPUs can't understand JPEG. So you'll compress your origin
 
 There's a better option.
 
-##Creating compressed textures
+## Creating compressed textures
 
 
 * Download [The Compressonator](http://developer.amd.com/Resources/archive/ArchivedTools/gpu/compressonator/Pages/default.aspx), an AMD tool

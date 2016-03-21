@@ -16,7 +16,7 @@ In this tutorial we will learn how to load 3D meshes from files. We will do this
 
 To keep this tutorial as simple as possible, we'll use the OBJ file format, which is both very simple and very common. And once again, to keep things simple, we will only deal with OBJ files with 1 UV coordinate and 1 normal per vertex (you don't have to know what a normal is right now).
 
-#Loading the OBJ
+# Loading the OBJ
 
 Our function, located in common/objloader.cpp and declared in common/objloader.hpp, will have the following signature :
 {% highlight cpp linenos %}
@@ -29,7 +29,7 @@ bool loadOBJ(
 {% endhighlight %}
 We want loadOBJ to read the file "path", write the data in out_vertices/out_uvs/out_normals, and return false if something went wrong. std::vector is the C++ way to declare an array of glm::vec3 which size can be modified at will: it has nothing to do with a mathematical vector. Just an array, really. And finally, the & means that function will be able to modify the std::vectors.
 
-##Example OBJ file
+## Example OBJ file
 
 An OBJ file looks more or less like this :
 {% highlight text linenos %}
@@ -103,14 +103,14 @@ These numbers are called indices. It's handy because if several vertices share t
 
 The bad news is that OpenGL can't be told to use one index for the position, another for the texture, and another for the normal. So the approach I took for this tutorial is to make a standard, non-indexed mesh, and deal with indexing later, in Tutorial 9, which will explain how to work around this.
 
-##Creating an OBJ file in Blender
+## Creating an OBJ file in Blender
 
 Since our toy loader will be severely limited, we have to be extra careful to set the right options when exporting the file. Here's how it should look in Blender :
 
 ![]({{site.baseurl}}/assets/images/tuto-7-model-loading/Blender.png)
 
 
-##Reading the file
+## Reading the file
 
 Ok, down with the actual code. We need some temporary variables in which we will store the contents of the .obj :
 {% highlight cpp linenos %}
@@ -186,7 +186,7 @@ And now the "f", which is more difficult :
 {% endhighlight %}
 This code is in fact very similar to the previous one, except that there is more data to read.
 
-##Processing the data
+## Processing the data
 
 So what we did there was simply to change the "shape" of the data. We had a string, we now have a set of std::vectors. But it's not enough, we have to put this into a form that OpenGL likes. Namely, removing the indexes and have plain glm::vec3 instead. This operation is called indexing.
 
@@ -210,7 +210,7 @@ out_vertices.push_back(vertex);
 {% endhighlight %}
 The same is applied for UVs and normals, and we're done !
 
-#Using the loaded data
+# Using the loaded data
 
 Once we've got this, almost nothing changes. Instead of declaring our usual static const GLfloat g_vertex_buffer_data[] = {...}, you declare a std::vector vertices instead (same thing for UVS and normals). You call loadOBJ with the right parameters :
 {% highlight cpp linenos %}
@@ -226,13 +226,13 @@ glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0],
 {% endhighlight %}
 And that's it !
 
-#Results
+# Results
 
 Sorry for the lame texture, I'm NOT a good artist :( Any contribution welcome !
 
 ![]({{site.baseurl}}/assets/images/tuto-7-model-loading/ModelLoading.png)
 
 
-#Other formats/loaders
+# Other formats/loaders
 
 This tiny loader should give you enough to get started, but won't want to use this in real life. Have a look at our [Useful Links & Tools](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) page for some tools you can use. Note, however, that you'd better wait for tutorial 9 before *actually *trying to use them.

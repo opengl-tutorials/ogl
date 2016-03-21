@@ -19,7 +19,7 @@ Particles are very similar to 3D billboards. There are two major differences, th
 
 Both of these difference come with problems. This tutorial will present ONE way to solve them; there are many other possibilities.
 
-#Particles, lots of them !
+# Particles, lots of them !
 
 The first idea to draw many particles would be to use the previous tutorial's code, and call glDrawArrays once for each particle. This is a very bad idea, because this means that all your shiny GTX' 512+ multiprocessors will all be dedicated to draw ONE quad (obviously, only one will be used, so that's 99% efficiency loss). Then you will draw the second billboard, and it will be the same.
 
@@ -33,7 +33,7 @@ There are many ways to do this; here are three of them :
 
 In this tutorial, we'll use the 3rd option, because it is a nice balance between performance and availability, and on top of that, it's easy to add support for the first method once this one works.
 
-##Instancing
+## Instancing
 
 "Instancing" means that we have a base mesh (in our case, a simple quad of 2 triangles), but many instances of this quad.
 
@@ -161,17 +161,17 @@ glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticlesCount);
 {% endhighlight %}
 As you can see, instancing is very versatile, because you can pass any integer as the AttribDivisor. For instance, with glVertexAttribDivisor(2, 10), each 10 subsequent instances will have the same color.
 
-##What's the point ?
+## What's the point ?
 
 The point is that now, we only have to update a small buffer each frame (the center of the particles) and not a huge mesh. This is a x4 bandwidth gain !
 
  
 
-#Life and death
+# Life and death
 
 On the contrary to most other objects in the scene, particles die and born at a very high rate. We need a decently fast way to get new particles and to discard them, something better than "new Particle()".
 
-##Creating new particles
+## Creating new particles
 
 For this, we will have a big particles container :
 {% highlight cpp linenos %}
@@ -226,11 +226,11 @@ if (newparticles > (int)(0.016f*10000.0))
     newparticles = (int)(0.016f*10000.0);
 {% endhighlight %}
 
-##Deleting old particles
+## Deleting old particles
 
 There's a trick, see below =)
 
-#The main simulation loop
+# The main simulation loop
 
 ParticlesContainer contains both active and "dead" particles, but the buffer that we send to the GPU needs to have only living particles.
 
@@ -280,7 +280,7 @@ This is what you get. Almost there, but there's a problem...
 
 ![]({{site.baseurl}}/assets/images/tuto-particules/particles_unsorted.png)
 
-##Sorting
+## Sorting
 
 As explained in [Tutorial 10](http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-10-transparency/), you need to sort semi-transparent objects from back to front for the blending to be correct.
 {% highlight cpp linenos %}
@@ -308,17 +308,17 @@ This will make ParticleContainer be sorted, and the particles now display correc
 
  
 
-#Going further
+# Going further
 
 
-##Animated particles
+## Animated particles
 
 You can animate your particles' texture with a texture atlas. Send the age of each particle along with the position, and in the shaders, compute the UVs like we did for the [2D font tutorial](http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-11-2d-text/). A texture atlas looks like this :
 
 ![]({{site.baseurl}}/assets/images/tuto-particules/ParticleAtlas.png)
 
 
-##Handling several particle systems
+## Handling several particle systems
 
 If you need more than one particle system, you have two options : either use a single ParticleContainer, or one per system.
 
@@ -328,7 +328,7 @@ If you have one container per particle system, on the other hand, particles will
 
 Of course, you can also use some kind of hybrid system with several particle systems, each with a (small and manageable) atlas.
 
-##Smooth particles
+## Smooth particles
 
 You'll notice very soon a common artifact : when your particle intersect some geometry, the limit becomes very visible and ugly :
 
@@ -343,7 +343,7 @@ However, you'll have to sample the Z-Buffer, which is not possible with the "nor
 
 http://developer.download.nvidia.com/whitepapers/2007/SDK10/SoftParticles_hi.pdf
 
-##Improving fillrate
+## Improving fillrate
 
 One of the most limiting factor in modern GPUs is fillrate : the amount of fragments (pixels) it can write in the 16.6ms allowed to get 60 FPS.
 
@@ -358,7 +358,7 @@ This small utility computes a mesh (the one you're supposed to draw with glDrawA
 
 [http://www.humus.name/index.php?page=Cool&ID=8](http://www.humus.name/index.php?page=Cool&ID=8) . Emil Person's site has plenty of other fascinating articles, too.
 
-##Particle physics
+## Particle physics
 
 At some point, you'll probably want your particles to interact some more with your world. In particular, particles could rebound on the ground.
 
@@ -374,7 +374,7 @@ Here are a few links about these techniques :
 
 [http://www.gdcvault.com/search.php#&category=free&firstfocus=&keyword=Chris+Tchou's%2BHalo%2BReach%2BEffects&conference_id=](http://www.gdcvault.com/search.php#&category=free&firstfocus=&keyword=Chris+Tchou's%2BHalo%2BReach%2BEffects&conference_id=)
 
-##GPU Simulation
+## GPU Simulation
 
 As said above, you can simulate the particles' movements completely on the GPU. You will still have to manage your particle's lifecycle on the CPU - at least to spawn them.
 

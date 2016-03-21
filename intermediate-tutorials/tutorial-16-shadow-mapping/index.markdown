@@ -16,7 +16,7 @@ Shadow maps are the current (as of 2016) way to make dynamic shadows. The great 
 
 In this tutorial, we'll first introduce the basic algorithm, see its shortcomings, and then implement some techniques to get better results. Since at time of writing (2012) shadow maps are still a heavily researched topic, we'll give you some directions to further improve your own shadowmap, depending on your needs.
 
-#Basic shadowmap
+# Basic shadowmap
 
 The basic shadowmap algorithm consists in two passes. First, the scene is rendered from the point of view of the light. Only the depth of each fragment is computed. Next, the scene is rendered as usual, but with an extra test to see it the current fragment is in the shadow.
 
@@ -27,11 +27,11 @@ The following image might help you understand the principle :
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/shadowmapping.png)
 
 
-##Rendering the shadow map
+## Rendering the shadow map
 
 In this tutorial, we'll only consider directional lights - lights that are so far away that all the light rays can be considered parallel. As such, rendering the shadow map is done with an orthographic projection matrix. An orthographic matrix is just like a usual perspective projection matrix, except that no perspective is taken into account - an object will look the same whether it's far or near the camera.
 
-###Setting up the rendertarget and the MVP matrix
+### Setting up the rendertarget and the MVP matrix
 
 Since Tutorial 14, you know how to render the scene into a texture in order to access it later from a shader.
 
@@ -80,7 +80,7 @@ glm::vec3 lightInvDir = glm::vec3(0.5f,2,2);
  glUniformMatrix4fv(depthMatrixID, 1, GL_FALSE, &depthMVP[0][0])
 {% endhighlight %}
 
-###The shaders
+### The shaders
 
 The shaders used during this pass are very simple. The vertex shader is a pass-through shader which simply compute the vertex' position in homogeneous coordinates :
 {% highlight glsl linenos cssclass=highlightglslvs %}
@@ -110,7 +110,7 @@ void main(){
 {% endhighlight %}
 Rendering a shadow map is usually more than twice as fast as the normal render, because only low precision depth is written, instead of both the depth and the color; Memory bandwidth is often the biggest performance issue on GPUs.
 
-###Result
+### Result
 
 The resulting texture looks like this :
 
@@ -119,10 +119,10 @@ The resulting texture looks like this :
 
 A dark colour means a small z ; hence, the upper-right corner of the wall is near the camera. At the opposite, white means z=1 (in homogeneous coordinates), so this is very far.
 
-##Using the shadow map
+## Using the shadow map
 
 
-###Basic shader
+### Basic shader
 
 Now we go back to our usual shader. For each fragment that we compute, we must test whether it is "behind" the shadow map or not.
 
@@ -177,7 +177,7 @@ color =
  visibility * MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5);
 {% endhighlight %}
 
-###Result - Shadow acne
+### Result - Shadow acne
 
 Here's the result of the current code. Obviously, the global idea it there, but the quality is unacceptable.
 
@@ -186,10 +186,10 @@ Here's the result of the current code. Obviously, the global idea it there, but 
 
 Let's look at each problem in this image. The code has 2 projects : shadowmaps and shadowmaps_simple; start with whichever you like best. The simple version is just as ugly as the image above, but is simpler to understand.
 
-#Problems
+# Problems
 
 
-##Shadow acne
+## Shadow acne
 
 The most obvious problem is called *shadow acne* :
 
@@ -244,7 +244,7 @@ And when rendering the scene, render normally (backface culling)
 {% endhighlight %}
 This method is used in the code, in addition to the bias.
 
-##Peter Panning
+## Peter Panning
 
 We have no shadow acne anymore, but we still have this wrong shading of the ground, making the wall to look as if it's flying (hence the term "Peter Panning"). In fact, adding the bias made it worse.
 
@@ -261,14 +261,14 @@ The drawback is that you have more triangles to render ( two times per frame ! )
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/NoPeterPanning.png)
 
 
-##Aliasing
+## Aliasing
 
 Even with these two tricks, you'll notice that there is still aliasing on the border of the shadow. In other words, one pixel is white, and the next is black, without a smooth transition inbetween.
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/Aliasing.png)
 
 
-###PCF
+### PCF
 
 The easiest way to improve this is to change the shadowmap's sampler type to *sampler2DShadow*. The consequence is that when you sample the shadowmap once, the hardware will in fact also sample the neighboring texels, do the comparison for all of them, and return a float in [0,1] with a bilinear filtering of the comparison results.
 
@@ -281,7 +281,7 @@ Note that it's not the same than a single sampling of a filtered depth map ! A c
 
 As you can see, shadow borders are smooth, but shadowmap's texels are still visible.
 
-###Poisson Sampling
+### Poisson Sampling
 
 An easy way to deal with this is to sample the shadowmap N times instead of once. Used in combination with PCF, this can give very good results, even with a small N. Here's the code for 4 samples :
 {% highlight glsl linenos cssclass=highlightglslfs %}
@@ -316,7 +316,7 @@ The 700.0 constant defines how much the samples are "spread". Spread them too li
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/SoftShadows_Wide.png)
 
 
-###Stratified Poisson Sampling
+### Stratified Poisson Sampling
 
 We can remove this banding by choosing different samples for each pixel. There are two main methods : Stratified Poisson or Rotated Poisson. Stratified chooses different samples; Rotated always use the same, but with a random rotation so that they look different. In this tutorial I will only explain the stratified version.
 
@@ -347,15 +347,15 @@ This will make patterns such as in the picture above disappear, at the expense o
 
 See [tutorial16/ShadowMapping.fragmentshader](https://github.com/opengl-tutorials/ogl/blob/master/tutorial16_shadowmaps/ShadowMapping.fragmentshader) for three example implementions.
 
-#Going further
+# Going further
 
 Even with all these tricks, there are many, many ways in which our shadows could be improved. Here are the most common :
 
-##Early bailing
+## Early bailing
 
 Instead of taking 16 samples for each fragment (again, it's a lot), take 4 distant samples. If all of them are in the light or in the shadow, you can probably consider that all 16 samples would have given the same result : bail early. If some are different, you're probably on a shadow boundary, so the 16 samples are needed.
 
-##Spot lights
+## Spot lights
 
 Dealing with spot lights requires very few changes. The most obvious one is to change the orthographic projection matrix into a perspective projection matrix :
 {% highlight cpp linenos %}
@@ -374,17 +374,17 @@ if ( textureProj( shadowMap, ShadowCoord.xyw ).z  <  (ShadowCoord.z-bias)/Shadow
 {% endhighlight %}
  
 
-##Point lights
+## Point lights
 
 Same thing, but with depth cubemaps. A cubemap is a set of 6 textures, one on each side of a cube; what's more, it is not accessed with standard UV coordinates, but with a 3D vector representing a direction.
 
 The depth is stored for all directions in space, which make possible for shadows to be cast all around the point light.
 
-##Combination of several lights
+## Combination of several lights
 
 The algorithm handles several lights, but keep in mind that each light requires an additional rendering of the scene in order to produce the shadowmap. This will require an enormous amount of memory when applying the shadows, and you might become bandwidth-limited very quickly.
 
-##Automatic light frustum
+## Automatic light frustum
 
 In this tutorial, the light frustum hand-crafted to contain the whole scene. While this works in this restricted example, it should be avoided. If your map is 1Km x 1Km, each texel of your 1024x1024 shadowmap will take 1 square meter; this is lame. The projection matrix of the light should be as tight as possible.
 
@@ -402,25 +402,25 @@ Precise computation of these sets involve computing convex hulls intersections, 
 
 This method will result in popping when objects disappear from the frustum, because the shadowmap resolution will suddenly increase. Cascaded Shadow Maps don't have this problem, but are harder to implement, and you can still compensate by smoothing the values over time.
 
-##Exponential shadow maps
+## Exponential shadow maps
 
 Exponential shadow maps try to limit aliasing by assuming that a fragment which is in the shadow, but near the light surface, is in fact "somewhere in the middle". This is related to the bias, except that the test isn't binary anymore : the fragment gets darker and darker when its distance to the lit surface increases.
 
 This is cheating, obviously, and artefacts can appear when two objects overlap.
 
-##Light-space perspective Shadow Maps
+## Light-space perspective Shadow Maps
 
 LiSPSM tweaks the light projection matrix in order to get more precision near the camera. This is especially important in case of "duelling frustra" : you look in a direction, but a spot light "looks" in the opposite direction. You have a lot of shadowmap precision near the light, i.e. far from you, and a low resolution near the camera, where you need it the most.
 
 However LiSPM is tricky to implement. See the references for details on the implementation.
 
-##Cascaded shadow maps
+## Cascaded shadow maps
 
 CSM deals with the exact same problem than LiSPSM, but in a different way. It simply uses several (2-4) standard shadow maps for different parts of the view frustum. The first one deals with the first meters, so you'll get great resolution for a quite little zone. The next shadowmap deals with more distant objects. The last shadowmap deals with a big part of the scene, but due tu the perspective, it won't be more visually important than the nearest zone.
 
 Cascarded shadow maps have, at time of writing (2012), the best complexity/quality ratio. This is the solution of choice in many cases.
 
-#Conclusion
+# Conclusion
 
 As you can see, shadowmaps are a complex subject. Every year, new variations and improvement are published, and to day, no solution is perfect.
 

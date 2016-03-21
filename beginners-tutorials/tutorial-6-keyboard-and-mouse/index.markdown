@@ -14,7 +14,7 @@ Welcome for our 6th tutorial !
 
 We will now learn how to use the mouse and the keyboard to move the camera just like in a FPS.
 
-#The interface
+# The interface
 
 Since this code will be re-used throughout the tutorials, we will put the code in a separate file : common/controls.cpp, and declare the functions in common/controls.hpp so that tutorial06.cpp knows about them.
 
@@ -44,7 +44,7 @@ This is just one way to do it, of course. If you don't like these functions, go 
 
 Let's see what's inside controls.cpp.
 
-#The actual code
+# The actual code
 
 We'll need a few variables.
 {% highlight cpp linenos %}
@@ -64,7 +64,7 @@ FoV is the level of zoom. 80&deg; = very wide angle, huge deformations. 60&deg; 
 
 We will first recompute position, horizontalAngle, verticalAngle and FoV according to the inputs, and then compute the View and Projection matrices from position, horizontalAngle, verticalAngle and FoV.
 
-##Orientation
+## Orientation
 
 Reading the mouse position is easy :
 {% highlight cpp linenos %}
@@ -127,7 +127,7 @@ glm::vec3 up = glm::cross( right, direction );
 {% endhighlight %}
 To remember what the cross product does, it's very simple. Just recall the Right Hand Rule from Tutorial 3. The first vector is the thumb; the second is the index; and the result is the middle finger. It's very handy.
 
-##Position
+## Position
 
 The code is pretty straightforward. By the way, I used the up/down/right/left keys instead of the awsd because on my azerty keyboard, awsd is actually zqsd. And it's also different with qwerZ keyboards, let alone korean keyboards. I don't even know what layout korean people have, but I guess it's also different.
 {% highlight cpp linenos %}
@@ -164,14 +164,14 @@ double currentTime = glfwGetTime();
 float deltaTime = float(currentTime - lastTime);
 {% endhighlight %}
 
-##Field Of View
+## Field Of View
 
 For fun, we can also bind the wheel of the mouse to the Field Of View, so that we can have a cheap zoom :
 {% highlight cpp linenos %}
 float FoV = initialFoV - 5 * glfwGetMouseWheel();
 {% endhighlight %}
 
-##Computing the matrices
+## Computing the matrices
 
 Computing the matrices is now straightforward. We use the exact same functions than before, but with our new parameters.
 {% highlight cpp linenos %}
@@ -185,12 +185,12 @@ ViewMatrix       = glm::lookAt(
 );
 {% endhighlight %}
 
-#Results
+# Results
 
 ![]({{site.baseurl}}/assets/images/tuto-6-mouse-keyboard/moveanim.gif)
 
 
-##Backface Culling
+## Backface Culling
 
 Now that you can freely move around, you'll notice that if you go inside the cube, polygons are still displayed. This can seem obvious, but this remark actually opens an opportunity for optimisation. As a matter of fact, in a usual application, you are never _inside_ a cube.
 
@@ -206,7 +206,7 @@ Enabling backface culling is a breeze :
 glEnable(GL_CULL_FACE);
 {% endhighlight %}
 
-#Exercices
+# Exercices
 
 
 * Restrict verticalAngle so that you can't go upside-down

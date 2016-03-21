@@ -17,7 +17,7 @@ Welcome for the 4rth tutorial ! You will do the following :
 * Learn what the Z-Buffer is
 
 
-#Draw a cube
+# Draw a cube
 
 A cube has six square faces. Since OpenGL only knows about triangles, we'll have to draw 12 triangles : two for each face. We just define our vertices in the same way as we did for the triangle.
 {% highlight cpp linenos %}
@@ -74,7 +74,7 @@ A few remarks on this code :
 
 You now have all the needed pieces to draw the cube in white. Make the shaders work ! go on, at least try :)
 
-#Adding colors
+# Adding colors
 
 A color is, conceptually, exactly the same as a position : it's just data. In OpenGL terms, they are "attributes". As a matter of fact, we already used this with glEnableVertexAttribArray() and glVertexAttribPointer(). Let's add another attribute. The code is going to be very similar.
 
@@ -197,7 +197,7 @@ It overdraws the "near" one, even though it's supposed to be behind it ! This is
 
 *Quick Note 2* : if "color is like position, it's an attribute", why do we need to declare out vec3 fragmentColor; and in vec3 fragmentColor; for the color, and not for the position ? Because the position is actually a bit special : It's the only thing that is compulsory (or OpenGL wouldn't know where to draw the triangle !). So in the vertex shader, gl_Position is a "built-in" variable.
 
-#The Z-Buffer
+# The Z-Buffer
 
 The solution to this problem is to store the depth (i.e. "Z") component of each fragment in a buffer, and each and every time you want to write a fragment, you first check if you should (i.e the new fragment is closer than the previous one).
 
@@ -218,7 +218,7 @@ And this is enough to solve all your problems.
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/one_color_per_vertex.png)
 
 
-#Exercises
+# Exercises
 
 
 * Draw the cube AND the triangle, at different locations. You will need to generate 2 MVP matrices, to make 2 draw calls in the main loop, but only 1 shader is required.

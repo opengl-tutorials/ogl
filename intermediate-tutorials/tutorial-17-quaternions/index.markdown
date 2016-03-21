@@ -19,7 +19,7 @@ We will present the two most common ways to represent rotation: Euler angles and
 ![]({{site.baseurl}}/assets/images/tuto-17-rotation/tuto17.png)
 
 
-#Foreword: rotation VS orientation
+# Foreword: rotation VS orientation
 
 While reading articles on rotations, you might get confused because of the vocabulary. In this tutorial:
 
@@ -28,7 +28,7 @@ While reading articles on rotations, you might get confused because of the vocab
 
 That is, when you *apply a rotation*, you *change the orientation*. Both can be represented with the same tools, which leads to the confusion. Now, let's get started...
 
-#Euler Angles
+# Euler Angles
 
 Euler angles are the easiest way to think of an orientation. You basically store three rotations around the X, Y and Z axes. It's a very simple concept to grasp. You can use a vec3 to store it:
 {% highlight cpp linenos %}
@@ -51,7 +51,7 @@ However, when things get more complex, Euler angle will be hard to work with. Fo
 
 Quaternions are a tool to represent rotations, which solves these problems.
 
-#Quaternions
+# Quaternions
 
 A quaternion is a set of 4 numbers, [x y z w], which represents rotations the following way:
 {% highlight cpp linenos %}
@@ -70,17 +70,17 @@ RotationAngle is the angle of rotation around this axis.
 
 So essentially quaternions store a *rotation axis* and a *rotation angle*, in a way that makes combining rotations easy.
 
-##Reading quaternions
+## Reading quaternions
 
 This format is definitely less intuitive than Euler angles, but it's still readable: the xyz components match roughly the rotation axis, and w is the acos of the rotation angle (divided by 2). For instance, imagine that you see the following values in the debugger: [ 0.7 0 0 0.7 ]. x=0.7, it's bigger than y and z, so you know it's mostly a rotation around the X axis; and 2*acos(0.7) = 1.59 radians, so it's a rotation of 90&deg;.
 
 Similarly, [0 0 0 1] (w=1) means that angle = 2*acos(1) = 0, so this is a `unit quaternion`, which makes no rotation at all.
 
-##Basic operations
+## Basic operations
 
 Knowing the math behind the quaternions is rarely useful: the representation is so unintuitive that you usually only rely on utility functions which do the math for you. If you're interested, see the math books in the [Useful Tools & Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) page.
 
-###How do I create a quaternion in C++ ?
+### How do I create a quaternion in C++ ?
 
 {% highlight cpp linenos %}
 // Don't forget to #include <glm/gtc/quaternion.hpp> and <glm/gtx/quaternion.hpp>
@@ -101,13 +101,13 @@ MyQuaternion = quat(EulerAngles);
 MyQuaternion = gtx::quaternion::angleAxis(degrees(RotationAngle), RotationAxis);
 {% endhighlight %}
 
-###How do I create a quaternion in GLSL ?
+### How do I create a quaternion in GLSL ?
 
 You don't. Convert your quaternion to a rotation matrix, and use it in the Model Matrix. Your vertices will be rotated as usual, with the MVP matrix.
 
 In some cases, you might actually want to use quaternions in GLSL, for instance if you do skeletal animation on the GPU. There is no quaternion type in GLSL, but you can pack one in a vec4, and do the math yourself in the shader.
 
-###How do I convert a quaternion to a matrix ?
+### How do I convert a quaternion to a matrix ?
 
 {% highlight cpp linenos %}
 mat4 RotationMatrix = quaternion::toMat4(quaternion);
@@ -121,7 +121,7 @@ mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScaleMatrix;
 {% endhighlight %}
 
 
-#So, which one should I choose ?
+# So, which one should I choose ?
 
 Choosing between Euler angles and quaternions is tricky. Euler angles are intuitive for artists, so if you write some 3D editor, use them. But quaternions are handy for programmers, and faster too, so you should use them in a 3D engine core.
 
@@ -129,7 +129,7 @@ The general consensus is exactly that: use quaternions internally, and expose Eu
 
 You will be able to handle all you will need (or at least, it will be easier), and you can still use Euler angles for entities that require it ( as said above: the camera, humanoids, and that's pretty much it) with a simple conversion.
 
-#Other resources
+# Other resources
 
 
 * The books on [Useful Tools & Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) !
@@ -140,9 +140,9 @@ You will be able to handle all you will need (or at least, it will be easier), a
 * Ogre3D's [Vector3D.h](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/include/OgreVector3.h?at=default) and [Quaternion.cpp](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/src/OgreQuaternion.cpp?at=default)
 
 
-#Cheat-sheet
+# Cheat-sheet
 
-##How do I know if two quaternions are similar ?
+## How do I know if two quaternions are similar ?
 
 When using vector, the dot product gives the cosine of the angle between these vectors. If this value is 1, then the vectors are in the same direction.
 
@@ -155,7 +155,7 @@ if ( abs(matching-1.0) < 0.001 ){
 {% endhighlight %}
 You can also get the angle between q1 and q2 by taking the acos() of this dot product.
 
-##How do I apply a rotation to a point ?
+## How do I apply a rotation to a point ?
 
 You can do the following:
 {% highlight cpp linenos %}
@@ -168,21 +168,21 @@ Note that the center of rotation is always the origin. If you want to rotate aro
 rotated_point = origin + (orientation_quaternion * (point-origin));
 {% endhighlight %}
 
-##How do I interpolate between 2 quaternions ?
+## How do I interpolate between 2 quaternions ?
 
 This is called a SLERP: Spherical Linear intERPolation. With GLM, you can do this with mix:
 {% highlight cpp linenos %}
 glm::quat interpolatedquat = quaternion::mix(quat1, quat2, 0.5f); // or whatever factor
 {% endhighlight %}
 
-##How do I cumulate 2 rotations ?
+## How do I cumulate 2 rotations ?
 
 Simple ! Just multiply the two quaternions together. The order is the same as for matrices, i.e. reverse:
 {% highlight cpp linenos %}
 quat combined_rotation = second_rotation * first_rotation;
 {% endhighlight %}
 
-##How do I find the rotation between 2 vectors ?
+## How do I find the rotation between 2 vectors ?
 
 (in other words: the quaternion needed to rotate v1 so that it matches v2)
 
@@ -228,7 +228,7 @@ quat RotationBetweenVectors(vec3 start, vec3 dest){
 {% endhighlight %}
 (You can find this function in [common/quaternion_utils.cpp](https://github.com/opengl-tutorials/ogl/blob/master/common/quaternion_utils.cpp))
 
-##I need an equivalent of gluLookAt. How do I orient an object towards a point ?
+## I need an equivalent of gluLookAt. How do I orient an object towards a point ?
 
 Use RotationBetweenVectors !
 {% highlight cpp linenos %}
@@ -258,7 +258,7 @@ Once you have this target orientation, you will probably want to interpolate bet
 
 (You can find this function in common/quaternion_utils.cpp)
 
-##How do I use LookAt, but limit the rotation at a certain speed ?
+## How do I use LookAt, but limit the rotation at a certain speed ?
 
 The basic idea is to do a SLERP ( = use glm::mix ), but play with the interpolation value so that the angle is not bigger than the desired value:
 {% highlight cpp linenos %}
@@ -311,6 +311,6 @@ CurrentOrientation = RotateTowards(CurrentOrientation, TargetOrientation, 3.14f 
 {% endhighlight %}
 (You can find this function in common/quaternion_utils.cpp)
 
-##How do I...
+## How do I...
 
 If you can't figure it out, drop us an email, and we'll add it to the list !
