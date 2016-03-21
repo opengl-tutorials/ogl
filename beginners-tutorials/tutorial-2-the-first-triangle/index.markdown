@@ -72,7 +72,7 @@ This is something you can't change, it's built in your graphics card. So (-1,-1)
 
 The next step is to give this triangle to OpenGL. We do this by creating a buffer:
 
-``` cpp
+```cpp
 // This will identify our vertex buffer
 GLuint vertexbuffer;
 // Generate 1 buffer, put the resulting identifier in vertexbuffer
@@ -80,7 +80,8 @@ glGenBuffers(1, &vertexbuffer);
 // The following commands will talk about our 'vertexbuffer' buffer
 glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 // Give our vertices to OpenGL.
-glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);```
+glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+```
 
 This needs to be done only once.
 
@@ -215,7 +216,6 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 
 	return ProgramID;
 }
-
 ```
 
 # Our Vertex Shader
