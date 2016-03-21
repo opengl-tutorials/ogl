@@ -27,7 +27,7 @@ language: cn
 GLuint VertexArrayID;
 glGenVertexArrays(1, &VertexArrayID);
 glBindVertexArray(VertexArrayID);
-{% endhighlight%}
+```
 窗口创建成功后（即OpenGL上下文创建后）紧接着完成上述动作；这一步必须在其他OpenGL调用前完成。
 
 若想进一步了解顶点数组对象（VAO）可以参考其他教程，不过VAO不是很重要。
@@ -58,7 +58,7 @@ static const GLfloat g_vertex_buffer_data[] = {
 1.0f, -1.0f, 0.0f,
 0.0f,? 1.0f, 0.0f,
 };
-{% endhighlight%}
+```
 
 第一个顶点是(-1, -1, 0)。
 这意味着如果不变换该顶点，它就将显示在屏幕的(-1, -1)位置。这是什么意思呢？屏幕的原点在中间，X轴朝右，Y轴朝上。屏幕坐标如下图：
@@ -82,7 +82,7 @@ glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 
 // Give our vertices to OpenGL.
 glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-{% endhighlight%}
+```
 
 这步操作仅需执行一次。
 
@@ -105,7 +105,7 @@ GL_FALSE,           // normalized?
 glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
 
 glDisableVertexAttribArray(0);
-{% endhighlight%}
+```
 
 结果如图（看不到也别慌哦）：
 
@@ -199,7 +199,7 @@ glDeleteShader(FragmentShaderID);
 
 return ProgramID;
 }
-{% endhighlight%}
+```
 
 ##顶点着色器
 先写顶点着色器。

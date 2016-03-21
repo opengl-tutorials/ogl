@@ -104,12 +104,12 @@ Como se traduce esto a codigo?
 glm::mat4 myMatrix = glm::translate(10.0f, 0.0f, 0.0f);
 glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);
 glm::vec4 transformedVector = myMatrix * myVector; // guess the result
-{% endhighlight%}
+```
 
 **En GLSL :**
 ``` glsl
 vec4 transformedVector = myMatrix * myVector;
-{% endhighlight%}
+```
 
 De hecho casi nunca se hace esto en GLSL. La mayoría de las veces se usa glm::translate() en C++ para calcular la matriz, enviarla a GLSL y solo hacer la multiplicación.
 
@@ -122,7 +122,7 @@ Esta es especial. No hace nada. Pero la menciono por que es importante sabe que 
 **En C++ :**
 ``` cpp
 glm::mat4 myIdentityMatrix = glm::mat4(1.0f);
-{% endhighlight%}
+```
 
 ## Escalando matrices
 
@@ -142,7 +142,7 @@ Y la w no cambia. Te preguntaras cual es el significado de "escalar una direcci�
 ``` cpp
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
 glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
-{% endhighlight%}
+```
 
 ## Rotación de matrices
 
@@ -188,12 +188,12 @@ La multiplicación matriz-matriz es muy similar a la multiplicación matriz-vect
 ``` cpp
 glm::mat4 myModelMatrix = myTranslationMatrix * myRotationMatrix * myScaleMatrix;
 glm::vec4 myTransformedVector = myModelMatrix * myOriginalVector;
-{% endhighlight%}
+```
 **En GLSL :**
 ``` glsl
 mat4 transform = mat2 * mat1;
 vec4 out_vec = transform * in_vec;
-{% endhighlight%}
+```
 
 # Matrices modelo, vista y proyección
 

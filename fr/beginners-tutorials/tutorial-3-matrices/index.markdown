@@ -100,14 +100,14 @@ Donc, qu'est ce que ca donne dans le code ?
 glm::mat4 myMatrix = glm::translate(10.0f, 0.0f, 0.0f);
 glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);
 glm::vec4 transformedVector = myMatrix * myVector; // guess the result
-{% endhighlight%}
+```
 
 **En GLSL :**
 Bon, en fait, vous ne le ferez presque jamais. La plupart du temps, vous utilisez glm::translate() en C++ pour calculer votre matrice et vous l'envoyez au GLSL et vous la multipliez simplement par votre vecteur :
 
 ``` glsl
 vec4 transformedVector = myMatrix * myVector;
-{% endhighlight%}
+```
 
 ##La matrice d'identité
 
@@ -118,7 +118,7 @@ Celle-ci est spéciale. Elle ne fait rien. Mais on la mentionne car c'est import
 **En C++ :**
 ``` cpp
 glm::mat4 myIdentityMatrix = glm::mat4(1.0f);
-{% endhighlight%}
+```
 
 ##Matrices de mise à l'échelle
 
@@ -138,7 +138,7 @@ et la valeur de w ne change pas. Tu peux te demander : quel est le sens d'une mi
 ``` cpp
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
 glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
-{% endhighlight%}
+```
 
 ##Matrices de rotation
 
@@ -182,12 +182,12 @@ Les multiplications de matrices * matrices sont très proches des multiplication
 ``` cpp
 glm::mat4 myModelMatrix = myTranslationMatrix * myRotationMatrix * myScaleMatrix;
 glm::vec4 myTransformedVector = myModelMatrix * myOriginalVector;
-{% endhighlight%}
+```
 **En GLSL :**
 ``` glsl
 mat4 transform = mat2 * mat1;
 vec4 out_vec = transform * in_vec;
-{% endhighlight%}
+```
 #Les matrices de modèle, de vue et de projection
 
 _Pour la suite du tutoriel, on supposera savoir comment dessiner le modèle 3D favori de Blender : le singe Suzanne. Même si c'est pas encore le cas_

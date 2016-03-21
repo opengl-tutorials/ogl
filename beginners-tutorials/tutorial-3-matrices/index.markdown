@@ -100,12 +100,12 @@ So, how does this translate to code ?
 glm::mat4 myMatrix = glm::translate(10.0f, 0.0f, 0.0f);
 glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);
 glm::vec4 transformedVector = myMatrix * myVector; // guess the result
-{% endhighlight%}
+```
 
 **In GLSL :**
 ``` glsl
 vec4 transformedVector = myMatrix * myVector;
-{% endhighlight%}
+```
 Well, in fact, you almost never do this in GLSL. Most of the time, you use glm::translate() in C++ to compute your matrix, send it to GLSL, and do only the multiplication :
 
 ## The Identity matrix
@@ -117,7 +117,7 @@ This one is special. It doesn't do anything. But I mention it because it's as im
 **In C++ :**
 ``` cpp
 glm::mat4 myIdentityMatrix = glm::mat4(1.0f);
-{% endhighlight%}
+```
 ## Scaling matrices
 
 Scaling matrices are quite easy too :
@@ -136,7 +136,7 @@ and the w still didn't change. You may ask : what is the meaning of "scaling a d
 ``` cpp
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
 glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
-{% endhighlight%}
+```
 ## Rotation matrices
 
 These are quite complicated. I'll skip the details here, as it's not important to know their exact layout for everyday use. For more information, please have a look to the [Matrices and Quaternions FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html) (popular resource, probably available in your language as well). You can also have a look at the [Rotations tutorials]({{site.baseurl }}{{intermediate-tutorials/tutorial-17-quaternions}}) 
@@ -181,12 +181,12 @@ Matrix-matrix multiplication is very similar to matrix-vector multiplication, so
 ``` cpp
 glm::mat4 myModelMatrix = myTranslationMatrix * myRotationMatrix * myScaleMatrix;
 glm::vec4 myTransformedVector = myModelMatrix * myOriginalVector;
-{% endhighlight%}
+```
 **in GLSL :**
 ``` glsl
 mat4 transform = mat2 * mat1;
 vec4 out_vec = transform * in_vec;
-{% endhighlight%}
+```
 # The Model, View and Projection matrices
 
 _For the rest of this tutorial, we will suppose that we know how to draw Blender's favourite 3d model : the monkey Suzanne._
