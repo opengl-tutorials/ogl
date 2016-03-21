@@ -34,8 +34,8 @@ We want loadOBJ to read the file "path", write the data in out_vertices/out_uvs/
 ## Example OBJ file
 
 An OBJ file looks more or less like this :
-```
 
+```
 # Blender3D v249 OBJ File: untitled.blend
 # www.blender3d.org
 mtllib cube.mtl
@@ -213,10 +213,9 @@ We go through each vertex ( each v/vt/vn ) of each triangle ( each line with a "
 ``` cpp
     // For each vertex of each triangle
     for( unsigned int i=0; i<vertexIndices.size(); i++ ){
-
 ```
 
-the index to the vertex' position is vertexIndices[i] :
+the index to the vertex position is vertexIndices[i] :
 
 ``` cpp
 unsigned int vertexIndex = vertexIndices[i];

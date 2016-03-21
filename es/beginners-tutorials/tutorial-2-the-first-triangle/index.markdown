@@ -70,7 +70,7 @@ El primer vertice es (-1,-1,0). Esto significa que _amenos que lo transformemos 
 
 Esto es algo que no se puede cambiar, viene asi desde la trajeta gráfica. Asi que (-1,-1) es la esquina inferior izquierda de su pantalla. (1,-1) es la esquina inferior derecha, y (0,1) es el medio arriba. Este triangulo va a tomar casi toda la pantalla.
 
-##Dibujando nuestro triangulo
+## Dibujando nuestro triangulo
 
 El siguiente paso es entregarle este triangulo a OpenGL. Hacemos esto creando un buffer :
 
@@ -82,7 +82,8 @@ glGenBuffers(1, &vertexbuffer);
 // Los siguientes comandos le darán caractrtísticas especiales al 'vertexbuffer' 
 glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 // Darle nuestros vertices a  OpenGL.
-glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);```
+glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+```
 
 Esto solo debe hacerse una vez.
 
