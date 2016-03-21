@@ -274,10 +274,10 @@ So yeah, vec3(1,0,0) means red. This is because on computer screens, colour is r
 
 Before the main loop, call our LoadShaders function :
 
-{% highlight cpp linenos %}
+```cpp
 // Create and compile our GLSL program from the shaders
 GLuint programID = LoadShaders( "SimpleVertexShader.vertexshader", "SimpleFragmentShader.fragmentshader" );
-{% endhighlight %}
+```
 
 Now inside the main loop, first clear the screen. This will change the background color to dark blue because of the previous glClearColor(0.0f, 0.0f, 0.4f, 0.0f) call:
 
