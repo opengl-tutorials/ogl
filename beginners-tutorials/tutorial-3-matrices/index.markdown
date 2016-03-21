@@ -362,7 +362,7 @@ glUniformMatrix4fv(mvp_handle, 1, GL_FALSE, &mvp[0][0]);
 
 * Third step : use it in GLSL to transform our vertices
 
-``` glsl vs
+``` glsl
 // Input vertex data, different for all executions of this shader.
 layout(location = 0) in vec3 vertexPosition_modelspace;
 
@@ -376,6 +376,7 @@ void main(){
 
 }
 ```
+{: .highlightglslvs }
 
 * Done ! Here is the same triangle as in tutorial 2, still at the origin (0,0,0), but viewed in perspective from point (4,3,3), heads up (0,1,0), with a 45° field of view.
 
