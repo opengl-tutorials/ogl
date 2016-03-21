@@ -314,7 +314,7 @@ void computeTangentBasis(
     vertexBitangent_cameraspace = MV3x3 * normalize(vertexBitangent_modelspace);
 ```
 这三个向量确定了TBN矩阵，其创建方式如下：
-{% highlight text linenos %}
+```
     mat3 TBN = transpose(mat3(
         vertexTangent_cameraspace,
         vertexBitangent_cameraspace,
@@ -322,7 +322,7 @@ void computeTangentBasis(
     )); // You can use dot products instead of building this matrix and transposing it. See References for details.
 ```
 此矩阵是从摄像机空间到切线空间的变换（若矩阵名为XXX_modelspace，则是从模型空间到切线空间的变换）。我们可以利用它计算切线空间中的光线方向和视线方向。
-{% highlight text linenos %}
+```
     LightDirection_tangentspace = TBN * LightDirection_cameraspace;
     EyeDirection_tangentspace =  TBN * EyeDirection_cameraspace;
 ```

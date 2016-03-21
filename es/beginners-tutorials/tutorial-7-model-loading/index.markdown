@@ -35,7 +35,7 @@ Queremos que loadObj lea el archivo en "path", escriba la información en out_ve
 ##Archivo OBJ de ejemplo
 
 Un archivo OBJ se ve más o menos así :
-{% highlight text linenos %}
+```
 # Blender3D v249 OBJ File: untitled.blend
 # www.blender3d.org
 mtllib cube.mtl

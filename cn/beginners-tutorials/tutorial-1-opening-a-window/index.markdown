@@ -131,7 +131,7 @@ Mac OS不支持OpenGL 3.3。最近，搭载MacOS 10.7 Lion和兼容型GPU的Mac�
 
 开工啦。从处理依赖库开始：我们要用一些基本库在控制台显示消息：
 
-{% highlight text linenos %}
+```
 // Include standard headers
 #include <stdio.h>
 #include <stdlib.h>
@@ -139,21 +139,21 @@ Mac OS不支持OpenGL 3.3。最近，搭载MacOS 10.7 Lion和兼容型GPU的Mac�
 
 然后是GLEW库。其原理我们以后再说。
 
-{% highlight text linenos %}
+```
 // Include GLEW. Always include it before gl.h and glfw.h, since it's a bit magic.
 #include <GL/glew.h>
 ```
 
 我们使用GLFW库处理窗口和键盘消息，把它也包含进来：
 
-{% highlight text linenos %}
+```
 // Include GLFW
 #include <GL/glfw3.h>
 ```
 
 下文中的GLM是个很有用3D数学库，我们暂时用不到，但很快就会派上用场。GLM库很好用，但也没什么神奇的，您不妨自己试着写一个。添加“using namespace”，这样就可以不用写“glm::vec3”，直接写“vec3”。
 
-{% highlight text linenos %}
+```
 // Include GLM
 #include <glm/glm.hpp>
 using namespace glm;
@@ -161,13 +161,13 @@ using namespace glm;
 
 把这些#include都粘贴到playground.cpp。编译时编译器报错，说缺少main函数，那就创建一个呗：
 
-{% highlight text linenos %}
+```
 int main(){
 ```
 
 首先初始化GLFW ：
 
-{% highlight text linenos %}
+```
 // Initialise GLFW
 if( !glfwInit() )
 {
@@ -178,7 +178,7 @@ if( !glfwInit() )
 
 终于可以创建我们的第一个OpenGL窗口啦！
 
-{% highlight text linenos %}
+```
 glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
 glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -207,7 +207,7 @@ if (glewInit() != GLEW_OK) {
 
 生成并运行。一个窗口弹出后立即关闭了。可不是嘛，还没设置等待用户按Esc键再关闭呢：
 
-{% highlight text linenos %}
+```
 // Ensure we can capture the escape key being pressed below
 glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 

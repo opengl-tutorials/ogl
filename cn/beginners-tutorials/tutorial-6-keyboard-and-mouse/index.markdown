@@ -20,7 +20,7 @@ language: cn
 这段代码在整个课程中多次被使用，因此把它单独放在common/controls.cpp中，然后在common/controls.hpp中声明函数接口，这样tutorial06.cpp就能使用它们了。
 
 与上节课相比，tutorial06.cpp里的代码变动很小。主要的变化是：每帧都计算MVP矩阵，而不像之前那样只算一次。现在把这段代码加到主循环中：
-{% highlight text linenos %}
+```
 do{
 
     // ...
@@ -48,7 +48,7 @@ do{
 #实际代码
 
 我们需要几个变量。
-{% highlight text linenos %}
+```
 // position
 glm::vec3 position = glm::vec3( 0, 0, 5 );
 // horizontal angle : toward -Z
@@ -68,20 +68,20 @@ FoV is the level of zoom. 80&deg; = very wide angle, huge deformations. 60&deg; 
 ##朝向
 
 读取鼠标位置很简单：
-{% highlight text linenos %}
+```
 // Get mouse position
 int xpos, ypos;
 glfwGetMousePos(&xpos, &ypos);
 ```
 我们要把光标放到屏幕中心，否则它将很快移到屏幕外，失去响应。
-{% highlight text linenos %}
+```
 // Reset mouse position for next frame
 glfwSetMousePos(1024/2, 768/2);
 ```
 注意：这段代码假设窗口大小是1024*768，这不是必须的。您可以用glfwGetWindowSize来设定窗口大小。
 
 计算观察角度：
-{% highlight text linenos %}
+```
 // Compute new orientation
 horizontalAngle += mouseSpeed * deltaTime * float(1024/2 - xpos );
 verticalAngle   += mouseSpeed * deltaTime * float( 768/2 - ypos );
@@ -94,7 +94,7 @@ verticalAngle   += mouseSpeed * deltaTime * float( 768/2 - ypos );
 * += : 如果没移动鼠标，1024/2-xpos的值为零，horizontalAngle+=0不改变horizontalAngle的值。如果用的是"="，每帧视角都被强制转回到原始方向，这可不是我们想要的效果。
 
 现在，在世界空间中下计算代表视线方向的向量。
-{% highlight text linenos %}
+```
 // Direction : Spherical coordinates to Cartesian coordinates conversion
 glm::vec3 direction(
     cos(verticalAngle) * sin(horizontalAngle),
@@ -111,7 +111,7 @@ glm::vec3 direction(
 我们想算出摄像机的"上"。"上"不一定是Y轴正方向：您俯视时，"上"实际上是水平的。这里有一个例子，位置相同，视点相同的摄像机，却有不同的"上"。
 
 本例中"摄像机的右边"这个方向始终保持不变，指向水平方向。您可以试试：保持手臂水平伸直，向正上方看、向下看、随意看。现在定义"右"向量：因为是水平的，故Y坐标为零，X和Z值就像上图中的一样，只是角度旋转了90&deg;，或Pi/2弧度。
-{% highlight text linenos %}
+```
 // Right vector
 glm::vec3 right = glm::vec3(
     sin(horizontalAngle - 3.14f/2.0f),
@@ -120,7 +120,7 @@ glm::vec3 right = glm::vec3(
 );
 ```
 我们有一个"右"和一个视线方向（或者说是"前"）。"上"与两者垂直。叉乘是一个很有用的数学工具，可以轻松地将三者联系起来：
-{% highlight text linenos %}
+```
 // Up vector : perpendicular to both direction and right
 glm::vec3 up = glm::cross( right, direction );
 ```
@@ -129,7 +129,7 @@ glm::vec3 up = glm::cross( right, direction );
 ##位置
 
 代码十分直观。顺便说下，由于我使用的是法语azerty键盘，美式键盘的awsd键位对应的实际上是zqsd，因此我用上/下/右/左键而没用wsad。qwerz键盘更不一样，更别提韩语键盘了。我甚至不知道韩国人用的键盘是什么布局。我猜肯定和我的大不相同。
-{% highlight text linenos %}
+```
 // Move forward
 if (glfwGetKey( GLFW_KEY_UP ) == GLFW_PRESS){
     position += direction * deltaTime * speed;
@@ -158,7 +158,7 @@ if (glfwGetKey( GLFW_KEY_LEFT ) == GLFW_PRESS){
 * 如果您的电脑运行速度慢，fps = 20，您每帧将移动1/20*speed个单位，每秒移动1*speed个单位。
 
 这就好多了。deltaTime很容易算：
-{% highlight text linenos %}
+```
 double currentTime = glfwGetTime();
 float deltaTime = float(currentTime - lastTime);
 ```
@@ -166,14 +166,14 @@ float deltaTime = float(currentTime - lastTime);
 ##视野
 
 为了增添趣味，我们可以用鼠标滚轮控制视野，实现简单的缩放：
-{% highlight text linenos %}
+```
 float FoV = initialFoV - 5 * glfwGetMouseWheel();
 ```
 
 ##计算矩阵
 
 矩阵计算非常直观，使用的函数和前面几乎相同，仅参数不同。
-{% highlight text linenos %}
+```
 // Projection matrix : 45&deg; Field of View, 4:3 ratio, display range : 0.1 unit  100 units
 ProjectionMatrix = glm::perspective(FoV, 4.0f / 3.0f, 0.1f, 100.0f);
 // Camera matrix
@@ -200,7 +200,7 @@ ViewMatrix       = glm::lookAt(
 不过这种方法是有代价的：三角形的方向是隐含的。这意味着如果在缓冲中翻转两个顶点，可能会产生孔洞。但一般来说，这一点额外工作是值得的。一般在3D建模软件中只需点击"反转法线"（实际是翻转两个顶点，从而翻转法线）就大功告成了。
 
 开启背面剔除十分简单：
-{% highlight text linenos %}
+```
 // Cull triangles which normal is not towards the camera
 glEnable(GL_CULL_FACE);
 ```

@@ -34,7 +34,7 @@ void main(){
 }
 ```
 , it simply opens the file MyHeader.h, and cut'n pastes its contents into MyCode.c :
-{% highlight text linenos %}
+```
 // Begin of MyCode.c
 // Begin of MyHeader.h
 #ifndef MYHEADER_H
@@ -65,7 +65,7 @@ int i=3;
 int j=4*i+2;
 ```
 will be translated into this : x86 opcodes.
-{% highlight text linenos %}
+```
 mov         dword ptr [i],3
 mov         eax,dword ptr [i]
 lea         ecx,[eax*4+2]
@@ -169,7 +169,7 @@ Use default options.
 ### Adding a source file in a project
 
 Use the GUI, or add the file in the .pro :
-{% highlight text linenos %}
+```
 SOURCES += main.cpp \
            other.cpp \
            foo.cpp
@@ -178,7 +178,7 @@ SOURCES += main.cpp \
 ### Adding include directories
 
 In the .pro file :
-{% highlight text linenos %}
+```
 <code>INCLUDEPATH += <your path> \ <other path> </code>
 ```
 
@@ -235,7 +235,7 @@ CMake will create projects for almost any software building tool : Visual, QtCre
 ### Creating a new project
 
 Create a CMakeLists.txt file and write the following inside (adapt if needed) :
-{% highlight text linenos %}
+```
 cmake_minimum_required (VERSION 2.6)
 project (your_project_name)
 
@@ -255,7 +255,7 @@ Simply add a line in the add_executable command.
 
 ### Adding include directories
 
-{% highlight text linenos %}
+```
 include_directories(
     external/AntTweakBar-1.15/include/
     external/glfw-2.7.2/include/
@@ -267,7 +267,7 @@ include_directories(
 
 ### Link with a library
 
-{% highlight text linenos %}
+```
 set(ALL_LIBS
     ${OPENGL_LIBRARY}
     GLFW_272
@@ -295,17 +295,17 @@ It might be worth compiling a small project "by hand" in order to gain a better 
 Note that you can also do that on Windows using mingw.
 
 Compile each .cpp file separately :
-{% highlight text linenos %}
+```
 g++ -c main.cpp
 g++ -c tools.cpp
 ```
 <div id=":2v"></div>
 As said above, you will have a main.o and a tools.o files. Link them :
-{% highlight text linenos %}
+```
 g++ main.o tools.o
 ```
 a *a.out* file appeared; It's your executable, run it :
-{% highlight text linenos %}
+```
 ./a.out
 ```
 That's it !
@@ -403,7 +403,7 @@ Under *no circumstance* you should copy files in the compiler's default director
 Also, it's good practice to use relative paths ( ./external/glew/... instead of C:/Users/username/Downloads/... )
 
 As an example, this is what the tutorial's CMake use :
-{% highlight text linenos %}
+```
 external/glfw-2.7.2/include
 external/glm-0.9.1
 external/glew-1.5.8/include
@@ -415,7 +415,7 @@ Repeat until all files are found.
 (or whichever other file)
 
 This means that the library is not installed. If you're lucky, the library is well-known and you just have to install it. This is the case for GLFW, GLEW and GLM :
-{% highlight text linenos %}
+```
 sudo apt-get install libglfw-dev libglm-dev libglew1.6-dev
 ```
 If this is not a widespread library, see the answer for Visual Studio above.
@@ -429,12 +429,12 @@ Congratulations ! You have a linker error. This is excellent news : this means t
 glfw functions are in an external library. You have to tell the linker about this library. Add it in the linker options. Don't forget to add the path to the library.
 
 As an **example**, this is what the Visual project use. The names are a bit unusual because this is a custom build. What's more, GLM doesn't need to be compiled or linked, so it's not here.
-{% highlight text linenos %}
+```
 external\Debug\GLFW_272.lib
 external\Debug\GLEW_158.lib
 ```
 If you download these libraries from SourceForge ([GLFW](http://www.glfw.org/download.html), [GLEW](http://glew.sourceforge.net/index.html)) and build a library yourself, you have to specify the correct path. For instance :
-{% highlight text linenos %}
+```
 C:\Where\You\Put\The\Library\glfw.lib
 C:\Where\You\Put\The\Other\Library\glew32.lib
 ```
@@ -454,7 +454,7 @@ This might me tricky to track down. Here are several options:
 ### I have a linker error with _imp_glewInit or some other symbol that begins with _imp
 
 This means that the library (in this case, glew) has been compiled as a *static* library, but you're trying to use it as a *dynamic* library. Simply add the following preprocessor directive in your compiler's options (for your own project, not glew's) :
-{% highlight text linenos %}
+```
 GLEW_STATIC
 ```
  
@@ -464,7 +464,7 @@ GLEW_STATIC
 Maybe GLFW was built as a dynamic library, but you're trying to use it as a static one ?
 
 Try adding the following preprocessor directive :
-{% highlight text linenos %}
+```
 GLFW_DLL
 ```
 

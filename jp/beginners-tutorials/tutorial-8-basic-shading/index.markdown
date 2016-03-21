@@ -43,7 +43,7 @@ In this 8th tutorial, we will learn how to do some basic shading. This includes 
 平面の法線とはその平面に垂直な長さが1のベクトルです。
 
 三角形の法線とはこの三角形に垂直で長さが1のベクトルです。法線は三角形の辺の2つの外積を取ることで簡単に計算できます。(aとbの外積はその二つに垂直なベクトルを作ります。覚えていますか？)そして正規化します。つまりそのベクトルの長さを1にします。擬似コードは次のとおりです。
-{% highlight text linenos %}
+```
 triangle ( v1, v2, v3 )
 edge1 = v2-v1
 edge2 = v3-v1
@@ -54,7 +54,7 @@ triangle.normal = cross(edge1, edge2).normalize()
 ##頂点法線
 
 三角形の法線の拡張で、ある頂点の周辺の三角形の法線の組み合わせを頂点の法線と呼びます。頂点シェーダでは三角形ではなく頂点を扱うので、これはとても便利です。だから頂点ごとに情報があるほうが良いのです。なにより、OpenGLでは三角形上の情報を持てません。擬似コードは次のとおりです。
-{% highlight text linenos %}
+```
 vertex v1, v2, v3, ....
 triangle tr1, tr2, tr3 // all share vertex v1
 v1.normal = normalize( tr1.normal + tr2.normal + tr3.normal )

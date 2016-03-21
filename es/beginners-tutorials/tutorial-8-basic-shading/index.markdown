@@ -42,7 +42,7 @@ La normal de un plano es un vector de longitud 1 que es perpendicular a ese plan
 
 La normal de un triangulo es un vector de longitud 1 que es perpendicular a ese triangulo. Es facilmente calculada encontrando el producto cruz de dos de sus lados (el producto cruz produce un vector perpendiculas a A y B , recuerdas?) y normalizado : su longitud es 1. En psuedo código : 
 
-{% highlight text linenos %}
+```
 triangle ( v1, v2, v3 )
 edge1 = v2-v1
 edge2 = v3-v1
@@ -55,7 +55,7 @@ No confundas normal con normalize(). Normalize() divide un vector (cualquier vec
 
 Por extensión, llamamos normal de un vértice a la combinación de las normales de las caras triangulares que rodean al vertice. Esto se vuelve útil por que en los vertex shaders, lidiamos con vertices, no triangulos, asi que es mejor tener información de un vertice. Ademas, en OpenGL no tenemos nunca información sobre triangulos. Aqui el pseudo código.
 
-{% highlight text linenos %}
+```
 vertex v1, v2, v3, ....
 triangle tr1, tr2, tr3 // all share vertex v1
 v1.normal = normalize( tr1.normal + tr2.normal + tr3.normal )

@@ -331,7 +331,7 @@ Comme dit précédemment, on va tout faire dans l'espace de la caméra, car il e
 
 Ces trois vecteurs définissent la matrice TBN, qui est créée de cette façon :
 
-{% highlight text linenos %}
+```
     mat3 TBN = transpose(mat3(
         vertexTangent_cameraspace,
         vertexBitangent_cameraspace,
@@ -341,7 +341,7 @@ Ces trois vecteurs définissent la matrice TBN, qui est créée de cette façon 
 
 Cette matrice passe de l'espace de la caméra à l'espace tangent (la même matrice, mais avec XXX_modelspace à la place, permettrai de passer de l'espace modèle à l'espace tangent). On peut l'utiliser pour calculer la direction de la lumière et la direction de l'œil, dans l'espace tangent :
 
-{% highlight text linenos %}
+```
     LightDirection_tangentspace = TBN * LightDirection_cameraspace;
     EyeDirection_tangentspace =  TBN * EyeDirection_cameraspace;
 ```

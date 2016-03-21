@@ -72,7 +72,7 @@ On a maintenant un problème. Comme je l'ai dit avant, OpenGL ne peut utiliser q
 
 L'algorithme pour ce faire est le suivant :
 
-{% highlight text linenos %}
+```
 Pour chaque sommet en entrée
     Essayer de trouver un sommet similaire ( = identique pour tous les attributs) parmi ceux déjà en sortie
     Si trouvé : 

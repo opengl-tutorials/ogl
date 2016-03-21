@@ -288,7 +288,7 @@ void SortParticles(){
 }
 ```
 ここでstd::sortにコンテナのどの粒子を前に置いて、どの粒子を後に置くかを伝える必要があります。そこでParticle::operator<を定義します。
-{% highlight text linenos %}
+```
 // 粒子のGPUでの表現
 struct Particle{
 

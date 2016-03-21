@@ -17,7 +17,7 @@ With each new generation, the performance of GPU increases, allowing to render m
 ## ARB_fragment_program
 
 Back in 2002, GPUs had no vertex shaders or fragment shaders : everything was hardcoded inside the chip. This was called the Fixed-Function Pipeline (FFP). As such, the most recent version of the API, which was OpenGL 1.3, proposed no way to create, manipulate and use so-called "shaders", since it didn't even exist. But then NVIDIA decided that it could be handy to describe the rendering process with actual code, instead of hundreds of flags and state variables. This is how ARB_fragment_program was created : there was no GLSL, but instead you could write stuff like this :
-{% highlight text linenos %}
+```
 !!ARBfp1.0 MOV result.color, fragment.color; END
 ```
 But obviously to tell OpenGL to use such code, you needed special functions, which were not yet in OpenGL. Before moving on to the explanations, one more example.

@@ -33,7 +33,7 @@ We want loadOBJ to read the file "path", write the data in out_vertices/out_uvs/
 ##Example OBJ file
 
 An OBJ file looks more or less like this :
-{% highlight text linenos %}
+```
 # Blender3D v249 OBJ File: untitled.blend
 # www.blender3d.org
 mtllib cube.mtl

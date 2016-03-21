@@ -317,7 +317,7 @@ As said before, we'll do everything in camera space, because it's simpler to get
     vertexBitangent_cameraspace = MV3x3 * normalize(vertexBitangent_modelspace);
 ```
 These three vector define a the TBN matrix, which is constructed this way :
-{% highlight text linenos %}
+```
     mat3 TBN = transpose(mat3(
         vertexTangent_cameraspace,
         vertexBitangent_cameraspace,
@@ -325,7 +325,7 @@ These three vector define a the TBN matrix, which is constructed this way :
     )); // You can use dot products instead of building this matrix and transposing it. See References for details.
 ```
 This matrix goes from camera space to tangent space (The same matrix, but with XXX_modelspace instead, would go from model space to tangent space). We can use it to compute the light direction and the eye direction, in tangent space :
-{% highlight text linenos %}
+```
     LightDirection_tangentspace = TBN * LightDirection_cameraspace;
     EyeDirection_tangentspace =  TBN * EyeDirection_cameraspace;
 ```

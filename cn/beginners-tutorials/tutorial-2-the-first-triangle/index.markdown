@@ -23,7 +23,7 @@ language: cn
 
 #顶点数组对象(VAO)
 您得创建一个VAO，并将它设为当前对象（暂不详细展开）：
-{% highlight text linenos %}
+```
 GLuint VertexArrayID;
 glGenVertexArrays(1, &VertexArrayID);
 glBindVertexArray(VertexArrayID);
@@ -51,7 +51,7 @@ glBindVertexArray(VertexArrayID);
 
 我们需要三个三维点来组成一个三角形；下面来定义一个三角形：
 
-{% highlight text linenos %}
+```
 // An array of 3 vectors which represents 3 vertices
 static const GLfloat g_vertex_buffer_data[] = {
 -1.0f, -1.0f, 0.0f,
@@ -70,7 +70,7 @@ static const GLfloat g_vertex_buffer_data[] = {
 #绘制三角形
 下一步，通过缓冲把三角形传给OpenGL：
 
-{% highlight text linenos %}
+```
 // This will identify our vertex buffer
 GLuint vertexbuffer;
 
@@ -88,7 +88,7 @@ glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data
 
 之前在主循环中我们什么也没绘制，现在终于可以绘制三角形了：
 
-{% highlight text linenos %}
+```
 // 1rst attribute buffer : vertices
 glEnableVertexAttribArray(0);
 glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
@@ -123,7 +123,7 @@ glDisableVertexAttribArray(0);
 
 以下是加载着色器的代码。没必要完全理解，因为在程序中这些操作一般只需执行一次，结合注释能看懂就够了。其他课程代码都用到了这个函数，因此将其放在一个单独的文件中：`common/loadShader.cpp`。注意，着色器和缓冲对象一样不能直接访问：我们仅拥有其ID，其真正的实现隐藏在驱动程序中。
 
-{% highlight text linenos %}
+```
 GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path) {
 
 // Create the shaders
@@ -205,13 +205,13 @@ return ProgramID;
 先写顶点着色器。
 第一行告诉编译器我们将用OpenGL 3语法。
 
-{% highlight text linenos %}
+```
 #version 330 core
 ```
 
 第二行声明输入数据：
 
-{% highlight text linenos %}
+```
 layout(location = 0) in vec3 vertexPosition_modelspace;
 ```
 
@@ -225,14 +225,14 @@ layout(location = 0) in vec3 vertexPosition_modelspace;
 
 每个顶点都会调用`main`函数（和C语言一样）：
 
-{% highlight text linenos %}
+```
 void main(){
 ```
 
 这里的`main`函数只是简单地将缓冲里的值作为顶点位置。因此如果位置是(1,1)，那么三角形有一个顶点位于屏幕的右上角。
 在下一课中我们将看到怎样对输入位置做一些更有趣的计算。
 
-{% highlight text linenos %}
+```
 gl_Position.xyz = vertexPosition_modelspace;
 gl_Position.w = 1.0;
 }
@@ -244,7 +244,7 @@ gl_Position是仅有的几个内置变量之一：您必须对其赋值。其他
 ##片段着色器
 这就是我们的第一个片段着色器，它仅仅简单将每个片段的颜色设为红色。（记住，我们采用了4倍抗锯齿，因此每个像素有4个片段）
 
-{% highlight text linenos %}
+```
 #version 330 core
 out vec3 color;
 
@@ -259,20 +259,20 @@ vec3(1,0,0)代表红色。因为在计算机屏幕上，颜色由红、绿、蓝
 #汇总
 在主循环之前调用`LoadShaders`函数：
 
-{% highlight text linenos %}
+```
 // Create and compile our GLSL program from the shaders
 GLuint programID = LoadShaders( "SimpleVertexShader.vertexshader", "SimpleFragmentShader.fragmentshader" );
 ```
 
 首先在主循环中清屏。在进入主循环之前调用了`glClearColor(0.0f, 0.0f, 0.4f, 0.0f)` ，把背景色设为深蓝色。
 
-{% highlight text linenos %}
+```
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 ```
 
 然后让OpenGL使用您的着色器：
 
-{% highlight text linenos %}
+```
 // Use our shader
 glUseProgram(programID);
 

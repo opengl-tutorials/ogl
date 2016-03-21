@@ -18,7 +18,7 @@ Avec chaque nouvelle génération, les performances des GPU augmentent, permetta
 
 En 2002, les GPU n'avaient pas de vertex shader ni de fragment shader : tout était codé en dur dans la puce. C'était ce que l'on appelait le pipeline à fonctionnalités fixes (Fixed-Function Pipeline (FFP)). La plus récente version de l'API l'OpenGL, qui était alors OpenGL 1.3, ne proposait aucun moyen de créer, manipuler et utiliser les « shaders », car ils n'existaient même pas. Mais NVIDIA a décidé que cela pourrait être pratique de décrire le processus de rendu avec du code, à la place de la centaine d'indicateurs et de variables d'états. C'est ainsi qu'a été créé ARB_fragment_program : il n'y avait pas de GLSL, mais à la place, vous pouviez écrire des trucs comme :
 
-{% highlight text linenos %}
+```
 !!ARBfp1.0 MOV result.color, fragment.color; END
 ```
 

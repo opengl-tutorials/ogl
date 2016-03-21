@@ -37,17 +37,17 @@ order: 50
 Знание формата файлов BMP не является критичным, так как многие библиотеки могут сделать загрузку за вас. Однако, чтобы лучше понимать то, что происходит в таких библиотеках мы разберем ручную загрузку.
 
 Объявляем функцию для загрузки изображений:
-{% highlight text linenos %}
+```
 GLuint loadBMP_custom(const char * imagepath);
 ```
 Вызываться она будет так:
-{% highlight text linenos %}
+```
 GLuint image = loadBMP_custom("./my_texture.bmp");
 ```
 Теперь перейдем непосредственно к чтению файла.
 
 Для начала, нам необходимы некоторые данные. Эти переменные будут установлены когда мы будем читать файл:
-{% highlight text linenos %}
+```
 // Данные, прочитанные из заголовка BMP-файла
 unsigned char header[54]; // Каждый BMP-файл начинается с заголовка, длиной в 54 байта
 unsigned int dataPos;     // Смещение данных в файле (позиция данных)
@@ -57,7 +57,7 @@ unsigned int imageSize;   // Размер изображения = Ширина 
 unsigned char * data;
 ```
 Открываем файл:
-{% highlight text linenos %}
+```
 FILE * file = fopen(imagepath,"rb");
 if (!file) {
   printf("Изображение не может быть открытоn");
@@ -65,7 +65,7 @@ if (!file) {
 }
 ```
 Первым, в BMP-файлах идет заголовок, размером в 54 байта. Он содержит информацию о том, что файл действительно является файлом BMP, размер изображение, количество бит на пиксель и т. п., поэтому читаем его:
-{% highlight text linenos %}
+```
 if ( fread(header, 1, 54, file) != 54 ) { // Если мы прочитали меньше 54 байт, значит возникла проблема
     printf("Некорректный BMP-файлn");
     return false;
@@ -76,14 +76,14 @@ if ( fread(header, 1, 54, file) != 54 ) { // Если мы прочитали м
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/hexbmp.png)
 
 Итак, мы проверяем первые два байта и если они не являются буквами "BM", то файл не является BMP-файлом или испорчен:
-{% highlight text linenos %}
+```
 if ( header[0]!='B' || header[1]!='M' ){
     printf("Некорректный BMP-файлn");
     return 0;
 }
 ```
 Теперь мы читаем размер изображения, смещение данных изображения в файле и т. п.:
-{% highlight text linenos %}
+```
 // Читаем необходимые данные
 dataPos    = *(int*)&(header[0x0A]); // Смещение данных изображения в файле
 imageSize  = *(int*)&(header[0x22]); // Размер изображения в байтах
@@ -91,13 +91,13 @@ width      = *(int*)&(header[0x12]); // Ширина
 height     = *(int*)&(header[0x16]); // Высота
 ```
 Проверим и исправим полученные значения:
-{% highlight text linenos %}
+```
 // Некоторые BMP-файлы имеют нулевые поля imageSize и dataPos, поэтому исправим их
 if (imageSize==0)    imageSize=width*height*3; // Ширину * Высоту * 3, где 3 - 3 компоненты цвета (RGB)
 if (dataPos==0)      dataPos=54; // В таком случае, данные будут следовать сразу за заголовком
 ```
 Теперь, так как мы знаем размер изображения, то можем выделить область памяти, в которую поместим данные:
-{% highlight text linenos %}
+```
 // Создаем буфер
 data = new unsigned char [imageSize];
 
@@ -118,7 +118,7 @@ fclose(file);
 * Сконфигурируйте
 
 GL_RGB в glTextImage2D указывает на то, что мы работает с 3х компонентным цветом. А GL_BGR указывает на то, как данные представлены в памяти. На самом деле в BMP-файлах цветовые данные хранятся не в RGB, а в BGR (если быть точным, то это связано с тем, как хранятся числа в памяти), поэтому необходимо сообщить об этом OpenGL:
-{% highlight text linenos %}
+```
 // Создадим одну текстуру OpenGL
 GLuint textureID;
 glGenTextures(1, &textureID);
@@ -133,7 +133,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 ```
 Последние две строки мы поясним позднее, а пока в части C++ мы должны использовать нашу функцию для загрузки текстуры:
-{% highlight text linenos %}
+```
 GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 ```
 **Очень важное замечание: **используйте текстуры с шириной и высотой степени двойки! То есть:
@@ -146,7 +146,7 @@ GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 #Использование текстуры в OpenGL
 
 Что же, давайте посмотрим на наш Фрагментный шейдер:
-{% highlight text linenos %}
+```
 #version 330 core
 
 // Интерполированные значения из вершинного шейдера
@@ -171,7 +171,7 @@ void main(){
 * И наконец, доступ к текстуре завершается вызовом texture(), который возвращает vec4 (R, G, B, A). A-компоненту мы разберем немного позднее.
 
 Вершинный шейдер также прост. Все, что мы делаем - это передаем полученные UV-координаты в фрагментный шейдер:
-{% highlight text linenos %}
+```
 #version 330 core
 
 // Входные данные вершин, различные для всех запусков этого шейдера
@@ -194,7 +194,7 @@ void main(){
 }
 ```
 Помните "layout(location = 1) in vec3 vertexColor" из Урока 4? Здесь мы делаем абсолютно тоже самое, только вместо передачи буфера с цветом каждой вершины мы будем передавать буфер с UV-координатами каждой вершины:
-{% highlight text linenos %}
+```
 // Две UV-координаты для каждой вершины. Они были созданы с помощью Blender. Мы коротко расскажем о том, как сделать это самостоятельно.
 static const GLfloat g_uv_buffer_data[] = {
     0.000059f, 1.0f-0.000004f,
@@ -252,7 +252,7 @@ static const GLfloat g_uv_buffer_data[] = {
 #Фильтрация и мип-маппинг.
 
 Как вы можете видеть на скриншоте выше, качество текстуры не очень хорошее. Это потому, что в нашей процедуре загрузки BMP-изображения (loadBMP_custom) мы указали:
-{% highlight text linenos %}
+```
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 ```
@@ -288,7 +288,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 * А для большего качества вы можете использовать 2 мип-мапа и смешать результат.
 
 К счастью для нас, все это делается очень просто с помощью OpenGL:
-{% highlight text linenos %}
+```
 // Когда изображение увеличивается, то мы используем обычную линейную фильтрацию
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 // Когда изображение уменьшается, то мы используем линейной смешивание 2х мипмапов, к которым также применяется линейная фильтрация
@@ -300,7 +300,7 @@ glGenerateMipmap(GL_TEXTURE_2D);
 #Загрузка текстур с помощью GLFW
 
 Наша процедура loadBMP_custom великолепна, так как мы сделали ее сами, но использование специальных библиотек может быть предпочтительнее (в конечном итоге мы в своей процедуре многое не учли). GLFW может сделать это лучше (но только для TGA-файлов):
-{% highlight text linenos %}
+```
 GLuint loadTGA_glfw(const char * imagepath){
 
     // Создаем одну OpenGL текстуру
@@ -348,7 +348,7 @@ GLuint loadTGA_glfw(const char * imagepath){
 ##Использование сжатой текстуры
 
 Теперь перейдем непосредственно к загрузке нашей сжатой текстуры. Процедура будет очень похожа на загрузку BMP, с тем исключением, что заголовок файла будет организован немного иначе:
-{% highlight text linenos %}
+```
 GLuint loadDDS(const char * imagepath){
 
     unsigned char header[124];
@@ -378,7 +378,7 @@ GLuint loadDDS(const char * imagepath){
     unsigned int fourCC      = *(unsigned int*)&(header[80]);
 ```
 После заголовку идут данные, в которые входят все уровни мип-мап. К слову, мы можем прочитать их все сразу:
-{% highlight text linenos %}
+```
     unsigned char * buffer;
     unsigned int bufsize;
     /* вычисляем размер буфера */
@@ -389,7 +389,7 @@ GLuint loadDDS(const char * imagepath){
     fclose(fp);
 ```
 Сделано. Так как мы можем использовать 3 разных формата (DXT1, DXT3, DXT5), то необходимо в зависимости от флага "fourCC", сказать OpenGL о формате данных.
-{% highlight text linenos %}
+```
     unsigned int components  = (fourCC == FOURCC_DXT1) ? 3 : 4;
     unsigned int format;
     switch(fourCC)
@@ -409,7 +409,7 @@ GLuint loadDDS(const char * imagepath){
     }
 ```
 Создание текстуры выполняется как обычно:
-{% highlight text linenos %}
+```
     // Создаем одну OpenGL текстуру
     GLuint textureID;
     glGenTextures(1, &textureID);
@@ -418,7 +418,7 @@ GLuint loadDDS(const char * imagepath){
     glBindTexture(GL_TEXTURE_2D, textureID);
 ```
 Следующим шагом мы загружаем мип-мапы:
-{% highlight text linenos %}
+```
     unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
     unsigned int offset = 0;
 

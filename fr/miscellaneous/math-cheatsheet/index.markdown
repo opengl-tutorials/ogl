@@ -69,7 +69,7 @@ Comme pour une distance cartésienne : racine carrée(x&sup2; + y&sup2; + z&sup2
 ##Addition et soustraction
 
 Pour chaque composante (x, y, ...) :
-{% highlight text linenos %}
+```
 res.x = A.x + B.x
 res.y = A.y + B.y
 ...
@@ -78,7 +78,7 @@ res.y = A.y + B.y
 ##Multiplication
 
 Pour chaque composante (x, y, ...) :
-{% highlight text linenos %}
+```
 res.x = A.x * B.x
 res.y = A.y * B.y
 ...
@@ -87,7 +87,7 @@ res.y = A.y * B.y
 ##Normalisation
 
 On divise le vecteur par sa longueur
-{% highlight text linenos %}
+```
 normalizedVector = vec * ( 1.0f / vec.length() )
 ```
 

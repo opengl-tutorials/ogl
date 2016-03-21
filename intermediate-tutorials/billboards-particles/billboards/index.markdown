@@ -62,7 +62,7 @@ Of course, we only know the billboard's center position in world space, so we al
 In camera space, the camera's up vector is (0,1,0). To get it in world space, just multiply this by the matrix that goes from Camera Space to World Space, which is, of course, the inverse of the View matrix.
 
 An easier way to express the same math is :
-{% highlight text linenos %}
+```
 CameraRight_worldspace = {ViewMatrix[0][0], ViewMatrix[1][0], ViewMatrix[2][0]}
 CameraUp_worldspace = {ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]}
 ```

@@ -57,7 +57,7 @@ Dans l'espace caméra, le vecteur haut de celle-ci est (0, 1, 0). Pour l'obtenir
 
 Une façon plus simple de l'exprimer en mathématique est :
 
-{% highlight text linenos %}
+```
 CameraRight_worldspace = {ViewMatrix[0][0], ViewMatrix[1][0], ViewMatrix[2][0]}
 CameraUp_worldspace = {ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]}
 ```

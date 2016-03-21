@@ -62,7 +62,7 @@ if (BillboardPos_screenspace.z < 0.0f){
 カメラ空間ではカメラの上は(0,1,0)です。これをワールド空間で表現するには単にカメラ空間からワールド空間へ移すような行列を掛ければ良いだけです。これはもちろんビュー行列の逆行列です。
 
 これは次のように簡単に表現できます。
-{% highlight text linenos %}
+```
 CameraRight_worldspace = {ViewMatrix[0][0], ViewMatrix[1][0], ViewMatrix[2][0]}
 CameraUp_worldspace = {ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]}
 ```

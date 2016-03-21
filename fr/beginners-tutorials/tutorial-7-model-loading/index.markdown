@@ -32,7 +32,7 @@ On souhaite que loadOBJ lise le fichier « path », écrive les données dans ou
 ##Exemple de fichier OBJ
 
 Un fichier OBJ ressemble plus ou moins à ceci :
-{% highlight text linenos %}
+```
 # Blender3D v249 OBJ File: untitled.blend
 # www.blender3d.org
 mtllib cube.mtl

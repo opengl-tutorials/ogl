@@ -97,13 +97,13 @@ glEnable(GL_BLEND);
 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 ```
 这意味着
-{% highlight text linenos %}
+```
 New color in framebuffer =
            current alpha in framebuffer * current color in framebuffer +
            (1 - current alpha in framebuffer) * shader's output color
 ```
 上图红色方块居上的效果由如下等式得来：
-{% highlight text linenos %}
+```
 new color = 0.5*(0,1,0) + (1-0.5)*(1,0.5,0.5); // (the red was already blended with the white background)
 new color = (1, 0.75, 0.25) = the same orange
 

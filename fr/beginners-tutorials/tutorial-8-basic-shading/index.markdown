@@ -41,7 +41,7 @@ La normale d'un plan est un vecteur de longueur 1 perpendiculaire à ce plan.
 
 La normale d'un triangle est un vecteur de longueur 1 qui est perpendiculaire à ce triangle. Il est facilement calculé en utilisant le produit vectoriel de deux de ses côtés (le produit vectoriel de a et b produit un vecteur qui est perpendiculaire aux deux vecteurs a et b, tu te souviens ?), normalisé : sa longueur est ramenée à 1. En pseudo code :
 
-{% highlight text linenos %}
+```
 triangle ( v1, v2, v3 )
 edge1 = v2-v1
 edge2 = v3-v1
@@ -54,7 +54,7 @@ Ne mélange pas la normale et *normalize()*. normalize() divise un vecteur (n'im
 
 Par extension, on appelle la normale d'un sommet la combinaison des normales des triangles alentour. Cela est pratique car dans un vertex shader, on gère des sommets, donc c'est mieux d'avoir l'information sur le sommet. Et en aucun cas, on ne peut avoir d'informations sur les triangles en OpenGL. En pseudo code :
 
-{% highlight text linenos %}
+```
 vertex v1, v2, v3, ....
 triangle tr1, tr2, tr3 // all share vertex v1
 v1.normal = normalize( tr1.normal + tr2.normal + tr3.normal )

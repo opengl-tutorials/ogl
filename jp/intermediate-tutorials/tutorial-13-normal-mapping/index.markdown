@@ -316,7 +316,7 @@ void computeTangentBasis(
     vertexBitangent_cameraspace = MV3x3 * normalize(vertexBitangent_modelspace);
 ```
 これらの3つのベクトルはTBN行列として定義され、次のように構築します。
-{% highlight text linenos %}
+```
     mat3 TBN = transpose(mat3(
         vertexTangent_cameraspace,
         vertexBitangent_cameraspace,
@@ -324,7 +324,7 @@ void computeTangentBasis(
     )); // この行列を作って変換する代わりに内積でもできます。参考文献を読んでみてください。
 ```
 この行列でカメラ空間から接空間へ移ります。代わりにXXX_modelspaceという同じ行列でもモデル空間から接空間への変換が行われます。これを接空間でのライトと目の方向を計算するために使います。
-{% highlight text linenos %}
+```
     LightDirection_tangentspace = TBN * LightDirection_cameraspace;
     EyeDirection_tangentspace =  TBN * EyeDirection_cameraspace;
 ```

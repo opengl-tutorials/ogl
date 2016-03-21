@@ -97,13 +97,13 @@ glEnable(GL_BLEND);
 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 ```
 これは次のことを意味します。
-{% highlight text linenos %}
+```
 フレームバッファ内の新たな色 =
            フレームバッファの現在のアルファ * フレームバッファ内の現在の色 +
            (1 - フレームバッファ内の現在のアルファ) * シェーダの出力色
 ```
 赤を上にした上で示した画像の例：
-{% highlight text linenos %}
+```
 new color = 0.5*(0,1,0) + (1-0.5)*(1,0.5,0.5); // (赤は既に白い背景とブレンドされています。)
 new color = (1, 0.75, 0.25) = オレンジと同じです
 ```

@@ -96,7 +96,7 @@ glEnable(GL_BLEND);
 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 ```
 Which means :
-{% highlight text linenos %}
+```
 New color in framebuffer =
            current alpha in framebuffer * current color in framebuffer +
            (1 - current alpha in framebuffer) * shader's output color

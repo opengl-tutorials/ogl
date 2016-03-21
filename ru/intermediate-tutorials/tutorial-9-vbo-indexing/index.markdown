@@ -73,7 +73,7 @@ and to draw the mesh, simply replace glDrawArrays by this :
 Now we actually have a problem. As I said before, OpenGL can only use one index buffer, whereas OBJ (and some other popular 3D formats like Collada) use one index buffer *by attribute*. Which means that we somehow have to convert from N index buffers to 1 index buffer.
 
 The algorithm to do this is as follows :
-{% highlight text linenos %}
+```
 For each input vertex
     Try to find a similar ( = same for all attributes ) vertex between all those we already output
     If found :

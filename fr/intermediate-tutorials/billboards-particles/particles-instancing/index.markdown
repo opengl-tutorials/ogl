@@ -303,7 +303,7 @@ void SortParticles(){
 
 Maintenant, *std::sort* nécessite une fonction qui peut indiquer si une particule doit être placée avant ou après une autre particule dans le conteneur. Ça peut être fait avec Particle::operator< :
 
-{% highlight text linenos %}
+```
 // CPU representation of a particle
 struct Particle{
 

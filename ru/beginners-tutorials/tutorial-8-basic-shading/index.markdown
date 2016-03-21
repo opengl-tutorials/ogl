@@ -41,7 +41,7 @@ During the last few tutorials you've been dealing with normal without really kno
 The normal of a plane is a vector of length 1 that is perpendicular to this plane.
 
 The normal of a triangle is a vector of length 1 that is perpendicular to this triangle. It is easily computed by taking the cross product of two of its edges (the cross product of a and b produces a vector that is perpendicular to both a and b, remember ?), and normalized : its length is brought back to 1. In pseudo-code :
-{% highlight text linenos %}
+```
 triangle ( v1, v2, v3 )
 edge1 = v2-v1
 edge2 = v3-v1
@@ -52,7 +52,7 @@ Don't mix up normal and normalize(). Normalize() divides a vector (any vector, n
 ##Vertex normals
 
 By extension, we call the normal of a vertex the combination of the normals of the surroundings triangles. This is handy because in vertex shaders, we deal with vertices, not triangles, so it's better to have information on the vertex. And any way, we can't have information on triangles in OpenGL. In pseudo-code :
-{% highlight text linenos %}
+```
 vertex v1, v2, v3, ....
 triangle tr1, tr2, tr3 // all share vertex v1
 v1.normal = normalize( tr1.normal + tr2.normal + tr3.normal )

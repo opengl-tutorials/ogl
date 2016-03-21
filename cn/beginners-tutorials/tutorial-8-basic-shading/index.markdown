@@ -40,7 +40,7 @@ language: cn
 
 一个平面的法线是一个长度为1并且垂直于这个平面的向量。
 一个三角形的法线是一个长度为1并且垂直于这个三角形的向量。通过简单地将三角形两条边进行叉乘计算（向量a和b的叉乘结果是一个同时垂直于a和b的向量，还记得吗？），然后归一化：使长度为1。伪代码如下：
-{% highlight text linenos %}
+```
 triangle ( v1, v2, v3 )
 edge1 = v2-v1
 edge2 = v3-v1
@@ -51,7 +51,7 @@ triangle.normal = cross(edge1, edge2).normalize()
 ##顶点法线
 
 引申开来：顶点的法线，是包含该顶点的所有三角形的法线的均值。这带来了不少便利--因为在顶点着色器中，我们处理顶点，而不是三角形；所以最好把信息放在顶点上。况且在OpenGL中，我们没有任何办法获得三角形信息。伪代码如下：
-{% highlight text linenos %}
+```
 vertex v1, v2, v3, ....
 triangle tr1, tr2, tr3 // all share vertex v1
 v1.normal = normalize( tr1.normal + tr2.normal + tr3.normal )
@@ -60,14 +60,14 @@ v1.normal = normalize( tr1.normal + tr2.normal + tr3.normal )
 ##在OpenGL中使用顶点法线
 
 在OpenGL中使用法线很简单。法线是顶点的属性，就像位置，颜色，UV坐标等一样；按处理其他属性的方式处理即可。第七课的loadOBJ函数已经将它们从OBJ文件中读出来了。
-{% highlight text linenos %}
+```
 GLuint normalbuffer;
  glGenBuffers(1, &normalbuffer);
  glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
  glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
 ```
 和
-{% highlight text linenos %}
+```
  // 3rd attribute buffer : normals
  glEnableVertexAttribArray(2);
  glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
@@ -102,7 +102,7 @@ GLuint normalbuffer;
 这意味着斜射下的表面各点会较暗（但请记住，更多的点会被照射到，总光强度仍然是一样的）
 
 也就是说，当计算像素的颜色时，入射光和表面法线的夹角很重要。故有：
-{% highlight text linenos %}
+```
 // Cosine of the angle between the normal and the light direction,
 // clamped above 0
 //  - light is at the vertical of the triangle -> 1
@@ -116,7 +116,7 @@ color = LightColor * cosTheta;
 ##注意正负号
 
 求cosTheta的公式有漏洞。如果光源在三角形后面，n和l方向相反，那么n.l是负值。这意味着colour将是一个负值，没有意义。因此这种情况下必须用clamp()将cosTheta截取为0：
-{% highlight text linenos %}
+```
 // Cosine of the angle between the normal and the light direction,
 // clamped above 0
 //  - light is at the vertical of the triangle -> 1
@@ -135,7 +135,7 @@ color = LightColor * cosTheta;
 
 
 我们可以通过一个简单的乘法来建模：
-{% highlight text linenos %}
+```
 color = MaterialDiffuseColor * LightColor * cosTheta;
 ```
 
@@ -144,11 +144,11 @@ color = MaterialDiffuseColor * LightColor * cosTheta;
 首先假设在空间中有一个点光源，它像蜡烛一样向所有方向发射光线。
 
 对于该光源，我们的表面收到的光通量（luminous flux）依赖于表面到光源的距离：越远光越少。实际上，光通量与距离的平方成反比：
-{% highlight text linenos %}
+```
 color = MaterialDiffuseColor * LightColor * cosTheta / (distance*distance);
 ```
 最后，需要另一个参数来控制光的强度。我们可以将其作为LightColor（随后的课程中会讲到）的变量，但是现在暂且只含一个颜色值（如白色）和一个强度（如60瓦）。。
-{% highlight text linenos %}
+```
 color = MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance);
 ```
 
@@ -161,14 +161,14 @@ color = MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*di
 通过GLSL的uniform变量在着色器中设置LightColor和LightPower。
 
 cosTheta由n和l决定。我们可以在任意空间中表示它们，最终结果都是一样的。这里选择摄像机空间，是因为在其中计算光源位置比较简单：
-{% highlight text linenos %}
+```
 // Normal of the computed fragment, in camera space
  vec3 n = normalize( Normal_cameraspace );
  // Direction of the light (from the fragment to the light)
  vec3 l = normalize( LightDirection_cameraspace );
 ```
 在顶点着色器中计算Normal_cameraspace和LightDirection_cameraspace，然后传给片段着色器：
-{% highlight text linenos %}
+```
 // Output position of the vertex, in clip space : MVP * position
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
@@ -215,10 +215,10 @@ M和V分别是模型和观察矩阵，并且是用与MVP完全相同的方式传
 因此通常可以简单地以假的光源代替这种计算。实际中一般直接让三维模型**发光**，使它看起来不是漆黑一片就行了。
 
 可这样操作：
-{% highlight text linenos %}
+```
 vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
 ```
-{% highlight text linenos %}
+```
 color =
  // Ambient : simulates indirect lighting
  MaterialAmbientColor +
@@ -244,7 +244,7 @@ color =
 如图所示，镜面反射光形成了一个波瓣（lobe）。极端情况下，漫反射分量可为零，这时波瓣非常窄（所有的光往一个方向反射），这样就形成了镜子。
 
 *（确实可以通过调整参数值得到镜面；但在这个例子中镜面反射的只有光源，渲染结果看起来会很奇怪)*
-{% highlight text linenos %}
+```
 // Eye vector (towards the camera)
 vec3 E = normalize(EyeDirection_cameraspace);
 // Direction in which the triangle reflects the light

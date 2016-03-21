@@ -59,7 +59,7 @@ Lis le [premier tutoriel]({{site.baseurl}}/fr/beginners-tutorials/tutorial-1-ope
 
 Si tu as créé un programme à partir de rien, assure-toi d'avoir créé un VAO au moment de l'initialisation :
 
-{% highlight text linenos %}
+```
 GLuint VertexArrayID;
  glGenVertexArrays(1, &VertexArrayID);
  glBindVertexArray(VertexArrayID);
@@ -70,11 +70,11 @@ GLuint VertexArrayID;
 GLEW possède un bogue qui rend impossible l'utilisation d'un contexte core (sauf lorsque tu utilises le code source des tutoriels, qui a été corrigé). Trois solutions :
 
 * Demande à GLFW de fournir un profil de compatibilité à la place :
-  {% highlight text linenos %}
+  ```
   glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
   ```
 * Utilise glewExperimental ; voici la méthode recommandée :
-  {% highlight text linenos %}
+  ```
   glewExperimental = true;
   ```
 * Corrige GLEW ... [Voir ce patch](http://code.google.com/p/opengl-tutorial-org/source/browse/external/glew-1.5.8.patch?name=0009_33).

@@ -100,7 +100,7 @@ glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 Ce qui signifie :
 
-{% highlight text linenos %}
+```
 nouvelle couleur dans le buffer d'écran = 
     alpha actuel dans le buffer d'écran * couleur actuelle dans le buffer d'écran + 
     (1 - alpha actuel dans le tampon d'écran) * la couleur de sortie du shader

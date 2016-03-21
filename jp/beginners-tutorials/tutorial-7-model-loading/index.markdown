@@ -34,7 +34,7 @@ loadOBJは"path"にあるファイルを読み込み、out_vertices/out_uvs/out_
 ##OBJファイルの例
 
 OBJファイルは次のような構成になっています。
-{% highlight text linenos %}
+```
 # Blender3D v249 OBJ File: untitled.blend
 # www.blender3d.org
 mtllib cube.mtl
