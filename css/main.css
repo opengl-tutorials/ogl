@@ -72,7 +72,7 @@ img{max-width:100%}
 .post .highlightglslvs code{background-color:#fee;}
 .post .highlightglslfs pre,
 .post .highlightglslfs code{background-color:#efe;}
-.post code{padding:1px 5px;}
+.post code{padding:1px 0px;}
 .post ul,
 .post ol{margin-left:1.35em;}
 .post pre code{border:none;}
