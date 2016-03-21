@@ -22,7 +22,7 @@ Une « texture de normales » ressemble à ça :
 
 Dans chaque texel RGB est encodé un vecteur XYZ : chacune des composantes d'une couleur est comprise entre 0 et 1 et chacune des composantes d'un vecteur est entre -1 et 1, donc la conversion d'un texel en normale s'effectue ainsi :
 
-{% highlight c linenos %}
+``` c
 normal = (2*color)-1 // on each component
 ```
 La texture a une teinte bleue car après tout, la normale pointe vers « l'extérieur de la surface ». Comme toujours X va vers la droite ( dans le plan de la texture), Y vers le haut (toujours dans le plan de la texture), et donc, avec la règle de la main droite, Z pointe vers l'extérieur du plan de la texture.
@@ -49,7 +49,7 @@ Comme on a besoin de trois vecteurs pour définir une base, on doit aussi calcul
 
 Voici l'algorithme : si on appelle deltaPos1 et deltaPos2 deux côtés de notre triangle et deltaUV1 et deltaUV2 les différences de coordonnées UV correspondante, on peut exprimer notre problème avec l'équation suivante :
 
-{% highlight c linenos %}
+``` c
 deltaPos1 = deltaUV1.x * T + deltaUV1.y * B
 deltaPos2 = deltaUV2.x * T + deltaUV2.y * B
 ```
@@ -63,7 +63,7 @@ Avec cette matrice TBN, on peut transformer les normales (extraites à partir de
 
 Pour effectuer cette transformation inverse, on doit simplement prendre l'inverse de la matrice, ce qui dans ce cas (une matrice orthogonale, où chaque vecteur est perpendiculaire aux autres. Voir la section « Aller plus loin ».) est aussi sa transposée, moins coûteuse à calculer :
 
-{% highlight c linenos %}
+``` c
 invTBN = transpose(TBN)
 ```
 
@@ -394,7 +394,7 @@ En mathématiques, « Un vecteur A à la même orientation qu'un vecteur B » se
 
 Si c'est incorrect, inversez t :
 
-{% highlight c linenos %}
+``` c
 if (glm::dot(glm::cross(n, t), b) < 0.0f){
      t = t * -1.0f;
  }

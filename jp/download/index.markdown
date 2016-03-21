@@ -24,7 +24,7 @@ language: jp
 * [google code上のソースをブラウズします。](http://code.google.com/p/opengl-tutorial-org/source/browse/)
 
 このサイト上のソースコード(ただしサードパーティライブラリは除きます)はWTFPL Public Licenceです。
-{% highlight text %}
+```
            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
                    Version 2, December 2004
 

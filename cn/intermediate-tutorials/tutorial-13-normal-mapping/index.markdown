@@ -23,7 +23,7 @@ order: 50
 
 
 每个纹素的RGB值实际上表示的是XYZ向量：颜色的分量取值范围为0到1，而向量的分量取值范围是-1到1；可以建立从纹素到法线的简单映射
-{% highlight c linenos %}
+``` c
 normal = (2*color)-1 // on each component
 ```
 由于法线基本都是指向"曲面外侧"的（按照惯例，X轴朝右，Y轴朝上），因此法线纹理整体呈蓝色。
@@ -49,7 +49,7 @@ normal = (2*color)-1 // on each component
 [<img class="alignnone size-full wp-image-824" title="NTBFromUVs" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/NTBFromUVs.png" alt="" width="480" height="270">]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/NTBFromUVs.png)
 
 算法如下：记三角形的两条边为deltaPos1和deltaPos2，deltaUV1和deltaUV2是对应的UV坐标下的差值；则问题可用如下方程表示：
-{% highlight c linenos %}
+``` c
 deltaPos1 = deltaUV1.x * T + deltaUV1.y * B
 deltaPos2 = deltaUV2.x * T + deltaUV2.y * B
 ```
@@ -65,7 +65,7 @@ deltaPos2 = deltaUV2.x * T + deltaUV2.y * B
 可我们需要的却是从切线空间到模型空间的变换，法线则保持不变。所有计算均在切线空间中进行，不会对其他计算产生影响。
 
 只需对上述矩阵求逆即可得逆变换。这个矩阵（正交阵，即各向量相互正交的矩阵，参见下文"延伸阅读"小节）的逆矩阵恰好也就是其转置矩阵，计算十分简单：
-{% highlight c linenos %}
+``` c
 invTBN = transpose(TBN)
 ```
 亦即：
@@ -375,7 +375,7 @@ n和t差不多是相互垂直的，只要把t沿-n方向稍微"推"一下，幅�
 用数学术语讲，"向量A和向量B同向"则有"dot(A,B)>0"；故只需检查dot( cross(n,t) , b )是否大于0。
 
 若dot( cross(n,t) , b ) < 0，就要翻转t：
-{% highlight c linenos %}
+``` c
 if (glm::dot(glm::cross(n, t), b) < 0.0f){
      t = t * -1.0f;
  }

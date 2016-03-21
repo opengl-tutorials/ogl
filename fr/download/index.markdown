@@ -23,7 +23,7 @@ Sinon tu peux aussi prendre la dernière version du code sur le repo GitHub :
 * [Repo GitHub](https://github.com/opengl-tutorials/ogl) (Les commits qui correspondent aux zips ci-dessus sont taggés OpenGL-tutorial_0015_33 et OpenGL-tutorial_0015_21 respectively)
 
 Tout le code source sur ce site (à l'exception des libraries externes) est licensié avec la WTFPL Public license :
-{% highlight text %}
+```
            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
                    Version 2, December 2004
 

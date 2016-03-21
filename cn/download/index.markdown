@@ -24,7 +24,7 @@ Alternatively, you have access to the latest version of the code on the Mercuria
 * [Browse the source on GitHub](https://github.com/Whiteseeker/opengl-tutorials)
 
 All the source code on this site (except third-party libraries) is released under the WTFPL Public Licence :
-{% highlight text %}
+```
            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
                    Version 2, December 2004
 

@@ -70,9 +70,9 @@ for line in fileinput.FileInput(p,inplace=1):
     line = line.replace("<pre class=\"brush: fs\">","``` glsl fs\n")
     line = line.replace("<pre class=\"brush:plain\">","```\n")
     line = line.replace("<pre class=\"brush: plain\">","```\n")
-    line = line.replace("<pre style=\"background-color: white; color: black;\">","{% highlight text %}\n")
-    line = line.replace("<pre class=\"brush:c\">","{% highlight c linenos %}\n")
-    line = line.replace("<pre class=\"brush: c\">","{% highlight c linenos %}\n")
+    line = line.replace("<pre style=\"background-color: white; color: black;\">","```\n")
+    line = line.replace("<pre class=\"brush:c\">","``` c\n")
+    line = line.replace("<pre class=\"brush: c\">","``` c\n")
     line = line.replace("<pre class=\"brush:fs; highlight: [4, 6]\">","``` glsl fs\n")
     line = line.replace("<pre class=\"brush:fs; highlight: [1,3] \">","``` glsl fs\n")
 	
