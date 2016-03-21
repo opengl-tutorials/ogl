@@ -160,7 +160,7 @@ layout(location = 1) in vec3 vertexColor;
 
 In our case, we won't do anything fancy with it in the vertex shader. We will simply forward it to the fragment shader :
 
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl
 // Output data ; will be interpolated for each fragment.
 out vec3 fragmentColor;
 
@@ -172,7 +172,8 @@ void main(){
     // to produce the color of each fragment
     fragmentColor = vertexColor;
 }
-{% endhighlight %}
+```
+{: .highlightglslvs }
 
 In the fragment shader, you declare fragmentColor again :
 
