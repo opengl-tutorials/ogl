@@ -36,7 +36,7 @@ In this tutorial, we'll only consider directional lights - lights that are so fa
 Since Tutorial 14, you know how to render the scene into a texture in order to access it later from a shader.
 
 Here we use a 1024x1024 16-bit depth texture to contain the shadow map. 16 bits are usually enough for a shadow map. Feel free to experiment with these values. Note that we use a depth texture, not a depth renderbuffer, since we'll need to sample it later.
-{% highlight cpp linenos %}
+``` cpp
 // The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
  GLuint FramebufferName = 0;
  glGenFramebuffers(1, &FramebufferName);
@@ -59,14 +59,14 @@ Here we use a 1024x1024 16-bit depth texture to contain the shadow map. 16 bits 
  // Always check that our framebuffer is ok
  if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
  return false;
-{% endhighlight %}
+```
 The MVP matrix used to render the scene from the light's point of view is computed as follows :
 
 * The Projection matrix is an orthographic matrix which will encompass everything in the axis-aligned box (-10,10),(-10,10),(-10,20) on the X,Y and Z axes respectively. These values are made so that our entire *visible *scene is always visible ; more on this in the Going Further section.
 * The View matrix rotates the world so that in camera space, the light direction is -Z (would you like to re-read [Tutorial 3](http://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/) ?)
 * The Model matrix is whatever you want.
 
-{% highlight cpp linenos %}
+``` cpp
 glm::vec3 lightInvDir = glm::vec3(0.5f,2,2);
 
  // Compute the MVP matrix from the light's point of view
@@ -78,12 +78,12 @@ glm::vec3 lightInvDir = glm::vec3(0.5f,2,2);
  // Send our transformation to the currently bound shader,
  // in the "MVP" uniform
  glUniformMatrix4fv(depthMatrixID, 1, GL_FALSE, &depthMVP[0][0])
-{% endhighlight %}
+```
 
 ### The shaders
 
 The shaders used during this pass are very simple. The vertex shader is a pass-through shader which simply compute the vertex' position in homogeneous coordinates :
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 #version 330 core
 
 // Input vertex data, different for all executions of this shader.
@@ -95,9 +95,9 @@ uniform mat4 depthMVP;
 void main(){
  gl_Position =  depthMVP * vec4(vertexPosition_modelspace,1);
 }
-{% endhighlight %}
+```
 The fragment shader is just as simple : it simply writes the depth of the fragment at location 0 (i.e. in our depth texture).
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 #version 330 core
 
 // Ouput data
@@ -107,7 +107,7 @@ void main(){
     // Not really needed, OpenGL does it anyway
     fragmentdepth = gl_FragCoord.z;
 }
-{% endhighlight %}
+```
 Rendering a shadow map is usually more than twice as fast as the normal render, because only low precision depth is written, instead of both the depth and the color; Memory bandwidth is often the biggest performance issue on GPUs.
 
 ### Result
@@ -133,7 +133,7 @@ There is a little trick, though. Multiplying the vertex' position by depthMVP wi
 For instance, a fragment in the middle of the screen will be in (0,0) in homogeneous coordinates ; but since it will have to sample the middle of the texture, the UVs will have to be (0.5, 0.5).
 
 This can be fixed by tweaking the fetch coordinates directly in the fragment shader but it's more efficient to multiply the homogeneous coordinates by the following matrix, which simply divides coordinates by 2 ( the diagonal : [-1,1] -> [-0.5, 0.5] ) and translates them ( the lower row : [-0.5, 0.5] -> [0,1] ).
-{% highlight cpp linenos %}
+``` cpp
 glm::mat4 biasMatrix(
 0.5, 0.0, 0.0, 0.0,
 0.0, 0.5, 0.0, 0.0,
@@ -141,33 +141,33 @@ glm::mat4 biasMatrix(
 0.5, 0.5, 0.5, 1.0
 );
 glm::mat4 depthBiasMVP = biasMatrix*depthMVP;
-{% endhighlight %}
+```
 We can now write our vertex shader. It's the same as before, but we output 2 positions instead of 1 :
 
 * gl_Position is the position of the vertex as seen from the current camera
 * ShadowCoord is the position of the vertex as seen from the last camera (the light)
 
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 // Output position of the vertex, in clip space : MVP * position
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
 // Same, but with the light's view matrix
 ShadowCoord = DepthBiasMVP * vec4(vertexPosition_modelspace,1);
-{% endhighlight %}
+```
 The fragment shader is then very simple :
 
 * texture( shadowMap, ShadowCoord.xy ).z is the distance between the light and the nearest occluder
 * ShadowCoord.z is the distance between the light and the current fragment
 
 ... so if the current fragment is further than the nearest occluder, this means we are in the shadow (of said nearest occluder) :
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 float visibility = 1.0;
 if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z){
     visibility = 0.5;
 }
-{% endhighlight %}
+```
 We just have to use this knowledge to modify our shading. Of course, the ambient colour isn't modified, since its purpose in life is to fake some incoming light even when we're in the shadow (or everything would be pure black)
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 color =
  // Ambient : simulates indirect lighting
  MaterialAmbientColor +
@@ -175,7 +175,7 @@ color =
  visibility * MaterialDiffuseColor * LightColor * LightPower * cosTheta+
  // Specular : reflective highlight, like a mirror
  visibility * MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5);
-{% endhighlight %}
+```
 
 ### Result - Shadow acne
 
@@ -202,13 +202,13 @@ This phenomenon is easily explained with a simple image :
 
 
 The usual "fix" for this is to add an error margin : we only shade if the current fragment's depth (again, in light space) is really far away from the lightmap value. We do this by adding a bias :
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 float bias = 0.005;
 float visibility = 1.0;
 if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z-bias){
     visibility = 0.5;
 }
-{% endhighlight %}
+```
 The result is already much nicer :
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/FixedBias.png)
@@ -217,10 +217,10 @@ The result is already much nicer :
 However, you can notice that because of our bias, the artefact between the ground and the wall has gone worse. What's more, a bias of 0.005 seems too much on the ground, but not enough on curved surface : some artefacts remain on the cylinder and on the sphere.
 
 A common approach is to modify the bias according to the slope :
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 float bias = 0.005*tan(acos(cosTheta)); // cosTheta is dot( n,l ), clamped between 0 and 1
 bias = clamp(bias, 0,0.01);
-{% endhighlight %}
+```
 Shadow acne is now gone, even on curved surfaces.
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/VariableBias.png)
@@ -232,16 +232,16 @@ Another trick, which may or may not work depending on your geometry, is to rende
 
 
 When rendering the shadow map, cull front-facing triangles :
-{% highlight cpp linenos %}
+``` cpp
         // We don't use bias in the shader, but instead we draw back faces,
         // which are already separated from the front faces by a small distance
         // (if your geometry is made this way)
         glCullFace(GL_FRONT); // Cull front-facing triangles -> draw only back-facing triangles
-{% endhighlight %}
+```
 And when rendering the scene, render normally (backface culling)
-{% highlight cpp linenos %}
+``` cpp
          glCullFace(GL_BACK); // Cull back-facing triangles -> draw only front-facing triangles
-{% endhighlight %}
+```
 This method is used in the code, in addition to the bias.
 
 ## Peter Panning
@@ -284,22 +284,22 @@ As you can see, shadow borders are smooth, but shadowmap's texels are still visi
 ### Poisson Sampling
 
 An easy way to deal with this is to sample the shadowmap N times instead of once. Used in combination with PCF, this can give very good results, even with a small N. Here's the code for 4 samples :
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 for (int i=0;i<4;i++){
   if ( texture( shadowMap, ShadowCoord.xy + poissonDisk[i]/700.0 ).z  <  ShadowCoord.z-bias ){
     visibility-=0.2;
   }
 }
-{% endhighlight %}
+```
 poissonDisk is a constant array defines for instance as follows :
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 vec2 poissonDisk[4] = vec2[](
   vec2( -0.94201624, -0.39906216 ),
   vec2( 0.94558609, -0.76890725 ),
   vec2( -0.094184101, -0.92938870 ),
   vec2( 0.34495938, 0.29387760 )
 );
-{% endhighlight %}
+```
 This way, depending on how many shadowmap samples will pass, the generated fragment will be more or less dark :
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/SoftShadows.png)
@@ -321,26 +321,26 @@ The 700.0 constant defines how much the samples are "spread". Spread them too li
 We can remove this banding by choosing different samples for each pixel. There are two main methods : Stratified Poisson or Rotated Poisson. Stratified chooses different samples; Rotated always use the same, but with a random rotation so that they look different. In this tutorial I will only explain the stratified version.
 
 The only difference with the previous version is that we index *poissonDisk* with a random index :
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
     for (int i=0;i<4;i++){
         int index = // A random number between 0 and 15, different for each pixel (and each i !)
         visibility -= 0.2*(1.0-texture( shadowMap, vec3(ShadowCoord.xy + poissonDisk[index]/700.0,  (ShadowCoord.z-bias)/ShadowCoord.w) ));
     }
-{% endhighlight %}
+```
 We can generate a random number with a code like this, which returns a random number in [0,1[ :
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
     float dot_product = dot(seed4, vec4(12.9898,78.233,45.164,94.673));
     return fract(sin(dot_product) * 43758.5453);
-{% endhighlight %}
+```
 In our case, seed4 will be the combination of i (so that we sample at 4 different locations) and ... something else. We can use gl_FragCoord ( the pixel's location on the screen ), or Position_worldspace :
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
         //  - A random sample, based on the pixel's screen location.
         //    No banding, but the shadow moves with the camera, which looks weird.
         int index = int(16.0*random(gl_FragCoord.xyy, i))%16;
         //  - A random sample, based on the pixel's position in world space.
         //    The position is rounded to the millimeter to avoid too much aliasing
         //int index = int(16.0*random(floor(Position_worldspace.xyz*1000.0), i))%16;
-{% endhighlight %}
+```
 This will make patterns such as in the picture above disappear, at the expense of visual noise. Still, a well-done noise is often less objectionable than these patterns.
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/PCF_stratified_4tap.png)
@@ -358,20 +358,20 @@ Instead of taking 16 samples for each fragment (again, it's a lot), take 4 dista
 ## Spot lights
 
 Dealing with spot lights requires very few changes. The most obvious one is to change the orthographic projection matrix into a perspective projection matrix :
-{% highlight cpp linenos %}
+``` cpp
 glm::vec3 lightPos(5, 20, 20);
 glm::mat4 depthProjectionMatrix = glm::perspective<float>(45.0f, 1.0f, 2.0f, 50.0f);
 glm::mat4 depthViewMatrix = glm::lookAt(lightPos, lightPos-lightInvDir, glm::vec3(0,1,0));
-{% endhighlight %}
+```
 same thing, but with a perspective frustum instead of an orthographic frustum. Use texture2Dproj to account for perspective-divide (see footnotes in tutorial 4 - Matrices)
 
 The second step is to take into account the perspective in the shader. (see footnotes in tutorial 4 - Matrices. In a nutshell, a perspective projection matrix actually doesn't do any perspective at all. This is done by the hardware, by dividing the projected coordinates by w. Here, we emulate the transformation in the shader, so we have to do the perspective-divide ourselves. By the way, an orthographic matrix always generates homogeneous vectors with w=1, which is why they don't produce any perspective)
 
 Here are two way to do this in GLSL. The second uses the built-in textureProj function, but both methods produce exactly the same result.
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 if ( texture( shadowMap, (ShadowCoord.xy/ShadowCoord.w) ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 if ( textureProj( shadowMap, ShadowCoord.xyw ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
-{% endhighlight %}
+```
  
 
 ## Point lights

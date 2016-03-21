@@ -50,9 +50,9 @@ Youku 标清(中文字幕):
 * 让Blender在UV贴图的边界上生成白边（margin）。这个`margin`参数位于`bake`面板。要想效果更好，可以把`margin`值设为20个纹素。
 * 获取纹理时，加上一个偏差（bias）：
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 color = texture( myTextureSampler, UV, -2.0 ).rgb;
-{% endhighlight %}
+```
 -2是偏差。这个值是通过不断尝试得出的。上面的截图中偏差值为+2，也就是说OpenGL将在原本的mipmap层次上再加两层（因此，纹素大小变为原来的1/16，瑕疵也随之变小了）。
 
 * 后期处理中可将背景填充为黑色，这一点后续还会讲解。

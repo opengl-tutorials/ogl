@@ -207,13 +207,13 @@ return ProgramID;
 
 {% highlight text linenos %}
 #version 330 core
-{% endhighlight %}
+```
 
 第二行声明输入数据：
 
 {% highlight text linenos %}
 layout(location = 0) in vec3 vertexPosition_modelspace;
-{% endhighlight %}
+```
 
 下面详细解释这一行：
 
@@ -227,7 +227,7 @@ layout(location = 0) in vec3 vertexPosition_modelspace;
 
 {% highlight text linenos %}
 void main(){
-{% endhighlight %}
+```
 
 这里的`main`函数只是简单地将缓冲里的值作为顶点位置。因此如果位置是(1,1)，那么三角形有一个顶点位于屏幕的右上角。
 在下一课中我们将看到怎样对输入位置做一些更有趣的计算。
@@ -236,7 +236,7 @@ void main(){
 gl_Position.xyz = vertexPosition_modelspace;
 gl_Position.w = 1.0;
 }
-{% endhighlight %}
+```
 
 gl_Position是仅有的几个内置变量之一：您必须对其赋值。其他操作都是可选的，我们将在第四课中看到究竟有哪些“其他操作”。
 
@@ -251,7 +251,7 @@ out vec3 color;
 void main(){
 color = vec3(1,0,0);
 }
-{% endhighlight %}
+```
 
 vec3(1,0,0)代表红色。因为在计算机屏幕上，颜色由红、绿、蓝三元组表示。因此(1,0,0)代表纯红色，无绿、蓝分量。
 
@@ -262,13 +262,13 @@ vec3(1,0,0)代表红色。因为在计算机屏幕上，颜色由红、绿、蓝
 {% highlight text linenos %}
 // Create and compile our GLSL program from the shaders
 GLuint programID = LoadShaders( "SimpleVertexShader.vertexshader", "SimpleFragmentShader.fragmentshader" );
-{% endhighlight %}
+```
 
 首先在主循环中清屏。在进入主循环之前调用了`glClearColor(0.0f, 0.0f, 0.4f, 0.0f)` ，把背景色设为深蓝色。
 
 {% highlight text linenos %}
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-{% endhighlight %}
+```
 
 然后让OpenGL使用您的着色器：
 
@@ -277,7 +277,7 @@ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 glUseProgram(programID);
 
 // Draw triangle...
-{% endhighlight %}
+```
 
 ...然后，哒哒，就看到您亲手绘制的红色三角形啦！
 

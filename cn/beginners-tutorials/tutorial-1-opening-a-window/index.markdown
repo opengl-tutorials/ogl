@@ -135,21 +135,21 @@ Mac OS不支持OpenGL 3.3。最近，搭载MacOS 10.7 Lion和兼容型GPU的Mac�
 // Include standard headers
 #include <stdio.h>
 #include <stdlib.h>
-{% endhighlight %}
+```
 
 然后是GLEW库。其原理我们以后再说。
 
 {% highlight text linenos %}
 // Include GLEW. Always include it before gl.h and glfw.h, since it's a bit magic.
 #include <GL/glew.h>
-{% endhighlight %}
+```
 
 我们使用GLFW库处理窗口和键盘消息，把它也包含进来：
 
 {% highlight text linenos %}
 // Include GLFW
 #include <GL/glfw3.h>
-{% endhighlight %}
+```
 
 下文中的GLM是个很有用3D数学库，我们暂时用不到，但很快就会派上用场。GLM库很好用，但也没什么神奇的，您不妨自己试着写一个。添加“using namespace”，这样就可以不用写“glm::vec3”，直接写“vec3”。
 
@@ -157,13 +157,13 @@ Mac OS不支持OpenGL 3.3。最近，搭载MacOS 10.7 Lion和兼容型GPU的Mac�
 // Include GLM
 #include <glm/glm.hpp>
 using namespace glm;
-{% endhighlight %}
+```
 
 把这些#include都粘贴到playground.cpp。编译时编译器报错，说缺少main函数，那就创建一个呗：
 
 {% highlight text linenos %}
 int main(){
-{% endhighlight %}
+```
 
 首先初始化GLFW ：
 
@@ -174,7 +174,7 @@ if( !glfwInit() )
     fprintf( stderr, "Failed to initialize GLFW\n" );
     return -1;
 }
-{% endhighlight %}
+```
 
 终于可以创建我们的第一个OpenGL窗口啦！
 
@@ -203,7 +203,7 @@ if (glewInit() != GLEW_OK) {
     fprintf(stderr, "Failed to initialize GLEW\n");
     return -1;
 }
-{% endhighlight %}
+```
 
 生成并运行。一个窗口弹出后立即关闭了。可不是嘛，还没设置等待用户按Esc键再关闭呢：
 
@@ -220,6 +220,6 @@ do{
 } // Check if the ESC key was pressed or the window was closed
 while( glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
 glfwWindowShouldClose(window) == 0);
-{% endhighlight %}
+```
 
 第一课就到这啦！第二课会教大家绘制三角形。

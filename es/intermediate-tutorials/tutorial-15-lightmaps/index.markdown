@@ -47,9 +47,9 @@ This is because of mipmapping, which blends texels together when seen at a dista
 * You can ask Blender to generate a margin around the limits of the UV map. This is the "margin" parameter in the "bake" panel. For good results, you may have to go up to a margin of 20 texels.
 * You can use a bias in your texture fetch :
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 color = texture( myTextureSampler, UV, -2.0 ).rgb;
-{% endhighlight %}
+```
 -2 is the bias. You'll have to experiment with this value. The screenshot above was taken with a bias of +2, which means that OpenGL will select two mipmaps above the one it should have taken (so it's 16 times smaller, hence the glitches)
 
 * You can fill the black background in a post-processing step. I'll post more about this later.

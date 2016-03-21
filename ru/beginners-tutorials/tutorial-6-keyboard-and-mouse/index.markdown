@@ -35,7 +35,7 @@ do{
 
     // ...
 }
-{% endhighlight %}
+```
 Этот отрывок кода имеет 3 новых функции:
 
 * computeMatricesFromInputs() вычисляет Проекционную и Видовую матрицы в зависимости от текущего ввода. Это та функция, где происходит основная работа.
@@ -61,7 +61,7 @@ float initialFoV = 45.0f;
 
 float speed = 3.0f; // 3 units / second
 float mouseSpeed = 0.005f;
-{% endhighlight %}
+```
 FoV - это "уровень зума". 80 = очень широкий угол обзора, сильные деформации. Значение от 60 и до 45 является стандартным. 20 - это сильный зум.
 
 В первую очередь мы будем вычислять позицию, горизонтальный и вертикальный углы, а также FoV опираясь на ввод, после чего вычислим Видовую и проекционную матрицы.
@@ -73,12 +73,12 @@ FoV - это "уровень зума". 80 = очень широкий угол 
 // Получить позицию мыши
 int xpos, ypos;
 glfwGetMousePos(&xpos, &ypos);
-{% endhighlight %}
+```
 однако, нам важно не забыть о перемещении курсора обратно в центр экрана, чтобы он не выходил за границы окна:
 {% highlight text linenos %}
 // Сбросить позицию мыши для следующего кадра
 glfwSetMousePos(1024/2, 768/2);
-{% endhighlight %}
+```
 Обратите внимание, что этот код предполагает, что размеры окна - 1024*768, что не всегда будет являться истиной, поэтому лучшим решением будет использовать glfwGetWindowSize().
 
 Теперь мы можем вычислить наши углы:
@@ -86,7 +86,7 @@ glfwSetMousePos(1024/2, 768/2);
 // Вычисляем углы
 horizontalAngle += mouseSpeed * deltaTime * float(1024/2 - xpos );
 verticalAngle   += mouseSpeed * deltaTime * float( 768/2 - ypos );
-{% endhighlight %}
+```
 Давайте разберем этот код справа налево:
 
 * 1024/2 &ndash; xpos означает как делеко мышь находится от центра окна. Чем дальше, тем больше будет поворот.
@@ -104,7 +104,7 @@ glm::vec3 direction(
     sin(verticalAngle),
     cos(verticalAngle) * cos(horizontalAngle)
 );
-{% endhighlight %}
+```
 Это стандартное вычисление, но если вы не знаете о синусе и косинусе, то вот небольшая иллюстрация:
 
 <img title="Trigonometric circle" alt="" src="http://www.numericana.com/answer/trig.gif" width="150" height="150" />
@@ -121,12 +121,12 @@ glm::vec3 right = glm::vec3(
     0,
     cos(horizontalAngle - 3.14f/2.0f)
 );
-{% endhighlight %}
+```
 Итак, у нас есть вектор Вправо и есть направление (вектор Вперед), тогда вектор "вверх" - это вектор, который им перпендикулярен, а чтобы его получить - нужно воспользоваться векторным произведением:
 {% highlight text linenos %}
 // Вектор, указывающий направление вверх относительно камеры
 glm::vec3 up = glm::cross( right, direction );
-{% endhighlight %}
+```
 Чтобы запомнить что делает векторное произведение попробуйте вспомнить Правило правой руки из Урока 3. Первый вектор - это большой палец; Второй вектор - это указательный палец; Результатом будет являться ваш средний палец.
 
 ##Позиция
@@ -149,7 +149,7 @@ if (glfwGetKey( GLFW_KEY_RIGHT ) == GLFW_PRESS){
 if (glfwGetKey( GLFW_KEY_LEFT ) == GLFW_PRESS){
     position -= right * deltaTime * speed;
 }
-{% endhighlight %}
+```
 Единственная непонятная вещь в этом коде - это deltaTime. Если мы просто умножим вектор на скорость, то получим неприятные эффекты:
 
 * Если у вас быстрый компьютер и приложение работает с частотой кадров 60, то вы будете передвигаться со скоростью 60 юнитов в секунду.
@@ -159,14 +159,14 @@ if (glfwGetKey( GLFW_KEY_LEFT ) == GLFW_PRESS){
 {% highlight text linenos %}
 double currentTime = glfwGetTime();
 float deltaTime = float(currentTime - lastTime);
-{% endhighlight %}
+```
 
 ##Поле обзора
 
 Для развлечения мы можем также привязать колесико мышки к переменной FoV и менять таким образом Поле обзора, что в итоге даст нас эдакий зум:
 {% highlight text linenos %}
 float FoV = initialFoV - 5 * glfwGetMouseWheel();
-{% endhighlight %}
+```
 
 ##Вычисление матриц
 
@@ -180,7 +180,7 @@ ViewMatrix       = glm::lookAt(
     position+direction, // Направление камеры
     up                  // Вектор "Вверх" камеры
 );
-{% endhighlight %}
+```
 
 #Результат
 
@@ -198,7 +198,7 @@ ViewMatrix       = glm::lookAt(
 {% highlight text linenos %}
 // Отсечение тех треугольников, нормаль которых направлена от камеры
 glEnable(GL_CULL_FACE);
-{% endhighlight %}
+```
 
 #Упражнения
 

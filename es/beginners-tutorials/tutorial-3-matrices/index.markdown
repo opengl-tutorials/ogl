@@ -55,20 +55,20 @@ No es tan terrible como se ve. Pon tu dedo izquierdo sobre la a y tu dedo derech
 Esto es aburrido de calcular, y lo haremos frecuentemente, asi que mejor digamosle al computador que lo haga en nuestro lugar.
 
 **En C++, con GLM:**
-{% highlight cpp linenos %}
+``` cpp
 glm::mat4 myMatrix;
 glm::vec4 myVector;
 // Llene  myMatrix y myVector de alguna forma
 glm::vec4 transformedVector = myMatrix * myVector; // En este orden, es importante.
-{% endhighlight %}
+```
 
 **En GLSL :**
-{% highlight glsl linenos %}
+``` glsl
 mat4 myMatrix;
 vec4 myVector;
 // Llene  myMatrix y myVector de alguna forma
 vec4 transformedVector = myMatrix * myVector; // Si basicamente es lo mismo que GLM
-{% endhighlight %}
+```
 
 ( Ya copiaste y pegaste el codigo? intentalo )
 
@@ -98,7 +98,7 @@ Como se traduce esto a codigo?
 
 
 **En C++, con GLM:**
-{% highlight cpp linenos %}
+``` cpp
 #include <glm/gtx/transform.hpp> // after <glm/glm.hpp>
  
 glm::mat4 myMatrix = glm::translate(10.0f, 0.0f, 0.0f);
@@ -107,7 +107,7 @@ glm::vec4 transformedVector = myMatrix * myVector; // guess the result
 {% endhighlight%}
 
 **En GLSL :**
-{% highlight glsl linenos %}
+``` glsl
 vec4 transformedVector = myMatrix * myVector;
 {% endhighlight%}
 
@@ -120,7 +120,7 @@ Esta es especial. No hace nada. Pero la menciono por que es importante sabe que 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/identityExample.png)
 
 **En C++ :**
-{% highlight cpp linenos %}
+``` cpp
 glm::mat4 myIdentityMatrix = glm::mat4(1.0f);
 {% endhighlight%}
 
@@ -139,7 +139,7 @@ Y la w no cambia. Te preguntaras cual es el significado de "escalar una direcci�
 (Nota que la matriz identidad es solo un caso especial de escalamiento de matrices con (X,Y,Z) = (1,1,1). También es un caso especial, la translación con una matriz (X,Y,Z)=(0,0,0) )
 
 **En C++ :**
-{% highlight cpp linenos %}
+``` cpp
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
 glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
 {% endhighlight%}
@@ -149,19 +149,19 @@ glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
 Estas son un poco mas complicadas. Omitiré detalles por simplicidad. Para mas información mira [Matrices and Quaternions FAQ](http://www.cs.princeton.edu/~gewang/projects/darth/stuff/quat_faq.html) (recurso popular en varios idiomas). Y puedes mirar también los [Rotations tutorials]({{site.baseurl }}{{intermediate-tutorials/tutorial-17-quaternions}}) 
 
 **En C++ :**
-{% highlight cpp linenos %}
+``` cpp
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
 glm::vec3 myRotationAxis( ??, ??, ??);
 glm::rotate( angle_in_degrees, myRotationAxis );
-{% endhighlight %}
+```
 
 ## Acumulando transformaciones
 
 Ya sabemos rotar , transladar y escalar nuestros vectores. Seria genial combinar todas estas transformaciones. Esto se hace multiplicando las matrices, por ejemplo :
 
-{% highlight cpp linenos %}
+``` cpp
 TransformedVector = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalVector;
-{% endhighlight %}
+```
 
 
 **!!! ATENCIÓN !!!** Estas lineas primero hacen el ESCALAMIENTO, luego la ROTACIÓN y luego la TRANSLACIÓN. Asi es como funciona la multiplicación.
@@ -185,12 +185,12 @@ De hecho, el orden de arriba es el que usualmente necesitaras para personajes de
 La multiplicación matriz-matriz es muy similar a la multiplicación matriz-vector, asiq ue vamos a saltarnos esa parte y si tienes dudas consulta las preguntas frecuentes de Matrices y cuaterniones. Por ahora le diremos al computador que lo haga por nosotros :
 
 **En C++, con GLM :**
-{% highlight cpp linenos %}
+``` cpp
 glm::mat4 myModelMatrix = myTranslationMatrix * myRotationMatrix * myScaleMatrix;
 glm::vec4 myTransformedVector = myModelMatrix * myOriginalVector;
 {% endhighlight%}
 **En GLSL :**
-{% highlight glsl linenos %}
+``` glsl
 mat4 transform = mat2 * mat1;
 vec4 out_vec = transform * in_vec;
 {% endhighlight%}
@@ -237,13 +237,13 @@ Una vez mas, la imagen abajo ilustra esto : _Fuimos del espacio mundo (todos los
 
 Antes que tu cabeza explote con todo esto, disfruta la gran función de GLM : glm::lookAt :
 
-{% highlight cpp linenos %}
+``` cpp
 glm::mat4 CameraMatrix = glm::lookAt(
     cameraPosition, // La posición de tu camara en el espaio mundo
     cameraTarget,   // Hacia donde quieres mirar, en el espacio mundo
     upVector        // Probablemente glm::vec3(0,1,0), porque (0,-1,0) te haría mirar cabeza abajo, aunque puede ser divertido.
 );
-{% endhighlight %}
+```
 
 Aquí esta el diagrama obligatorio :
 
@@ -261,7 +261,7 @@ Esto es lo que se llama una perspectiva de proyección :
 
 Y por suerte para nosotros, una matriz 4x4 puede representar esta proyección [^projection] :
 
-{% highlight cpp linenos %}
+``` cpp
 // Genera una matriz dificil de leer pero almenos es 4x4
 glm::mat4 projectionMatrix = glm::perspective(
     FoV,         // El campo de visión horizontal, en grados : la cantidad de "zoom". Piensa en el lente de la camara. Usualmente esta entre 90° (extra ancho) y 30° (zoom aumentado)
@@ -269,7 +269,7 @@ glm::mat4 projectionMatrix = glm::perspective(
     0.1f,        // Plano de corte cercano. Tan grande como sea posible o tendrás problemas de precisión.
     100.0f       // Plano de corte lejano. Tan pequeño como se pueda.
 );
-{% endhighlight %}
+```
 
 Una ultima vez :
 
@@ -304,15 +304,15 @@ Y esta imagen de hecho es el render !
 
 ... Solo una multiplicación estándar, así como te gustan !
 
-{% highlight cpp linenos %}
+``` cpp
 // C++ : calcular la matriz
 glm::mat4 MVPmatrix = projection * view * model; // Recurda : invertida !
-{% endhighlight %}
+```
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 // GLSL : aplicala
 transformed_vertex = MVP * in_vertex;
-{% endhighlight %}
+```
 
 
 # Uniendo todo

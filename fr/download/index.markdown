@@ -37,6 +37,6 @@ as the name is changed.
   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
  0. You just DO WHAT THE FUCK YOU WANT TO.
-{% endhighlight %}
+```
 
 Tout le contenu des tutoriaux (explications etc) est disponible sous la licence Creative-Common: CC-BY-NC-ND disponible [ici](http://creativecommons.org/licenses/by-nc-nd/3.0/fr/deed.en)

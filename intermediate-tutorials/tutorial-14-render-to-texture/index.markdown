@@ -21,14 +21,14 @@ We have three tasks : creating the texture in which we're going to render ; actu
 ## Creating the Render Target
 
 What we're going to render to is called a Framebuffer. It's a container for textures and an optional depth buffer. It's created just like any other object in OpenGL :
-{% highlight cpp linenos %}
+``` cpp
 // The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
 GLuint FramebufferName = 0;
 glGenFramebuffers(1, &FramebufferName);
 glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
-{% endhighlight %}
+```
 Now we need to create the texture which will contain the RGB output of our shader. This code is very classic :
-{% highlight cpp linenos %}
+``` cpp
 // The texture we're going to render to
 GLuint renderedTexture;
 glGenTextures(1, &renderedTexture);
@@ -42,44 +42,44 @@ glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, 1024, 768, 0,GL_RGB, GL_UNSIGNED_BYTE, 0);
 // Poor filtering. Needed !
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-{% endhighlight %}
+```
 We also need a depth buffer. This is optional, depending on what you actually need to draw in your texture; but since we're going to render Suzanne, we need depth-testing.
-{% highlight cpp linenos %}
+``` cpp
 // The depth buffer
 GLuint depthrenderbuffer;
 glGenRenderbuffers(1, &depthrenderbuffer);
 glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
 glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1024, 768);
 glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
-{% endhighlight %}
+```
 Finally, we configure our framebuffer
-{% highlight cpp linenos %}
+``` cpp
 // Set "renderedTexture" as our colour attachement #0
 glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture, 0);
 
 // Set the list of draw buffers.
 GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
 glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
-{% endhighlight %}
+```
 Something may have gone wrong during the process, depending on the capabilities of the GPU. This is how you check it :
-{% highlight cpp linenos %}
+``` cpp
 // Always check that our framebuffer is ok
 if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 return false;
-{% endhighlight %}
+```
 
 ## Rendering to the texture
 
 Rendering to the texture is straightforward. Simply bind your framebuffer, and draw your scene as usual. Easy !
-{% highlight cpp linenos %}
+``` cpp
 // Render to our framebuffer
 glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
 glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the lower left corner to the upper right
-{% endhighlight %}
+```
 The fragment shader just needs a minor adaptation :
-{% highlight cpp linenos %}
+``` cpp
 layout(location = 0) out vec3 color;
-{% endhighlight %}
+```
 This means that when writing in the variable "color", we will actually write in the Render Target 0, which happens to be our texure because DrawBuffers[0] is GL_COLOR_ATTACHMENT*i*, which is, in our case, *renderedTexture*.
 
 To recap :
@@ -96,7 +96,7 @@ Note : there is no layout(location=i) in OpenGL < 3.3, but you use glFragData[i]
 ## Using the rendered texture
 
 We're going to draw a simple quad that fills the screen. We need the usual buffers, shaders, IDs, ...
-{% highlight cpp linenos %}
+``` cpp
 // The fullscreen quad's FBO
 GLuint quad_VertexArrayID;
 glGenVertexArrays(1, &quad_VertexArrayID);
@@ -120,15 +120,15 @@ glBufferData(GL_ARRAY_BUFFER, sizeof(g_quad_vertex_buffer_data), g_quad_vertex_b
 GLuint quad_programID = LoadShaders( "Passthrough.vertexshader", "SimpleTexture.fragmentshader" );
 GLuint texID = glGetUniformLocation(quad_programID, "renderedTexture");
 GLuint timeID = glGetUniformLocation(quad_programID, "time");
-{% endhighlight %}
+```
 Now you want to render to the screen. This is done by using 0 as the second parameter of glBindFramebuffer.
-{% highlight cpp linenos %}
+``` cpp
 // Render to the screen
 glBindFramebuffer(GL_FRAMEBUFFER, 0);
 glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the lower left corner to the upper right
-{% endhighlight %}
+```
 We can draw our full-screen quad with such a shader:
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 #version 330 core
 
 in vec2 UV;
@@ -141,7 +141,7 @@ uniform float time;
 void main(){
     color = texture( renderedTexture, UV + 0.005*vec2( sin(time+1024.0*UV.x),cos(time+768.0*UV.y)) ).xyz;
 }
-{% endhighlight %}
+```
  
 
 This code simply sample the texture, but adds a tiny offset which depends on time.
@@ -159,9 +159,9 @@ This code simply sample the texture, but adds a tiny offset which depends on tim
 ## Using the depth
 
 In some cases you might need the depth when using the rendered texture. In this case, simply render to a texture created as follows :
-{% highlight cpp linenos %}
+``` cpp
 glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT24, 1024, 768, 0,GL_DEPTH_COMPONENT, GL_FLOAT, 0);
-{% endhighlight %}
+```
 ("24" is the precision, in bits. You can choose between 16, 24 and 32, depending on your needs. Usually 24 is fine)
 
 This should be enough to get you started, but the provided source code implements this too.
@@ -188,9 +188,9 @@ Nothing difficult, but it's just bulky.
 You may write to several textures at the same time.
 
 Simply create several textures (all with the correct and same size !), call glFramebufferTexture with a different color attachement for each, call glDrawBuffers with updated parameters ( something like (2,{GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1}})), and add another output variable in your fragment shader :
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 layout(location = 1) out vec3 normal_tangentspace; // or whatever
-{% endhighlight %}
+```
 Hint : If you effectively need to output a vector in a texture, floating-point textures exist, with 16 or 32 bit precision instead of 8... See [glTexImage2D](http://www.opengl.org/sdk/docs/man/xhtml/glTexImage2D.xml)'s reference (search for GL_FLOAT).
 
 Hint2 : For previous versions of OpenGL, use glFragData[1] = myvalue instead.

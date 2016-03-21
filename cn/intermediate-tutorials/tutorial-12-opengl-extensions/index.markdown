@@ -20,7 +20,7 @@ GPU的性能随着更新换代一直在提高，支持渲染更多的三角形�
 回溯到2002年，GPU都没有顶点着色器或片断着色器：所有的一切都硬编码在芯片中。这被称为固定功能流水线（Fixed-Function Pipeline (FFP)）。同样地，当时最新的OpenGL 1.3中也没有接口可以创建、操作和使用所谓的"着色器"，因为它根本不存在。接着NVIDIA决定用实际代码描述渲染过程，来取代数以百计的标记和状态量。这就是ARB_fragment_program的由来。当时还没有GLSL，但你可以写这样的程序：
 {% highlight text linenos %}
 !!ARBfp1.0 MOV result.color, fragment.color; END
-{% endhighlight %}
+```
 但若要显式地令OpenGL使用这些代码，你需要一些还不在OpenGL里的特殊函数。在进行解释前，再举个例子。
 
 ##ARB_debug_output
@@ -28,7 +28,7 @@ GPU的性能随着更新换代一直在提高，支持渲染更多的三角形�
 好，你说『ARB_fragment_program太老了，所以我不需要扩展这东西』？其实有不少新的扩展非常方便。其中一个便是ARB_debug_output，它提供了一个不存在于OpenGL 3.3中的，但你可以/应该用到的功能。它定义了像GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB或GL_DEBUG_SEVERITY_MEDIUM_ARB之类的字符串，和DebugMessageCallbackARB这样的函数。这个扩展的伟大之处在于，当你写了一些不正确的代码，例如：
 {% highlight text linenos %}
 glEnable(GL_TEXTURE); // Incorrect ! You probably meant GL_TEXTURE_2D !
-{% endhighlight %}
+```
 你能得到错误消息和错误的精确位置。总结：
 
 * 即便在现在的OpenGL 3.3中，扩展仍旧十分有用。
@@ -51,14 +51,14 @@ for(i=0; i<NumberOfExtensions; i++) {
     glDebugMessageCallbackARB  = (PFNGLDEBUGMESSAGECALLBACKARBPROC) wglGetProcAddress("glDebugMessageCallbackARB");
   }
 }
-{% endhighlight %}
+```
 
 ##获得所有的扩展 - 简单的方式
 
 上面的方式太复杂。若用GLEW, GLee, gl3w这些库，就简单多了。例如，有了GLEW，你只需要在创建窗口后调用glewInit()，不少方便的变量就创建好了：  
 {% highlight text linenos %}
 if (GLEW_ARB_debug_output){ // Ta-Dah ! }
-{% endhighlight %}
+```
 (小心：debug_output是特殊的，因为你需要在上下文创建的时候启用它。在GLFW中，这通过glfwOpenWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1)完成。)
 
 ##ARB vs EXT vs ...
@@ -89,7 +89,7 @@ if ( GLEW_NV_path_rendering ){
     // on older NVIDIA hardware, on AMD and on INTEL !
     // So you have to implement it yourself anyway !
 }
-{% endhighlight %}
+```
 
 ##均衡考量
 

@@ -20,7 +20,7 @@ Dans ce tutoriel, nous allons utiliser le moteur Bullet Physics Engine, mais les
 
 De nombreux tutoriels expliquent comment intégrer Bullet ; en particulier, le [wiki de Bullet](http://bulletphysics.org/mediawiki-1.5.8/index.php/Main_Page) est très bien fait.
 
-{% highlight cpp linenos %}
+``` cpp
 // Initialize Bullet. This strictly follows http://bulletphysics.org/mediawiki-1.5.8/index.php/Hello_World, 
 // even though we won't use most of this stuff.
 
@@ -37,7 +37,7 @@ btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintS
 // The world.
 btDiscreteDynamicsWorld* dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
 dynamicsWorld->setGravity(btVector3(0,-9.81f,0));
-{% endhighlight %}
+```
 
 Chaque objet doit avoir une forme de collision (*Collision Shape*). Même si celle-ci peut être le modèle en lui-même, cela est généralement une mauvaise idée pour les performances. À la place, on utilise habituellement des formes plus simples telles que les boîtes, les sphères ou les capsules. Voici quelques formes de collision. De gauche à droite : sphère, cube, convex hull du modèle, modèle d'origine. Les sphères sont moins précises que le modèle, mais bien plus rapides à tester.
 
@@ -45,13 +45,13 @@ Chaque objet doit avoir une forme de collision (*Collision Shape*). Même si cel
 
 Dans cet exemple, tous les modèles utilisent la même boîte :
 
-{% highlight cpp linenos %}
+``` cpp
 btCollisionShape* boxCollisionShape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
-{% endhighlight %}
+```
 
 Les moteurs physiques ne connaissent rien sur OpenGL ; et en réalité, ceux-ci peuvent s'exécuter sans aucune visualisation 3D. Donc on ne peut pas directement donner notre VBO à Bullet. À la place, on doit ajouter un corps rigide (*Rigid Body*) dans la simulation.
 
-{% highlight cpp linenos %}
+``` cpp
 btDefaultMotionState* motionstate = new btDefaultMotionState(btTransform(
 	btQuaternion(orientations[i].x, orientations[i].y, orientations[i].z, orientations[i].w), 
 	btVector3(positions[i].x, positions[i].y, positions[i].z)
@@ -66,20 +66,20 @@ btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
 btRigidBody *rigidBody = new btRigidBody(rigidBodyCI);
 
 dynamicsWorld->addRigidBody(rigidBody);
-{% endhighlight %}
+```
 
 On peut voir que le corps rigide utilise une forme de collision pour définir sa forme.
 
 On garde aussi une trace du corps rigide, mais comme il est indiqué dans le commentaire, un vrai moteur aura d'une quelconque façon une classe MonGameObject avec la position, l'orientation, le modèle OpenGL et un pointeur vers le corps rigide.
 
-{% highlight cpp linenos %}
+``` cpp
 rigidbodies.push_back(rigidBody);
 
 // Small hack : store the mesh's index "i" in Bullet's User Pointer.
 // Will be used to know which object is picked. 
 // A real program would probably pass a "MyGameObjectPointer" instead.
 rigidBody->setUserPointer((void*)i);
-{% endhighlight %}
+```
 
 En d'autres mots : n'utilise pas le code ci-dessus dans la vraie vie ! Ce n'est que pour les besoins de la démonstration.
 
@@ -91,7 +91,7 @@ Premièrement, on doit trouver un rayon qui commence à la position de la camér
 
 D'abord, on trouve la position de départ et de fin du rayon dans les coordonnées normalisées du périphérique (Normalized Device Coordinates). On le fait dans cet espace, car c'est très simple :
 
-{% highlight cpp linenos %}
+``` cpp
 // The ray Start and End positions, in Normalized Device Coordinates (Have you read Tutorial 4 ?)
 glm::vec4 lRayStart_NDC(
 	((float)mouseX/(float)screenWidth  - 0.5f) * 2.0f, // [0,1024] -> [-1,1]
@@ -105,7 +105,7 @@ glm::vec4 lRayEnd_NDC(
 	0.0,
 	1.0f
 );
-{% endhighlight %}
+```
 
 Pour comprendre ce code, voila une nouvelle fois à cette image du quatrième tutoriel :
 
@@ -115,7 +115,7 @@ L'espace de coordonnées normalisé du périphérique est un cube 2*2*2, centré
 
 Maintenant, on n'a qu'à appliquer la transformation inverse :
 
-{% highlight cpp linenos %}
+``` cpp
 // The Projection matrix goes from Camera Space to NDC.
 // So inverse(ProjectionMatrix) goes from NDC to Camera Space.
 glm::mat4 InverseProjectionMatrix = glm::inverse(ProjectionMatrix);
@@ -133,20 +133,20 @@ glm::vec4 lRayEnd_world    = InverseViewMatrix       * lRayEnd_camera;   lRayEnd
 //glm::mat4 M = glm::inverse(ProjectionMatrix * ViewMatrix);
 //glm::vec4 lRayStart_world = M * lRayStart_NDC; lRayStart_world/=lRayStart_world.w;
 //glm::vec4 lRayEnd_world   = M * lRayEnd_NDC  ; lRayEnd_world  /=lRayEnd_world.w;
-{% endhighlight %}
+```
 
 Avec *IRayStart_worldspace* et *IRayEnd_worldspace*, la direction du rayon (dans l'espace monde) est facile à calculer :
 
-{% highlight cpp linenos %}
+``` cpp
 glm::vec3 lRayDir_world(lRayEnd_world - lRayStart_world);
 lRayDir_world = glm::normalize(lRayDir_world);
-{% endhighlight %}
+```
 
 ##Utiliser RayTest()
 
 Le lancer de rayon est très simple, aucun besoin de commentaire :
 
-{% highlight cpp linenos %}
+``` cpp
 glm::vec3 out_end = out_origin + out_direction*1000.0f;
 
 btCollisionWorld::ClosestRayResultCallback RayCallback(
@@ -166,7 +166,7 @@ if(RayCallback.hasHit()) {
 }else{
 	message = "background";
 }
-{% endhighlight %}
+```
 
 La seule chose est que pour une raison étrange, tu dois définir la position de départ et de fin du rayon, deux fois.
 

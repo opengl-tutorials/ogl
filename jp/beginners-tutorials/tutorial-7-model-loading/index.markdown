@@ -21,14 +21,14 @@ order: 70
 #OBJのロード
 
 common/objloader.cppにあり、/common/objloader.hppに宣言されている私たちの関数は次のような戻り値や引数があります。
-{% highlight cpp linenos %}
+``` cpp
 bool loadOBJ(
     const char * path,
     std::vector  & out_vertices,
     std::vector  & out_uvs,
     std::vector  & out_normals
 )
-{% endhighlight %}
+```
 loadOBJは"path"にあるファイルを読み込み、out_vertices/out_uvs/out_normalsにデータを書き込み、何かおかしなことがあればfalseを返します。std::vectorはglm::vec3の配列を表すC++での表現方法です。vectorはサイズを自由に変更できる配列です。また数学のベクトルとは何の関係もありません。ただの配列と同じです。最後に&はstd::vector変数を関数内で修正できることを意味します。
 
 ##OBJファイルの例
@@ -82,7 +82,7 @@ f 5/1/7 8/11/7 6/10/7
 f 8/11/7 7/12/7 6/10/7
 f 1/2/8 2/9/8 3/13/8
 f 1/2/8 3/13/8 4/14/8
-{% endhighlight %}
+```
 ここで記号の意味を説明します。
 
 * #はコメントです。C++での//と同じ意味です。
@@ -115,22 +115,22 @@ vとvtは簡単に理解できます。fは少し複雑です。ここではf 8/
 ##ファイルの読み込み
 
 それでは、コードに落としていきましょう。.objのコンテンツを保存するための一時的な変数を作ります。
-{% highlight cpp linenos %}
+``` cpp
 std::vector vertexIndices, uvIndices, normalIndices;
 std::vector temp_vertices;
 std::vector temp_uvs;
 std::vector temp_normals;
-{% endhighlight %}
+```
 チャプター5でやったので、ファイルのオープンの仕方は知っています。
-{% highlight cpp linenos %}
+``` cpp
 FILE * file = fopen(path, "r");
 if( file == NULL ){
     printf("ファイルを開けません!n");
     return false;
 }
-{% endhighlight %}
+```
 このファイルを最後まで読んでみましょう。
-{% highlight cpp linenos %}
+``` cpp
 while( 1 ){
 
     char lineHeader[128];
@@ -140,35 +140,35 @@ while( 1 ){
         break; // EOF = End Of File. ループを終了します。
 
     // そうでなければlineHeaderをパースします。
-{% endhighlight %}
+```
 (ここでは最初の文字列が128文字以下と仮定していますが、これはとてもひどい仮定です。しかしこれはおもちゃパーサなので問題ありません。)
 
 まずは頂点を取り扱います。
-{% highlight cpp linenos %}
+``` cpp
 if ( strcmp( lineHeader, "v" ) == 0 ){
     glm::vec3 vertex;
     fscanf(file, "%f %f %fn", &vertex.x, &vertex.y, &vertex.z );
     temp_vertices.push_back(vertex);
-{% endhighlight %}
+```
 つまり、行の最初の文字列が"v"であれば、残りは3つの数字です。だからglm::vec3を作り、それをvectorに追加します。
-{% highlight cpp linenos %}
+``` cpp
 }else if ( strcmp( lineHeader, "vt" ) == 0 ){
     glm::vec2 uv;
     fscanf(file, "%f %fn", &uv.x, &uv.y );
     temp_uvs.push_back(uv);
-{% endhighlight %}
+```
 つまり、もし"v"ではなく"vt"であれば、残りは2つの数字です。だからglm::vec2を作り、それをvectorに追加します。
 i.e if it's not a "v" but a "vt", then the rest has to be 2 floats, so create a glm::vec2 and add it to the vector.
 
 同様に法線も扱います。
-{% highlight cpp linenos %}
+``` cpp
 }else if ( strcmp( lineHeader, "vn" ) == 0 ){
     glm::vec3 normal;
     fscanf(file, "%f %f %fn", &normal.x, &normal.y, &normal.z );
     temp_normals.push_back(normal);
-{% endhighlight %}
+```
 ここで、"f"は少し複雑です。
-{% highlight cpp linenos %}
+``` cpp
 }else if ( strcmp( lineHeader, "f" ) == 0 ){
     std::string vertex1, vertex2, vertex3;
     unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
@@ -186,7 +186,7 @@ i.e if it's not a "v" but a "vt", then the rest has to be 2 floats, so create a 
     normalIndices.push_back(normalIndex[0]);
     normalIndices.push_back(normalIndex[1]);
     normalIndices.push_back(normalIndex[2]);
-{% endhighlight %}
+```
 このコードは、少し読み込むデータが多い点を除けば、以前のものととても似ています。
 
 ##データの処理
@@ -194,39 +194,39 @@ i.e if it's not a "v" but a "vt", then the rest has to be 2 floats, so create a 
 これまでやったことは単にデータの"形"を変えただけです。つまり文字列をstd::vector型に変換しました。しかし、これだけでは充分ではありません。OpenGLが読み込める形に直さなければなりません。すなわち、インデックスを取り除き、単純なglm::vec3型に直します。これは索引付けと呼ばれます。
 
 各三角形("f"の行)の各頂点(v/vt/vnの行)をやります。
-{% highlight cpp linenos %}
+``` cpp
     // 各三角形の各頂点
     for( unsigned int i=0; i<vertexIndices.size(); i++ ){
 
-{% endhighlight %}
+```
 頂点の位置へのインデックスはvertexIndices[i]です。
-{% highlight cpp linenos %}
+``` cpp
 unsigned int vertexIndex = vertexIndices[i];
-{% endhighlight %}
+```
 だから位置はtemp_vertices[ vertexIndex-1 ]です。(-1がありますが、これはC++ではインデックスが0から始まり、OBJでは1から始まるからです。覚えていますか？)
-{% highlight cpp linenos %}
+``` cpp
 glm::vec3 vertex = temp_vertices[ vertexIndex-1 ];
-{% endhighlight %}
+```
 そして、これが新たな頂点の位置を作ります。
-{% highlight cpp linenos %}
+``` cpp
 out_vertices.push_back(vertex);
-{% endhighlight %}
+```
 UVや法線でも同じことを行います。
 
 #ロードしたデータの使用方法
 
 ここまでくれば、もう変更する箇所は多くありません。いつものようなstatic const GLfloat g_vertex_buffer_data[] = {...}を宣言する代わりに、std::vector verticesを宣言します。(UVと法線も同様です。)そして正しいパラメータでloadOBJを呼びます。
-{% highlight cpp linenos %}
+``` cpp
 // .objファイルを読み込みます。
 std::vector vertices;
 std::vector uvs;
 std::vector normals; // すぐには使いません。
 bool res = loadOBJ("cube.obj", vertices, uvs, normals);
-{% endhighlight %}
+```
 そして配列の変わりにvectorをOpenGLに渡します。
-{% highlight cpp linenos %}
+``` cpp
 glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
-{% endhighlight %}
+```
 以上です！
 
 #結果

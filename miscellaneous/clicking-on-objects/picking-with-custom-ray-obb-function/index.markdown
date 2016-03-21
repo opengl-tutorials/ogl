@@ -53,7 +53,7 @@ Let's put this in practice.
 (full source code is available in [Misc05/misc05_picking_custom.cpp](https://github.com/opengl-tutorials/ogl/blob/master/misc05_picking/misc05_picking_custom.cpp))
 
 Our Ray - OBB intersection function will look like this :
-{% highlight cpp linenos %}
+``` cpp
 bool TestRayOBBIntersection(
 	glm::vec3 ray_origin,        // Ray origin, in world space
 	glm::vec3 ray_direction,     // Ray direction (NOT target position!), in world space. Must be normalize()'d.
@@ -62,18 +62,18 @@ bool TestRayOBBIntersection(
 	glm::mat4 ModelMatrix,       // Transformation applied to the mesh (which will thus be also applied to its bounding box)
 	float& intersection_distance // Output : distance between ray_origin and the intersection with the OBB
 ){
-{% endhighlight %}
+```
 We begin by nitializing a few variables. tMin is the largest "near" intersection currently found; tMax is the smallest "far" intersection currently found. Delta is used to compute the intersections with the planes.
-{% highlight cpp linenos %}
+``` cpp
 float tMin = 0.0f;
 float tMax = 100000.0f;
 
 glm::vec3 OBBposition_worldspace(ModelMatrix[3].x, ModelMatrix[3].y, ModelMatrix[3].z);
 
 glm::vec3 delta = OBBposition_worldspace - ray_origin;
-{% endhighlight %}
+```
 Now, let's compute the intersections with the 2 planes that delimit the OBB on the X axis :
-{% highlight cpp linenos %}
+``` cpp
 glm::vec3 xaxis(ModelMatrix[0].x, ModelMatrix[0].y, ModelMatrix[0].z);
 float e = glm::dot(xaxis, delta);
 float f = glm::dot(ray_direction, xaxis);
@@ -81,25 +81,25 @@ float f = glm::dot(ray_direction, xaxis);
 // Beware, don't do the division if f is near 0 ! See full source code for details.
 float t1 = (e+aabb_min.x)/f; // Intersection with the "left" plane
 float t2 = (e+aabb_max.x)/f; // Intersection with the "right" plane
-{% endhighlight %}
+```
 t1 and t2 now contain distances betwen ray origin and ray-plane intersections, but we don't know in what order, so we make sure that t1 represents the "near" intersection and t2 the "far" :
-{% highlight cpp linenos %}
+``` cpp
 if (t1>t2){ // if wrong order
 	float w=t1;t1=t2;t2=w; // swap t1 and t2
 }
-{% endhighlight %}
+```
 We can update tMin and tMax :
-{% highlight cpp linenos %}
+``` cpp
 // tMax is the nearest "far" intersection (amongst the X,Y and Z planes pairs)
 if ( t2 < tMax ) tMax = t2;
 // tMin is the farthest "near" intersection (amongst the X,Y and Z planes pairs)
 if ( t1 > tMin ) tMin = t1;
-{% endhighlight %}
+```
 And here's the trick : if "far" is closer than "near", then there is NO intersection.
-{% highlight cpp linenos %}
+``` cpp
 if (tMax < tMin )
 	return false;
-{% endhighlight %}
+```
  
 
 This was for the X axis. On all other axes it's exactly the same !
@@ -109,7 +109,7 @@ This was for the X axis. On all other axes it's exactly the same !
 # Using the algorithm
 
 The TestRayOBBIntersection() functions enables us to test the intersection with only one OBB, so we have to test them all. In this tutorial, we simply test all boxes one after the other, but if you have many objects, you might need an additional acceleration structure like a Binary Space Partitionning Tree (BSP-Tree) or a Bounding Volume Hierarchy (BVH).
-{% highlight cpp linenos %}
+``` cpp
 for(int i=0; i<100; i++){
 
 	float intersection_distance; // Output of TestRayOBBIntersection()
@@ -137,7 +137,7 @@ for(int i=0; i<100; i++){
 		break;
 	}
 }
-{% endhighlight %}
+```
 Note that this algorithm has a problem : it picks the first OBB it finds. But if this OBB is behind another OBB, this is wrong. So you would have to take only the nearest OBB ! Exercise left to the reader...
 
 # Pros and cons

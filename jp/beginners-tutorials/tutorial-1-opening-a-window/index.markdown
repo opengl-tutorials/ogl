@@ -154,42 +154,42 @@ IDEから実行したければ、上で説明したように正しいワーキ�
 ええと、実際は違います。すべてのチュートリアルでは、マジックを使わず、"low level"な方法を見せます。しかし、このパートはとてもつまらなく役に立ちません。だから、私たちの代わりにこれをやってくれる、外部のライブラリのGLFWを使います。もし本当にやりたいならば、WindowsではWin32 API、LinuxではX11 API、MacではCocoa APIを使ってください。あるいはSFML、FreeGLUT、SDL、... を使ってください。[Links](/?page_id=210)ページを見てください。
 
 OK、それでは行きましょう。まず、依存関係に対処します。コンソールにメッセージを表示するための基本的なものが必要となります。
-{% highlight cpp linenos %}
+``` cpp
 // 標準ヘッダをインクルードします。
 #include
 #include 
-{% endhighlight %}
+```
 最初のGLEWです。だからこれはちょっとしたマジックです。しかし後のために残しておきましょう。
-{% highlight cpp linenos %}
+``` cpp
 // GLEWをインクルードする。常にgl.hとglfw.hより先にインクルードしましょう。これはちょっとしたマジックです。
 #include 
-{% endhighlight %}
+```
 GLFWでウィンドウとキーボードを扱うため、次のものもインクルードしましょう。
-{% highlight cpp linenos %}
+``` cpp
 // GLFWをインクルードします。
 #include 
-{% endhighlight %}
+```
 このライブラリは実際はすぐには使いません。これは3D数学のためのライブラリです。すぐに、とても便利なことが分かるでしょう。GLMにはマジックはありません。必要があれば自分自身でも書けます。ですが、GLMはとても使いやすいです。"using namespace"があることで"glm::vec3"と書く代わりに、"vec3"と書けます。
-{% highlight cpp linenos %}
+``` cpp
 // GLMをインクルードします。
 #include
 using namespace glm;
-{% endhighlight %}
+```
 これらの#includeをplayground.cppにコピー＆ペーストしたならば、コンパイラはmain()関数がないと言うでしょう。だから作りましょう。
-{% highlight cpp linenos %}
+``` cpp
 int main(){
-{% endhighlight %}
+```
 最初にGLFWを初期化します。
-{% highlight cpp linenos %}
+``` cpp
 // GLFWを初期化します。
 if( !glfwInit() )
 {
     fprintf( stderr, "GLFWの初期化に失敗しました。n" );
     return -1;
 }
-{% endhighlight %}
+```
 それでは、最初のOpenGLウィンドウを作りましょう！
-{% highlight cpp linenos %}
+``` cpp
 glfwWindowHint(GLFW_SAMPLES, 4); // 4x アンチエイリアス
 glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // OpenGL3.3を使います。
 glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -210,9 +210,9 @@ if (glewInit() != GLEW_OK) {
     fprintf(stderr, "GLEWの初期化に失敗しました。n");
     return -1;
 }
-{% endhighlight %}
+```
 するとウィンドウが出てきますが、すぐに閉じてしまいます。もちろん！ユーザがエスケープキーを押すまで待っている必要があります。
-{% highlight cpp linenos %}
+``` cpp
 // 下でエスケープキーが押されるのを捉えるのを保証します。
 glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
@@ -226,6 +226,6 @@ do{
 } // ESCキーが押されたかウィンドウが閉じたかをチェックする。
 while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
 glfwWindowShouldClose(window) == 0 );
-{% endhighlight %}
+```
 これで最初のチュートリアルは終了です。チュートリアル2では、実際に三角形を描く方法を学びます。
 // 

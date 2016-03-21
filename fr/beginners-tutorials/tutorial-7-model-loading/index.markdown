@@ -19,14 +19,14 @@ Pour garder ce tutoriel aussi simple que possible, on utilisera le format de fic
 #Charger le fichier OBJ
 
 La fonction, située dans common/objloader.cpp, et déclarée dans common/objloader.hpp, aura la signature suivante :
-{% highlight cpp linenos %}
+``` cpp
 bool loadOBJ(
     const char * path,
     std::vector < glm::vec3 > & out_vertices,
     std::vector < glm::vec2 > & out_uvs,
     std::vector < glm::vec3 > & out_normals
 )
-{% endhighlight %}
+```
 On souhaite que loadOBJ lise le fichier « path », écrive les données dans out_vertices/out_uvs/out_normals et retourne false si quelque chose s'est mal passé. *std::vector<glm::vec3>* est la façon de déclarer un tableau de glm::vec3 en C++ dont la taille peut être modifiée à volonté : cela n'a rien à voir avec un vecteur mathématique. Sincèrement, ce n'est qu'un tableau. Finalement, le & signifie que la fonction sera capable de modifier les std::vector.
 
 ##Exemple de fichier OBJ
@@ -80,7 +80,7 @@ f 5/1/7 8/11/7 6/10/7
 f 8/11/7 7/12/7 6/10/7
 f 1/2/8 2/9/8 3/13/8
 f 1/2/8 3/13/8 4/14/8
-{% endhighlight %}
+```
 Soit :
 
 * '#'' est un commentaire, tout comme '//'' en C++
@@ -112,22 +112,22 @@ Comme notre chargeur va être très limité, on doit être très précautionneux
 ##Lecture du fichier
 
 Ok, voilà le code. On doit définir des variables temporaires dans lesquelles on stocke le contenu du .obj :
-{% highlight cpp linenos %}
+``` cpp
 std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;
 std::vector< glm::vec3 > temp_vertices;
 std::vector< glm::vec2 > temp_uvs;
 std::vector< glm::vec3 > temp_normals;
-{% endhighlight %}
+```
 Depuis le [cinquième tutoriel : un cube coloré]({{site.baseurl}}/fr/beginners-tutorials/tutorial-5-a-textured-cube), on sais comment ouvrir un fichier :
-{% highlight cpp linenos %}
+``` cpp
 FILE * file = fopen(path, "r");
 if( file == NULL ){
     printf("Impossible to open the file !\n");
     return false;
 }
-{% endhighlight %}
+```
 On le lit jusqu'à la fin :
-{% highlight cpp linenos %}
+``` cpp
 while( 1 ){
 
     char lineHeader[128];
@@ -137,34 +137,34 @@ while( 1 ){
         break; // EOF = End Of File. Quit the loop.
 
     // else : parse lineHeader
-{% endhighlight %}
+```
 > On fait l'hypothèse que le premier mot d'une ligne ne fait pas plus de 128 caractères, ce qui est une hypothèse très idiote. Mais c'est un chargeur pour s'amuser, donc c'est ok.
 
 Premièrement, on s'occupe les sommets :
-{% highlight cpp linenos %}
+``` cpp
 if ( strcmp( lineHeader, "v" ) == 0 ){
     glm::vec3 vertex;
     fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z );
     temp_vertices.push_back(vertex);
-{% endhighlight %}
+```
 Si le premier mot de la ligne est 'v', alors le reste doit être trois nombres flottants, donc on crée un glm::vec3 à partir de ceux-ci et on l'ajoute au vecteur.
-{% highlight cpp linenos %}
+``` cpp
 }else if ( strcmp( lineHeader, "vt" ) == 0 ){
     glm::vec2 uv;
     fscanf(file, "%f %f\n", &uv.x, &uv.y );
     temp_uvs.push_back(uv);
-{% endhighlight %}
+```
 Si ce n'est pas 'v' mais un 'vt', alors le reste doit être deux flottants, donc on crée un glm::vec2 et on l'ajoute au vecteur.
 
 Même chose pour les normales :
-{% highlight cpp linenos %}
+``` cpp
 }else if ( strcmp( lineHeader, "vn" ) == 0 ){
     glm::vec3 normal;
     fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z );
     temp_normals.push_back(normal);
-{% endhighlight %}
+```
 Et maintenant le 'f', qui est plus difficile :
-{% highlight cpp linenos %}
+``` cpp
 }else if ( strcmp( lineHeader, "f" ) == 0 ){
     std::string vertex1, vertex2, vertex3;
     unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
@@ -182,7 +182,7 @@ Et maintenant le 'f', qui est plus difficile :
     normalIndices.push_back(normalIndex[0]);
     normalIndices.push_back(normalIndex[1]);
     normalIndices.push_back(normalIndex[2]);
-{% endhighlight %}
+```
 Le code est en réalité très similaire au précédent, sauf qu'il y a plus de données à lire.
 
 ##Traiter les données
@@ -190,40 +190,40 @@ Le code est en réalité très similaire au précédent, sauf qu'il y a plus de 
 Donc, ce que l'on a fait c'est simplement changer la « forme » des données. On avait une chaîne de caractères, on a maintenant un ensemble de std::vector. Mais ce n'est pas suffisant, nous avons à mettre ceux-ci dans une forme que OpenGL aime. Plus précisément en retirant les indices et en ayant que des glm::vec3 à la place. Cette opération est appelée indexation.
 
 On parcourt chaque sommet (chaque v/vt/vn) pour chaque triangle (chaque ligne avec un « f ») :
-{% highlight cpp linenos %}
+``` cpp
     // For each vertex of each triangle
     for( unsigned int i=0; i < vertexIndices.size(); i++ ){
 
-{% endhighlight %}
+```
 L'indice de la position du sommet est *vertexIndices[i]* :
-{% highlight cpp linenos %}
+``` cpp
 unsigned int vertexIndex = vertexIndices[i];
-{% endhighlight %}
+```
 Donc la position est *temp_vertices[ vertexIndex-1 ]* (il y a un -1 car le C++ commence à compter à partir de 0 alors que l'indice du fichier OBJ débute à 1, tu te rappelez ?) :
 
-{% highlight cpp linenos %}
+``` cpp
 glm::vec3 vertex = temp_vertices[ vertexIndex-1 ];
-{% endhighlight %}
+```
 Et cela donne la position du nouveau sommet :
-{% highlight cpp linenos %}
+``` cpp
 out_vertices.push_back(vertex);
-{% endhighlight %}
+```
 La même chose est appliquée pour les UV et les normales et c'est fini !
 
 #Utiliser les données chargées
 
 Une fois que l'on a cela, il n'y a presque plus rien à faire. À la place de déclarer l'habituel static const GLfloat g_vertex_buffer_data[] = {...}, on déclare un std::vector de sommets (même chose pour les UV et les normales). Ensuite on appel la fonction loadOBJ avec les bons paramètres :
-{% highlight cpp linenos %}
+``` cpp
 // Read our .obj file
 std::vector< glm::vec3 > vertices;
 std::vector< glm::vec2 > uvs;
 std::vector< glm::vec3 > normals; // Won't be used at the moment.
 bool res = loadOBJ("cube.obj", vertices, uvs, normals);
-{% endhighlight %}
+```
 Et envoie tes vecteurs à OpenGL à la place de tes tableaux :
-{% highlight cpp linenos %}
+``` cpp
 glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
-{% endhighlight %}
+```
 And that's it !
 
 #Résultat

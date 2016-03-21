@@ -41,7 +41,7 @@ So in this case it's actually better to have two different normals, one for each
 # Indexed VBO in OpenGL
 
 Using indexing is very simple. First, you need to create an additional buffer, which you fill with the right indices. The code is the same as before, but now it's an ELEMENT_ARRAY_BUFFER, not an ARRAY_BUFFER.
-{% highlight cpp linenos %}
+``` cpp
 std::vector<unsigned int> indices;
 
 // fill "indices" as needed
@@ -51,9 +51,9 @@ std::vector<unsigned int> indices;
  glGenBuffers(1, &elementbuffer);
  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
-{% endhighlight %}
+```
 and to draw the mesh, simply replace glDrawArrays by this :
-{% highlight cpp linenos %}
+``` cpp
 // Index buffer
  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 
@@ -64,7 +64,7 @@ and to draw the mesh, simply replace glDrawArrays by this :
      GL_UNSIGNED_INT,   // type
      (void*)0           // element array buffer offset
  );
-{% endhighlight %}
+```
 (quick note : it's better to use "unsigned short" than "unsigned int", because it takes less memory, which also makes it faster)
 
 # Filling the index buffer
@@ -79,7 +79,7 @@ For each input vertex
         A similar vertex is already in the VBO, use it instead !
     If not found :
         No similar vertex found, add it to the VBO
-{% endhighlight %}
+```
 The actual C++ code can be found in common/vboindexer.cpp. It's heavily commented so if you understand the algorithm above, it should be all right.
 
 The criterion for similarity is that vertices' position, UVs and normals should be ** equal. You'll have to adapt this if you add more attributes.

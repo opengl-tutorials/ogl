@@ -27,7 +27,7 @@ bool loadOBJ(
     std::vector  & out_uvs,
     std::vector  & out_normals
 )
-{% endhighlight %}
+```
 我们让loadOBJ读取文件路径，把数据写入out_vertices/out_uvs/out_normals。如果出错则返回false。std::vector是C++中的数组，可存放glm::vec3类型的数据，数组大小可任意修改，不过std::vector和数学中的向量（vector）是两码事。其实它只是个数组。最后提一点，符号&意思是这个函数将会直接修改这些数组。
 
 ##OBJ文件示例
@@ -81,7 +81,7 @@ f 5/1/7 8/11/7 6/10/7
 f 8/11/7 7/12/7 6/10/7
 f 1/2/8 2/9/8 3/13/8
 f 1/2/8 3/13/8 4/14/8
-{% endhighlight %}
+```
 因此：
 
 * #是注释标记，就像C++中的//
@@ -119,7 +119,7 @@ std::vector vertexIndices, uvIndices, normalIndices;
 std::vector temp_vertices;
 std::vector temp_uvs;
 std::vector temp_normals;
-{% endhighlight %}
+```
 学第五课带纹理的立方体时您已学会打开文件了：
 {% highlight text linenos %}
 FILE * file = fopen(path, "r");
@@ -127,7 +127,7 @@ if( file == NULL ){
     printf("Impossible to open the file !n");
     return false;
 }
-{% endhighlight %}
+```
 读文件直到文件末尾：
 {% highlight text linenos %}
 while( 1 ){
@@ -139,7 +139,7 @@ while( 1 ){
         break; // EOF = End Of File. Quit the loop.
 
     // else : parse lineHeader
-{% endhighlight %}
+```
 （注意，我们假设第一行的文字长度不超过128，这样做太笨了。但既然这只是个实验品，就凑合一下吧）
 
 首先处理顶点：
@@ -148,14 +148,14 @@ if ( strcmp( lineHeader, "v" ) == 0 ){
     glm::vec3 vertex;
     fscanf(file, "%f %f %fn", &vertex.x, &vertex.y, &vertex.z );
     temp_vertices.push_back(vertex);
-{% endhighlight %}
+```
 也就是说，若第一个字是"v"，则后面一定是3个float值，于是以这3个值创建一个glm::vec3变量，将其添加到数组。
 {% highlight text linenos %}
 }else if ( strcmp( lineHeader, "vt" ) == 0 ){
     glm::vec2 uv;
     fscanf(file, "%f %fn", &uv.x, &uv.y );
     temp_uvs.push_back(uv);
-{% endhighlight %}
+```
 也就是说，如果不是"v"而是"vt"，那后面一定是2个float值，于是以这2个值创建一个glm::vec2变量，添加到数组。
 
 以同样的方式处理法线：
@@ -164,7 +164,7 @@ if ( strcmp( lineHeader, "v" ) == 0 ){
     glm::vec3 normal;
     fscanf(file, "%f %f %fn", &normal.x, &normal.y, &normal.z );
     temp_normals.push_back(normal);
-{% endhighlight %}
+```
 接下来是"f"，略难一些：
 {% highlight text linenos %}
 }else if ( strcmp( lineHeader, "f" ) == 0 ){
@@ -184,7 +184,7 @@ if ( strcmp( lineHeader, "v" ) == 0 ){
     normalIndices.push_back(normalIndex[0]);
     normalIndices.push_back(normalIndex[1]);
     normalIndices.push_back(normalIndex[2]);
-{% endhighlight %}
+```
 代码与前面的类似，只不过读取的数据多一些。
 
 ##处理数据
@@ -195,19 +195,19 @@ if ( strcmp( lineHeader, "v" ) == 0 ){
 {% highlight text linenos %}
     // For each vertex of each triangle
     for( unsigned int i=0; i
-{% endhighlight %}
+```
 顶点坐标的索引存放到vertexIndices[i]：
 {% highlight text linenos %}
 unsigned int vertexIndex = vertexIndices[i];
-{% endhighlight %}
+```
 因此坐标是temp_vertices[ vertexIndex-1 ]（-1是因为C++的下标从0开始，而OBJ的索引从1开始，还记得吗？）：
 {% highlight text linenos %}
 glm::vec3 vertex = temp_vertices[ vertexIndex-1 ];
-{% endhighlight %}
+```
 这样就有了一个顶点坐标：
 {% highlight text linenos %}
 out_vertices.push_back(vertex);
-{% endhighlight %}
+```
 UV和法线同理，任务完成！
 
 #使用加载的数据
@@ -219,11 +219,11 @@ std::vector vertices;
 std::vector uvs;
 std::vector normals; // Won't be used at the moment.
 bool res = loadOBJ("cube.obj", vertices, uvs, normals);
-{% endhighlight %}
+```
 把数组传给OpenGL：
 {% highlight text linenos %}
 glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
-{% endhighlight %}
+```
 就是这样啦！
 
 #结果

@@ -20,7 +20,7 @@ En 2002, les GPU n'avaient pas de vertex shader ni de fragment shader : tout ét
 
 {% highlight text linenos %}
 !!ARBfp1.0 MOV result.color, fragment.color; END
-{% endhighlight %}
+```
 
 Évidemment, pour indiquer à OpenGL d'utiliser un tel code, on avait besoin de fonctions spéciales, qui n'étaient pas encore dans OpenGL. Avant de plonger dans les explications, un autre exemple.
 
@@ -28,9 +28,9 @@ En 2002, les GPU n'avaient pas de vertex shader ni de fragment shader : tout ét
 
 Ok, tu te dis que ce ARB_fragment_program est trop vieux, ou que je suis un dinosaure, et que tu n'as certainement plus besoin de ce truc ? En fait, il y a de *nouvelles* extensions qui sont très pratiques. L'une d'entre elles est ARB_debug_output, qui expose une fonctionnalité qui n'existait pas dans OpenGL 3.3 mais que tu peux/dois tout de même utiliser. Elle définit des symboles comme GL_DEBUG_SYNCHRONOUS_ARB ou GL_DEBUG_SEVERITY_MEDIUM_ARB et des fonctions comme DebugMessageCallbackARB. Le bon point de cette extension est qu'à chaque fois que tu écris un code incorrect, comme :
 
-{% highlight cpp linenos %}
+``` cpp
 glEnable(GL_TEXTURE); // Incorrect ! You probably meant GL_TEXTURE_2D !
-{% endhighlight %}
+```
 
 Tu peux avoir une erreur et l'emplacement exact du problème.
 Tu viens donc d'apprendre que :
@@ -44,7 +44,7 @@ Tu viens donc d'apprendre que :
 
 La méthode « manuelle » pour vérifier si une extension est disponible est d'utiliser ce morceau de code (provenant du [wiki OpenGL.org](http://www.opengl.org/wiki/GlGetString)) :
 
-{% highlight cpp linenos %}
+``` cpp
 int NumberOfExtensions;
 glGetIntegerv(GL_NUM_EXTENSIONS, &NumberOfExtensions);
 for(i=0; i<NumberOfExtensions; i++) {
@@ -55,15 +55,15 @@ for(i=0; i<NumberOfExtensions; i++) {
     glDebugMessageCallbackARB  = (PFNGLDEBUGMESSAGECALLBACKARBPROC) wglGetProcAddress("glDebugMessageCallbackARB");
   }
 }
-{% endhighlight %}
+```
 
 ##Récupérer toutes les extension - la méthode facile
 
 Somme toute, c'est très compliqué. Les bibliothèques comme GLEW, Glee, gl3w, etc. rendent cela plus facile. Par exemple, avec GLEW, tu n'as qu'à appeler glewInit() après avoir créé la fenêtre, et hop ! Tu as des variables pratiques qui sont créées pour toi comme :
 
-{% highlight cpp linenos %}
+``` cpp
 if (GLEW_ARB_debug_output){ // Ta-Dah ! }
-{% endhighlight %}
+```
 
 > debug_output est un peu spéciale, car tu dois l'activer à la création du contexte. Dans GLFW, cela est fait avec glfwOpenWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1);
 
@@ -88,7 +88,7 @@ Le nom de chaque extension contient des informations sur sa disponibilité :
 Disons que ton application OpenGL 3.3 a besoin d'afficher quelques lignes larges. Tu peux écrire un vertex shader compliqué pour ce faire, ou simplement t'appuyer sur [GL_NV_path_rendering](http://www.opengl.org/registry/specs/NV/path_rendering.txt), qui gère tous les problèmes pour toi.
 
 Tu auras donc un code qui ressemble à ceci :
-{% highlight cpp linenos %}
+``` cpp
 if ( GLEW_NV_path_rendering ){ 
     glPathStringNV( ... ); // Affiche la forme. Facile !
 }else{ 
@@ -96,7 +96,7 @@ if ( GLEW_NV_path_rendering ){
     // sur les machines NVIDIA plus vieilles, sur les machines AMD, sur les machines INTEL !
     // Donc, tu dois tout de même l'implémenter toi-même ! 
 }
-{% endhighlight %}
+```
 
 ##Choisir la limite
 

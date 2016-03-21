@@ -24,7 +24,7 @@ Dans chaque texel RGB est encodé un vecteur XYZ : chacune des composantes d'une
 
 {% highlight c linenos %}
 normal = (2*color)-1 // on each component
-{% endhighlight %}
+```
 La texture a une teinte bleue car après tout, la normale pointe vers « l'extérieur de la surface ». Comme toujours X va vers la droite ( dans le plan de la texture), Y vers le haut (toujours dans le plan de la texture), et donc, avec la règle de la main droite, Z pointe vers l'extérieur du plan de la texture.
 
 Cette texture est appliquée exactement comme la texture de diffusion ; le gros problème est la conversion de notre normale, qui est exprimée dans l'espace de chaque triangle (espace tangent, aussi appelé espace de l'image), vers l'espace modèle (car c'est ce que l'on utilise dans notre équation d'ombrage).
@@ -52,7 +52,7 @@ Voici l'algorithme : si on appelle deltaPos1 et deltaPos2 deux côtés de notre 
 {% highlight c linenos %}
 deltaPos1 = deltaUV1.x * T + deltaUV1.y * B
 deltaPos2 = deltaUV2.x * T + deltaUV2.y * B
-{% endhighlight %}
+```
 Résoud les équations de ce système pour T et B et tu obtiens tes vecteurs ! Voir le code ci-dessous.
 
 Une fois que l'on a les vecteurs T, B et N, on obtient aussi cette jolie matrice qui nous permet de passer de l'espace tangent à l'espace modèle :
@@ -65,7 +65,7 @@ Pour effectuer cette transformation inverse, on doit simplement prendre l'invers
 
 {% highlight c linenos %}
 invTBN = transpose(TBN)
-{% endhighlight %}
+```
 
 Soit :
 
@@ -77,7 +77,7 @@ Soit :
 
 Comme les tangentes et bitangentes sont nécessaires en plus des normales, on doit les calculer pour la globalité du modèle. On fait cela dans une fonction à part :
 
-{% highlight cpp linenos %}
+``` cpp
 void computeTangentBasis(
     // inputs
     std::vector<glm::vec3> & vertices,
@@ -87,11 +87,11 @@ void computeTangentBasis(
     std::vector<glm::vec3> & tangents,
     std::vector<glm::vec3> & bitangents
 ){
-{% endhighlight %}
+```
 
 Pour chaque triangle, on calcule le côté (deltaPos) et le deltaUV.
 
-{% highlight cpp linenos %}
+``` cpp
     for ( int i=0; i < vertices.size(); i+=3){
 
         // Shortcuts for vertices
@@ -111,19 +111,19 @@ Pour chaque triangle, on calcule le côté (deltaPos) et le deltaUV.
         // UV delta
         glm::vec2 deltaUV1 = uv1-uv0;
         glm::vec2 deltaUV2 = uv2-uv0;
-{% endhighlight %}
+```
 
 On peut utiliser la formule pour calculer la tangente et la bitangente :
 
-{% highlight cpp linenos %}
+``` cpp
         float r = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV1.y * deltaUV2.x);
         glm::vec3 tangent = (deltaPos1 * deltaUV2.y   - deltaPos2 * deltaUV1.y)*r;
         glm::vec3 bitangent = (deltaPos2 * deltaUV1.x   - deltaPos1 * deltaUV2.x)*r;
-{% endhighlight %}
+```
 
 Finalement, on remplit les tampons tangents et bitangents. Rappels-toi, ces tampons ne sont pas encore indexés, donc chaque sommet possède sa propre copie.
 
-{% highlight cpp linenos %}
+``` cpp
         // Set the same tangent for all three vertices of the triangle.
         // They will be merged later, in vboindexer.cpp
         tangents.push_back(tangent);
@@ -136,7 +136,7 @@ Finalement, on remplit les tampons tangents et bitangents. Rappels-toi, ces tamp
         bitangents.push_back(bitangent);
 
     }
-{% endhighlight %}
+```
 
 ##Indexation
 
@@ -144,7 +144,7 @@ L'indexation du VBO est très similaire à ce que l'on avait l'habitude de faire
 
 Si on trouve un sommet similaire (même position, même normale, même coordonnées de texture), on ne souhaite pas utiliser sa tangente et sa bitangente ; au contraire, on souhaite en faire la moyenne (entre ce sommet et celui similaire). Donc, modifie un peu le vieux code :
 
-{% highlight cpp linenos %}
+``` cpp
         // Try to find a similar vertex in out_XXXX
         unsigned int index;
         bool found = getSimilarVertexIndex(in_vertices[i], in_uvs[i], in_normals[i],     out_vertices, out_uvs, out_normals, index);
@@ -159,7 +159,7 @@ Si on trouve un sommet similaire (même position, même normale, même coordonn�
             // Do as usual
             [...]
         }
-{% endhighlight %}
+```
 
 Remarque que l'on ne normalise rien ici. En réalité c'est pratique, car de cette façon, les petits triangles, qui ont une tangente et bitangente plus petites, auront un effet diminué sur le vecteur final par rapport aux grands triangles (qui contribueront plus à la forme finale).
 
@@ -170,7 +170,7 @@ Remarque que l'on ne normalise rien ici. En réalité c'est pratique, car de cet
 
 On a besoin de deux nouveaux buffer, un pour les tangentes, l'autre pour les bitangentes :
 
-{% highlight cpp linenos %}
+``` cpp
     GLuint tangentbuffer;
     glGenBuffers(1, &tangentbuffer);
     glBindBuffer(GL_ARRAY_BUFFER, tangentbuffer);
@@ -180,26 +180,26 @@ On a besoin de deux nouveaux buffer, un pour les tangentes, l'autre pour les bit
     glGenBuffers(1, &bitangentbuffer);
     glBindBuffer(GL_ARRAY_BUFFER, bitangentbuffer);
     glBufferData(GL_ARRAY_BUFFER, indexed_bitangents.size() * sizeof(glm::vec3), &indexed_bitangents[0], GL_STATIC_DRAW);
-{% endhighlight %}
+```
 
 On a aussi besoin d'une nouvelle variable uniforme pour notre nouvelle texture de normales :
 
-{% highlight cpp linenos %}
+``` cpp
     [...]
     GLuint NormalTexture = loadTGA_glfw("normal.tga");
     [...]
     GLuint NormalTextureID  = glGetUniformLocation(programID, "NormalTextureSampler");
-{% endhighlight %}
+```
 
 Et d'une autre pour la matrice 3x3 de modèle-vue. Cela n'est pas strictement obligatoire, mais c'est plus simple ; plus d'informations là-dessus plus tard. On a besoin que de la partie 3 x 3 supérieure gauche car on va multiplier des directions : on peut donc se débarrasser de la partie liée à la translation.
 
-{% highlight cpp linenos %}
+``` cpp
     GLuint ModelView3x3MatrixID = glGetUniformLocation(programID, "MV3x3");
-{% endhighlight %}
+```
 
 Au final le code de rendu complet donne :
 
-{% highlight cpp linenos %}
+``` cpp
         // Clear the screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -317,17 +317,17 @@ Au final le code de rendu complet donne :
 
         // Swap buffers
         glfwSwapBuffers();
-{% endhighlight %}
+```
 
 ##Vertex shader
 
 Comme dit précédemment, on va tout faire dans l'espace de la caméra, car il est plus simple d'obtenir la position du fragment dans cet espace. C'est pourquoi on multiplie nos vecteurs T, B et N avec la matrice de modèle-vue.
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
     vertexNormal_cameraspace = MV3x3 * normalize(vertexNormal_modelspace);
     vertexTangent_cameraspace = MV3x3 * normalize(vertexTangent_modelspace);
     vertexBitangent_cameraspace = MV3x3 * normalize(vertexBitangent_modelspace);
-{% endhighlight %}
+```
 
 Ces trois vecteurs définissent la matrice TBN, qui est créée de cette façon :
 
@@ -337,23 +337,23 @@ Ces trois vecteurs définissent la matrice TBN, qui est créée de cette façon 
         vertexBitangent_cameraspace,
         vertexNormal_cameraspace
     )); // You can use dot products instead of building this matrix and transposing it. See References for details.
-{% endhighlight %}
+```
 
 Cette matrice passe de l'espace de la caméra à l'espace tangent (la même matrice, mais avec XXX_modelspace à la place, permettrai de passer de l'espace modèle à l'espace tangent). On peut l'utiliser pour calculer la direction de la lumière et la direction de l'œil, dans l'espace tangent :
 
 {% highlight text linenos %}
     LightDirection_tangentspace = TBN * LightDirection_cameraspace;
     EyeDirection_tangentspace =  TBN * EyeDirection_cameraspace;
-{% endhighlight %}
+```
 
 ##Fragment shader
 
 La normale, dans l'espace tangent, est immédiate à obtenir, c'est la texture :
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
     // Local normal, in tangent space
     vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, UV ).rgb*2.0 - 1.0);
-{% endhighlight %}
+```
 
 Donc, on a tout ce dont nous avons besoin. La lumière diffuse utilise clamp(dot(n,l), 0, 1), avec n et l exprimé dans l'espace tangent (l'espace dans lequel on effectue nos produits scalaire et vectoriel n'importe pas ; la chose importante est que l et n soit tous les deux exprimés dans le même espace). La lumière spéculaire utilise clamp(dot(E,R), 0, 1), où, encore une fois, E et R sont exprimés dans l'espace tangent. Super !
 
@@ -372,9 +372,9 @@ Voici le résultat obtenu. Tu peux remarquer que :
 
 Dans le vertex shader on prend la transposée au lieu de l'inverse, car c'est plus rapide. Mais cela ne fonctionne que si l'espace représenté par la matrice est orthogonal, ce qui n'est pas encore le cas à ce moment là. Heureusement, c'est facilement corrigeable : on doit simplement faire que la tangente soit perpendiculaire à la normale à la fin de computeTangentBasis() :
 
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 t = glm::normalize(t - n * glm::dot(n, t));
-{% endhighlight %}
+```
 
 La formule peut être difficile à saisir, donc voici un petit schéma pour aider :
 
@@ -398,7 +398,7 @@ Si c'est incorrect, inversez t :
 if (glm::dot(glm::cross(n, t), b) < 0.0f){
      t = t * -1.0f;
  }
-{% endhighlight %}
+```
 
 Cela est aussi effectué pour chaque sommet à la fin de la fonction computeTangentBasis().
 
@@ -426,29 +426,29 @@ Ici, on observe notre espace tangent avec les lignes dessinées dans le mode imm
 
 Pour cela, tu dois abandonner le profil core 3.3 :
 
-{% highlight cpp linenos %}
+``` cpp
 glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
-{% endhighlight %}
+```
 
 Puis passer les matrices au vieux pipeline OpenGL (tu peux aussi écrire un autre shader, mais c'est plus simple de cette façon et tu es en train de bidouiller de toute façon) :
 
-{% highlight cpp linenos %}
+``` cpp
 glMatrixMode(GL_PROJECTION);
 glLoadMatrixf((const GLfloat*)&ProjectionMatrix[0]);
 glMatrixMode(GL_MODELVIEW);
 glm::mat4 MV = ViewMatrix * ModelMatrix;
 glLoadMatrixf((const GLfloat*)&MV[0]);
-{% endhighlight %}
+```
 
 Désactiver les shaders :
 
-{% highlight cpp linenos %}
+``` cpp
 glUseProgram(0);
-{% endhighlight %}
+```
 
 Et dessiner tes lignes (dans ce cas, les normales, normalisées et multipliées par 0.1 et appliquées au bon sommet) :
 
-{% highlight cpp linenos %}
+``` cpp
 glColor3f(0,0,1);
 glBegin(GL_LINES);
 for (int i=0; i < indices.size(); i++){
@@ -459,7 +459,7 @@ for (int i=0; i < indices.size(); i++){
     glVertex3fv(&p.x);
 }
 glEnd();
-{% endhighlight %}
+```
 
 Rappel-toi : n'utilise pas le mode immédiat dans une vraie application ! Uniquement pour du débogage ! Et n'oublie pas de réactiver le profil core après coup, cela t'empêcheras d'utiliser le mode immédiat par inadvertence.
 
@@ -467,9 +467,9 @@ Rappel-toi : n'utilise pas le mode immédiat dans une vraie application ! Unique
 
 Lors du débogage, il peut être utile de visualiser la valeur d'un vecteur. La façon la plus simple pour ce faire est d'écrire sa valeur dans le tampon d'image au lieu de la couleur actuelle. Par exemple, pour visualiser *LightDiretion_tangentspace* :
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 color.xyz = LightDirection_tangentspace;
-{% endhighlight %}
+```
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/colordebugging.png)
 
 Cela signifie que :

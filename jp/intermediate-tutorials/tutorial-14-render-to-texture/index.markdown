@@ -22,14 +22,14 @@ in-gameカメラや後処理、多くのGFXのようなアプリケーション�
 ##描画対象の作成
 
 これから描画しようとするものはフレームバッファと呼ばれています。これはテクスチャ用のコンテナで、オプションのデプスバッファです。OpenGLでは他のオブジェクトと同様の方法で作られます。
-{% highlight cpp linenos %}
+``` cpp
 // フレームバッファ、0か1かあるいはそれ以上のテクスチャと0か1のデプスバッファを再編成する。
 GLuint FramebufferName = 0;
 glGenFramebuffers(1, &FramebufferName);
 glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
-{% endhighlight %}
+```
 そしてシェーダのRGB出力を格納するテクスチャを作ります。このコードはとても古典的なものです。
-{% highlight cpp linenos %}
+``` cpp
 // 描画しようとするテクスチャ
 GLuint renderedTexture;
 glGenTextures(1, &renderedTexture);
@@ -43,44 +43,44 @@ glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, 1024, 768, 0,GL_RGB, GL_UNSIGNED_BYTE, 0);
 // 貧弱なフィルタリング。
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-{% endhighlight %}
+```
 またデプスバッファも必要です。これはオプションで、テクスチャに何を描画しようとするかに依存します。しかし、スザンヌを描画しようとしているので、デプステストが必要です。
-{% highlight cpp linenos %}
+``` cpp
 // デプスバッファ
 GLuint depthrenderbuffer;
 glGenRenderbuffers(1, &depthrenderbuffer);
 glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
 glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1024, 768);
 glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
-{% endhighlight %}
+```
 最後にフレームバッファの設定をします。
-{% highlight cpp linenos %}
+``` cpp
 // "renderedTexture"を0番目の付属物としてセットします。
 glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture, 0);
 
 //描画バッファのリストをセットする
 GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
 glDrawBuffers(1, DrawBuffers); // "1"はDrawBuffersのサイズです。
-{% endhighlight %}
+```
 GPUの性能次第ですが、処理中に何かおかしなことが起こるかもしれません。それは次のようにチェックできます。
-{% highlight cpp linenos %}
+``` cpp
 // 常にフレームバッファがokかをチェックします。
 if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 return false;
-{% endhighlight %}
+```
 
 ##テクスチャへの描画
 
 テクスチャへの描画は直接的です。単にフレームバッファをバインドして、いつもどおりシーンを描画するだけです。
-{% highlight cpp linenos %}
+``` cpp
 // フレームバッファに描画する。
 glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
 glViewport(0,0,1024,768); // フレームバッファ全体に描画する。左下隅から右上隅へ。
-{% endhighlight %}
+```
 フラグメントシェーダにちょっとした変更が必要です。
-{% highlight cpp linenos %}
+``` cpp
 layout(location = 0) out vec3 color;
-{% endhighlight %}
+```
 これは"color"変数を書くときに描画対象0（この場合はテクスチャ）に描くことを意味します。
 なぜならDrawBuffers[0]はGL_COLOR_ATTACHMENT *i* であり、この場合 *renderedTexture* に相当します。
 
@@ -98,7 +98,7 @@ layout(location = 0) out vec3 color;
 ##描画されたテクスチャを使う
 
 スクリーンにぴったり合う単純な四角形を描画しましょう。いつものようにバッファやシェーダID…などが必要です。
-{% highlight cpp linenos %}
+``` cpp
 // フルスクリーン四角形のFBO
 GLuint quad_VertexArrayID;
 glGenVertexArrays(1, &quad_VertexArrayID);
@@ -122,15 +122,15 @@ glBufferData(GL_ARRAY_BUFFER, sizeof(g_quad_vertex_buffer_data), g_quad_vertex_b
 GLuint quad_programID = LoadShaders( "Passthrough.vertexshader", "SimpleTexture.fragmentshader" );
 GLuint texID = glGetUniformLocation(quad_programID, "renderedTexture");
 GLuint timeID = glGetUniformLocation(quad_programID, "time");
-{% endhighlight %}
+```
 もうスクリーンに描画したいでしょう。glBindFramebufferの2番目のパラメータを0にすることで実行されます。
-{% highlight cpp linenos %}
+``` cpp
 // スクリーンに描画する。
 glBindFramebuffer(GL_FRAMEBUFFER, 0);
 glViewport(0,0,1024,768); //フレームバッファ全体に描画する。左下隅から右上隅へ。
-{% endhighlight %}
+```
 次のようなシェーダでフルスクリーン四角形を描画できます。
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 #version 330 core
 
 in vec2 UV;
@@ -143,7 +143,7 @@ uniform float time;
 void main(){
     color = texture( renderedTexture, UV + 0.005*vec2( sin(time+1024.0*UV.x),cos(time+768.0*UV.y)) ).xyz;
 }
-{% endhighlight %}
+```
  
 
 このコードは単純にテクスチャをサンプルします。ただし、時刻に応じて小さなオフセットを追加します。
@@ -161,9 +161,9 @@ void main(){
 ##デプスを使う
 
 描画されたテクスチャを使うときにデプスが必要な場合があるかもしれません。その場合には、以下のように作られたテクスチャに単純に描画するだけです。
-{% highlight cpp linenos %}
+``` cpp
 glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT24, 1024, 768, 0,GL_DEPTH_COMPONENT, GL_FLOAT, 0);
-{% endhighlight %}
+```
 ("24"はビットの精度です。必要に応じて16と24、32のうちから選べます。通常は24です。)
 
 提供したソースコードにもこのように実装されています。
@@ -190,9 +190,9 @@ glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT24, 1024, 768, 0,GL_DEPTH_COMPON
 同時に複数のテクスチャを書きたい場合もあるでしょう。
 
 単純に複数の（同じサイズの）テクスチャを作り、それぞれ別のアタッチメントでglFramebufferTextureを呼び、更新したパラメータでglDrawBuffersを呼びます。（たとえば (2,{GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1}})のように。）そしてフラグメントシェーダにもう一方の出力変数を加えます。
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 layout(location = 1) out vec3 normal_tangentspace; // or whatever
-{% endhighlight %}
+```
 ヒント：テクスチャで効果的にベクトルを出力したいなら、浮動小数点テクスチャがあります。
 それは8ビットの代わりに16ビットや32ビットの精度です。 [glTexImage2D](http://www.opengl.org/sdk/docs/man/xhtml/glTexImage2D.xml)のリファレンスを見てください。（GL_FLOATで検索）
 

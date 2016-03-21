@@ -32,9 +32,9 @@ That is, when you *apply a rotation*, you *change the orientation*. Both can be 
 #Euler Angles
 
 Euler angles are the easiest way to think of an orientation. You basically store three rotations around the X, Y and Z axes. It's a very simple concept to grasp. You can use a vec3 to store it:
-{% highlight cpp linenos %}
+``` cpp
 vec3 EulerAngles( RotationAroundXInRadians, RotationAroundYInRadians, RotationAroundZInRadians);
-{% endhighlight %}
+```
 These 3 rotations are then applied successively, usually in this order: first Y, then Z, then X (but not necessarily). Using a different order yields different results.
 
 One simple use of Euler angles is setting a character's orientation. Usually game characters do not rotate on X and Z, only on the vertical axis. Therefore, it's easier to write, understand and maintain "float direction;" than 3 different orientations.
@@ -55,13 +55,13 @@ Quaternions are a tool to represent rotations, which solves these problems.
 #Quaternions
 
 A quaternion is a set of 4 numbers, [x y z w], which represents rotations the following way:
-{% highlight cpp linenos %}
+``` cpp
 // RotationAngle is in radians
 x = RotationAxis.x * sin(RotationAngle / 2)
 y = RotationAxis.y * sin(RotationAngle / 2)
 z = RotationAxis.z * sin(RotationAngle / 2)
 w = cos(RotationAngle / 2)
-{% endhighlight %}
+```
 RotationAxis is, as its name implies, the axis around which you want to make your rotation.
 
 RotationAngle is the angle of rotation around this axis.
@@ -83,7 +83,7 @@ Knowing the math behind the quaternions is rarely useful: the representation is 
 
 ###How do I create a quaternion in C++ ?
 
-{% highlight cpp linenos %}
+``` cpp
 // Don't forget to #include <glm/gtc/quaternion.hpp> and <glm/gtx/quaternion.hpp>
 
 // Creates an identity quaternion (no rotation)
@@ -100,7 +100,7 @@ MyQuaternion = quat(EulerAngles);
 // Conversion from axis-angle
 // In GLM the angle must be in degrees here, so convert it.
 MyQuaternion = gtx::quaternion::angleAxis(degrees(RotationAngle), RotationAxis);
-{% endhighlight %}
+```
 
 ###How do I create a quaternion in GLSL ?
 
@@ -110,16 +110,16 @@ In some cases, you might actually want to use quaternions in GLSL, for instance 
 
 ###How do I convert a quaternion to a matrix ?
 
-{% highlight cpp linenos %}
+``` cpp
 mat4 RotationMatrix = quaternion::toMat4(quaternion);
-{% endhighlight %}
+```
 You can now use it to build your Model matrix as usual:
-{% highlight cpp linenos %}
+``` cpp
 mat4 RotationMatrix = quaternion::toMat4(quaternion);
 ...
 mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScaleMatrix;
 // You can now use ModelMatrix to build the MVP matrix
-{% endhighlight %}
+```
 
 #
 
@@ -150,40 +150,40 @@ How do I know it two quaternions are similar ?
 When using vector, the dot product gives the cosine of the angle between these vectors. If this value is 1, then the vectors are in the same direction.
 
 With quaternions, it's exactly the same:
-{% highlight cpp linenos %}
+``` cpp
 float matching = quaternion::dot(q1, q2);
 if ( abs(matching-1.0) < 0.001 ){
     // q1 and q2 are similar
 }
-{% endhighlight %}
+```
 You can also get the angle between q1 and q2 by taking the acos() of this dot product.
 
 ##How do I apply a rotation to a point ?
 
 You can do the following:
-{% highlight cpp linenos %}
+``` cpp
 rotated_point = orientation_quaternion *  point;
-{% endhighlight %}
+```
 ... but if you want to compute your Model Matrix, you should probably convert it to a matrix instead.
 
 Note that the center of rotation is always the origin. If you want to rotate around another point:
-{% highlight cpp linenos %}
+``` cpp
 rotated_point = origin + (orientation_quaternion * (point-origin));
-{% endhighlight %}
+```
 
 ##How do I interpolate between 2 quaternions ?
 
 This is called a SLERP: Spherical Linear intERPolation. With GLM, you can do this with mix:
-{% highlight cpp linenos %}
+``` cpp
 glm::quat interpolatedquat = quaternion::mix(quat1, quat2, 0.5f); // or whatever factor
-{% endhighlight %}
+```
 
 ##How do I cumulate 2 rotations ?
 
 Simple ! Just multiply the two quaternions together. The order is the same as for matrices, i.e. reverse:
-{% highlight cpp linenos %}
+``` cpp
 quat combined_rotation = second_rotation * first_rotation;
-{% endhighlight %}
+```
 
 ##How do I find the rotation between 2 vectors ?
 
@@ -195,7 +195,7 @@ The basic idea is straightforward:
 * The needed axis is also simple to find: it's the cross product of the two vectors.
 
 The following algorithm does exactly this, but also handles a number of special cases:
-{% highlight cpp linenos %}
+``` cpp
 quat RotationBetweenVectors(vec3 start, vec3 dest){
 	start = normalize(start);
 	dest = normalize(dest);
@@ -228,19 +228,19 @@ quat RotationBetweenVectors(vec3 start, vec3 dest){
 	);
 
 }
-{% endhighlight %}
+```
 (You can find this function in common/quaternion_utils.cpp)
 
 ##I need an equivalent of gluLookAt. How do I orient an object towards a point ?
 
 Use RotationBetweenVectors !
-{% highlight cpp linenos %}
+``` cpp
 // Find the rotation between the front of the object (that we assume towards +Z,
 // but this depends on your model) and the desired direction
 quat rot1 = RotationBetweenVectors(vec3(0.0f, 0.0f, 1.0f), direction);
-{% endhighlight %}
+```
 Now, you might also want to force your object to be upright:
-{% highlight cpp linenos %}
+``` cpp
 // Recompute desiredUp so that it's perpendicular to the direction
 // You can skip that part if you really want to force desiredUp
 vec3 right = cross(direction, desiredUp);
@@ -250,11 +250,11 @@ desiredUp = cross(right, direction);
 // Find the rotation between the "up" of the rotated object, and the desired up
 vec3 newUp = rot1 * vec3(0.0f, 1.0f, 0.0f);
 quat rot2 = RotationBetweenVectors(newUp, desiredUp);
-{% endhighlight %}
+```
 Now, combine them:
-{% highlight cpp linenos %}
+``` cpp
 quat targetOrientation = rot2 * rot1; // remember, in reverse order.
-{% endhighlight %}
+```
 Beware, "direction" is, well, a direction, not the target position ! But you can compute the direction simply: targetPos - currentPos.
 
 Once you have this target orientation, you will probably want to interpolate between startOrientation and targetOrientation.
@@ -264,12 +264,12 @@ Once you have this target orientation, you will probably want to interpolate bet
 ##How do I use LookAt, but limit the rotation at a certain speed ?
 
 The basic idea is to do a SLERP ( = use glm::mix ), but play with the interpolation value so that the angle is not bigger than the desired value:
-{% highlight cpp linenos %}
+``` cpp
 float mixFactor = maxAllowedAngle / angleBetweenQuaternions;
 quat result = glm::gtc::quaternion::mix(q1, q2, mixFactor);
-{% endhighlight %}
+```
 Here is a more complete implementation, which deals with many special cases. Note that it doesn't use mix() directly as an optimization.
-{% highlight cpp linenos %}
+``` cpp
 quat RotateTowards(quat q1, quat q2, float maxAngle){
 
 	if( maxAngle < 0.001f ){
@@ -307,11 +307,11 @@ quat RotateTowards(quat q1, quat q2, float maxAngle){
 	return res;
 
 }
-{% endhighlight %}
+```
 You can use it like that:
-{% highlight cpp linenos %}
+``` cpp
 CurrentOrientation = RotateTowards(CurrentOrientation, TargetOrientation, 3.14f * deltaTime );
-{% endhighlight %}
+```
 (You can find this function in common/quaternion_utils.cpp)
 
 ##How do I...

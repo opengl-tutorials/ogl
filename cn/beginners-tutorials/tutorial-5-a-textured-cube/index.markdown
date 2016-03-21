@@ -41,11 +41,11 @@ language: cn
 如下是加载函数的声明：
 {% highlight text linenos %}
 GLuint loadBMP_custom(const char * imagepath);
-{% endhighlight %}
+```
 使用方式如下：
 {% highlight text linenos %}
 GLuint image = loadBMP_custom("./my_texture.bmp");
-{% endhighlight %}
+```
 接下来看看如何读取BMP文件。
 
 首先需要一些数据。读取文件时将设置这些变量。
@@ -57,7 +57,7 @@ unsigned int width, height;
 unsigned int imageSize;   // = width*height*3
 // Actual RGB data
 unsigned char * data;
-{% endhighlight %}
+```
 现在正式开始打开文件。
 {% highlight text linenos %}
 // Open the file
@@ -67,14 +67,14 @@ if (!file)
     printf("Image could not be openedn");
     return 0;
 }
-{% endhighlight %}
+```
 文件一开始是54字节长的文件头，用于标识"这是不是一个BMP文件"、图像大小、像素位等等。来读取文件头吧：
 {% highlight text linenos %}
 if ( fread(header, 1, 54, file)!=54 ){ // If not 54 bytes read : problem
     printf("Not a correct BMP filen");
     return false;
 }
-{% endhighlight %}
+```
 
 文件头总是以"BM"开头。实际上，如果用十六进制编辑器打开BMP文件，您会看到如下情形：
 
@@ -87,7 +87,7 @@ if ( header[0]!='B' || header[1]!='M' ){
     printf("Not a correct BMP filen");
     return 0;
 }
-{% endhighlight %}
+```
 现在可以读取文件中图像大小、数据位置等信息了：
 {% highlight text linenos %}
 // Read ints from the byte array
@@ -95,13 +95,13 @@ dataPos    = *(int*)&(header[0x0A]);
 imageSize  = *(int*)&(header[0x22]);
 width      = *(int*)&(header[0x12]);
 height     = *(int*)&(header[0x16]);
-{% endhighlight %}
+```
 如果这些信息缺失，您得手动补齐：
 {% highlight text linenos %}
 // Some BMP files are misformatted, guess missing information
 if (imageSize==0)    imageSize=width*height*3; // 3 : one byte for each Red, Green and Blue component
 if (dataPos==0)      dataPos=54; // The BMP header is done that way
-{% endhighlight %}
+```
 现在我们知道了图像的大小，可以为之分配一些内存，把图像读进去：
 {% highlight text linenos %}
 // Create a buffer
@@ -112,7 +112,7 @@ fread(data,1,imageSize,file);
 
 //Everything is in memory now, the file can be closed
 fclose(file);
-{% endhighlight %}
+```
 到了真正的OpenGL部分了。创建纹理和创建顶点缓冲差不多：创建一个纹理、绑定、填充、配置。
 
 在glTexImage2D函数中，GL_RGB表示颜色由三个分量构成，GL_BGR则说明了颜色在内存中的存储格式。实际上，BMP存储的并不是RGB，而是BGR，因此得把这个告诉OpenGL。
@@ -129,11 +129,11 @@ glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE
 
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-{% endhighlight %}
+```
 稍后再解释最后两行代码。同时，得在C++代码中使用刚写好的函数加载一个纹理：
 {% highlight text linenos %}
 GLuint Texture = loadBMP_custom("uvtemplate.bmp");
-{% endhighlight %}
+```
 另外十分重要的一点：** 使用2次幂（power-of-two）的纹理！**
 
 * 优质纹理： 128*128*, 256*256, 1024*1024, 2*2...
@@ -161,7 +161,7 @@ void main(){
     // Output color = color of the texture at the specified UV
     color = texture( myTextureSampler, UV ).rgb;
 }
-{% endhighlight %}
+```
 注意三点：
 
 * 片段着色器需要UV坐标。看似合情合理。
@@ -190,7 +190,7 @@ void main(){
     // UV of the vertex. No special space for this one.
     UV = vertexUV;
 }
-{% endhighlight %}
+```
 还记得第四课中的"layout(location = 1) in vec2 vertexUV"吗？我们得在这儿把相同的事情再做一遍，但这次的缓冲中放的不是(R,G,B)三元组，而是(U,V)数对。
 {% highlight text linenos %}
 // Two UV coordinatesfor each vertex. They were created with Blender. You'll learn shortly how to do this yourself.
@@ -232,7 +232,7 @@ static const GLfloat g_uv_buffer_data[] = {
     1.000004f, 1.0f-0.671847f,
     0.667979f, 1.0f-0.335851f
 };
-{% endhighlight %}
+```
 上述UV坐标对应于下面的模型：
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/uv_mapping_blender.png)
@@ -256,7 +256,7 @@ static const GLfloat g_uv_buffer_data[] = {
 {% highlight text linenos %}
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-{% endhighlight %}
+```
 这意味着在片段着色器中，texture()将直接提取位于(U,V)坐标的纹素（texel）。
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearest.png)
@@ -300,7 +300,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 // Generate mipmaps, by the way.
 glGenerateMipmap(GL_TEXTURE_2D);
-{% endhighlight %}
+```
 
 #怎样利用GLFW加载纹理？
 
@@ -328,7 +328,7 @@ GLuint loadTGA_glfw(const char * imagepath){
     // Return the ID of the texture we just created
     return textureID;
 }
-{% endhighlight %}
+```
 
 #压缩纹理
 
@@ -382,7 +382,7 @@ GLuint loadDDS(const char * imagepath){
     unsigned int linearSize     = *(unsigned int*)&(header[16]);
     unsigned int mipMapCount = *(unsigned int*)&(header[24]);
     unsigned int fourCC      = *(unsigned int*)&(header[80]);
-{% endhighlight %}
+```
 文件头之后是真正的数据：紧接着是mipmap层级。可以一次性批量地读取：
 
  
@@ -395,7 +395,7 @@ GLuint loadDDS(const char * imagepath){
     fread(buffer, 1, bufsize, fp);
     /* close the file pointer */
     fclose(fp);
-{% endhighlight %}
+```
 这里要处理三种格式：DXT1、DXT3和DXT5。我们得把"fourCC"标识转换成OpenGL能识别的值。
 {% highlight text linenos %}
     unsigned int components  = (fourCC == FOURCC_DXT1) ? 3 : 4;
@@ -415,7 +415,7 @@ GLuint loadDDS(const char * imagepath){
         free(buffer);
         return 0;
     }
-{% endhighlight %}
+```
 像往常一样创建纹理：
 {% highlight text linenos %}
     // Create one OpenGL texture
@@ -424,7 +424,7 @@ GLuint loadDDS(const char * imagepath){
 
     // "Bind" the newly created texture : all future texture functions will modify this texture
     glBindTexture(GL_TEXTURE_2D, textureID);
-{% endhighlight %}
+```
 现在只需逐个填充mipmap：
 {% highlight text linenos %}
     unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
@@ -444,7 +444,7 @@ GLuint loadDDS(const char * imagepath){
     free(buffer); 
 
     return textureID;
-{% endhighlight %}
+```
 
 ##反转UV坐标
 

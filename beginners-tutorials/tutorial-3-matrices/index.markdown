@@ -52,20 +52,20 @@ This isn't as scary as it looks. Put your left finger on the a, and your right f
 Now this is quite boring to compute, an we will do this often, so let's ask the computer to do it instead.
 
 **In C++, with GLM:**
-{% highlight cpp linenos %}
+``` cpp
 glm::mat4 myMatrix;
 glm::vec4 myVector;
 // fill myMatrix and myVector somehow
 glm::vec4 transformedVector = myMatrix * myVector; // Again, in this order ! this is important.
-{% endhighlight %}
+```
 
 **In GLSL :**
-{% highlight glsl linenos %}
+``` glsl
 mat4 myMatrix;
 vec4 myVector;
 // fill myMatrix and myVector somehow
 vec4 transformedVector = myMatrix * myVector; // Yeah, it's pretty much the same than GLM
-{% endhighlight %}
+```
 
 ( have you cut'n pasted this in your code ? go on, try it)
 
@@ -94,7 +94,7 @@ Let's now see what happens to a vector that represents a direction towards the -
 So, how does this translate to code ?
 
 **In C++, with GLM:**
-{% highlight cpp linenos %}
+``` cpp
 #include <glm/gtx/transform.hpp> // after <glm/glm.hpp>
  
 glm::mat4 myMatrix = glm::translate(10.0f, 0.0f, 0.0f);
@@ -103,7 +103,7 @@ glm::vec4 transformedVector = myMatrix * myVector; // guess the result
 {% endhighlight%}
 
 **In GLSL :**
-{% highlight glsl linenos %}
+``` glsl
 vec4 transformedVector = myMatrix * myVector;
 {% endhighlight%}
 Well, in fact, you almost never do this in GLSL. Most of the time, you use glm::translate() in C++ to compute your matrix, send it to GLSL, and do only the multiplication :
@@ -115,7 +115,7 @@ This one is special. It doesn't do anything. But I mention it because it's as im
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/identityExample.png)
 
 **In C++ :**
-{% highlight cpp linenos %}
+``` cpp
 glm::mat4 myIdentityMatrix = glm::mat4(1.0f);
 {% endhighlight%}
 ## Scaling matrices
@@ -133,7 +133,7 @@ and the w still didn't change. You may ask : what is the meaning of "scaling a d
 (notice that the identity matrix is only a special case of scaling matrices, with (X,Y,Z) = (1,1,1). It's also a special case of translation matrix with (X,Y,Z)=(0,0,0), by the way)
 
 **In C++ :**
-{% highlight cpp linenos %}
+``` cpp
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
 glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
 {% endhighlight%}
@@ -142,19 +142,19 @@ glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
 These are quite complicated. I'll skip the details here, as it's not important to know their exact layout for everyday use. For more information, please have a look to the [Matrices and Quaternions FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html) (popular resource, probably available in your language as well). You can also have a look at the [Rotations tutorials]({{site.baseurl }}{{intermediate-tutorials/tutorial-17-quaternions}}) 
 
 **In C++ :**
-{% highlight cpp linenos %}
+``` cpp
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
 glm::vec3 myRotationAxis( ??, ??, ??);
 glm::rotate( angle_in_degrees, myRotationAxis );
-{% endhighlight %}
+```
 
 ## Cumulating transformations
 
 So now we know how to rotate, translate, and scale our vectors. It would be great to combine these transformations. This is done by multiplying the matrices together, for instance :
 
-{% highlight cpp linenos %}
+``` cpp
 TransformedVector = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalVector;
-{% endhighlight %}
+```
 
 
 **!!! BEWARE !!!** This lines actually performs the scaling FIRST, and THEN the rotation, and THEN the translation. This is how matrix multiplication works.
@@ -178,12 +178,12 @@ As a matter of fact, the order above is what you will usually need for game char
 Matrix-matrix multiplication is very similar to matrix-vector multiplication, so I'll once again skip some details and redirect you the the [Matrices and Quaternions FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html#Q11) if needed. For now, we'll simply ask the computer to do it :
 
 **in C++, with GLM :**
-{% highlight cpp linenos %}
+``` cpp
 glm::mat4 myModelMatrix = myTranslationMatrix * myRotationMatrix * myScaleMatrix;
 glm::vec4 myTransformedVector = myModelMatrix * myOriginalVector;
 {% endhighlight%}
 **in GLSL :**
-{% highlight glsl linenos %}
+``` glsl
 mat4 transform = mat2 * mat1;
 vec4 out_vec = transform * in_vec;
 {% endhighlight%}
@@ -223,10 +223,10 @@ When you think about it, the same applies to cameras. It you want to view a mout
 
 So initially your camera is at the origin of the World Space. In order to move the world, you simply introduce another matrix. Let's say you want to move your camera of 3 units to the right (+X). This is equivalent to moving your whole world (meshes included) 3 units to the LEFT ! (-X). While you brain melts, let's do it :
 
-{% highlight cpp linenos %}
+``` cpp
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
 glm::mat4 ViewMatrix = glm::translate(-3.0f, 0.0f ,0.0f);
-{% endhighlight %}
+```
 
 Again, the image below illustrates this : _We went from World Space (all vertices defined relatively to the center of the world, as we made so in the previous section) to Camera Space (all vertices defined relatively to the camera)._
 
@@ -234,13 +234,13 @@ Again, the image below illustrates this : _We went from World Space (all vertice
 
 Before you head explodes from this, enjoy GLM's great glm::lookAt function:
 
-{% highlight cpp linenos %}
+``` cpp
 glm::mat4 CameraMatrix = glm::lookAt(
     cameraPosition, // the position of your camera, in world space
     cameraTarget,   // where you want to look at, in world space
     upVector        // probably glm::vec3(0,1,0), but (0,-1,0) would make you looking upside-down, which can be great too
 );
-{% endhighlight %}
+```
 
 Here's the compulsory diagram :
 
@@ -258,7 +258,7 @@ This is called a perspective projection :
 
 And luckily for us, a 4x4 matrix can represent this projection[^projection] :
 
-{% highlight cpp linenos %}
+``` cpp
 // Generates a really hard-to-read matrix, but a normal, standard 4x4 matrix nonetheless
 glm::mat4 projectionMatrix = glm::perspective(
     FoV,         // The horizontal Field of View, in degrees : the amount of "zoom". Think "camera lens". Usually between 90° (extra wide) and 30° (quite zoomed in)
@@ -266,7 +266,7 @@ glm::mat4 projectionMatrix = glm::perspective(
     0.1f,        // Near clipping plane. Keep as big as possible, or you'll get precision issues.
     100.0f       // Far clipping plane. Keep as little as possible.
 );
-{% endhighlight %}
+```
 
 One last time :
 
@@ -300,21 +300,21 @@ And this is the image that is actually rendered !
 
 ... Just a standard matrix multiplication as you already love them !
 
-{% highlight cpp linenos %}
+``` cpp
 // C++ : compute the matrix
 glm::mat4 MVPmatrix = projection * view * model; // Remember : inverted !
-{% endhighlight %}
+```
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 // GLSL : apply it
 transformed_vertex = MVP * in_vertex;
-{% endhighlight %}
+```
 
 
 # Putting it all together
 
 *  First step : generating our MVP matrix. This must be done for each model you render.
-{% highlight cpp linenos %}
+``` cpp
 // Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float) width / (float)height, 0.1f, 100.0f);
 
@@ -332,9 +332,9 @@ glm::mat4 View = glm::lookAt(
 glm::mat4 Model = glm::mat4(1.0f);
 // Our ModelViewProjection : multiplication of our 3 matrices
 glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is the other way around
-{% endhighlight %}
+```
 *  Second step : give it to GLSL
-{% highlight cpp linenos %}
+``` cpp
 // Get a handle for our "MVP" uniform
 // Only during the initialisation
 GLuint MatrixID = glGetUniformLocation(program_id, "MVP");
@@ -342,9 +342,9 @@ GLuint MatrixID = glGetUniformLocation(program_id, "MVP");
 // Send our transformation to the currently bound shader, in the "MVP" uniform
 // This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
 glUniformMatrix4fv(mvp_handle, 1, GL_FALSE, &mvp[0][0]);
-{% endhighlight %}
+```
 * Third step : use it in GLSL to transform our vertices
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 // Input vertex data, different for all executions of this shader.
 layout(location = 0) in vec3 vertexPosition_modelspace;
 
@@ -357,7 +357,7 @@ void main(){
     gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
 }
-{% endhighlight %}
+```
 * Done ! Here is the same triangle as in tutorial 2, still at the origin (0,0,0), but viewed in perspective from point (4,3,3), heads up (0,1,0), with a 45° field of view.
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/perspective_red_triangle.png)

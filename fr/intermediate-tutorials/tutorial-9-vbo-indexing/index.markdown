@@ -38,7 +38,7 @@ Donc, dans ce cas il est préférable d'avoir deux normales distinctes, une pour
 
 C'est très simple d'utiliser l'indexation. Premièrement, tu vas créer un tampon supplémentaire, que tu vas remplir avec les bons indices. Le code est le même qu'avant, mais maintenant c'est un ELEMENT_ARRAY_BUFFER, et non un ARRAY_BUFFER.
 
-{% highlight cpp linenos %}
+``` cpp
 std::vector<unsigned int> indices;
 
 // fill "indices" as needed
@@ -48,11 +48,11 @@ std::vector<unsigned int> indices;
  glGenBuffers(1, &elementbuffer);
  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
-{% endhighlight %}
+```
 
 Et pour dessiner le modèle, remplaces simplement glDrawArrays par :
 
-{% highlight cpp linenos %}
+``` cpp
 // Index buffer
  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 
@@ -63,7 +63,7 @@ Et pour dessiner le modèle, remplaces simplement glDrawArrays par :
      GL_UNSIGNED_INT,   // type
      (void*)0           // element array buffer offset
  );
-{% endhighlight %}
+```
 >Il est préférable d'utiliser des « unsigned short » que des « unsigned int », car cela utilise moins de mémoire et du coup accélère le programme.
 
 #Remplir le buffer (tampon) d'indices
@@ -79,7 +79,7 @@ Pour chaque sommet en entrée
         Un sommet similaire est déjà dans le VBO, on l'utilise !
     Si non trouvé : 
         Aucun sommet similaire trouvé, ajouter le au VBO
-{% endhighlight %}
+```
 
 Le code C++ peut être trouvé dans le fichier common/vboindexer.cpp. Il est intensément commenté, donc si tu comprends l'algorithme ci-dessus, ça devrait aller.
 

@@ -73,7 +73,7 @@ Pour chaque composante (x, y, ...) :
 res.x = A.x + B.x
 res.y = A.y + B.y
 ...
-{% endhighlight %}
+```
 
 ##Multiplication
 
@@ -82,14 +82,14 @@ Pour chaque composante (x, y, ...) :
 res.x = A.x * B.x
 res.y = A.y * B.y
 ...
-{% endhighlight %}
+```
 
 ##Normalisation
 
 On divise le vecteur par sa longueur
 {% highlight text linenos %}
 normalizedVector = vec * ( 1.0f / vec.length() )
-{% endhighlight %}
+```
 
 #Matrices
 

@@ -53,19 +53,19 @@ order: 30
 この計算はとても退屈で、しかも頻繁に行います。そこで代わりにこれを計算してくれるように頼みましょう。
 
 **GLMを用いるC++：**
-{% highlight cpp linenos %}
+``` cpp
 glm::mat4 myMatrix;
 glm::vec4 myVector;
 // 何らかの方法でmyMatrixとmyVector満たす。
 glm::vec4 transformedVector = myMatrix * myVector; // もう一度言いますが、この順番です！これは重要なことです。
-{% endhighlight %}
+```
 **GLSL：**
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 mat4 myMatrix;
 vec4 myVector;
 // 何らかの方法でmyMatrixとmyVector満たす。
 vec4 transformedVector = myMatrix * myVector; // そうです、GLMととても似ています。
-{% endhighlight %}
+```
 ( コードにこれをコピー＆ペーストしましたか？やってみましょう。)
 
 ##平行移動行列
@@ -96,17 +96,17 @@ X、Y、Zは位置に加えたい値です。
 それでは、これをコードで実現するにはどうすれば良いでしょうか？
 
 **GLMを用いるC++：**
-{% highlight cpp linenos %}
+``` cpp
 #include <glm/gtx/transform.hpp> // <glm/glm.hpp>の後
 
 glm::mat4 myMatrix = glm::translate(10.0f, 0.0f, 0.0f);
 glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);
 glm::vec4 transformedVector = myMatrix * myVector; // guess the result
-{% endhighlight %}
+```
 **GLSL； **実は、GLSLではこのようにはできません。ほとんどの場合、行列を計算するためにC++でglm::translate()を使い、行列をGLSLに送り、掛け算をするだけです。
-{% highlight cpp linenos %}
+``` cpp
 vec4 transformedVector = myMatrix * myVector;
-{% endhighlight %}
+```
 
 ##単位行列
 
@@ -116,9 +116,9 @@ vec4 transformedVector = myMatrix * myVector;
 
 
 **C++：**
-{% highlight cpp linenos %}
+``` cpp
 glm::mat4 myIdentityMatrix = glm::mat4(1.0f);
-{% endhighlight %}
+```
 
 ##拡大縮小行列
 
@@ -136,28 +136,28 @@ glm::mat4 myIdentityMatrix = glm::mat4(1.0f);
 (単位行列は拡大縮小行列の特別な場合です。つまり(X,Y,Z) = (1,1,1)です。また単位行列は平行移動行列の特別な場合でもあります。つまり(X,Y,Z) = (0,0,0)です。)
 
 **C++；**
-{% highlight cpp linenos %}
+``` cpp
 // #include <glm/gtc/matrix_transform.hpp> と #include <glm/gtx/transform.hpp>を使います。
 glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
-{% endhighlight %}
+```
 
 ##回転行列
 
 これらはとても複雑です。ここでは詳細は省きます。本当のレイアウトを知るのは、普通に使う上ではそれほど重要ではないからです。もっと知りたければ[Matrices and Quaternions FAQ](http://www.cs.princeton.edu/~gewang/projects/darth/stuff/quat_faq.html)を見てください。(人気のページです。あなたの言語でもたぶん利用可能でしょう。)
 
 **C++：**
-{% highlight cpp linenos %}
+``` cpp
 // #include <glm/gtc/matrix_transform.hpp> と #include <glm/gtx/transform.hpp>を使います。
 glm::vec3 myRotationAxis( ??, ??, ??);
 glm::rotate( angle_in_degrees, myRotationAxis );
-{% endhighlight %}
+```
 
 ##変換の組み合わせ
 
 ここまででベクトルを回転、平行移動、拡大縮小する方法を学びました。これらの変換は組み合わせることができます。行列をお互いに掛けることによって実現します。例えば次のようになります。：
-{% highlight cpp linenos %}
+``` cpp
 TransformedVector = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalVector;
-{% endhighlight %}
+```
 ！！！ 注意 ！！！ この行は、**最初に**拡大縮小、**次に**回転、**最後に**平行移動です。このようにして行列の掛け算は働きます。
 
 違う順番で掛け合わせても同じ結果になるとは限りません。自分で確認してみましょう。：
@@ -185,15 +185,15 @@ TransformedVector = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalV
 行列と行列の掛け算は行列とベクトルの掛け算に良く似ています。だからここでは詳細を省きます。詳しくは<a href="http://www.cs.princeton.edu/~gewang/projects/darth/stuff/quat_faq.html">Matrices and Quaternions FAQ<a>を見てください。それで、コンピュータに次のように頼めばやってくれます。：
 
 **GLMを用いたC++：**
-{% highlight cpp linenos %}
+``` cpp
 glm::mat4 myModelMatrix = myTranslationMatrix * myRotationMatrix * myScaleMatrix;
 glm::vec4 myTransformedVector = myModelMatrix * myOriginalVector;
-{% endhighlight %}
+```
 **GLSL：**
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 mat4 transform = mat2 * mat1;
 vec4 out_vec = transform * in_vec;
-{% endhighlight %}
+```
 
 #モデル行列、ビュー行列、射影行列
 
@@ -234,23 +234,23 @@ vec4 out_vec = transform * in_vec;
 この考え方は、カメラにも適用できます。もし他の角度から山を見たいとき、カメラを動かすか...あるいは山を動かすことで実現できます。実際の世界では山を動かせませんが、コンピュータグラフィックの世界ではとてもシンプルで手軽にできます。
 
 まずはじめに、カメラはワールド空間の原点にあります。世界を動かすためには、単純に行列を一つ導入すれば良いんです。それではカメラを右に3だけ(+X)動かしてみましょう。これは全世界(メッシュも含めて)を**左に**3だけ(-X)動かすことと同じです！混乱してるかもしれませんが、進みましょう。
-{% highlight cpp linenos %}
+``` cpp
 // #include <glm/gtc/matrix_transform.hpp> と #include <glm/gtx/transform.hpp> を使います。
 glm::mat4 ViewMatrix = glm::translate(-3.0f, 0.0f ,0.0f);
-{% endhighlight %}
+```
 再び、下の図がこの様子を表しています。*私たちはワールド空間(前項で説明したように、すべての頂点が世界の中心の相対座標で表される)からカメラ空間(すべての頂点がカメラの相対座標で表される)へ移りました。*
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/model_to_world_to_camera.png)
 
 
 頭が爆発する前に、GLMのglm::LookAt関数を楽しんでください。
-{% highlight cpp linenos %}
+``` cpp
 glm::mat4 CameraMatrix = glm::LookAt(
     cameraPosition, // ワールド空間でのカメラの位置
     cameraTarget,   // ワールド空間での見たい位置
     upVector        // たぶんglm::vec3(0,1,0)です。一方で(0,-1,0)にしたら上下逆さまになります。それもまた良いでしょう。
 );
-{% endhighlight %}
+```
 下の図のような感じになります。
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/MV.png)
@@ -268,7 +268,7 @@ glm::mat4 CameraMatrix = glm::LookAt(
 
 
 幸運なことに、4x4行列はこの射影を表せます。&sup1;:
-{% highlight cpp linenos %}
+``` cpp
 // 読むのが難しい行列を作ります。それでも、普通の標準の4x4行列です。
 glm::mat4 projectionMatrix = glm::perspective(
     FoV,         // 視界の水平方向の広がり度合い(度)。つまり、"ズーム"の度合い。"カメラレンズ"を考えてください。通常90&deg;(超ワイド) と 30&deg; (とてもズームインしてる)の間です。
@@ -276,7 +276,7 @@ glm::mat4 projectionMatrix = glm::perspective(
     0.1f,        // 近くのクリッピング平面。できるだけ大きくします。そうしないと正確さの問題が出てくるでしょう。
     100.0f       // 遠くのクリッピング平面。できるだけ小さくします。
 );
-{% endhighlight %}
+```
 最後の一つです。
 
 *私たちはカメラ空間(すべての頂点がカメラの相対座標で表される)から同次空間(すべての頂点が小さな球の中で表される。球の中にある頂点がスクリーン上にある。)へ移りました。*
@@ -313,21 +313,21 @@ glm::mat4 projectionMatrix = glm::perspective(
 ##行列の組み合わせ：モデルビュー射影行列
 
 ... 既に慣れ親しんだ普通の行列の掛け算のようにやります！
-{% highlight cpp linenos %}
+``` cpp
 // C++：行列を計算する。
 glm::mat4 MVPmatrix = projection * view * model; // 逆になることを思い出して!
-{% endhighlight %}
-{% highlight glsl linenos cssclass=highlightglslvs %}
+```
+``` glsl vs
 // GLSL：適用する
 transformed_vertex = MVP * in_vertex;
-{% endhighlight %}
+```
 
 #すべてを合わせる
 
 
 * ステップ1：MVP(ModelViewProjection)行列を作ります。レンダリングする各モデルごとに行います。
 
-{% highlight cpp linenos %}
+``` cpp
 // 射影行列：45&deg;の視界、アスペクト比4:3、表示範囲：0.1単位  100単位
 glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 // カメラ行列
@@ -340,11 +340,11 @@ glm::mat4 View       = glm::lookAt(
 glm::mat4 Model      = glm::mat4(1.0f);  // 各モデルを変える！
 // Our ModelViewProjection : multiplication of our 3 matrices
 glm::mat4 MVP        = Projection * View * Model; // 行列の掛け算は逆になることを思い出してください。
-{% endhighlight %}
+```
 
 * ステップ2：GLSLに渡します。
 
-{% highlight cpp linenos %}
+``` cpp
 // "MVP" uniformへのハンドルを取得します。
 // 初期化時だけ
 GLuint MatrixID = glGetUniformLocation(programID, "MVP");
@@ -352,11 +352,11 @@ GLuint MatrixID = glGetUniformLocation(programID, "MVP");
 // 現在バインドしているシェーダの"MVP" uniformに変換を送る
 // レンダリングする各モデルごと、なぜならMVPが違うからです。(少なくともMの部分が違います。)
 glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
-{% endhighlight %}
+```
 
 * ステップ3：頂点を変換させるためにGLSLで行列を使います。
 
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 in vec3 vertexPosition_modelspace;
 uniform mat4 MVP;
 
@@ -366,7 +366,7 @@ void main(){
     vec4 v = vec4(vertexPosition_modelspace,1); // 同次4Dベクトルに変換します。覚えていますか？
     gl_Position = MVP * v;
 }
-{% endhighlight %}
+```
 
 * できました！チュートリアル2と同じ三角形ができました。原点は(0,0,0)ですが、(4,3,3,)から見て、(0,1,0)が上方向で、45&deg;の視界です。
 

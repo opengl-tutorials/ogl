@@ -41,9 +41,9 @@ Dans le code source accompagnant ce tutoriel, 100 objets sont créés et conserv
 
 Dans cet exemple simple, le picking est effectué à chaque image lorsque le bouton gauche de la souris est appuyé :
 
-{% highlight cpp linenos %}
+``` cpp
 		if (glfwGetMouseButton(GLFW_MOUSE_BUTTON_LEFT)){
-{% endhighlight %}
+```
 
 Dans une application réelle, tu veux certainement le faire uniquement lorsque l'utilisateur relâche le bouton et donc tu dois garder un booléen estCeQueLeBoutonGaucheAEteAppuyeLorsDeLImagePrecedente, ou mieux, utiliser glfwSetMouseButtonCallback() (lis le manuel GLFW pour savoir comment l'utiliser).
 
@@ -51,12 +51,12 @@ Dans une application réelle, tu veux certainement le faire uniquement lorsque l
 
 Comme on doit afficher chaque modèle avec une couleur différente, la première étape est de calculer cette couleur. Une méthode simple est de placer les bits de poids faible dans le canal rouge et les bits de poids fort dans le canal bleu :
 
-{% highlight cpp linenos %}
+``` cpp
 // Convert "i", the integer mesh ID, into an RGB color
 int r = (i & 0x000000FF) >>  0;
 int g = (i & 0x0000FF00) >>  8;
 int b = (i & 0x00FF0000) >> 16;
-{% endhighlight %}
+```
 
 Ça peut paraître effrayant, mais c'est un code de manipulation de bits standard. Tu obtiens finalement trois entiers, chacun compris entre 0 et 255. Avec cette méthode, tu peux représenter 255^3 = 16 millions d'objets différents, ce qui est sans doute suffisant.
 
@@ -64,7 +64,7 @@ int b = (i & 0x00FF0000) >> 16;
 
 On a maintenant besoin d'un shader pour utiliser cette couleur. C'est très simple. Le vertex shader ne fait rien :
 
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 #version 330 core
 
 // Input vertex data, different for all executions of this shader.
@@ -79,11 +79,11 @@ void main(){
     gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
 }
-{% endhighlight %}
+```
 
 Et le fragment shader écrit simplement la couleur voulue dans le framebuffer :
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 #version 330 core
 
 // Ouput data
@@ -97,16 +97,16 @@ void main(){
     color = PickingColor;
 
 }
-{% endhighlight %}
+```
  
 Facile !
 
 La seule astuce est que tu dois envoyer tes couleurs en nombres flottants (compris dans [0, 1]) alors que tu as des entiers (compris dans [0, 255]), donc tu dois effectuer une petite division lors de l'appel à *glUniformXX()* :
 
-{% highlight cpp linenos %}
+``` cpp
 // OpenGL expects colors to be in [0,1], so divide by 255.
 glUniform4f(pickingColorID, r/255.0f, g/255.0f, b/255.0f, 1.0f);
-{% endhighlight %}
+```
 
 Tu peux maintenant dessiner les modèles comme d'habitude (glBindBuffer, glVertexAttribBuffer, glDrawElements) et tu obtiendra l'étrange image ci-dessus.
 
@@ -122,7 +122,7 @@ Tu dois aussi configurer comment *glReadPixels()* se comportera par rapport à l
 
 Finalement, tu peux appeler *glReadPixels()* ! Voici le code complet :
 
-{% highlight cpp linenos %}
+``` cpp
 // Wait until all the pending drawing commands are really done.
 // Ultra-mega-over slow ! 
 // There are usually a long time between glDrawElements() and
@@ -138,7 +138,7 @@ glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 // because the framebuffer is on the GPU.
 unsigned char data[4];
 glReadPixels(1024/2, 768/2,1,1, GL_RGBA, GL_UNSIGNED_BYTE, data);
-{% endhighlight %}
+```
 
 Ta couleur est maintenant dans le tableau data. Par exemple ci-dessous, tu peux voir que l'identifiant est 19 :
 
@@ -148,19 +148,19 @@ Ta couleur est maintenant dans le tableau data. Par exemple ci-dessous, tu peux 
 
 Tu peux maintenant retrouver ton identifiant à partir du tampon data. Le code est exactement l'opposé du code de conversion de l'identifiant en une couleur :
 
-{% highlight cpp linenos %}
+``` cpp
 // Convert the color back to an integer ID
 int pickedID = 
 	data[0] + 
 	data[1] * 256 +
 	data[2] * 256*256;
-{% endhighlight %}
+```
 
 ##Utiliser cet identifiant
 
 Tu peux maintenant utiliser l'identifiant comme tu veux. Dans l'exemple, le texte de l'interface est mis à jour, mais bien sûr, tu peux faire ce que tu veux.
 
-{% highlight cpp linenos %}
+``` cpp
 if (pickedID == 0x00ffffff){ // Full white, must be the background !
 	message = "background";
 }else{
@@ -168,7 +168,7 @@ if (pickedID == 0x00ffffff){ // Full white, must be the background !
 	oss << "mesh " << pickedID;
 	message = oss.str();
 }
-{% endhighlight %}
+```
  
 
 #Avantages et inconvénients

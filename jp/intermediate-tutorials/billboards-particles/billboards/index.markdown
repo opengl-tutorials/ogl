@@ -22,7 +22,7 @@ language: jp
 この方法はとっても簡単です。
 
 画面上でのあなたの位置を計算し、この位置に2Dテキストを表示します。（チュートリアル11を見てください。）
-{% highlight cpp linenos %}
+``` cpp
 // ここでやってることはすべてチュートリアル3で説明済みです。新しいことはありません。
 glm::vec4 BillboardPos_worldspace(x,y,z, 1.0f);
 glm::vec4 BillboardPos_screenspace = ProjectionMatrix * ViewMatrix * BillboardPos_worldspace;
@@ -31,7 +31,7 @@ BillboardPos_screenspace /= BillboardPos_screenspace.w;
 if (BillboardPos_screenspace.z < 0.0f){
     // カメラの後ろにあるものは表示しません。
 }
-{% endhighlight %}
+```
 
 この方法の良い点はとても簡単で、ビルボードとカメラの距離によらず常に一定の大きさになってくれる点です。しかし2Dテキストは他のすべてのものの上に表示されるので、他のオブジェクトの上に表示されてしまいます。
 
@@ -65,16 +65,16 @@ if (BillboardPos_screenspace.z < 0.0f){
 {% highlight text linenos %}
 CameraRight_worldspace = {ViewMatrix[0][0], ViewMatrix[1][0], ViewMatrix[2][0]}
 CameraUp_worldspace = {ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]}
-{% endhighlight %}
+```
  
 
 一度これを得れば、最終的な頂点位置を計算するのはとても簡単です。
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 vec3 vertexPosition_worldspace =
     particleCenter_wordspace
     + CameraRight_worldspace * squareVertices.x * BillboardSize.x
     + CameraUp_worldspace * squareVertices.y * BillboardSize.y;
-{% endhighlight %}
+```
 
 * particleCenter_worldspaceは名前が示すとおり、ビルボードの中心位置です。これはvec3で表されます。.
 * squareVerticesはオリジナルのメッシュです。左の頂点のため、squareVertices.xは-0.5です。これはカメラの左方向へ移動されます。（*CameraRight_worldspace のため。）
@@ -87,7 +87,7 @@ vec3 vertexPosition_worldspace =
  
 
 squareVerticesは次のように作ります。
-{% highlight cpp linenos %}
+``` cpp
 // VBOは粒子の4つのベクトルを保持しています。
  static const GLfloat g_vertex_buffer_data[] = {
  -0.5f, -0.5f, 0.0f,
@@ -95,7 +95,7 @@ squareVerticesは次のように作ります。
  -0.5f, 0.5f, 0.0f,
  0.5f, 0.5f, 0.0f,
  };
-{% endhighlight %}
+```
  
 
 #解決策3：固定サイズでの3Dでの方法
@@ -103,7 +103,7 @@ squareVerticesは次のように作ります。
 上で見たように、ビルボードのサイズはカメラとの距離に応じて変わります。こういう感じにしたい場合もあるでしょうが、ライフゲージのように固定サイズにしたい場合もあるでしょう。
 
 画面空間で中心とコーナーの配置を固定したいので次のようにします。画面空間での中心位置とそのオフセットを計算します。
-{% highlight cpp linenos %}
+``` cpp
 vertexPosition_worldspace = particleCenter_wordspace;
 // 粒子の中心の座標を空間座標で得る。
 gl_Position = VP * vec4(vertexPosition_worldspace, 1.0f);
@@ -112,7 +112,7 @@ gl_Position /= gl_Position.w;
 
 // 頂点を直接画面空間へ移動します。CameraUp/Right_worlspaceはここではいりません。
 gl_Position.xy += squareVertices.xy * vec2(0.2, 0.05);
-{% endhighlight %}
+```
 描画パイプラインのこのステージは正規化デバイス座標にあることを覚えて置いてください。
 つまり各軸は-1と1の間にあり、ピクセルではありません。
 

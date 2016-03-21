@@ -61,25 +61,25 @@ for line in fileinput.FileInput(p,inplace=1):
     line = line.replace("</address>", "*")
 
     
-    line = line.replace("<pre class=\"brush: cpp\">","{% highlight cpp linenos %}\n")
-    line = line.replace("<pre class=\"brush: cpp;\">","{% highlight cpp linenos %}\n")
-    line = line.replace("<pre class=\"brush:cpp\">","{% highlight cpp linenos %}\n")
-    line = line.replace("<pre class=\"brush:vs\">","{% highlight glsl linenos cssclass=highlightglslvs %}\n")
-    line = line.replace("<pre class=\"brush: vs\">","{% highlight glsl linenos cssclass=highlightglslvs %}\n")
-    line = line.replace("<pre class=\"brush:fs\">","{% highlight glsl linenos cssclass=highlightglslfs %}\n")
-    line = line.replace("<pre class=\"brush: fs\">","{% highlight glsl linenos cssclass=highlightglslfs %}\n")
+    line = line.replace("<pre class=\"brush: cpp\">","``` cpp\n")
+    line = line.replace("<pre class=\"brush: cpp;\">","``` cpp\n")
+    line = line.replace("<pre class=\"brush:cpp\">","``` cpp\n")
+    line = line.replace("<pre class=\"brush:vs\">","``` glsl vs\n")
+    line = line.replace("<pre class=\"brush: vs\">","``` glsl vs\n")
+    line = line.replace("<pre class=\"brush:fs\">","``` glsl fs\n")
+    line = line.replace("<pre class=\"brush: fs\">","``` glsl fs\n")
     line = line.replace("<pre class=\"brush:plain\">","{% highlight text linenos %}\n")
     line = line.replace("<pre class=\"brush: plain\">","{% highlight text linenos %}\n")
     line = line.replace("<pre style=\"background-color: white; color: black;\">","{% highlight text %}\n")
     line = line.replace("<pre class=\"brush:c\">","{% highlight c linenos %}\n")
     line = line.replace("<pre class=\"brush: c\">","{% highlight c linenos %}\n")
-    line = line.replace("<pre class=\"brush:fs; highlight: [4, 6]\">","{% highlight glsl linenos cssclass=highlightglslfs %}\n")
-    line = line.replace("<pre class=\"brush:fs; highlight: [1,3] \">","{% highlight glsl linenos cssclass=highlightglslfs %}\n")
+    line = line.replace("<pre class=\"brush:fs; highlight: [4, 6]\">","``` glsl fs\n")
+    line = line.replace("<pre class=\"brush:fs; highlight: [1,3] \">","``` glsl fs\n")
 	
     line = line.replace("<pre>","{% highlight text linenos %}\n")
 	
 	
-    line = line.replace("</pre>","\n{% endhighlight %}")
+    line = line.replace("</pre>","\n```")
 
 
 	

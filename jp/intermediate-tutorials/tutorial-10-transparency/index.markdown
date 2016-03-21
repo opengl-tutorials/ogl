@@ -14,14 +14,14 @@ language: jp
 #アルファチャネル
 
 アルファチャネルの概念はとても単純です。RGBを書くの代わりに、RGBAを書きます：
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 // 出力データ：今回はvec4です。
 out vec4 color;
-{% endhighlight %}
+```
 最初の3要素は.xyzでアクセスでき、最後の要素は.aでアクセスします：
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 color.a = 0.3;
-{% endhighlight %}
+```
 直感的ではありませんが、alpha=不透明度、そのためalpha=1は完全な不透明を、一方でalpha=0は完全な透明を表します。
 
 ここで、単純にアルファチャネルを0.3と直書きしていますが、きっとRGBAテクスチャから読み込んだ値を使いたいでしょう。（TGAはアルファチャネルをサポートしており、GLFWはTGAをサポートしています。）
@@ -91,22 +91,22 @@ C言語のqsortやC++のstd::sortなど好きな方法でソートできます�
 #ブレンド関数
 
 上のコードのために、ブレンド関数をセットアップする必要があります。
-{% highlight cpp linenos %}
+``` cpp
 // ブレンドの有効化
 glEnable(GL_BLEND);
 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-{% endhighlight %}
+```
 これは次のことを意味します。
 {% highlight text linenos %}
 フレームバッファ内の新たな色 =
            フレームバッファの現在のアルファ * フレームバッファ内の現在の色 +
            (1 - フレームバッファ内の現在のアルファ) * シェーダの出力色
-{% endhighlight %}
+```
 赤を上にした上で示した画像の例：
 {% highlight text linenos %}
 new color = 0.5*(0,1,0) + (1-0.5)*(1,0.5,0.5); // (赤は既に白い背景とブレンドされています。)
 new color = (1, 0.75, 0.25) = オレンジと同じです
-{% endhighlight %}
+```
  
 
  

@@ -14,16 +14,16 @@ language: fr
 
 Le concept du canal alpha est très simple. À la place d'écrire un résultat en RGB, on écris un résultat en RGBA :
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 // Données de sorties : c'est maintenant un vec4 
 out vec4 color;
-{% endhighlight %}
+```
 
 Les trois premières composantes sont toujours accessibles avec *.xyz* (ou *.rgb*), tandis que la dernière est accessible avec *.a* :
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 color.a = 0.3;
-{% endhighlight %}
+```
 
 Contre toute logique, alpha = opacité, donc alpha = 1 signifie complètement opaque alors que alpha = 0 signifie complètement transparent.
 
@@ -92,11 +92,11 @@ De nombreuses autres techniques sont intéressantes si ton moteur a vraiment, vr
 
 Afin que le code précédent fonctionne, on doit initialiser la fonction de mélange :
 
-{% highlight cpp linenos %}
+``` cpp
 // Enable blending
 glEnable(GL_BLEND);
 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-{% endhighlight %}
+```
 
 Ce qui signifie :
 
@@ -104,14 +104,14 @@ Ce qui signifie :
 nouvelle couleur dans le buffer d'écran = 
     alpha actuel dans le buffer d'écran * couleur actuelle dans le buffer d'écran + 
     (1 - alpha actuel dans le tampon d'écran) * la couleur de sortie du shader
-{% endhighlight %}
+```
 
 Exemple de l'image ci-dessus, avec le rouge au-dessus :
 
-{% highlight cpp linenos %}
+``` cpp
 new color = 0.5*(0,1,0) + (1-0.5)*(1,0.5,0.5); // (the red was already blended with the white background)
 new color = (1, 0.75, 0.25) = the same orange
-{% endhighlight %}
+```
  
 
  

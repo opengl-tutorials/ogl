@@ -22,16 +22,16 @@ On a trois tâches : créer une texture dans laquelle on va faire le rendu, fair
 
 La chose dans laquelle on va dessiner s'appelle un Framebuffer (tampon d'image). C'est un conteneur pour les textures et optionnellement un Z buffer (tampon de profondeur). Il est créé exactement comme n'importe quel un autre objet OpenGL :
 
-{% highlight cpp linenos %}
+``` cpp
 // The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
 GLuint FramebufferName = 0;
 glGenFramebuffers(1, &FramebufferName);
 glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
-{% endhighlight %}
+```
 
 Maintenant on doit créer la texture qui va contenir la sortie RGB du shader. Ce code est très classique :
 
-{% highlight cpp linenos %}
+``` cpp
 // The texture we're going to render to
 GLuint renderedTexture;
 glGenTextures(1, &renderedTexture);
@@ -45,53 +45,53 @@ glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, 1024, 768, 0,GL_RGB, GL_UNSIGNED_BYTE, 0);
 // Poor filtering. Needed !
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-{% endhighlight %}
+```
 
 On a aussi besoin d'un tampon de profondeur. C'est optionnel et dépend de ce que tu veux afficher dans ta texture ; mais comme on va afficher Suzanne, on a besoin du test de profondeur.
 
-{% highlight cpp linenos %}
+``` cpp
 // The depth buffer
 GLuint depthrenderbuffer;
 glGenRenderbuffers(1, &depthrenderbuffer);
 glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
 glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 1024, 768);
 glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
-{% endhighlight %}
+```
 
 Finalement, on configure le framebuffer :
 
-{% highlight cpp linenos %}
+``` cpp
 // Set "renderedTexture" as our colour attachement #0
 glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture, 0);
 
 // Set the list of draw buffers.
 GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
 glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
-{% endhighlight %}
+```
 
 Quelque chose a pu mal se passer durant ce processus, suivant les capacités du GPU. On vérifie les erreurs comme ça :
 
-{% highlight cpp linenos %}
+``` cpp
 // Always check that our framebuffer is ok
 if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 return false;
-{% endhighlight %}
+```
 
 ##Dessiner dans la texture
 
 Le rendu dans la texture est direct. On lie simplement le framebuffer et on dessine notre scène comme d'hab. Facile !
 
-{% highlight cpp linenos %}
+``` cpp
 // Render to our framebuffer
 glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
 glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the lower left corner to the upper right
-{% endhighlight %}
+```
 
 Le fragment shader nécessite une adaptation mineure :
 
-{% highlight cpp linenos %}
+``` cpp
 layout(location = 0) out vec3 color;
-{% endhighlight %}
+```
 
 Cela signifie que lors de l'écriture dans la variable « color », on va écrire dans la cible de rendu 0, qui correspond à la texture, car DrawBuffers[0] est GL_COLOR_ATTACHMENT*i*, qui est dans notre cas, renderedTexture.
 
@@ -108,7 +108,7 @@ Pour récapituler :
 
 On va dessiner un simple rectangle pour remplir l'écran. On doit utiliser les tampons habituels, shaders, identifiants ...
 
-{% highlight cpp linenos %}
+``` cpp
 // The fullscreen quad's FBO
 GLuint quad_VertexArrayID;
 glGenVertexArrays(1, &quad_VertexArrayID);
@@ -132,19 +132,19 @@ glBufferData(GL_ARRAY_BUFFER, sizeof(g_quad_vertex_buffer_data), g_quad_vertex_b
 GLuint quad_programID = LoadShaders( "Passthrough.vertexshader", "SimpleTexture.fragmentshader" );
 GLuint texID = glGetUniformLocation(quad_programID, "renderedTexture");
 GLuint timeID = glGetUniformLocation(quad_programID, "time");
-{% endhighlight %}
+```
 
 Maintenant tu veux dessiner sur l'écran. Cela se fait en utilisant 0 comme second paramètre de glBindFramebuffer.
 
-{% highlight cpp linenos %}
+``` cpp
 // Render to the screen
 glBindFramebuffer(GL_FRAMEBUFFER, 0);
 glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the lower left corner to the upper right
-{% endhighlight %}
+```
 
 On peut dessiner le rectangle plein écran avec un tel shader :
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 #version 330 core
 
 in vec2 UV;
@@ -157,7 +157,7 @@ uniform float time;
 void main(){
     color = texture( renderedTexture, UV + 0.005*vec2( sin(time+1024.0*UV.x),cos(time+768.0*UV.y)) ).xyz;
 }
-{% endhighlight %}
+```
  
 Ce code échantillonne simplement la texture, mais ajoute un léger décalage dépendant du temps.
 
@@ -172,9 +172,9 @@ Ce code échantillonne simplement la texture, mais ajoute un léger décalage d�
 
 Dans quelques cas tu peux avoir besoin de la profondeur lors de l'utilisation de la texture générée. Dans ce cas, dessine simplement la texture comme suit :
 
-{% highlight cpp linenos %}
+``` cpp
 glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT24, 1024, 768, 0,GL_DEPTH_COMPONENT, GL_FLOAT, 0);
-{% endhighlight %}
+```
 
 > « 24 » est la précision, en bits. Tu peux choisir entre 16, 24 et 32, suivant tes besoins. Habituellement 24 suffit.
 
@@ -202,9 +202,9 @@ Tu peux écrire dans plusieurs textures en même temps.
 
 Crée simplement plusieurs textures (toutes avec la même et correcte taille !), appele glFramebufferTexture avec une couleur d'attache différente pour chaque, appele glDrawBuffers avec des paramètres mis à jour (quelque chose comme (2, {GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1})) et ajoutez une autre variable de sortie dans votre fragment shader :
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 layout(location = 1) out vec3 normal_tangentspace; // or whatever
-{% endhighlight %}
+```
 
 > Si tu as besoin d'écrire un vecteur dans une texture, les textures à virgule flottante existe, avec une précision de 16 ou 32 bits au lieu de 8 ... voir la documentation de [glTexImage2D](http://www.opengl.org/sdk/docs/man/xhtml/glTexImage2D.xml) (ctrl+f GL_FLOAT).
 

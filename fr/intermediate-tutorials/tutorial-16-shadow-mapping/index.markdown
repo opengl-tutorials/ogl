@@ -41,7 +41,7 @@ Ici, on utilise une texture de profondeur 1024x1024 sur 16 bits pour stocker la 
 
 > On utilise une texture de profondeur et non pas un renderbuffer pour la profondeur, car on a besoin de l'échantillonner par la suite.
 
-{% highlight cpp linenos %}
+``` cpp
  // The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
  GLuint FramebufferName = 0;
  glGenFramebuffers(1, &FramebufferName);
@@ -64,7 +64,7 @@ Ici, on utilise une texture de profondeur 1024x1024 sur 16 bits pour stocker la 
  // Always check that our framebuffer is ok
  if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
  return false;
-{% endhighlight %}
+```
 
 La matrice MVP utilisée pour dessiner la scène du point de vue de la lumière est calculée comme suit :
 
@@ -72,7 +72,7 @@ La matrice MVP utilisée pour dessiner la scène du point de vue de la lumière 
 * Notre matrice de vue tournera le monde afin que, dans l'espace caméra, la direction de la lumière soit -Z (Envie de refaire un tour dans le [troisième tutoriel]({{site.baseurl}}/fr/beginners-tutorials/tutorial-3-matrices/) ?)
 * La matrice de modèle est peut importe ce que tu veux.
 
-{% highlight cpp linenos %}
+``` cpp
 glm::vec3 lightInvDir = glm::vec3(0.5f,2,2);
 
  // Compute the MVP matrix from the light's point of view
@@ -84,13 +84,13 @@ glm::vec3 lightInvDir = glm::vec3(0.5f,2,2);
  // Send our transformation to the currently bound shader,
  // in the "MVP" uniform
  glUniformMatrix4fv(depthMatrixID, 1, GL_FALSE, &depthMVP[0][0])
-{% endhighlight %}
+```
 
 ###Les shaders
 
 Les shaders utilisés durant cette passe sont très simples. Le vertex shader est un shader passant les données au fragment shader qui calcule simplement la position des sommets en coordonnées homogènes :
 
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 #version 330 core
 
 // Input vertex data, different for all executions of this shader.
@@ -102,11 +102,11 @@ uniform mat4 depthMVP;
 void main(){
  gl_Position =  depthMVP * vec4(vertexPosition_modelspace,1);
 }
-{% endhighlight %}
+```
 
 Le fragment shader est tout aussi simple : il écrit la profondeur du fragment à l'emplacement 0 (c'est-à-dire dans la texture de profondeur).
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 #version 330 core
 
 // Ouput data
@@ -116,7 +116,7 @@ void main(){
     // Not really needed, OpenGL does it anyway
     fragmentdepth = gl_FragCoord.z;
 }
-{% endhighlight %}
+```
 
 Le rendu d'une shadow map est généralement deux fois plus rapide qu'un rendu normal, car seule une profondeur en faible précision est écrite, au lieu de la profondeur *et* de la couleur. La bande passante mémoire est souvent le plus grand problème de performance sur les GPU.
 
@@ -142,7 +142,7 @@ Par exemple, un fragment au milieu de l'écran sera en (0, 0) dans l'espace de c
 
 Cela peut être corrigé en ajustant les coordonnées directement dans le fragment shader, mais c'est plus efficace de multiplier les coordonnées homogènes avec la matrice suivante, qui divise simplement les coordonnées par 2 (la diagonale : [-1, 1]-> [-0.5, 0.5]) et les déplace (la ligne du bas : [-0.5, 0.5]-> [0, 1]).
 
-{% highlight cpp linenos %}
+``` cpp
 glm::mat4 biasMatrix(
 0.5, 0.0, 0.0, 0.0,
 0.0, 0.5, 0.0, 0.0,
@@ -150,20 +150,20 @@ glm::mat4 biasMatrix(
 0.5, 0.5, 0.5, 1.0
 );
 glm::mat4 depthBiasMVP = biasMatrix*depthMVP;
-{% endhighlight %}
+```
 
 On peut maintenant écrire le vertex shader. Il est identique au précédent, mais on écrit deux positions au lieu d'une :
 
 * gl_Position est la position du sommet tel qu'il est vu par la caméra actuelle.
 * ShadowCoord est la position du sommet tel qu'il est vu à partir de l'ancienne caméra (la lumière).
 
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 // Output position of the vertex, in clip space : MVP * position
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
 // Same, but with the light's view matrix
 ShadowCoord = DepthBiasMVP * vec4(vertexPosition_modelspace,1);
-{% endhighlight %}
+```
 
 Ensuite, le fragment shader est très simple :
 
@@ -172,16 +172,16 @@ Ensuite, le fragment shader est très simple :
 
 Donc si le fragment actuel est plus loin que l'objet le plus proche, cela signifie que l'on se trouve dans l'ombre (de objet plus proche) :
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 float visibility = 1.0;
 if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z){
     visibility = 0.5;
 }
-{% endhighlight %}
+```
 
 On a juste besoin d'utiliser ça pour modifier l'ombrage. Bien sûr, la couleur ambiante n'est pas modifiée, car son but est d'imiter une lumière arrivant même lorsqu'on se trouve dans l'ombrage (ou sinon tout ce qui est dans l'ombre serait complètement noir).
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 color =
  // Ambient : simulates indirect lighting
  MaterialAmbientColor +
@@ -189,7 +189,7 @@ color =
  visibility * MaterialDiffuseColor * LightColor * LightPower * cosTheta+
  // Specular : reflective highlight, like a mirror
  visibility * MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5);
-{% endhighlight %}
+```
 
 ###Résultat - acné d'ombre
 
@@ -213,13 +213,13 @@ Ce phénomène est facilement explicable avec une image :
 
 Le « correctif » habituel pour ça consiste à utiliser une marge d'erreur : on n'ajoute l'ombre que si la profondeur du fragment actuel (encore une fois, dans l'espace de la lumière) est vraiment loin de la valeur de la texture de lumière. On fait ça en ajoutant un biais :
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 float bias = 0.005;
 float visibility = 1.0;
 if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z-bias){
     visibility = 0.5;
 }
-{% endhighlight %}
+```
 
 Le résultat est déjà beaucoup plus beau :
 
@@ -229,10 +229,10 @@ Par contre, tu peux remarquer qu'à cause de notre biais, l'artefact entre le so
 
 Une approche commune consiste à modifier le biais suivant la pente :
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 float bias = 0.005*tan(acos(cosTheta)); // cosTheta is dot( n,l ), clamped between 0 and 1
 bias = clamp(bias, 0,0.01);
-{% endhighlight %}
+```
 
 L'acné d'ombrage n'est plus là, même sur les surfaces arrondies :
 
@@ -244,18 +244,18 @@ Une autre astuce qui peut ou non fonctionner suivant vos modèles est d'afficher
 
 Lors du rendu de la texture d'ombre, supprime les faces avant des triangles :
 
-{% highlight cpp linenos %}
+``` cpp
         // We don't use bias in the shader, but instead we draw back faces,
         // which are already separated from the front faces by a small distance
         // (if your geometry is made this way)
         glCullFace(GL_FRONT); // Cull front-facing triangles -> draw only back-facing triangles
-{% endhighlight %}
+```
 
 Et ensuite, affiche la scène avec un rendu normal (suppression des faces arrière) :
 
-{% highlight cpp linenos %}
+``` cpp
          glCullFace(GL_BACK); // Cull back-facing triangles -> draw only front-facing triangles
-{% endhighlight %}
+```
 
 Cette méthode est utilisée dans le code, en plus du biais.
 
@@ -296,24 +296,24 @@ Comme vous pouvez le voir, les bordures de l'ombre sont douces, mais la texture 
 
 Une méthode simple pour le gérer est d'échantillonner la texture d'ombre N fois au lieu d'une seule. En combinaison avec le PCF, cela peut donner de très bons résultats, même avec un petit N. Voici le code pour quatre échantillonnages :
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 for (int i=0;i<4;i++){
   if ( texture( shadowMap, ShadowCoord.xy + poissonDisk[i]/700.0 ).z  <  ShadowCoord.z-bias ){
     visibility-=0.2;
   }
 }
-{% endhighlight %}
+```
 
 poissonDisk est un tableau constant qui peut être défini comme suit :
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 vec2 poissonDisk[4] = vec2[](
   vec2( -0.94201624, -0.39906216 ),
   vec2( 0.94558609, -0.76890725 ),
   vec2( -0.094184101, -0.92938870 ),
   vec2( 0.34495938, 0.29387760 )
 );
-{% endhighlight %}
+```
 
 De cette façon, suivant le nombre d'échantillon de la shadow map qui passe le test, le fragment généré sera plus ou moins sombre :
 
@@ -331,30 +331,30 @@ On peut supprimer cet effet de bande en choisissant différents échantillons po
 
 La seule différence avec la version précédente est que l'on indexe poissonDisk avec un indice aléatoire :
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
     for (int i=0;i<4;i++){
         int index = // A random number between 0 and 15, different for each pixel (and each i !)
         visibility -= 0.2*(1.0-texture( shadowMap, vec3(ShadowCoord.xy + poissonDisk[index]/700.0,  (ShadowCoord.z-bias)/ShadowCoord.w) ));
     }
-{% endhighlight %}
+```
 
 On peut générer un nombre aléatoire avec une ligne comme celle-ci, qui retourne un nombre entre [0, 1[ :
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
     float dot_product = dot(seed4, vec4(12.9898,78.233,45.164,94.673));
     return fract(sin(dot_product) * 43758.5453);
-{% endhighlight %}
+```
 
 Dans notre cas, seed4 sera une combinaison de i (faisant que l'on échantillonne à quatre emplacements différents) et ... quelque chose d'autre. On peut utiliser gl_FragCoord (l'emplacement du pixel sur l'image) ou Position_worldspace :
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
         //  - A random sample, based on the pixel's screen location.
         //    No banding, but the shadow moves with the camera, which looks weird.
         int index = int(16.0*random(gl_FragCoord.xyy, i))%16;
         //  - A random sample, based on the pixel's position in world space.
         //    The position is rounded to the millimeter to avoid too much aliasing
         //int index = int(16.0*random(floor(Position_worldspace.xyz*1000.0), i))%16;
-{% endhighlight %}
+```
 
 Cela fera que les motifs de l'image ci-dessus vont disparaître, au détriment d'un bruit visuel. Mais au final un bruit correctement distribué soit souvent moins désagréable que les motifs précédents.
 
@@ -374,11 +374,11 @@ Au lieu de prendre seize échantillons pour chaque fragment (encore une fois, c'
 
 La gestion des lumières de type "spots" nécessite quelques petites modifications. La plus évidente est de changer la matrice de projection orthographique pour une matrice de projection en perspective :
 
-{% highlight cpp linenos %}
+``` cpp
 glm::vec3 lightPos(5, 20, 20);
 glm::mat4 depthProjectionMatrix = glm::perspective<float>(45.0f, 1.0f, 2.0f, 50.0f);
 glm::mat4 depthViewMatrix = glm::lookAt(lightPos, lightPos-lightInvDir, glm::vec3(0,1,0));
-{% endhighlight %}
+```
 
 Même chose, mais avec une pyramide tronquée de matrice de perspective à la place de celle de la matrice orthographique. Utilise texture2Dproj pour prendre en compte la division de la perspective (voir les notes de bas de pages du troisième tutoriel sur les matrices).
 
@@ -386,10 +386,10 @@ La seconde étape consiste à prendre en compte la perspective dans le shader (v
 
 Voici deux façons de faire cela en GLSL. La seconde utilise la fonction du langage textureProj, mais les deux méthodes produisent le exactement le même résultat.
 
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 if ( texture( shadowMap, (ShadowCoord.xy/ShadowCoord.w) ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 if ( textureProj( shadowMap, ShadowCoord.xyw ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
-{% endhighlight %}
+```
  
 ##Lumières ponctuelles
 

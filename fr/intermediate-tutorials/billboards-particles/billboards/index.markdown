@@ -22,7 +22,7 @@ Cette méthode est super simple.
 
 Calcule simplement où ton point est à l'écran et affiche un texte 2D (voir le [onzième tutoriel]({{site.baseurl}}/fr/intermediate-tutorials/tutorial-11-2d-text/)) à cette position.
 
-{% highlight cpp linenos %}
+``` cpp
 // Everything here is explained in Tutorial 3 ! There's nothing new.
 glm::vec4 BillboardPos_worldspace(x,y,z, 1.0f);
 glm::vec4 BillboardPos_screenspace = ProjectionMatrix * ViewMatrix * BillboardPos_worldspace;
@@ -31,7 +31,7 @@ BillboardPos_screenspace /= BillboardPos_screenspace.w;
 if (BillboardPos_screenspace.z < 0.0f){
     // Object is behind the camera, don't display it.
 }
-{% endhighlight %}
+```
 
 Voilà !
 
@@ -60,16 +60,16 @@ Une façon plus simple de l'exprimer en mathématique est :
 {% highlight text linenos %}
 CameraRight_worldspace = {ViewMatrix[0][0], ViewMatrix[1][0], ViewMatrix[2][0]}
 CameraUp_worldspace = {ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]}
-{% endhighlight %}
+```
  
 Une fois que l'on a ça, il est très simple de calculer la position finale du sommet :
 
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 vec3 vertexPosition_worldspace =
     particleCenter_wordspace
     + CameraRight_worldspace * squareVertices.x * BillboardSize.x
     + CameraUp_worldspace * squareVertices.y * BillboardSize.y;
-{% endhighlight %}
+```
 
 * *particleCenter_worldspace* est, comme son nom l'indique, la position du centre du billboard : elle est déterminée en utilisant une variable uniforme vec3
 * *squareVertices* est le modèle original. SquareVertices.x est -0.5 pour les sommets de gauche, qui sont donc déplacé vers la gauche de la caméra (à cause du *CameraRight_worldsspace)
@@ -81,7 +81,7 @@ Et presto, voici le résultat. C'était facile, non ?
 
 Pour information, voici comment squareVertices est définie :
 
-{% highlight cpp linenos %}
+``` cpp
 // The VBO containing the 4 vertices of the particles.
  static const GLfloat g_vertex_buffer_data[] = {
  -0.5f, -0.5f, 0.0f,
@@ -89,7 +89,7 @@ Pour information, voici comment squareVertices est définie :
  -0.5f, 0.5f, 0.0f,
  0.5f, 0.5f, 0.0f,
  };
-{% endhighlight %}
+```
  
 #Solution n°3 : la méthode 3D avec taille fixe
 
@@ -97,7 +97,7 @@ Comme tu peux le voir ci-dessus, la taille du billboard change suivant la distan
 
 Comme le déplacement entre le centre et un coin doit être fixe dans l'espace écran, c'est exactement ce que l'on va faire : calculer la position du centre dans l'espace écran et la décaler pour avoir la position des coins.
 
-{% highlight cpp linenos %}
+``` cpp
 vertexPosition_worldspace = particleCenter_wordspace;
 // Get the screen-space position of the particle's center
 gl_Position = VP * vec4(vertexPosition_worldspace, 1.0f);
@@ -106,7 +106,7 @@ gl_Position /= gl_Position.w;
 
 // Move the vertex in directly screen space. No need for CameraUp/Right_worlspace here.
 gl_Position.xy += squareVertices.xy * vec2(0.2, 0.05);
-{% endhighlight %}
+```
 
 Souvient-toi qu'à cet endroit du pipeline de rendu, tu es en Normalized Device Coordinates (coordonnées normalisées du périphérique), donc entre -1 et 1 sur les deux axes : ce n'est pas en pixels.
 

@@ -48,7 +48,7 @@ Mettons ça en pratique.
 
 Notre fonction d'intersection rayon - OBB ressemblera à cela :
 
-{% highlight cpp linenos %}
+``` cpp
 bool TestRayOBBIntersection(
 	glm::vec3 ray_origin,        // Origine du rayon, dans le repère du monde
 	glm::vec3 ray_direction,     // Direction du rayon (PAS la cible !), dans le repère du monde. Doit être normalisé
@@ -57,22 +57,22 @@ bool TestRayOBBIntersection(
 	glm::mat4 ModelMatrix,       // Transformation appliquée au modèle (et qui sera donc appliquée à la boîte englobante) 
 	float& intersection_distance // Résultat : la distance entre ray_origin et l'intersection avec l'OBB 
 ){
-{% endhighlight %}
+```
 
 On commençe par initialiser quelques variables. tMin est la plus grande intersection « proche » actuellement trouvée ; tMax est la plus petite intersection « lointaine » trouvée jusqu'à présent. Delta est utilisé pour calculer les intersections avec les plans.
 
-{% highlight cpp linenos %}
+``` cpp
 float tMin = 0.0f;
 float tMax = 100000.0f;
 
 glm::vec3 OBBposition_worldspace(ModelMatrix[3].x, ModelMatrix[3].y, ModelMatrix[3].z);
 
 glm::vec3 delta = OBBposition_worldspace - ray_origin;
-{% endhighlight %}
+```
 
 Maintenant, calculons l'intersection entre les deux plans qui délimitent l'OBB sur l'axe des X :
 
-{% highlight cpp linenos %}
+``` cpp
 glm::vec3 xaxis(ModelMatrix[0].x, ModelMatrix[0].y, ModelMatrix[0].z);
 float e = glm::dot(xaxis, delta);
 float f = glm::dot(ray_direction, xaxis);
@@ -80,31 +80,31 @@ float f = glm::dot(ray_direction, xaxis);
 // Beware, don't do the division if f is near 0 ! See full source code for details.
 float t1 = (e+aabb_min.x)/f; // Intersection with the "left" plane
 float t2 = (e+aabb_max.x)/f; // Intersection with the "right" plane
-{% endhighlight %}
+```
 
 t1 et t2 contiennent maintenant les distances entre l'origine du rayon et les intersections avec le plan, mais on ne sait pas dans quel ordre, donc on s'assure que t1 représente l'intersection « proche » et t2 l'intersection « lointaine » :
 
-{% highlight cpp linenos %}
+``` cpp
 if (t1>t2){ // if wrong order
 	float w=t1;t1=t2;t2=w; // swap t1 and t2
 }
-{% endhighlight %}
+```
 
 On peut mettre à jour tMin et tMax :
 
-{% highlight cpp linenos %}
+``` cpp
 // tMax est l'intersection « lointaine » la plus proche (parmi les paires de plans X,Y et Z)
 if ( t2 < tMax ) tMax = t2;
 // tMin est l'intersection « proche » la plus lointaine (parmi les paires de plans X,Y et Z)
 if ( t1 > tMin ) tMin = t1;
-{% endhighlight %}
+```
 
 Et voici une astuce : si l'intersection « lointaine » est plus proche que l'intersection « proche », il n'y a PAS d'intersection.
 
-{% highlight cpp linenos %}
+``` cpp
 if (tMax < tMin )
 	return false;
-{% endhighlight %}
+```
 
 Ça c'est pour l'axe des X. C'est exactement la même chose pour les autres axes !
 
@@ -112,7 +112,7 @@ if (tMax < tMin )
 
 La fonction TestRayOBBIntersections() permet de tester l'intersection avec une seule OBB, donc on doit toutes les tester. Dans ce tutoriel, on test simplement les boîtes les unes après les autres, mais si tu as plein d'objets, tu pourrais avoir besoin d'une structure accélératrice comme un arbre binaire de partitionnement de l'espace (Binary Space Partitionning Tree BSP-Tree) ou une hiérarchie de volume englobant (Bounding Volume Hierarchy BVH).
 
-{% highlight cpp linenos %}
+``` cpp
 for(int i=0; i<100; i++){
 
 	float intersection_distance; // Output of TestRayOBBIntersection()
@@ -140,7 +140,7 @@ for(int i=0; i<100; i++){
 		break;
 	}
 }
-{% endhighlight %}
+```
 
 Remarque: cet algorithme a un problème ! il prend la première OBB qu'il trouve. Mais si cette OBB est derrière une autre, cela est faux. Donc tu dois prendre seulement l'OBB la plus proche ! C'est au lecteur de résoudre ce problème ...
 

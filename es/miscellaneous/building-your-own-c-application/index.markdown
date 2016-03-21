@@ -27,13 +27,13 @@ This is what all those *#defines* and *#includes* are about.
 C preprocessing is a very simple process : cut'n pasting.
 
 When the preprocessor sees the following MyCode.c :
-{% highlight cpp linenos %}
+``` cpp
 #include "MyHeader.h"
 
 void main(){
     FunctionDefinedInHeader();
 }
-{% endhighlight %}
+```
 , it simply opens the file MyHeader.h, and cut'n pastes its contents into MyCode.c :
 {% highlight text linenos %}
 // Begin of MyCode.c
@@ -51,7 +51,7 @@ void main(){
 }
 
 // End of MyCode
-{% endhighlight %}
+```
 Similarly, *#define*s are cut'n pasted, *#if*s are analysed and potentially removed, etc.
 
 At the end of this step we have a preprocessed C++ file, without any #define, #if, #ifdef, #include, ready to be compiled.
@@ -61,17 +61,17 @@ As an example, here is the main.cpp file of the 6th tutorial, fully preprocessed
 ##Compilation
 
 The compiler translates C++ code into a representation that the CPU can directly understand. For instance, the following code :
-{% highlight cpp linenos %}
+``` cpp
 int i=3;
 int j=4*i+2;
-{% endhighlight %}
+```
 will be translated into this : x86 opcodes.
 {% highlight text linenos %}
 mov         dword ptr [i],3
 mov         eax,dword ptr [i]
 lea         ecx,[eax*4+2]
 mov         dword ptr [j],ecx
-{% endhighlight %}
+```
 Each .cpp file is compiled separately, and the resulting binary code is written in .o/.obj files.
 
 ![]({{site.baseurl}}/assets/images/build-own-app/compilation.png)
@@ -174,14 +174,14 @@ Use the GUI, or add the file in the .pro :
 SOURCES += main.cpp \
            other.cpp \
            foo.cpp
-{% endhighlight %}
+```
 
 ###Adding include directories
 
 In the .pro file :
 {% highlight text linenos %}
 <code>INCLUDEPATH += <your path> \ <other path> </code>
-{% endhighlight %}
+```
 
 ###Link with a library
 
@@ -247,7 +247,7 @@ add_executable(your_exe_name
     common/shader.cpp
     common/shader.hpp
 )
-{% endhighlight %}
+```
 Launch the CMake GUI, browse to your .txt file, and select your build folder. Click Configure, then Generate. Your solution will be created in the build folder.
 
 ###Adding a source file in a project
@@ -264,7 +264,7 @@ include_directories(
     external/glew-1.5.8/include/
     .
 )
-{% endhighlight %}
+```
 
 ###Link with a library
 
@@ -279,7 +279,7 @@ set(ALL_LIBS
 target_link_libraries(tutorial01_first_window
     ${ALL_LIBS}
 )
-{% endhighlight %}
+```
 
 ###Build, Run & Debug
 
@@ -299,16 +299,16 @@ Compile each .cpp file separately :
 {% highlight text linenos %}
 g++ -c main.cpp
 g++ -c tools.cpp
-{% endhighlight %}
+```
 <div id=":2v"></div>
 As said above, you will have a main.o and a tools.o files. Link them :
 {% highlight text linenos %}
 g++ main.o tools.o
-{% endhighlight %}
+```
 a *a.out* file appeared; It's your executable, run it :
 {% highlight text linenos %}
 ./a.out
-{% endhighlight %}
+```
 That's it !
 
 #Building your own C application
@@ -320,7 +320,7 @@ Armed with this knowledge, we can start building our own OpenGL application.
 * Create a new project with the IDE of your choice
 * Add a new .cpp file in the project
 * Copy and paste, for instance, the following code (this is actually playground.cpp) :
-{% highlight cpp linenos %}
+``` cpp
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -383,7 +383,7 @@ int main( void )
 
 	return 0;
 }
-{% endhighlight %}
+```
 
 * Compile the project.
 
@@ -408,7 +408,7 @@ As an example, this is what the tutorial's CMake use :
 external/glfw-2.7.2/include
 external/glm-0.9.1
 external/glew-1.5.8/include
-{% endhighlight %}
+```
 Repeat until all files are found.
 
 ##GCC - fatal error: GL/glew.h: No such file or directory
@@ -418,7 +418,7 @@ Repeat until all files are found.
 This means that the library is not installed. If you're lucky, the library is well-known and you just have to install it. This is the case for GLFW, GLEW and GLM :
 {% highlight text linenos %}
 sudo apt-get install libglfw-dev libglm-dev libglew1.6-dev
-{% endhighlight %}
+```
 If this is not a widespread library, see the answer for Visual Studio above.
 
 ##Visual Studio - error LNK2019: unresolved external symbol glfwGetWindowParam referenced in function main
@@ -433,12 +433,12 @@ As an **example**, this is what the Visual project use. The names are a bit unus
 {% highlight text linenos %}
 external\Debug\GLFW_272.lib
 external\Debug\GLEW_158.lib
-{% endhighlight %}
+```
 If you download these libraries from SourceForge ([GLFW](http://www.glfw.org/download.html), [GLEW](http://glew.sourceforge.net/index.html)) and build a library yourself, you have to specify the correct path. For instance :
 {% highlight text linenos %}
 C:\Where\You\Put\The\Library\glfw.lib
 C:\Where\You\Put\The\Other\Library\glew32.lib
-{% endhighlight %}
+```
 
 ##GCC - main.cpp: undefined reference to `glfwInit'
 
@@ -457,7 +457,7 @@ This might me tricky to track down. Here are several options:
 This means that the library (in this case, glew) has been compiled as a *static* library, but you're trying to use it as a *dynamic* library. Simply add the following preprocessor directive in your compiler's options (for your own project, not glew's) :
 {% highlight text linenos %}
 GLEW_STATIC
-{% endhighlight %}
+```
  
 
 ###I have some other weird problem with GLFW
@@ -467,7 +467,7 @@ Maybe GLFW was built as a dynamic library, but you're trying to use it as a stat
 Try adding the following preprocessor directive :
 {% highlight text linenos %}
 GLFW_DLL
-{% endhighlight %}
+```
 
 ### I have another linker problem ! Help me, I'm stuck !
 
@@ -518,28 +518,28 @@ Three possible reasons :
 * You're not calling glewInit() AFTER glfwOpenWindow()
 * You're using a core OpenGL profile, and you didn't create a VAO. Add the following code after glewInit() :
 
-{% highlight cpp linenos %}
+``` cpp
 	GLuint VertexArrayID;
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
-{% endhighlight %}
+```
 
 * You're using the default build of GLEW, which has a bug. You can't use a Core OpenGL Profile due to this bug. Either Use glewExperimental=true before glewInit(), or ask GLFW for a Compatibility Profile instead :
 
-{% highlight cpp linenos %}
+``` cpp
     glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
-{% endhighlight %}
+```
 
 ##My program crashes when I try to load some file
 
 Setup your working directory correctly. See Tutorial 1.
 
 Create a test.txt file and try the following code :
-{% highlight cpp linenos %}
+``` cpp
 if ( fopen("test.txt", "r" ) == NULL ){
     printf("I'm probably running my program from a wrong folder");
 }
-{% endhighlight %}
+```
 <span style="color: #ff0000;">USE THE DEBUGGER !!!! </span>Seriously ! Don't debug with printf(); use a good IDE. [http://www.dotnetperls.com/debugging](http://www.dotnetperls.com/debugging) is for C# but is valid for C++ too. Will vary for XCode and QtCreator, but concepts remain exactly the same.
 
 ##Something else is wrong

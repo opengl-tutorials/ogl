@@ -39,5 +39,5 @@ as the name is changed.
   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
  0. You just DO WHAT THE FUCK YOU WANT TO.
-{% endhighlight %}
+```
 Creative-Common licenseの下でチュートリアル上のすべてのものは利用可能です。: CC-BY-NC-NDについては[ここ](http://creativecommons.org/licenses/by-nc-nd/3.0/fr/deed.en)を見てください。

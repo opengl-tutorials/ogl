@@ -63,7 +63,7 @@ If you created a program from scratch, make sure you created a VAO :
 GLuint VertexArrayID;
  glGenVertexArrays(1, &VertexArrayID);
  glBindVertexArray(VertexArrayID);
-{% endhighlight %}
+```
 
 ##GLEW bug
 
@@ -73,13 +73,13 @@ GLEW has a bug which make it impossible to use a core context (except when you u
 
 {% highlight text linenos %}
 glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
-{% endhighlight %}
+```
 
 * Use glewExperimental; this is the recommended way:
 
 {% highlight text linenos %}
 glewExperimental = true;
-{% endhighlight %}
+```
 
 * Actually fix glew... See [this patch](http://code.google.com/p/opengl-tutorial-org/source/browse/external/glew-1.5.8.patch?name=0009_33).
 

@@ -135,45 +135,45 @@ Código ! Porfin !
 Bueno, en realidad no. Todos los tutoriales te muestran el "nivel bajo" de hacer las cosas, de manera que puedas ver qué no es nada mágico, es parte de un largo y tedioso proceso, así que vamos a usar GLFW, una librería externa para que haz la parte aburrida por nosotros. Si realmente quisieras, podrías usar el API de Win32 en windows, el API X11 en Linux o el API Cocoa en Mac. Podría usar otras librerías como SFML, FreeGLUT, SDL, ... Ve los [vinculos de herramientas útiles aquí](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) 
 
 Bueno, ahora si. Listos? Primero, debemos lidiar con las dependencias : necesitamos lo básico para mostrar mensajes en consola :
-{% highlight cpp linenos %}
+``` cpp
 // Incluir los cabeceros estándar
 #include <stdio.h>
 #include <stdlib.h>
-{% endhighlight %}
+```
 Primero GLEW. Esto de hecho es un poco de mágia, pero luego lo explicamos.
-{% highlight cpp linenos %}
+``` cpp
 // Incluya GLEW. Siempre incluyalo antes de gl.h y glfw.h, un poco de magia.
 #include <GL/glew.h>
-{% endhighlight %}
+```
 Decidimos dejar que GLFW maneje la ventana y el teclado, asi que lo incluimos :
-{% highlight cpp linenos %}
+``` cpp
 // Incluir GLFW
 #include <GL/glfw3.h>
-{% endhighlight %} 
+``` 
 En realidad no necesitamos esta en este momento, pero una librería para matemáticas 3D. Nos será muy util pronto. No hay magia en GLM, ustes puede escribir la suya propia si desea. Simplemente esta es útil. El "using namespace" esta allí para evitar que debamos escribir "glm::vec3", y escribamos "vec3" en su lugar.
-{% highlight cpp linenos %}
+``` cpp
 // Incluir GLM
 #include <glm/glm.hpp>
 using namespace glm;
-{% endhighlight %}
+```
 Si no puede copiar el código, todo esto está incluído en playground.cpp. 
 El compilador se va a quejar por que no hay una función main(). Creamos una :
-{% highlight cpp linenos %}
+``` cpp
 int main(){
-{% endhighlight %}
+```
 Lo primero que haremos es inicializar GLFW :
-{% highlight cpp linenos %}
+``` cpp
 // Inicializar GLFW
 if( !glfwInit() )
 {
     fprintf( stderr, "Error al inicializar GLFW\n" );
     return -1;
 }
-{% endhighlight %}
+```
 Ahora podemos crear nuestra primera ventana OpenGL !
 
  
-{% highlight cpp linenos %}
+``` cpp
 glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // Queremos OpenGL 3.3
 glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -194,9 +194,9 @@ if (glewInit() != GLEW_OK) {
     fprintf(stderr, "Falló al inicializar GLEW\n");
     return -1;
 }
-{% endhighlight %}
+```
 Construya este y ejecutelo. Una ventana debe aparecer y se cerrará de inmediato. Debemos hacer que espere hasta que alguien oprima la tecla ESC :
-{% highlight cpp linenos %}
+``` cpp
 // Capturar la tecla ESC cuando sea presionada
 glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
@@ -210,7 +210,7 @@ do{
 } // Revisar que la teclar ESC fue presionada y cerrar la ventana
 while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
 glfwWindowShouldClose(window) == 0 );
-{% endhighlight %}
+```
 
 Y así termina el primer tutorial ! En el tutorial 2 aprenderás a dibujar un triangulo.
 

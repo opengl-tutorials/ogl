@@ -19,11 +19,11 @@ order: 30
 #API
 
 我们将实现这些简单的接口（位于common/text2D.h）：
-{% highlight cpp linenos %}
+``` cpp
 void initText2D(const char * texturePath);
 void printText2D(const char * text, int x, int y, int size);
 void cleanupText2D();
-{% endhighlight %}
+```
 为了让代码在640*480和1080p分辨率下都能正常工作，x和y的范围分别设为[0-800]和[0-600]。顶点着色器将根据实际屏幕大小做对它做调整。
 
 完整的实现代码请参阅common/text2D.cpp。
@@ -42,12 +42,12 @@ printText2D负责生成一个矩形，并正确计算出该矩形的屏幕位置
 #绘制
 
 首先，填充这些缓冲：
-{% highlight cpp linenos %}
+``` cpp
 std::vector vertices;
 std::vector UVs;
-{% endhighlight %}
+```
 然后为文本中的每个字符计算其四边形包围盒的顶点坐标，然后添加（组成这个四边形的）两个三角形：
-{% highlight cpp linenos %}
+``` cpp
 for ( unsigned int i=0 ; i<length ; i++ ){
 
     glm::vec2 vertex_up_left    = glm::vec2( x+i*size     , y+size );
@@ -62,13 +62,13 @@ for ( unsigned int i=0 ; i<length ; i++ ){
     vertices.push_back(vertex_down_right);
     vertices.push_back(vertex_up_right);
     vertices.push_back(vertex_down_left);
-{% endhighlight %}
+```
 最后计算UV坐标。左上角坐标的计算方式如下：
-{% highlight cpp linenos %}
+``` cpp
     char character = text[i];
     float uv_x = (character%16)/16.0f;
     float uv_y = (character/16)/16.0f;
-{% endhighlight %}
+```
 这样做是可行的（只能说基本上行得通，详见下文），因为[A的ASCII码](http://www.asciitable.com/)为65。
 65%16 = 1，因此A位于第1列（列号从0开始）。
 
@@ -77,7 +77,7 @@ for ( unsigned int i=0 ; i<length ; i++ ){
 两者都除以16.0使之符合OpenGL的[0.0 - 1.0]纹理坐标范围。
 
 现在只需对顶点重复相同的操作：
-{% highlight cpp linenos %}
+``` cpp
     glm::vec2 uv_up_left    = glm::vec2( uv_x           , 1.0f - uv_y );
     glm::vec2 uv_up_right   = glm::vec2( uv_x+1.0f/16.0f, 1.0f - uv_y );
     glm::vec2 uv_down_right = glm::vec2( uv_x+1.0f/16.0f, 1.0f - (uv_y + 1.0f/16.0f) );
@@ -91,11 +91,11 @@ for ( unsigned int i=0 ; i<length ; i++ ){
     UVs.push_back(uv_up_right);
     UVs.push_back(uv_down_left);
  }
-{% endhighlight %}
+```
 其余的操作和往常一样：绑定缓冲，填充，选择着色器程序，绑定纹理，开启、绑定、配置顶点属性，开启混合，调用`glDrawArrays`。恭喜恭喜，大功告成喽！
 
 有一点非常重要：这些坐标位于[0,800][0,600]范围内。也就是说，这里**不需要**矩阵。顶点着色器只需简单换算就可以把这些坐标转换到[-1,1][-1,1]范围内（也可以在C++代码中完成这一步）。
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 void main(){
 
     // Output position of the vertex, in clip space
@@ -107,13 +107,13 @@ void main(){
     // UV of the vertex. No special space for this one.
     UV = vertexUV;
 }
-{% endhighlight %}
+```
 片段着色器的工作量也很少：
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 void main(){
     color = texture( myTextureSampler, UV );
 }
-{% endhighlight %}
+```
 顺便说一下，这些代码只能处理拉丁字符，请勿将其应用到工程中。否则您的产品在印度、中国、日本（甚至德国，因为纹理上没有&szlig;这个字母）就难以出售了。这张纹理是我用法语字符集生成的，在法国使用没有问题（注意 &eacute;, &agrave;, &ccedil;等字母）。修改其他教程的代码时请注意库的版本。其他教程大多使用OpenGL 2，和本教程不兼容。不幸的是我不知道有什么库能较好地处理UTF-8字符集。
 
 另外，建议您阅读Joel Spolsky写的[The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets (No Excuses!)](http://www.joelonsoftware.com/articles/Unicode.html) by Joel Spolsky.

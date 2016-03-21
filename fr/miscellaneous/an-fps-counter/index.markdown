@@ -31,7 +31,7 @@ Un compteur de FPS ressemble à cela :
      }
 
      ... rest of the main loop
-{% endhighlight %}
+```
 
 Il y a une chose étrange dans ce code. Il affiche le temps, en millisecondes, nécessaire pour afficher une image (la moyenne sur une seconde) au lieu du nombre d'images dessinées durant la dernière seconde.
 

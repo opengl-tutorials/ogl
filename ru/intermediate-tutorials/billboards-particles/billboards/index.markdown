@@ -22,7 +22,7 @@ What's different with billboards is that they are positionned at a specific loca
 This one is supra-easy.
 
 Just compute where your point is on screen, and display a 2D text (see Tutorial 11) at this position.
-{% highlight cpp linenos %}
+``` cpp
 // Everything here is explained in Tutorial 3 ! There's nothing new.
 glm::vec4 BillboardPos_worldspace(x,y,z, 1.0f);
 glm::vec4 BillboardPos_screenspace = ProjectionMatrix * ViewMatrix * BillboardPos_worldspace;
@@ -31,7 +31,7 @@ BillboardPos_screenspace /= BillboardPos_screenspace.w;
 if (BillboardPos_screenspace.z < 0.0f){
     // Object is behind the camera, don't display it.
 }
-{% endhighlight %}
+```
 Ta-dah !
 
 On the plus side, this method is really easy, and the billboard will have the same size regardless of its distance to the camera. But 2D text is always displayed on top of everything else, and this can/will mess up the rendering and show above other objects.
@@ -66,16 +66,16 @@ An easier way to express the same math is :
 {% highlight text linenos %}
 CameraRight_worldspace = {ViewMatrix[0][0], ViewMatrix[1][0], ViewMatrix[2][0]}
 CameraUp_worldspace = {ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]}
-{% endhighlight %}
+```
  
 
 Once we have this, it's very easy to compute the final vertex' position :
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 vec3 vertexPosition_worldspace =
     particleCenter_wordspace
     + CameraRight_worldspace * squareVertices.x * BillboardSize.x
     + CameraUp_worldspace * squareVertices.y * BillboardSize.y;
-{% endhighlight %}
+```
 
 * particleCenter_worldspace is, as its name suggests, the billboard's center position. It is specified with an uniform vec3.
 * squareVertices is the original mesh. squareVertices.x is -0.5 for the left vertices, which are thus moved towars the left of the camera (because of the *CameraRight_worldspace)
@@ -88,7 +88,7 @@ vec3 vertexPosition_worldspace =
  
 
 For the record, here's how squareVertices is made :
-{% highlight cpp linenos %}
+``` cpp
 // The VBO containing the 4 vertices of the particles.
  static const GLfloat g_vertex_buffer_data[] = {
  -0.5f, -0.5f, 0.0f,
@@ -96,7 +96,7 @@ For the record, here's how squareVertices is made :
  -0.5f, 0.5f, 0.0f,
  0.5f, 0.5f, 0.0f,
  };
-{% endhighlight %}
+```
  
 
 #Solution #3 : The fixed-size 3D way
@@ -104,7 +104,7 @@ For the record, here's how squareVertices is made :
 As you can see above, the size of the billboard changes with respect to the camera's distance. This is the expected result in some cases, but in others, such as health bars, you probably want a fixed-size instead.
 
 Since the displacement between the center and a corner must be fixed in screen-space, that's exactly what we're going to do : compute the center's position in screen space, and offset it.
-{% highlight cpp linenos %}
+``` cpp
 vertexPosition_worldspace = particleCenter_wordspace;
 // Get the screen-space position of the particle's center
 gl_Position = VP * vec4(vertexPosition_worldspace, 1.0f);
@@ -113,7 +113,7 @@ gl_Position /= gl_Position.w;
 
 // Move the vertex in directly screen space. No need for CameraUp/Right_worlspace here.
 gl_Position.xy += squareVertices.xy * vec2(0.2, 0.05);
-{% endhighlight %}
+```
 Remember that at this stage of the rendering pipeline, you're in Normalized Device Coordinates, so between -1 and 1 on both axes : it's not in pixels.
 
 If you want a size in pixels, easy : just use (ScreenSizeInPixels / BillboardSizeInPixels) instead of BillboardSizeInScreenPercentage.

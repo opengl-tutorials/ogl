@@ -26,13 +26,13 @@ L'étape du préprocesseur est très simple : c'est du copier-coller.
 
 Lorsque le préprocesseur voit le code du fichier MyCode.c suivant :
 
-{% highlight cpp linenos %}
+``` cpp
 #include "MyHeader.h"
 
 void main(){
     FunctionDefinedInHeader();
 }
-{% endhighlight %}
+```
 
 Il ouvre simplement le fichier MyHeader.h et copie-colle son contenu dans le fichier MyCode.c.
 
@@ -52,7 +52,7 @@ void main(){
 }
 
 // End of MyCode
-{% endhighlight %}
+```
 
 De façon similaire, les *#define* sont copiées-collées, les *#if* sont analysés et potentiellement retirés, etc.
 
@@ -63,10 +63,10 @@ Par exemple, voici le fichier main.cpp du sixième tutoriel, complètement prét
 ##Compilation
 
 Le compilateur traduit le code C++ en une représentation que le CPU peut comprendre directement. Par exemple, le code suivant :
-{% highlight cpp linenos %}
+``` cpp
 int i=3;
 int j=4*i+2;
-{% endhighlight %}
+```
 
 sera traduit en ces opcodes x86 :
 
@@ -75,7 +75,7 @@ mov         dword ptr [i],3
 mov         eax,dword ptr [i]
 lea         ecx,[eax*4+2]
 mov         dword ptr [j],ecx
-{% endhighlight %}
+```
 
 Chaque fichier .cpp est compilé séparément et le code binaire résultant est écrit dans des fichiers .o/.obj.
 
@@ -171,7 +171,7 @@ Utilise l'interface, ou ajoute un fichier dans le .pro :
 SOURCES += main.cpp \
            other.cpp \
            foo.cpp
-{% endhighlight %}
+```
 
 ###Ajouter un répertoire d'inclusion
 
@@ -179,7 +179,7 @@ Dans le fichier .pro :
 
 {% highlight text linenos %}
 INCLUDEPATH += [ton chemin] \ [ton autre chemin]
-{% endhighlight %}
+```
 
 ###Lier avec une bibliothèque
 
@@ -229,7 +229,7 @@ add_executable(your_exe_name
     common/shader.cpp
     common/shader.hpp
 )
-{% endhighlight %}
+```
 
 Lance l'interface graphique de CMake, navigue jusqu'à atteindre ton fichier .txt et sélectionne ton dossier de compilation. Clique sur « Configurer » (Configure) puis « Générer » (Generate). Ta solution va être créée dans le dossier de compilation.
 
@@ -247,7 +247,7 @@ include_directories(
     external/glew-1.5.8/include/
     .
 )
-{% endhighlight %}
+```
 
 ###Lier une bibliothèque
 
@@ -262,7 +262,7 @@ set(ALL_LIBS
 target_link_libraries(tutorial01_first_window
     ${ALL_LIBS}
 )
-{% endhighlight %}
+```
 
 ###Compiler, exécuter et déboguer
 
@@ -283,19 +283,19 @@ Compile chaque fichier .cpp séparément :
 {% highlight text linenos %}
 g++ -c main.cpp
 g++ -c tools.cpp
-{% endhighlight %}
+```
 
 Comme indiqué précédemment, tu vas obtenir des fichiers main.o et tools.o. Link-les :
 
 {% highlight text linenos %}
 g++ main.o tools.o
-{% endhighlight %}
+```
 
 un fichier *a.out* apparaît ; c'est ton exécutable. Exécute-le :
 
 {% highlight text linenos %}
 ./a.out
-{% endhighlight %}
+```
 
 C'est tout !
 
@@ -309,7 +309,7 @@ Armé de cette connaissance, on peut commencer à compiler soi-même une applica
 4. Ajoute un nouveau fichier .cpp dans le projet.
 5. Copie et colle, par exemple, le code suivant (c'est en fait le fichier playground.cpp) :
 
-{% highlight cpp linenos %}
+``` cpp
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -372,7 +372,7 @@ int main( void )
 
 	return 0;
 }
-{% endhighlight %}
+```
 
 6. Compile le projet.
 
@@ -398,7 +398,7 @@ Par exemple, voici ce que contiennent les fichiers de CMake de ces tutoriels :
 external/glfw-2.7.2/include
 external/glm-0.9.1
 external/glew-1.5.8/include
-{% endhighlight %}
+```
 
 Répéte ça jusqu'à ce que tous les fichiers soient trouvés.
 
@@ -410,7 +410,7 @@ Répéte ça jusqu'à ce que tous les fichiers soient trouvés.
 
 {% highlight text linenos %}
 sudo apt-get install libglfw-dev libglm-dev libglew1.6-dev
-{% endhighlight %}
+```
 
 Si ce n'est pas une bibliothèque répandue, regarde la réponse pour Visual Studio ci-dessus.
 
@@ -427,14 +427,14 @@ Par **exemple**, voici ce que le projet Visual Studio utilise. Les noms sont que
 {% highlight text linenos %}
 external\Debug\GLFW_272.lib
 external\Debug\GLEW_158.lib
-{% endhighlight %}
+```
 
 Si tu télécharges ces bibliothèques à partir de SourceForge ([GLFW](http://www.glfw.org/download.html), [GLEW](http://glew.sourceforge.net/index.html)) et les compile toi-même, tu devras spécifier le chemin adéquat. Par exemple :
 
 {% highlight text linenos %}
 C:\Where\You\Put\The\Library\glfw.lib
 C:\Where\You\Put\The\Other\Library\glew32.lib
-{% endhighlight %}
+```
 
 ##GCC - main.cpp : référence indéfinie vers 'glfwInit'
 
@@ -454,7 +454,7 @@ Même réponse que pour Visual Studio ci-dessus.
 
 {% highlight text linenos %}
 GLEW_STATIC
-{% endhighlight %}
+```
  
 ###J'ai quelques problèmes étranges avec GLFW
 
@@ -464,7 +464,7 @@ Essaye d'ajouter la définition pour le préprocesseur suivante :
 
 {% highlight text linenos %}
 GLFW_DLL
-{% endhighlight %}
+```
 
 ###J'ai un autre problème avec l'éditeur de liens ! Aidez-moi, je suis bloqué !
 
@@ -512,17 +512,17 @@ Trois raisons possible:
 * Tu n'appels pas *glewInit()* APRES *glfwOpenWindow()*
 * Tu utilises le profil OpenGL Core, et tu n'a pas crée de VAO, Ajoute ça après *glewInit()* :
 
-{% highlight cpp linenos %}
+``` cpp
 	GLuint VertexArrayID;
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
-{% endhighlight %}
+```
 
 * Tu utilise la version normales de GLEW, qui a un bug. Tu ne peux pas utiliser un profil OpenGL Corea cause d'un bug. Soit tu utilise: glewExperimental=true avant glewInit(), soit tu demandes a GLFW un Compatibility Profile à la place :
 
-{% highlight cpp linenos %}
+``` cpp
     glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
-{% endhighlight %}
+```
 
 ##Mon programme crashe lorsque j'essaie de charger un fichier
 
@@ -530,11 +530,11 @@ Définis ton répertoire de travail correctement. Lis le premier tutoriel.
 
 Crée un fichier test.txt et essaye le code suivant :
 
-{% highlight cpp linenos %}
+``` cpp
 if ( fopen("test.txt", "r" ) == NULL ){
     printf("I'm probably running my program from a wrong folder");
 }
-{% endhighlight %}
+```
 <span style="color: #ff0000;">UTILISE LE DÉBOGUEUR !!!!</span>
 Sincèrement ! Ne débogue pas avec printf() ; utilise un bon EDI. [http://www.dotnetperls.com/debugging](http://www.dotnetperls.com/debugging) est pour le C# mais c'est aussi valide pour le C++. Cela peut être différent pour XCode ou Qt Creator, mais les concepts restent exactement les mêmes.
 

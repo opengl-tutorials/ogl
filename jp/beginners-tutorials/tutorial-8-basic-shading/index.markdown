@@ -48,7 +48,7 @@ triangle ( v1, v2, v3 )
 edge1 = v2-v1
 edge2 = v3-v1
 triangle.normal = cross(edge1, edge2).normalize()
-{% endhighlight %}
+```
 法線(normal)と正規化(normalize())を混同しないでください。normalize()は(法線とは限らない)ベクトルの長さでそのベクトル自身を割ることで長さを1にします。法線(normal)とは垂直線のベクトルを表す名前です。
 
 ##頂点法線
@@ -58,19 +58,19 @@ triangle.normal = cross(edge1, edge2).normalize()
 vertex v1, v2, v3, ....
 triangle tr1, tr2, tr3 // all share vertex v1
 v1.normal = normalize( tr1.normal + tr2.normal + tr3.normal )
-{% endhighlight %}
+```
 
 ##OpenGLでの頂点法線の使用方法
 
 OpenGLで法線を使うのはとても簡単です。法線は頂点の属性です。だから位置や色、UV座標と同じようにいつもどおりやっていきます。チュートリアル7で作ったloadOBJローダはOBJファイルから既に法線情報を読み込んでいます。
-{% highlight cpp linenos %}
+``` cpp
 GLuint normalbuffer;
  glGenBuffers(1, &normalbuffer);
  glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
  glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
-{% endhighlight %}
+```
 and
-{% highlight cpp linenos %}
+``` cpp
  // 3つ目の属性：法線
  glEnableVertexAttribArray(2);
  glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
@@ -82,7 +82,7 @@ and
      0,                                // ストライド
      (void*)0                          // 配列バッファオフセット
  );
-{% endhighlight %}
+```
 はじめるにはこれで充分です。
 
 #拡散光
@@ -106,7 +106,7 @@ and
 これは、熟視角で到達し光の場合、表面の各点はより暗く見えることを意味します。(ただし、より広い範囲が照らされます。つまり光の総量は変わりません。)
 
 これは、ピクセルの色を計算するときに、光の入ってきた角度と表面の法線との角度が重要になることを意味します。次のことを得ます。
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 // 法線と光の方向の角度のコサイン
 // 0以上に固定します。
 //  - 光が三角形に水平の場合 -> 1
@@ -114,13 +114,13 @@ and
 float cosTheta = dot( n,l );
 
 color = LightColor * cosTheta;
-{% endhighlight %}
+```
 ここでnは表面の法線で、lは表面から光に向かう方向の単位ベクトルを表します。(反対の方向ではありません。直感的ではありませんが、計算を簡単にします。)
 
 ##符号に関する注意
 
 上のcosThetaの式では何か忘れています。もし光が三角形の後ろにあると、nとlは反対になります。だからnとlは負になります。これは"色＝負の数"を意味しますがこれでは意味が分かりません。だからcosThetaの下限を0に固定します。
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 // 法線と光の方向の角度のコサイン
 // clamped above 0
 //  - 光が三角形に水平の場合 -> 1
@@ -129,7 +129,7 @@ color = LightColor * cosTheta;
 float cosTheta = clamp( dot( n,l ), 0,1 );
 
 color = LightColor * cosTheta;
-{% endhighlight %}
+```
 
 ##物体の色
 
@@ -139,22 +139,22 @@ color = LightColor * cosTheta;
 
 
 簡単な計算式でこれを実現できます。
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 color = MaterialDiffuseColor * LightColor * cosTheta;
-{% endhighlight %}
+```
 
 ##光のモデル化
 
 ろうそくのように空間の全方向に放出されるような光であると仮定します。
 
 そのような光の場合、表面に到達する光束は光との距離に依存します。つまり遠くでは少ない光しか届きません。実際、光の量は距離の2乗で少なくなります。
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 color = MaterialDiffuseColor * LightColor * cosTheta / (distance*distance);
-{% endhighlight %}
+```
 最後に、光の強さを調節するようなパラメータも必要です。これはLightColorにエンコードされます。(後のチュートリアルで見ます。)しかし、ここではただ色(例えば白色)と強さ(例えば60ワット)を持っていることとします。
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 color = MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance);
-{% endhighlight %}
+```
 
 ##すべてを合わせる
 
@@ -165,14 +165,14 @@ MaterialDiffuseColorは単純にテクスチャから取り出します。
 LightColorとLightPowerはGLSL uniformを通してシェーダでセットします。
 
 cosThetaはnとlに依存します。どの空間でも表現できますが、ここではカメラ空間を選びます。なぜならカメラ空間だと光の位置を計算するのが簡単だからです。
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 // カメラ空間で、計算されたフラグメントの法線
  vec3 n = normalize( Normal_cameraspace );
  // 光の方向(フラグメントから光の方向)
  vec3 l = normalize( LightDirection_cameraspace );
-{% endhighlight %}
+```
 Normal_cameraspaceとLightDirection_cameraspaceは頂点シェーダで計算され、フラグメントシェーダへ送られます。
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 // クリップ空間での頂点の出力位置、MVP&times;位置
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
@@ -190,7 +190,7 @@ LightDirection_cameraspace = LightPosition_cameraspace + EyeDirection_cameraspac
 
 // カメラ空間での、頂点の法線
 Normal_cameraspace = ( V * M * vec4(vertexNormal_modelspace,0)).xyz; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
-{% endhighlight %}
+```
 このコードは難しそうに見えますが、チュートリアル3で習ったこと以外は使っていません。各ベクトルの名前に空間の名前が入れるように注意しました。だから、何が起こっているかを追っていくのがより簡単になります。**あなたもそういう記法を取るべきです。**
 
 MとVはモデル行列とビュー行列で、MVP行列と同じようにシェーダへ送られます。
@@ -219,16 +219,16 @@ MとVはモデル行列とビュー行列で、MVP行列と同じようにシェ
 だから一般的な方法は単純に光を偽装します。実は、3Dモデルの後ろ側が真っ黒にならないようにするために、単純に3Dモデルに*発光*させるだけです。
 
 これは次のように実現できます。
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
-{% endhighlight %}
-{% highlight glsl linenos cssclass=highlightglslfs %}
+```
+``` glsl fs
 color =
  // 環境光：直接当たらない光をシミュレートします。
  MaterialAmbientColor +
  // 拡散光：物体の"色"
  MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) ;
-{% endhighlight %}
+```
 どうなったか見てみましょう。
 
 ##結果
@@ -248,7 +248,7 @@ OK、少しよくなりました。より良い結果を得るために(0.1, 0.1
 画像で見たように、葉のような形をしています。極端なケースでは、拡散光はなくその葉はとても狭い範囲で(すべての光は一つの方向へ反射し)鏡のようになります。
 
 (*鏡を得るためにパラメータを微調整することも出来ますが、ここでは、この鏡で考慮すべきことはランプだけです。だから風変わりな鏡のようになります。*)
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 // アイ(目)ベクトル(カメラのほうへ向かう)
 vec3 E = normalize(EyeDirection_cameraspace);
 // 三角形が光を反射する方向
@@ -266,7 +266,7 @@ color =
     MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) ;
     // 鏡面光：鏡のように反射したハイライト
     MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance*distance);
-{% endhighlight %}
+```
 Rは光が反射する方向です。Eは目の方向とは逆です。("l"と同じです。)もし二つの角度が小さければ、反射する方向を見ていることを意味します。
 
 pow(cosAlpha,5)は反射する"葉"の広さを調整するために使います。薄い"葉"を得るために5乗しています。

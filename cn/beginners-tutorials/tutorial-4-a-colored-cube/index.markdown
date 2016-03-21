@@ -62,12 +62,12 @@ static const GLfloat g_vertex_buffer_data[] = {
 -1.0f, 1.0f, 1.0f,
 1.0f,-1.0f, 1.0f
 };
-{% endhighlight %}
+```
 OpenGL的缓冲由一些标准的函数（glGenBuffers, glBindBuffer, glBufferData, glVertexAttribPointer）来创建、绑定、填充和配置；这些可参阅第二课。若有遗忘，可参见第二课。绘制的调用也没变，只需改变绘制的点的个数：
 {% highlight text linenos %}
 // Draw the triangle !
 glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles -> 6 squares
-{% endhighlight %}
+```
 关于这段代码，有几点要说明一下：
 
 * 截至目前我们使用的三维模型都是固定的：只能在源码中修改模型，重新编译，然后祈祷不要出什么差错。我们将在第七课中学习如何动态地加载模型。
@@ -120,14 +120,14 @@ static const GLfloat g_color_buffer_data[] = {
 0.820f, 0.883f, 0.371f,
 0.982f, 0.099f, 0.879f
 };
-{% endhighlight %}
+```
 缓冲的创建、绑定和填充方法与之前一样：
 {% highlight text linenos %}
 GLuint colorbuffer;
 glGenBuffers(1, &colorbuffer);
 glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
-{% endhighlight %}
+```
 配置也一样：
 {% highlight text linenos %}
 // 2nd attribute buffer : colors
@@ -141,12 +141,12 @@ GL_FALSE, // normalized?
 0, // stride
 (void*)0 // array buffer offset
 );
-{% endhighlight %}
+```
 现在在顶点着色器中已经能访问这个新增的缓冲了：
 {% highlight text linenos %}
 // Notice that the "1" here equals the "1" in glVertexAttribPointer
 layout(location = 1) in vec3 vertexColor;
-{% endhighlight %}
+```
 这一课的顶点着色器没有什么复杂的效果，仅仅是简单地把颜色传递到片段着色器：
 {% highlight text linenos %}
 // Output data ; will be interpolated for each fragment.
@@ -160,18 +160,18 @@ void main(){
 // to produce the color of each fragment
 fragmentColor = vertexColor;
 }
-{% endhighlight %}
+```
 在片段着色器中要再次声明片段颜色：
 {% highlight text linenos %}
 // Interpolated values from the vertex shaders
 in vec3 fragmentColor;
-{% endhighlight %}
+```
 然后将其拷贝到输出颜色：
 {% highlight text linenos %}
 // Output color = color specified in the vertex shader,
 // interpolated between all 3 surrounding vertices
 color = fragmentColor;
-{% endhighlight %}
+```
 于是得到：
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/missing_z_buffer.png)
@@ -205,7 +205,7 @@ color = fragmentColor;
 glEnable(GL_DEPTH_TEST);
 // Accept fragment if it closer to the camera than the former one
 glDepthFunc(GL_LESS);
-{% endhighlight %}
+```
 问题解决了。
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/one_color_per_vertex.png)
@@ -226,7 +226,7 @@ g_color_buffer_data[3*v+0] = your red color here;
 g_color_buffer_data[3*v+1] = your green color here;
 g_color_buffer_data[3*v+2] = your blue color here;
 }
-{% endhighlight %}
+```
 
 * 完成上面习题后，尝试每帧都改变颜色。您得在每帧都调用`glBufferData`。请确保已绑定（`glBindBuffer`）了合适的缓冲！
 

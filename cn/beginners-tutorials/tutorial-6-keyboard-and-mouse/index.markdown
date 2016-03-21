@@ -34,7 +34,7 @@ do{
 
     // ...
 }
-{% endhighlight %}
+```
 这段代码需要3个新函数：
 
 * computeMatricesFromInputs()读键盘和鼠标操作，然后计算投影观察矩阵。这一步正是精华所在。
@@ -60,7 +60,7 @@ float initialFoV = 45.0f;
 
 float speed = 3.0f; // 3 units / second
 float mouseSpeed = 0.005f;
-{% endhighlight %}
+```
 FoV is the level of zoom. 80&deg; = very wide angle, huge deformations. 60&deg; - 45&deg; : standard. 20&deg; : big zoom.
 
 首先根据输入，重新计算位置，水平角，竖直角和视野（FoV）；再由它们算出观察和投影矩阵。
@@ -72,12 +72,12 @@ FoV is the level of zoom. 80&deg; = very wide angle, huge deformations. 60&deg; 
 // Get mouse position
 int xpos, ypos;
 glfwGetMousePos(&xpos, &ypos);
-{% endhighlight %}
+```
 我们要把光标放到屏幕中心，否则它将很快移到屏幕外，失去响应。
 {% highlight text linenos %}
 // Reset mouse position for next frame
 glfwSetMousePos(1024/2, 768/2);
-{% endhighlight %}
+```
 注意：这段代码假设窗口大小是1024*768，这不是必须的。您可以用glfwGetWindowSize来设定窗口大小。
 
 计算观察角度：
@@ -85,7 +85,7 @@ glfwSetMousePos(1024/2, 768/2);
 // Compute new orientation
 horizontalAngle += mouseSpeed * deltaTime * float(1024/2 - xpos );
 verticalAngle   += mouseSpeed * deltaTime * float( 768/2 - ypos );
-{% endhighlight %}
+```
 从右往左读这几行代码：
 
 * 1024/2 - xpos表示鼠标离窗口中心点的距离。这个值越大，转动角越大。
@@ -101,7 +101,7 @@ glm::vec3 direction(
     sin(verticalAngle),
     cos(verticalAngle) * cos(horizontalAngle)
 );
-{% endhighlight %}
+```
 这是一种标准计算，如果您不懂余弦和正弦，下面有一个简短的解释：
 
 <img class="alignnone whiteborder" src="http://www.numericana.com/answer/trig.gif" alt="" width="150" height="150" />
@@ -118,12 +118,12 @@ glm::vec3 right = glm::vec3(
     0,
     cos(horizontalAngle - 3.14f/2.0f)
 );
-{% endhighlight %}
+```
 我们有一个"右"和一个视线方向（或者说是"前"）。"上"与两者垂直。叉乘是一个很有用的数学工具，可以轻松地将三者联系起来：
 {% highlight text linenos %}
 // Up vector : perpendicular to both direction and right
 glm::vec3 up = glm::cross( right, direction );
-{% endhighlight %}
+```
 叉乘的具体含义是什么？很简单，回忆第三课讲到的右手定则。第一个向量是大拇指；第二个是食指；叉乘的结果就是中指。这种方法十分快捷。
 
 ##位置
@@ -146,7 +146,7 @@ if (glfwGetKey( GLFW_KEY_RIGHT ) == GLFW_PRESS){
 if (glfwGetKey( GLFW_KEY_LEFT ) == GLFW_PRESS){
     position -= right * deltaTime * speed;
 }
-{% endhighlight %}
+```
 这里唯一特别的是deltaTime。您决不会希望每帧偏移1个单位距离的，原因很简单：
 
 * 如果您的电脑运行速度快，fps = 60，您每秒将移动60*speed个单位。
@@ -161,14 +161,14 @@ if (glfwGetKey( GLFW_KEY_LEFT ) == GLFW_PRESS){
 {% highlight text linenos %}
 double currentTime = glfwGetTime();
 float deltaTime = float(currentTime - lastTime);
-{% endhighlight %}
+```
 
 ##视野
 
 为了增添趣味，我们可以用鼠标滚轮控制视野，实现简单的缩放：
 {% highlight text linenos %}
 float FoV = initialFoV - 5 * glfwGetMouseWheel();
-{% endhighlight %}
+```
 
 ##计算矩阵
 
@@ -182,7 +182,7 @@ ViewMatrix       = glm::lookAt(
     position+direction, // and looks here : at the same position, plus "direction"
     up                  // Head is up (set to 0,-1,0 to look upside-down)
 );
-{% endhighlight %}
+```
 
 #结果
 
@@ -203,7 +203,7 @@ ViewMatrix       = glm::lookAt(
 {% highlight text linenos %}
 // Cull triangles which normal is not towards the camera
 glEnable(GL_CULL_FACE);
-{% endhighlight %}
+```
 
 #练习
 

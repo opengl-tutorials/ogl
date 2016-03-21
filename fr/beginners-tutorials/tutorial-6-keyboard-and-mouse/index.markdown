@@ -20,7 +20,7 @@ Comme le code va être réutilisé dans les autres tutoriels, on va placer le co
 
 Le code du fichier tutoriel06.cpp ne change pas beaucoup par rapport au tutoriel précédent. La plus grande modification est le calcul de la matrice MVP à chaque image au lieu de la calculer une unique fois. On déplace donc ce code dans la boucle principale :
 
-{% highlight cpp linenos %}
+``` cpp
 do{
 
     // ...
@@ -34,7 +34,7 @@ do{
 
     // ...
 }
-{% endhighlight %}
+```
 Ce code nécessite trois nouvelles fonctions :
 
 * computeMatricesFromInputs() lit le clavier et la souris et calcule les matrices de projection et de vue. C'est ici que la magie opère
@@ -48,7 +48,7 @@ Voyons voir maintenant ce qu'il y a dans controls.cpp.
 #Le vrai code
 
 On a besoin de quelques variables :
-{% highlight cpp linenos %}
+``` cpp
 // position
 glm::vec3 position = glm::vec3( 0, 0, 5 );
 // horizontal angle : toward -Z
@@ -60,7 +60,7 @@ float initialFoV = 45.0f;
 
 float speed = 3.0f; // 3 units / second
 float mouseSpeed = 0.005f;
-{% endhighlight %}
+```
 Le champ de vision (FoV en anglais) est le niveau de zoom. 80° = un grand angle donc de grosses déformations. 60° - 45° : standard. 20° : gros zoom.
 
 Premièrement, on va recalculer la position, l'angle horizontal, l'angle vertical et le champ de vision selon les entrées, puis on va calculer les matrices de vue et de projection à partir de la position, de l'angle horizontal, de l'angle vertical et du champ de vision.
@@ -68,24 +68,24 @@ Premièrement, on va recalculer la position, l'angle horizontal, l'angle vertica
 ##Orientation
 
 Lire les informations de la souris est facile :
-{% highlight cpp linenos %}
+``` cpp
 // Get mouse position
 int xpos, ypos;
 glfwGetMousePos(&xpos, &ypos);
-{% endhighlight %}
+```
 Mais on doit prendre garde à replacer le curseur au centre de l'écran ou il ira en dehors de la fenêtre et on ne sera plus capable de bouger.
-{% highlight cpp linenos %}
+``` cpp
 // Reset mouse position for next frame
 glfwSetMousePos(1024/2, 768/2);
-{% endhighlight %}
+```
 >Ce code fait l'hypothèse que la fenêtre est de 1024 * 768, ce qui n'est évidemment pas toujours le cas. Si tu veux tu peux utiliser glfwGetWindowSize pour récupérer la taille de la fenêtre.
 
 Maintenant, on calcule nos angles de vision :
-{% highlight cpp linenos %}
+``` cpp
 // Compute new orientation
 horizontalAngle += mouseSpeed * deltaTime * float(1024/2 - xpos );
 verticalAngle   += mouseSpeed * deltaTime * float( 768/2 - ypos );
-{% endhighlight %}
+```
 Lisons ces lignes de droite à gauche :
 
 * 1024/2 - xpos correspond à la distance de la souris par rapport au centre de la fenêtre. Plus grande est la valeur, plus nous voulons tourner
@@ -94,14 +94,14 @@ Lisons ces lignes de droite à gauche :
 * += : si tu n'as pas déplacé la souris, 1024/2 - xpos vaudra 0 et horizontalAngle += 0 ne modifie pas la variable. Si tu avais un '=' à la place, tu serais retourné de force à l'orientation d'origine et cela à chaque image, ce qui n'est pas ce que l'on veut.
 
 Maintenant, on peut calculer un vecteur qui représente, dans l'espace monde, la direction vers laquelle on regarde.
-{% highlight cpp linenos %}
+``` cpp
 // Direction : Spherical coordinates to Cartesian coordinates conversion
 glm::vec3 direction(
     cos(verticalAngle) * sin(horizontalAngle),
     sin(verticalAngle),
     cos(verticalAngle) * cos(horizontalAngle)
 );
-{% endhighlight %}
+```
 C'est un calcul standard, mais si tu ne connais pas sinus et cosinus, voici une courte explication en 2D :
 
 <img class="alignnone whiteborder" title="Trigonometric circle" src="http://www.numericana.com/answer/trig.gif" alt="" width="150" height="150" />
@@ -114,27 +114,27 @@ Maintenant, on souhaite calculer le vecteur « haut » efficacement. Le « haut 
 
 Dans ce cas, la seule constante est que le vecteur allant sur la droite est toujours horizontal. Vous pouvez vérifier cela en plaçant votre bras à l'horizontal et en regardant vers le haut, le bas et dans toutes les directions. Voici comment définir le « bon » vecteur « vers la droite » : sa coordonnée Y est 0, car le vecteur est horizontal et ses coordonnées X et Z sont exactement comme dans la figure ci-dessus, mais avec des angles tournés de 90°, ou Pi/2 radians.
 
-{% highlight cpp linenos %}
+``` cpp
 // Right vector
 glm::vec3 right = glm::vec3(
     sin(horizontalAngle - 3.14f/2.0f),
     0,
     cos(horizontalAngle - 3.14f/2.0f)
 );
-{% endhighlight %}
+```
 
 On a le vecteur « vers la droite » et une « direction » ( =  vecteur vers « l'avant »). Le vecteur vers « le haut » est le vecteur qui est perpendiculaire à ceux-ci. Il y a un outil mathématique pratique qui rend cela très simple : le produit vectoriel.
-{% highlight cpp linenos %}
+``` cpp
 // Up vector : perpendicular to both direction and right
 glm::vec3 up = glm::cross( right, direction );
-{% endhighlight %}
+```
 Pour se souvenir de ce que fait le produit vectoriel, c'est très simple. Rappele-toi la règle de la main droite du troisième tutoriel. Le premier vecteur est le pouce ; le second l'index et le résultat est le majeur. C'est très pratique.
 
 ##Position
 
 Le code est facile à comprendre. D'ailleurs, j'ai utilisé les touches fléchées à la place de aswd, car je suis sur un clavier azerty et aswd correspond à zqsd. C'est aussi différent avec les claviers qwerZ et passons les claviers coréens. Je ne sais même pas quelle disposition les coréens ont, mais je suppose que c'est différent.
 
-{% highlight cpp linenos %}
+``` cpp
 // Move forward
 if (glfwGetKey( GLFW_KEY_UP ) == GLFW_PRESS){
     position += direction * deltaTime * speed;
@@ -151,7 +151,7 @@ if (glfwGetKey( GLFW_KEY_RIGHT ) == GLFW_PRESS){
 if (glfwGetKey( GLFW_KEY_LEFT ) == GLFW_PRESS){
     position -= right * deltaTime * speed;
 }
-{% endhighlight %}
+```
 
 La seule chose particulière est deltaTime. Tu ne veux pas te déplacer d'une unité chaque image pour la simple raison que :
 
@@ -164,22 +164,22 @@ Comme le fait d'avoir un ordinateur plus rapide n'est pas une raison pour se dé
 * Si tu as un ordinateur lent et que tu exécutes le programme à 20 FPS, tu te déplacera de 1/20*speed en une image, donc 1*speed en une seconde.
 
 Ce qui est bien mieux ! Le deltaTime est très facile à calculer :
-{% highlight cpp linenos %}
+``` cpp
 double currentTime = glfwGetTime();
 float deltaTime = float(currentTime - lastTime);
-{% endhighlight %}
+```
 
 ##Champ de vision
 
 Pour s'amuser, on peut aussi lier la roulette de la souris au champ de vision pour faire rapidement un zoom :
-{% highlight cpp linenos %}
+``` cpp
 float FoV = initialFoV - 5 * glfwGetMouseWheel();
-{% endhighlight %}
+```
 
 ##Calculer les matrices
 
 Le calcul des matrices est maintenant très simple. On utilise les mêmes fonctions que précédemment mais avec les nouveaux paramètres.
-{% highlight cpp linenos %}
+``` cpp
 // Projection matrix : 45&deg; Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 ProjectionMatrix = glm::perspective(FoV, 4.0f / 3.0f, 0.1f, 100.0f);
 // Camera matrix
@@ -188,7 +188,7 @@ ViewMatrix       = glm::lookAt(
     position+direction, // and looks here : at the same position, plus "direction"
     up                  // Head is up (set to 0,-1,0 to look upside-down)
 );
-{% endhighlight %}
+```
 
 #Résultat
 
@@ -205,10 +205,10 @@ Le mieux, c'est qu'il est très facile à calculer. Le GPU calcule la normale du
 Cela possède un coût malheureusement : l'orientation du triangle est implicite. Cela signifie que si tu inverses deux sommets dans ton buffer(tampon) de sommets, tu vas probablement avoir un trou. Mais cela vaut généralement le petit travail supplémentaire. Souvent, tu n'as qu'à cliquer sur « inverser les normales » dans ton logiciel de modélisation 3D (qui va, en réalité, inverser les sommets et donc les normales) et tout sera parfait.
 
 Voici comment on active le backface culling :
-{% highlight cpp linenos %}
+``` cpp
 // Cull triangles which normal is not towards the camera
 glEnable(GL_CULL_FACE);
-{% endhighlight %}
+```
 
 #Exercices
 

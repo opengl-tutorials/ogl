@@ -52,7 +52,7 @@ Tu as de nombreuses, très nombreuses options sur ce que tu mets dans chaque buf
 
 Ce sont des buffers standards. Ils sont créés de cette façon :
 
-{% highlight cpp linenos %}
+``` cpp
 // The VBO containing the 4 vertices of the particles.
 // Thanks to instancing, they will be shared by all particles.
 static const GLfloat g_vertex_buffer_data[] = {
@@ -79,11 +79,11 @@ glGenBuffers(1, &particles_color_buffer);
 glBindBuffer(GL_ARRAY_BUFFER, particles_color_buffer);
 // Initialize with empty (NULL) buffer : it will be updated later, each frame.
 glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW);
-{% endhighlight %}
+```
  
 Ce qui est habituel. Ils sont mis à jour de cette façon :
 
-{% highlight cpp linenos %}
+``` cpp
 // Update the buffers that OpenGL uses for rendering.
 // There are much more sophisticated means to stream data from the CPU to the GPU,
 // but this is outside the scope of this tutorial.
@@ -96,11 +96,11 @@ glBufferSubData(GL_ARRAY_BUFFER, 0, ParticlesCount * sizeof(GLfloat) * 4, g_part
 glBindBuffer(GL_ARRAY_BUFFER, particles_color_buffer);
 glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
 glBufferSubData(GL_ARRAY_BUFFER, 0, ParticlesCount * sizeof(GLubyte) * 4, g_particule_color_data);
-{% endhighlight %}
+```
  
 Ce qui est aussi habituel. Ils sont liés avant le rendu de cette façon :
  
-{% highlight cpp linenos %}
+``` cpp
 // 1rst attribute buffer : vertices
 glEnableVertexAttribArray(0);
 glBindBuffer(GL_ARRAY_BUFFER, billboard_vertex_buffer);
@@ -136,17 +136,17 @@ glVertexAttribPointer(
  0, // stride
  (void*)0 // array buffer offset
 );
-{% endhighlight %}
+```
 
 Ce qui est aussi normal. La différence vient lors du rendu. Au lieu d'utiliser glDrawArrays (ou glDrawElements si votre modèle de base possède un tampon d'indices), on utilise glDrawArraysInstanced/glDrawElementsInstanced, qui est équivalent à appeler N fois glDrawArrays (N est le dernier paramètre, dans notre cas ParticlesCount).
 
-{% highlight cpp linenos %}
+``` cpp
 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticlesCount);
-{% endhighlight %}
+```
 
 Mais il manque quelque chose ici. On n'a pas indiqué à OpenGL quel buffer était pour le modèle de base et lesquels sont pour les différentes instances. Cela se fait avec glVertexAttribDivisor. Voici le code complet commenté :
 
-{% highlight cpp linenos %}
+``` cpp
 // These functions are specific to glDrawArrays*Instanced*.
 // The first parameter is the attribute buffer we're talking about.
 // The second parameter is the "rate at which generic vertex attributes advance when rendering multiple instances"
@@ -161,7 +161,7 @@ glVertexAttribDivisor(2, 1); // color : one per quad -> 1
 // for(i in ParticlesCount) : glDrawArrays(GL_TRIANGLE_STRIP, 0, 4),
 // but faster.
 glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticlesCount);
-{% endhighlight %}
+```
 
 Comme vous pouvez le voir, l'instanciation est très polyvalente, car tu peux passer n'importe quel entier comme AttribDivisor. Par exemple, avec glVertexAttribDivisor(2, 10), chaque groupe de dix instances aura la même couleur.
 
@@ -177,7 +177,7 @@ Contrairement à la plupart des objets de la scène, les particules meurent et n
 
 Pour cela, on doit avoir un grand conteneur de particules :
 
-{% highlight cpp linenos %}
+``` cpp
 // CPU representation of a particle
 struct Particle{
 	glm::vec3 pos, speed;
@@ -189,11 +189,11 @@ struct Particle{
 
 const int MaxParticles = 100000;
 Particle ParticlesContainer[MaxParticles];
-{% endhighlight %}
+```
 
 Maintenant, on a besoin d'une méthode pour en créer. Cette fonction recherche linéairement dans ParticlesContainer, ce qui est une idée horrible, sauf qu'elle démarre au dernier emplacement connu, donc cette fonction retourne généralement immédiatement :
 
-{% highlight cpp linenos %}
+``` cpp
 int LastUsedParticle = 0;
 
 // Finds a Particle in ParticlesContainer which isn't used yet.
@@ -216,24 +216,24 @@ int FindUnusedParticle(){
 
     return 0; // All particles are taken, override the first one
 }
-{% endhighlight %}
+```
 
 On peut maintenant remplir ParticlesContainer[particleIndex] avec des valeurs intéressantes pour life, color, speed et position. Voir le code pour les détails, mais tu peux faire ce que tu veux ici. La seule chose intéressante est, comment plusieurs particules doivent être générées à chaque image ? C'est principalement dépendant de l'application, donc prenons un taux de 10 000 nouvelles particules par seconde (oui, c'est plutot beaucoup) :
 
-{% highlight cpp linenos %}
+``` cpp
 int newparticles = (int)(deltaTime*10000.0);
-{% endhighlight %}
+```
 
 Sauf que on devrait restreindre cela a une nombre fixe :
 
-{% highlight cpp linenos %}
+``` cpp
 // Generate 10 new particule each millisecond,
 // but limit this to 16 ms (60 fps), or if you have 1 long frame (1sec),
 // newparticles will be huge and the next frame even longer.
 int newparticles = (int)(deltaTime*10000.0);
 if (newparticles > (int)(0.016f*10000.0))
     newparticles = (int)(0.016f*10000.0);
-{% endhighlight %}
+```
 
 ##Supprimer les vieilles particules
 
@@ -245,7 +245,7 @@ Il y a une astuce, comme montré ci-dessous =)
 
 Donc, on va parcourir chaque particule, vérifier si elle est vivante, si elle doit mourir, et si tout est correct, ajouter un peu de gravité, puis finalement la copier dans un buffer GPU spécifique.
 
-{% highlight cpp linenos %}
+``` cpp
 // Simulate all particles
 int ParticlesCount = 0;
 for(int i=0; i<MaxParticles; i++){
@@ -285,7 +285,7 @@ for(int i=0; i<MaxParticles; i++){
 
     }
 }
-{% endhighlight %}
+```
 
 Voici ce que t'obtiens. Presque réussi, mais il y a un souci ...
 
@@ -295,11 +295,11 @@ Voici ce que t'obtiens. Presque réussi, mais il y a un souci ...
 
 Comme expliqué dans le [dixième tutoriel]({{site.baseurl}}/fr/intermediate-tutorials/tutorial-10-transparency/), tu dois trier les objets semi-transparents du plus loin au plus proche pour que le mélange soit correct.
 
-{% highlight cpp linenos %}
+``` cpp
 void SortParticles(){
     std::sort(&ParticlesContainer[0], &ParticlesContainer[MaxParticles]);
 }
-{% endhighlight %}
+```
 
 Maintenant, *std::sort* nécessite une fonction qui peut indiquer si une particule doit être placée avant ou après une autre particule dans le conteneur. Ça peut être fait avec Particle::operator< :
 
@@ -314,7 +314,7 @@ struct Particle{
         return this->cameradistance > that.cameradistance;
     }
 };
-{% endhighlight %}
+```
 
 Ça permet de trier ParticleContainer et les particules vont maintenant être affichées correctement[^1] :
 

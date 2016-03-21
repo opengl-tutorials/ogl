@@ -76,7 +76,7 @@ compontent-wise :
 res.x = A.x + B.x
 res.y = A.y + B.y
 ...
-{% endhighlight %}
+```
  
 
 ##Multiplication
@@ -86,14 +86,14 @@ compontent-wise :
 res.x = A.x * B.x
 res.y = A.y * B.y
 ...
-{% endhighlight %}
+```
 
 ##Normalization
 
 Divide the vector by its length :
 {% highlight text linenos %}
 normalizedVector = vec * ( 1.0f / vec.length() )
-{% endhighlight %}
+```
 
 #Matrices
 

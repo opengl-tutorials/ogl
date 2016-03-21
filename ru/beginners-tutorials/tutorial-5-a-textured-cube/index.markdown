@@ -39,11 +39,11 @@ order: 50
 Объявляем функцию для загрузки изображений:
 {% highlight text linenos %}
 GLuint loadBMP_custom(const char * imagepath);
-{% endhighlight %}
+```
 Вызываться она будет так:
 {% highlight text linenos %}
 GLuint image = loadBMP_custom("./my_texture.bmp");
-{% endhighlight %}
+```
 Теперь перейдем непосредственно к чтению файла.
 
 Для начала, нам необходимы некоторые данные. Эти переменные будут установлены когда мы будем читать файл:
@@ -55,7 +55,7 @@ unsigned int width, height;
 unsigned int imageSize;   // Размер изображения = Ширина * Высота * 3
 // RGB-данные, полученные из файла
 unsigned char * data;
-{% endhighlight %}
+```
 Открываем файл:
 {% highlight text linenos %}
 FILE * file = fopen(imagepath,"rb");
@@ -63,14 +63,14 @@ if (!file) {
   printf("Изображение не может быть открытоn");
   return 0;
 }
-{% endhighlight %}
+```
 Первым, в BMP-файлах идет заголовок, размером в 54 байта. Он содержит информацию о том, что файл действительно является файлом BMP, размер изображение, количество бит на пиксель и т. п., поэтому читаем его:
 {% highlight text linenos %}
 if ( fread(header, 1, 54, file) != 54 ) { // Если мы прочитали меньше 54 байт, значит возникла проблема
     printf("Некорректный BMP-файлn");
     return false;
 }
-{% endhighlight %}
+```
 Заголовок всегда начинается с букв BM. Вы можете открыть файл в HEX-редакторе и убедиться в этом самостоятельно, а можете посмотреть на наш скриншот:
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/hexbmp.png)
@@ -81,7 +81,7 @@ if ( header[0]!='B' || header[1]!='M' ){
     printf("Некорректный BMP-файлn");
     return 0;
 }
-{% endhighlight %}
+```
 Теперь мы читаем размер изображения, смещение данных изображения в файле и т. п.:
 {% highlight text linenos %}
 // Читаем необходимые данные
@@ -89,13 +89,13 @@ dataPos    = *(int*)&(header[0x0A]); // Смещение данных изобр
 imageSize  = *(int*)&(header[0x22]); // Размер изображения в байтах
 width      = *(int*)&(header[0x12]); // Ширина
 height     = *(int*)&(header[0x16]); // Высота
-{% endhighlight %}
+```
 Проверим и исправим полученные значения:
 {% highlight text linenos %}
 // Некоторые BMP-файлы имеют нулевые поля imageSize и dataPos, поэтому исправим их
 if (imageSize==0)    imageSize=width*height*3; // Ширину * Высоту * 3, где 3 - 3 компоненты цвета (RGB)
 if (dataPos==0)      dataPos=54; // В таком случае, данные будут следовать сразу за заголовком
-{% endhighlight %}
+```
 Теперь, так как мы знаем размер изображения, то можем выделить область памяти, в которую поместим данные:
 {% highlight text linenos %}
 // Создаем буфер
@@ -106,7 +106,7 @@ fread(data,1,imageSize,file);
 
 // Закрываем файл, так как больше он нам не нужен
 fclose(file);
-{% endhighlight %}
+```
 *Примечание переводчика: *
 <blockquote>
 Следует отметить, что приведенный код может быть использован только для загрузки 24-битных изображений (т. е. где на каждый пиксель изображения отводится 3 байта). С другими форматами BMP-файла вам следует познакомиться самостоятельно.</blockquote>
@@ -131,11 +131,11 @@ glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE
 
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-{% endhighlight %}
+```
 Последние две строки мы поясним позднее, а пока в части C++ мы должны использовать нашу функцию для загрузки текстуры:
 {% highlight text linenos %}
 GLuint Texture = loadBMP_custom("uvtemplate.bmp");
-{% endhighlight %}
+```
 **Очень важное замечание: **используйте текстуры с шириной и высотой степени двойки! То есть:
 
 * Хорошие: 128*128*, 256*256, 1024*1024, 2*2...
@@ -163,7 +163,7 @@ void main(){
     // Выходной цвет = цвету текстуры в указанных UV-координатах
     color = texture( myTextureSampler, UV ).rgb;
 }
-{% endhighlight %}
+```
 Три замечания:
 
 * Фрагментному шейдеру требуются UV-координаты. Это понятно.
@@ -192,7 +192,7 @@ void main(){
     // UV-координаты вершины.
     UV = vertexUV;
 }
-{% endhighlight %}
+```
 Помните "layout(location = 1) in vec3 vertexColor" из Урока 4? Здесь мы делаем абсолютно тоже самое, только вместо передачи буфера с цветом каждой вершины мы будем передавать буфер с UV-координатами каждой вершины:
 {% highlight text linenos %}
 // Две UV-координаты для каждой вершины. Они были созданы с помощью Blender. Мы коротко расскажем о том, как сделать это самостоятельно.
@@ -234,7 +234,7 @@ static const GLfloat g_uv_buffer_data[] = {
     1.000004f, 1.0f-0.671847f,
     0.667979f, 1.0f-0.335851f
 };
-{% endhighlight %}
+```
 Указанные UV-координаты относятся к такой модели:
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/uv_mapping_blender.png)
@@ -255,7 +255,7 @@ static const GLfloat g_uv_buffer_data[] = {
 {% highlight text linenos %}
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-{% endhighlight %}
+```
 Это означает, что в нашем фрагментном шейдере, texture() возвращает строго тексель, который находится по указанным текстурным координатам:
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearest.png)
@@ -295,7 +295,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 // И генерируем мипмап
 glGenerateMipmap(GL_TEXTURE_2D);
-{% endhighlight %}
+```
 
 #Загрузка текстур с помощью GLFW
 
@@ -323,7 +323,7 @@ GLuint loadTGA_glfw(const char * imagepath){
     // Возвращаем идентификатор текстуры который мы создали
     return textureID;
 }
-{% endhighlight %}
+```
 
 #Сжатые текстуры
 
@@ -376,7 +376,7 @@ GLuint loadDDS(const char * imagepath){
     unsigned int linearSize     = *(unsigned int*)&(header[16]);
     unsigned int mipMapCount = *(unsigned int*)&(header[24]);
     unsigned int fourCC      = *(unsigned int*)&(header[80]);
-{% endhighlight %}
+```
 После заголовку идут данные, в которые входят все уровни мип-мап. К слову, мы можем прочитать их все сразу:
 {% highlight text linenos %}
     unsigned char * buffer;
@@ -387,7 +387,7 @@ GLuint loadDDS(const char * imagepath){
     fread(buffer, 1, bufsize, fp);
     /* закрываем файл */
     fclose(fp);
-{% endhighlight %}
+```
 Сделано. Так как мы можем использовать 3 разных формата (DXT1, DXT3, DXT5), то необходимо в зависимости от флага "fourCC", сказать OpenGL о формате данных.
 {% highlight text linenos %}
     unsigned int components  = (fourCC == FOURCC_DXT1) ? 3 : 4;
@@ -407,7 +407,7 @@ GLuint loadDDS(const char * imagepath){
         free(buffer);
         return 0;
     }
-{% endhighlight %}
+```
 Создание текстуры выполняется как обычно:
 {% highlight text linenos %}
     // Создаем одну OpenGL текстуру
@@ -416,7 +416,7 @@ GLuint loadDDS(const char * imagepath){
 
     // "Привязываем" текстуру.
     glBindTexture(GL_TEXTURE_2D, textureID);
-{% endhighlight %}
+```
 Следующим шагом мы загружаем мип-мапы:
 {% highlight text linenos %}
     unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
@@ -436,7 +436,7 @@ GLuint loadDDS(const char * imagepath){
     free(buffer); 
 
     return textureID;
-{% endhighlight %}
+```
 
 ##Инверсия V-координаты
 

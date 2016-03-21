@@ -23,11 +23,11 @@ Don't forget to cut'n paste the code on a regular basis.
 
 I won't dig into details now, but you need to create a Vertex Array Object and set it as the current one :
 
-{% highlight cpp linenos %}
+``` cpp
 GLuint VertexArrayID;
 glGenVertexArrays(1, &VertexArrayID);
 glBindVertexArray(VertexArrayID);
-{% endhighlight %}
+```
 
 Do this once your window is created (= after the OpenGL Context creation) and before any other OpenGL call.
 
@@ -53,14 +53,14 @@ On a side note, notice that you can move your hand freely : your X, Y and Z will
 
 So we need three 3D points in order to make a triangle ; let's go :
 
-{% highlight cpp linenos %}
+``` cpp
 // An array of 3 vectors which represents 3 vertices
 static const GLfloat g_vertex_buffer_data[] = {
    -1.0f, -1.0f, 0.0f,
    1.0f, -1.0f, 0.0f,
    0.0f,  1.0f, 0.0f,
 };
-{% endhighlight %}
+```
 
 The first vertex is (-1,-1,0). This means that _unless we transform it in some way_, it will be displayed at (-1,-1) on the screen. What does this mean ? The screen origin is in the middle, X is on the right, as usual, and Y is up. This is what it gives on a wide screen :
 
@@ -72,7 +72,7 @@ This is something you can't change, it's built in your graphics card. So (-1,-1)
 
 The next step is to give this triangle to OpenGL. We do this by creating a buffer:
 
-{% highlight cpp linenos %}
+``` cpp
 // This will identify our vertex buffer
 GLuint vertexbuffer;
 // Generate 1 buffer, put the resulting identifier in vertexbuffer
@@ -80,13 +80,13 @@ glGenBuffers(1, &vertexbuffer);
 // The following commands will talk about our 'vertexbuffer' buffer
 glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 // Give our vertices to OpenGL.
-glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);{% endhighlight %}
+glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);```
 
 This needs to be done only once.
 
 Now, in our main loop, where we used to draw "nothing", we can draw our magnificent triangle :
 
-{% highlight cpp linenos %}
+``` cpp
 // 1rst attribute buffer : vertices
 glEnableVertexAttribArray(0);
 glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
@@ -101,7 +101,7 @@ glVertexAttribPointer(
 // Draw the triangle !
 glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
 glDisableVertexAttribArray(0);
-{% endhighlight %}
+```
 
 If you're on lucky, you can see the result (<span style="color: red">**don't panic if you don't**</span>) :
 
@@ -121,7 +121,7 @@ The two shaders are usually in separate files. In this example, we have SimpleFr
 
 So here's the code. It's not very important to fully understand it, since you often do this only once in a program, so comments should be enough. Since this function will be used by all other tutorials, it is placed in a separate file : common/loadShader.cpp . Notice that just as buffers, shaders are not directly accessible : we just have an ID. The actual implementation is hidden inside the driver.
 
-{% highlight cpp linenos %}
+``` cpp
 GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path){
 
 	// Create the shaders
@@ -216,22 +216,22 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 	return ProgramID;
 }
 
-{% endhighlight %}
+```
 
 # Our Vertex Shader
 
 Let's write our vertex shader first.
 The first line tells the compiler that we will use OpenGL 3's syntax.
 
-{% highlight glsl linenos %}
+``` glsl
 #version 330 core
-{% endhighlight %}
+```
 
 The second line declares the input data :
 
-{% highlight glsl linenos %}
+``` glsl
 layout(location = 0) in vec3 vertexPosition_modelspace;
-{% endhighlight %}
+```
 
 Let's explain this line in detail :
 
@@ -242,17 +242,17 @@ Let's explain this line in detail :
 
 The function that is called for each vertex is called main, just as in C :
 
-{% highlight glsl linenos %}
+``` glsl
 void main(){
-{% endhighlight %}
+```
 
 Our main function will merely set the vertex' position to whatever was in the buffer. So if we gave (1,1), the triangle would have one of its vertices at the top right corner of the screen. We'll see in the next tutorial how to do some more interesting computations on the input position.
 
-{% highlight glsl linenos %}
+``` glsl
   gl_Position.xyz = vertexPosition_modelspace;
   gl_Position.w = 1.0;
 }
-{% endhighlight %}
+```
 
 gl_Position is one of the few built-in variables : you *have *to assign some value to it. Everything else is optional; we'll see what "everything else" means in Tutorial 4.
 
@@ -260,13 +260,13 @@ gl_Position is one of the few built-in variables : you *have *to assign some val
 
 For our first fragment shader, we will do something really simple : set the color of each fragment to red. (Remember, there are 4 fragment in a pixel because we use 4x AA)
 
-{% highlight glsl linenos %}
+``` glsl
 #version 330 core
 out vec3 color;
 void main(){
   color = vec3(1,0,0);
 }
-{% endhighlight %}
+```
 
 So yeah, vec3(1,0,0) means red. This is because on computer screens, colour is represented by a Red, Green, and Blue triplet, in this order. So (1,0,0) means Full Red, no green and no blue.
 
@@ -281,17 +281,17 @@ GLuint programID = LoadShaders( "SimpleVertexShader.vertexshader", "SimpleFragme
 
 Now inside the main loop, first clear the screen. This will change the background color to dark blue because of the previous glClearColor(0.0f, 0.0f, 0.4f, 0.0f) call:
 
-{% highlight cpp linenos %}
+``` cpp
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-{% endhighlight %}
+```
 
 and then tell OpenGL that you want to use your shader:
 
-{% highlight cpp linenos %}
+``` cpp
 // Use our shader
 glUseProgram(programID);
 // Draw triangle...
-{% endhighlight %}
+```
 
 ... and presto, here's your red triangle !
 

@@ -20,7 +20,7 @@ Welcome for the 4rth tutorial ! You will do the following :
 # Draw a cube
 
 A cube has six square faces. Since OpenGL only knows about triangles, we'll have to draw 12 triangles : two for each face. We just define our vertices in the same way as we did for the triangle.
-{% highlight cpp linenos %}
+``` cpp
 // Our vertices. Three consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
 // A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
 static const GLfloat g_vertex_buffer_data[] = {
@@ -61,12 +61,12 @@ static const GLfloat g_vertex_buffer_data[] = {
     -1.0f, 1.0f, 1.0f,
     1.0f,-1.0f, 1.0f
 };
-{% endhighlight %}
+```
 The OpenGL buffer is created, bound, filled and configured with the standard functions (glGenBuffers, glBindBuffer, glBufferData, glVertexAttribPointer) ; see Tutorial 2 for a quick reminder. The draw call does not change either, you just have to set the right number of vertices that must be drawn :
-{% highlight cpp linenos %}
+``` cpp
 // Draw the triangle !
 glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles -> 6 squares
-{% endhighlight %}
+```
 A few remarks on this code :
 
 * For now, our 3D model is fixed : in order to change it, you have to modify the source code, recompile the application, and hope for the best. We'll learn how to load dynamic models in tutorial 7.
@@ -79,7 +79,7 @@ You now have all the needed pieces to draw the cube in white. Make the shaders w
 A color is, conceptually, exactly the same as a position : it's just data. In OpenGL terms, they are "attributes". As a matter of fact, we already used this with glEnableVertexAttribArray() and glVertexAttribPointer(). Let's add another attribute. The code is going to be very similar.
 
 First, declare your colors : one RGB triplet per vertex. Here I generated some randomly, so the result won't look that good, but you can do something better, for instance by copying the vertex's position into its own color.
-{% highlight cpp linenos %}
+``` cpp
 // One color for each vertex. They were generated randomly.
 static const GLfloat g_color_buffer_data[] = {
     0.583f,  0.771f,  0.014f,
@@ -119,16 +119,16 @@ static const GLfloat g_color_buffer_data[] = {
     0.820f,  0.883f,  0.371f,
     0.982f,  0.099f,  0.879f
 };
-{% endhighlight %}
+```
 The buffer is created, bound and filled in the exact same way as the previous one :
-{% highlight cpp linenos %}
+``` cpp
 GLuint colorbuffer;
 glGenBuffers(1, &colorbuffer);
 glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
-{% endhighlight %}
+```
 The configuration is also identical :
-{% highlight cpp linenos %}
+``` cpp
 // 2nd attribute buffer : colors
 glEnableVertexAttribArray(1);
 glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
@@ -140,14 +140,14 @@ glVertexAttribPointer(
     0,                                // stride
     (void*)0                          // array buffer offset
 );
-{% endhighlight %}
+```
 Now, in the vertex shader, we have access to this additional buffer :
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 // Notice that the "1" here equals the "1" in glVertexAttribPointer
 layout(location = 1) in vec3 vertexColor;
-{% endhighlight %}
+```
 In our case, we won't do anything fancy with it in the vertex shader. We will simply forward it to the fragment shader :
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 // Output data ; will be interpolated for each fragment.
 out vec3 fragmentColor;
 
@@ -159,14 +159,14 @@ void main(){
     // to produce the color of each fragment
     fragmentColor = vertexColor;
 }
-{% endhighlight %}
+```
 In the fragment shader, you declare fragmentColor again :
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 // Interpolated values from the vertex shaders
 in vec3 fragmentColor;
-{% endhighlight %}
+```
 ... and copy it in the final output color :
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 // Ouput data
 out vec3 color;
 
@@ -175,7 +175,7 @@ void main(){
     // interpolated between all 3 surrounding vertices
     color = fragmentColor;
 }
-{% endhighlight %}
+```
 And that's what we get :
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/missing_z_buffer.png)
@@ -202,17 +202,17 @@ It overdraws the "near" one, even though it's supposed to be behind it ! This is
 The solution to this problem is to store the depth (i.e. "Z") component of each fragment in a buffer, and each and every time you want to write a fragment, you first check if you should (i.e the new fragment is closer than the previous one).
 
 You can do this yourself, but it's so much simpler to just ask the hardware to do it itself :
-{% highlight cpp linenos %}
+``` cpp
 // Enable depth test
 glEnable(GL_DEPTH_TEST);
 // Accept fragment if it closer to the camera than the former one
 glDepthFunc(GL_LESS);
-{% endhighlight %}
+```
 You also need to clear the depth each frame, instead of only the color :
-{% highlight cpp linenos %}
+``` cpp
 // Clear the screen
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-{% endhighlight %}
+```
 And this is enough to solve all your problems.
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/one_color_per_vertex.png)
@@ -226,14 +226,14 @@ And this is enough to solve all your problems.
 
 * Generate the color values yourself. Some ideas : At random, so that colors change at each run; Depending on the position of the vertex; a mix of the two; Some other creative idea :) In case you don't know C, here's the syntax :
 
-{% highlight cpp linenos %}
+``` cpp
 static GLfloat g_color_buffer_data[12*3*3];
 for (int v = 0; v < 12*3 ; v++){
     g_color_buffer_data[3*v+0] = your red color here;
     g_color_buffer_data[3*v+1] = your green color here;
     g_color_buffer_data[3*v+2] = your blue color here;
 }
-{% endhighlight %}
+```
 
 * Once you've done that, make the colors change each frame. You'll have to call glBufferData each frame. Make sure the appropriate buffer is bound (glBindBuffer) before !
 

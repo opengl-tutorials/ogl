@@ -37,17 +37,17 @@ order: 50
 BMPファイルフォーマットは複雑でないことが知られています。また多くのライブラリも存在します。しかし、ロード作業はとてもシンプルで、ブラックボックス内でどのように動いているかを理解する助けにもなります。だから、どのように動くかを知るためにも、BMPファイルローダを書きましょう。<span style="text-decoration: underline">ただし二度と使うことはないでしょう。</span>.
 
 ここにロード関数の宣言が在ります。
-{% highlight cpp linenos %}
+``` cpp
 GLuint loadBMP_custom(const char * imagepath);
-{% endhighlight %}
+```
 これは次のように使います。
-{% highlight cpp linenos %}
+``` cpp
 GLuint image = loadBMP_custom("./my_texture.bmp");
-{% endhighlight %}
+```
 BMPファイルをどのように読み込むかを見ていきましょう。
 
 まず、いくつかのデータが必要です。ファイルを読むときにこれらの変数はセットされます。
-{% highlight cpp linenos %}
+``` cpp
 // BMPファイルのヘッダから読み込まれるデータ
 unsigned char header[54]; // 各BMPファイルは54バイトのヘッダから始まります。
 unsigned int dataPos;     // 実際のデータがファイルのどの位置にあるか
@@ -55,47 +55,47 @@ unsigned int width, height;
 unsigned int imageSize;   // = 横*高さ*3
 // 実際のRGBデータ
 unsigned char * data;
-{% endhighlight %}
+```
 実際にファイルを開く必要があります。
-{% highlight cpp linenos %}
+``` cpp
 // ファイルを開きます。
 FILE * file = fopen(imagepath,"rb");
 if (!file)							    {printf("画像が開けませんでした。n"); return 0;}
-{% endhighlight %}
+```
 ファイルの始まりは、54バイトのヘッダです。それには"これが本当にBMPファイルか？"、画像のサイズ、ピクセルごとのビット数などの情報を含んでいます。このヘッダを読み込みましょう。
-{% highlight cpp linenos %}
+``` cpp
 if ( fread(header, 1, 54, file)!=54 ){ // 54バイト読み込めなければ、問題があります。
     printf("BMPファイルではありません。n");
     return false;
 }
-{% endhighlight %}
+```
 ヘッダは常にBMで始まります。実は、16進数エディタで.BMPファイルを開いたときに得られるものが、ここにあります。
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/hexbmp.png)
 
 だから最初の2バイトが本当に'B'と'M'で始まるかを確認する必要があります。
-{% highlight cpp linenos %}
+``` cpp
 if ( header[0]!='B' || header[1]!='M' ){
     printf("BMPファイルではありません。n");
     return 0;
 }
-{% endhighlight %}
+```
 ここで画像のサイズやデータの位置などをロードします。
-{% highlight cpp linenos %}
+``` cpp
 // バイト配列から整数を読み込む
 dataPos    = *(int*)&(header[0x0A]);
 imageSize  = *(int*)&(header[0x22]);
 width      = *(int*)&(header[0x12]);
 height     = *(int*)&(header[0x16]);
-{% endhighlight %}
+```
 足りない情報があれば、自分で作ります。
-{% highlight cpp linenos %}
+``` cpp
 // BMPファイルの中にはミスフォーマットがあります。その情報を推測します。
 if (imageSize==0)    imageSize=width*height*3; // 3 : 1バイトは赤、緑、青の各色です。
 if (dataPos==0)      dataPos=54; // これでBMPヘッダは終わりです。
-{% endhighlight %}
+```
 これで画像のサイズが分かったので、画像を読み込むためにメモリを確保します。そして画像を読み込みます。
-{% highlight cpp linenos %}
+``` cpp
 // バッファを作る
 data = new unsigned char [imageSize];
 
@@ -104,11 +104,11 @@ fread(data,1,imageSize,file);
 
 //すべてはメモリ上にあるので、ファイルは閉じます。
 fclose(file);
-{% endhighlight %}
+```
 ここからはOpenGLのパートです。テクスチャを作るのは頂点バッファを作るのにとても似ています。つまり、テクスチャを作り、バインドし、それを満たし、設定します。
 
 glTexImage2Dでは、GL_RGBは3要素の色についてで、GL_BGRはRAM上で実際にどのように表現されるかを示しています。実は、BMPファイルは赤->緑->青の順ではなく、青->緑->赤の順で格納されています。だからOpenGLにそのように伝える必要があります。
-{% highlight cpp linenos %}
+``` cpp
 // ひとつのOpenGLテクスチャを作ります。
 GLuint textureID;
 glGenTextures(1, &textureID);
@@ -121,11 +121,11 @@ glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE
 
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-{% endhighlight %}
+```
 最後の2行は後で説明します。ところで、C++サイドでは、テクスチャをロードする新たな関数を使えます。
-{% highlight cpp linenos %}
+``` cpp
 GLuint Texture = loadBMP_custom("uvtemplate.bmp");
-{% endhighlight %}
+```
 もう一つとても重要なことは、テクスチャのサイズは2のべき乗でなければなりません。
 
 * 良い : 128*128*, 256*256, 1024*1024, 2*2...
@@ -136,7 +136,7 @@ GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 #OpenGLでのテクスチャの使用
 
 はじめにフラグメントシェーダを見ていきましょう。これは簡単です。
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 #version 330 core
 
 // 頂点シェーダからの値を書き込みます
@@ -153,7 +153,7 @@ void main(){
     // アウトプットカラー = 指定したUV座標のテクスチャの色
     color = texture( myTextureSampler, UV ).rgb;
 }
-{% endhighlight %}
+```
 3点述べておきます。
 
 * フラグメントシェーダはUV座標が必要です。これは普通のことです。
@@ -161,7 +161,7 @@ void main(){
 * 最後に、テクスチャにアクセスするのはtexture()で行います。この関数はvec4型の(R,G,B,A)を返します。Aについてはまた説明します。
 
 頂点シェーダも簡単です。UV座標をただフラグメントシェーダに送るだけです。
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 #version 330 core
 
 // インプット頂点データ。このシェーダの実行ごとに異なります。
@@ -182,9 +182,9 @@ void main(){
     // 頂点のUV座標です。特別な空間はありません。
     UV = vertexUV;
 }
-{% endhighlight %}
+```
 チュートリアル4で学んだ"layout(location = 1) in vec2 vertexUV"を思い出せますか？ここでは丁度それと同じことをやろうとしています。ただし、(R,G,B)バッファの変わりに(U,V)のバッファを与えます。
-{% highlight cpp linenos %}
+``` cpp
 // 各頂点に2つの値、これらはBlenderで作りました。どうやって作るかはこれから説明します。
 static const GLfloat g_uv_buffer_data[] = {
     0.000059f, 1.0f-0.000004f,
@@ -224,7 +224,7 @@ static const GLfloat g_uv_buffer_data[] = {
     1.000004f, 1.0f-0.671847f,
     0.667979f, 1.0f-0.335851f
 };
-{% endhighlight %}
+```
 上のUV座標は下のモデルに相当します。
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/uv_mapping_blender.png)
@@ -242,10 +242,10 @@ static const GLfloat g_uv_buffer_data[] = {
 #フィルタリングとミップマップの使い方
 
 上でスクリーンショットで見たように、テクスチャの質はあまりよくありません。これは私たちが書いたloadBMP_customに起因します。
-{% highlight cpp linenos %}
+``` cpp
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-{% endhighlight %}
+```
 これはフラグメントシェーダにおいて、texture()が(U,V)座標のテクセルを取ってそれをそのまま使うことを意味します。
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearest.png)
@@ -278,19 +278,19 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 * 更なる質の向上のために、二つのミップマップをサンプルし結果を混ぜることも出来ます。
 
 幸運なことに、これらすべては簡単に実現できます。OpenGLがすべてやってくれます。
-{% highlight cpp linenos %}
+``` cpp
 // 画像を拡大(MAGnifying)するときは線形(LINEAR)フィルタリングを使います。
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 // 画像を縮小(MINifying)するとき、線形(LINEAR)フィルタした、二つのミップマップを線形(LINEARYLY)に混ぜたものを使います。
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 // 次のようにしてミップマップを作ります。
 glGenerateMipmap(GL_TEXTURE_2D);
-{% endhighlight %}
+```
 
 #GLFWでのテクスチャのロード方法
 
 自分で作ったのでloadBMP_custom関数はとても素晴らしく感じます。しかし専用のライブラリを使うほううがよいでしょう。GLFWがやってくれます。(ただしTGAファイルのみです。)
-{% highlight cpp linenos %}
+``` cpp
 GLuint loadTGA_glfw(const char * imagepath){
 
     // 一つのOpenGLテクスチャを作ります。
@@ -313,7 +313,7 @@ GLuint loadTGA_glfw(const char * imagepath){
     // 作成したテクスチャのIDを返します。
     return textureID;
 }
-{% endhighlight %}
+```
 
 #圧縮されたテクスチャ
 
@@ -338,7 +338,7 @@ GLuint loadTGA_glfw(const char * imagepath){
 ##圧縮されたテクスチャの使用方法
 
 どのように画像をロードするかを見ていきましょう。ヘッダの構成が違うだけで、BMPコードとほぼ同じです。
-{% highlight cpp linenos %}
+``` cpp
 GLuint loadDDS(const char * imagepath){
 
     unsigned char header[124];
@@ -366,9 +366,9 @@ GLuint loadDDS(const char * imagepath){
     unsigned int linearSize     = *(unsigned int*)&(header[16]);
     unsigned int mipMapCount = *(unsigned int*)&(header[24]);
     unsigned int fourCC      = *(unsigned int*)&(header[80]);
-{% endhighlight %}
+```
 ヘッダの後は実際のデータです。すべてのミップマップレベルは連続的です。それらは一つのバッチで読み込めます。
-{% highlight cpp linenos %}
+``` cpp
     unsigned char * buffer;
     unsigned int bufsize;
     /* 読み込もうとするミップマップの大きさはどの程度か？ */
@@ -377,9 +377,9 @@ GLuint loadDDS(const char * imagepath){
     fread(buffer, 1, bufsize, fp);
     /* ファイルポインタを閉じます。 */
     fclose(fp);
-{% endhighlight %}
+```
 ここでは3つの異なるフォーマットを扱います。DXT1、DXT3とDXT5です。"fourCC"フラグをOpenGLが理解できるような値に変更する必要があります。
-{% highlight cpp linenos %}
+``` cpp
     unsigned int components  = (fourCC == FOURCC_DXT1) ? 3 : 4;
     unsigned int format;
     switch(fourCC)
@@ -397,18 +397,18 @@ GLuint loadDDS(const char * imagepath){
         free(buffer);
         return 0;
     }
-{% endhighlight %}
+```
 いつもどおりテクスチャを作ります。
-{% highlight cpp linenos %}
+``` cpp
     // OpenGLテクスチャを作ります。
     GLuint textureID;
     glGenTextures(1, &textureID);
 
     // 新しく作ったテクスチャを"バインド"します。これ以降の関数はすべてこのテクスチャを変更します。
     glBindTexture(GL_TEXTURE_2D, textureID);
-{% endhighlight %}
+```
 And now, we just have to fill each mipmap one after another :
-{% highlight cpp linenos %}
+``` cpp
     unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
     unsigned int offset = 0;
 
@@ -426,7 +426,7 @@ And now, we just have to fill each mipmap one after another :
     free(buffer); 
 
     return textureID;
-{% endhighlight %}
+```
 
 ##UVを逆さまにする
 

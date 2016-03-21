@@ -46,9 +46,9 @@ Cela est dû aux MIP maps, qui mélangent les texels ensemble lorsqu'ils sont vi
 
 * Tu peux demander à Blender de générer une marge autour des limites des coordonnées UV. Cela est accessible à travers le paramètre « margin » dans le panneau « bake ». Pour de bons résultats, tu peux aller jusqu'à une marge de 20 pixels ;
 * Tu peux utiliser un biais dans accèder à la texture :
-  {% highlight glsl linenos cssclass=highlightglslfs %}
+  ``` glsl fs
   color = texture( myTextureSampler, UV, -2.0 ).rgb;
-  {% endhighlight %}
+  ```
   -2 est LE biais. Tu peux expérimenter avec cette valeur. La capture d'écran ci-dessus a été effectuée avec un biais de +2, ce qui signifie que OpenGL va sélectionner deux MIP maps au-dessus de celle qu'il aurait choisi (donc 16 fois plus petites, provoquant les corruptions)
 * Tu peux remplir le fond noir dans une étape de post-process. Je vais poster plus tard plus d'information là-dessus.
 

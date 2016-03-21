@@ -31,7 +31,7 @@ A FPS counter looks like this :
      }
 
      ... rest of the main loop
-{% endhighlight %}
+```
 There is an odd thing in this code. It displays the time, in milliseconds, needed to draw a frame (averaged on 1 second) instead of how many frame were drawn in the last second.
 
 This is actually **much better**. Don't rely on FPS. Never. FramesPerSecond = 1/SecondsPerFrame, so this is an inverse relationship, and we humans suck at understanding this kind of relationship. Let's take an example.

@@ -18,7 +18,7 @@ Bienvenue dans le quatrième tutoriel ! Dans celui-ci on va :
 #Afficher un cube
 
 Un cube possède six faces carrées. Comme OpenGL ne connaît que les triangles, on doit dessiner douze triangles : deux pour chaque face. On définit les sommets de la même façon que pour le triangle.   
-{% highlight cpp linenos %}
+``` cpp
 // Our vertices. Three consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
 // A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
 static const GLfloat g_vertex_buffer_data[] = {
@@ -59,12 +59,12 @@ static const GLfloat g_vertex_buffer_data[] = {
     -1.0f, 1.0f, 1.0f,
     1.0f,-1.0f, 1.0f
 };
-{% endhighlight %}
+```
 Le tampon OpenGL est créé, lié, rempli et configuré avec les fonctions de base (glGenBuffers, glBindBuffer, glBufferData, glVertexAttribPointer) ; lisez le [deuxième tutoriel](http://www.opengl-tutorial.org/beginners-tutorials/tutorial-2-the-first-triangle/) pour un rappel rapide. L'appel pour l'affichage ne change pas non plus, vous avez simplement à donner le bon nombre de sommets à dessiner :
-{% highlight cpp linenos %}
+``` cpp
 // Draw the triangle !
 glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles -> 6 squares
-{% endhighlight %}
+```
 Quelques remarques sur ce code :
 
 * Pour l'instant, nos modèles 3D sont fixes : afin de les modifier, on doit changer le code source, recompiler l'application et prier que tout aille bien. On apprendra comment charger dynamiquement les modèles dans le [septième tutoriel](http://www.opengl-tutorial.org/beginners-tutorials/tutorial-7-model-loading/)
@@ -78,7 +78,7 @@ Une couleur est, conceptuellement, exactement identique à une position : ce ne 
 
 D'abord, déclare des couleurs : un triplet RGB par sommet. Ici, j'en ai généré quelques-uns aléatoirement, donc le résultat ne sera pas beau, mais tu peux faire mieux, par exemple en copiant la position des sommets pour définir sa couleur.
 
-{% highlight cpp linenos %}
+``` cpp
 // One color for each vertex. They were generated randomly.
 static const GLfloat g_color_buffer_data[] = {
     0.583f,  0.771f,  0.014f,
@@ -118,16 +118,16 @@ static const GLfloat g_color_buffer_data[] = {
     0.820f,  0.883f,  0.371f,
     0.982f,  0.099f,  0.879f
 };
-{% endhighlight %}
+```
 Le buffer (tampon) est créé, lié et rempli de la même façon que le précédent :
-{% highlight cpp linenos %}
+``` cpp
 GLuint colorbuffer;
 glGenBuffers(1, &colorbuffer);
 glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
-{% endhighlight %}
+```
 La configuration est identique, elle aussi :
-{% highlight cpp linenos %}
+``` cpp
 // 2nd attribute buffer : colors
 glEnableVertexAttribArray(1);
 glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
@@ -139,14 +139,14 @@ glVertexAttribPointer(
     0,                                // stride
     (void*)0                          // array buffer offset
 );
-{% endhighlight %}
+```
 Maintenant, dans le vertex shader, on accède au nouveau buffer (tampon) :
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 // Notice that the "1" here equals the "1" in glVertexAttribPointer
 layout(location = 1) in vec3 vertexColor;
-{% endhighlight %}
+```
 Dans notre cas, on ne fait rien de fantaisiste dans le vertex shader. On envoie simplement la couleur au fragment shader :
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 // Output data ; will be interpolated for each fragment.
 out vec3 fragmentColor;
 
@@ -158,14 +158,14 @@ void main(){
     // to produce the color of each fragment
     fragmentColor = vertexColor;
 }
-{% endhighlight %}
+```
 Dans le fragment shader, on déclare encore une fois *fragmentColor* :
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 // Interpolated values from the vertex shaders
 in vec3 fragmentColor;
-{% endhighlight %}
+```
 ... et on la copie dans la couleur finale de sortie :
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 // Ouput data
 out vec3 color;
 
@@ -174,7 +174,7 @@ void main(){
     // interpolated between all 3 surrounding vertices
     color = fragmentColor;
 }
-{% endhighlight %}
+```
 Et voici ce que l'on obtient :
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/missing_z_buffer.png)
@@ -198,17 +198,17 @@ Il recouvre le triangle « proche » même s'il est supposé être derrière ! C
 La solution à ce problème est de conserver la profondeur ('Z') de chaque fragment dans un tampon et pour toutes les fois où on veut écrire un fragment, on vérifiez d'abord si on peut le faire (si le nouveau fragment est plus proche que l'ancien).
 
 On pourrait le faire nous-même, mais c'est beaucoup plus simple de demander au matériel de le faire :
-{% highlight cpp linenos %}
+``` cpp
 // Enable depth test
 glEnable(GL_DEPTH_TEST);
 // Accept fragment if it closer to the camera than the former one
 glDepthFunc(GL_LESS);
-{% endhighlight %}
+```
 On doit aussi nettoyer le tampon de profondeur à chaque image, au lieu de ne le faire que pour la couleur :
-{% highlight cpp linenos %}
+``` cpp
 // Clear the screen
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-{% endhighlight %}
+```
 Et ça suffit pour régler tous nos problèmes.
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/one_color_per_vertex.png)
@@ -219,13 +219,13 @@ Et ça suffit pour régler tous nos problèmes.
 
 * Génére les valeurs des couleurs toi-même. Quelques idées : aléatoirement, de manière à ce que les couleurs changent à chaque exécution ; dépendantes de la position des sommets ; un mélange des deux ; quelques idées créatives :). Au cas où tu ne connais pas la syntaxe en C++, la voici :
 
-{% highlight cpp linenos %}
+``` cpp
 static GLfloat g_color_buffer_data[12*3*3];
 for (int v = 0; v < 12*3 ; v++){
     g_color_buffer_data[3*v+0] = your red color here;
     g_color_buffer_data[3*v+1] = your green color here;
     g_color_buffer_data[3*v+2] = your blue color here;
 }
-{% endhighlight %}
+```
 
 * Une fois que tu as fait ça, modifie les couleurs à chaque affichage. Tu dois appeler glBufferData à chaque image. Assure-toi que le tampon approprié est lié (glBindBuffer).

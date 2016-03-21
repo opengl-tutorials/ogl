@@ -40,6 +40,6 @@ as the name is changed.
   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
  0. You just DO WHAT THE FUCK YOU WANT TO.
-{% endhighlight %}
+```
 
 All the tutorial material is available under Creative-Common license: CC-BY-NC-ND available [here](http://creativecommons.org/licenses/by-nc-nd/3.0/fr/deed.en)

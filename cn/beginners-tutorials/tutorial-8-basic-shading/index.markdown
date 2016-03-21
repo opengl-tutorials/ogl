@@ -45,7 +45,7 @@ triangle ( v1, v2, v3 )
 edge1 = v2-v1
 edge2 = v3-v1
 triangle.normal = cross(edge1, edge2).normalize()
-{% endhighlight %}
+```
 不要将法线(normal)和normalize()混淆。Normalize()是让一个向量（任意向量，不一定是法线）除以其长度，从而使新长度为1。法线(normal)则是某一类向量的名字。
 
 ##顶点法线
@@ -55,7 +55,7 @@ triangle.normal = cross(edge1, edge2).normalize()
 vertex v1, v2, v3, ....
 triangle tr1, tr2, tr3 // all share vertex v1
 v1.normal = normalize( tr1.normal + tr2.normal + tr3.normal )
-{% endhighlight %}
+```
 
 ##在OpenGL中使用顶点法线
 
@@ -65,7 +65,7 @@ GLuint normalbuffer;
  glGenBuffers(1, &normalbuffer);
  glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
  glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
-{% endhighlight %}
+```
 和
 {% highlight text linenos %}
  // 3rd attribute buffer : normals
@@ -79,7 +79,7 @@ GLuint normalbuffer;
      0,                                // stride
      (void*)0                          // array buffer offset
  );
-{% endhighlight %}
+```
 有这些准备就可以开始了。
 
 #漫反射（Diffuse）分量
@@ -110,7 +110,7 @@ GLuint normalbuffer;
 float cosTheta = dot( n,l );
 
 color = LightColor * cosTheta;
-{% endhighlight %}
+```
 在这段代码中，n是表面法线，l是从表面到光源的单位向量（和光线方向相反。虽然不直观，但能简化数学计算）。
 
 ##注意正负号
@@ -125,7 +125,7 @@ color = LightColor * cosTheta;
 float cosTheta = clamp( dot( n,l ), 0,1 );
 
 color = LightColor * cosTheta;
-{% endhighlight %}
+```
 
 ##材质颜色
 
@@ -137,7 +137,7 @@ color = LightColor * cosTheta;
 我们可以通过一个简单的乘法来建模：
 {% highlight text linenos %}
 color = MaterialDiffuseColor * LightColor * cosTheta;
-{% endhighlight %}
+```
 
 ##建立光照模型
 
@@ -146,11 +146,11 @@ color = MaterialDiffuseColor * LightColor * cosTheta;
 对于该光源，我们的表面收到的光通量（luminous flux）依赖于表面到光源的距离：越远光越少。实际上，光通量与距离的平方成反比：
 {% highlight text linenos %}
 color = MaterialDiffuseColor * LightColor * cosTheta / (distance*distance);
-{% endhighlight %}
+```
 最后，需要另一个参数来控制光的强度。我们可以将其作为LightColor（随后的课程中会讲到）的变量，但是现在暂且只含一个颜色值（如白色）和一个强度（如60瓦）。。
 {% highlight text linenos %}
 color = MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance);
-{% endhighlight %}
+```
 
 ##汇总
 
@@ -166,7 +166,7 @@ cosTheta由n和l决定。我们可以在任意空间中表示它们，最终结�
  vec3 n = normalize( Normal_cameraspace );
  // Direction of the light (from the fragment to the light)
  vec3 l = normalize( LightDirection_cameraspace );
-{% endhighlight %}
+```
 在顶点着色器中计算Normal_cameraspace和LightDirection_cameraspace，然后传给片段着色器：
 {% highlight text linenos %}
 // Output position of the vertex, in clip space : MVP * position
@@ -186,7 +186,7 @@ LightDirection_cameraspace = LightPosition_cameraspace + EyeDirection_cameraspac
 
 // Normal of the the vertex, in camera space
 Normal_cameraspace = ( V * M * vec4(vertexNormal_modelspace,0)).xyz; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
-{% endhighlight %}
+```
 这段代码看起来很牛，但它就是在第三课中学到的东西：矩阵。每个向量命名时，都嵌入了所在的空间名，这样在跟踪时更简单。 **这种做法值得借鉴。**
 
 M和V分别是模型和观察矩阵，并且是用与MVP完全相同的方式传给着色器。
@@ -217,14 +217,14 @@ M和V分别是模型和观察矩阵，并且是用与MVP完全相同的方式传
 可这样操作：
 {% highlight text linenos %}
 vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
-{% endhighlight %}
+```
 {% highlight text linenos %}
 color =
  // Ambient : simulates indirect lighting
  MaterialAmbientColor +
  // Diffuse : "color" of the object
  MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) ;
-{% endhighlight %}
+```
 来看看结果
 
 ##结果
@@ -262,7 +262,7 @@ color =
     MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) ;
     // Specular : reflective highlight, like a mirror
     MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance*distance);
-{% endhighlight %}
+```
 R是反射光的方向，E是视线的反方向（就像之前对"l"的假设）；如果二者夹角很小，意味着视线与反射光线重合。
 
 pow(cosAlpha,5)用来控制镜面反射的波瓣。可以通过增大第二个参数（译注：镜面高光指数）得到更大的波瓣。

@@ -63,12 +63,12 @@ static const GLfloat g_vertex_buffer_data[] = {
     -1.0f, 1.0f, 1.0f,
     1.0f,-1.0f, 1.0f
 };
-{% endhighlight %}
+```
 OpenGL буфер создается, привязывается, заполняется и конфигурируется стандартными функциями (glGenBuffers, glBindBuffer, glBufferData, glVertexAttribPointer); Смотрите Урок 2, чтобы освежить память. Сама процедура вывода не меняется и все, что меняется - это количество вершин, которые мы будем выводить:
 {% highlight text linenos %}
 // Вывести треугольник
 glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 индексов начинающихся с 0. -> 12 треугольников -> 6 граней.
-{% endhighlight %}
+```
 Несколько заметок по этому коду:
 
 * Сейчас наша модель статична, таким образом, чтобы изменить ее, нам понадобится изменить исходных код, перекомпилировать проект и надеяться на лучшее. Мы узнаем как загружать модели во время выполнения программы в Уроке 7.
@@ -120,14 +120,14 @@ static const GLfloat g_color_buffer_data[] = {
     0.820f,  0.883f,  0.371f,
     0.982f,  0.099f,  0.879f
 };
-{% endhighlight %}
+```
 Создание, привязывание и заполнения буфера такое же, как и для предыдущего буфера:
 {% highlight text linenos %}
 GLuint colorbuffer;
 glGenBuffers(1, &colorbuffer);
 glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
-{% endhighlight %}
+```
 Конфигурация тоже идентична:
 {% highlight text linenos %}
 // Второй буфер атрибутов - цвета
@@ -141,12 +141,12 @@ glVertexAttribPointer(
     0,                                // Шаг
     (void*)0                          // Смещение
 );
-{% endhighlight %}
+```
 Теперь, в вершинном шейдере мы имеем доступ к дополнительному буферу:
 {% highlight text linenos %}
 // Не забывайте, что значение "1" здесь должно быть идентично значению атрибута в glVertexAttribPointer
 layout(location = 1) in vec3 vertexColor;
-{% endhighlight %}
+```
 В нашем случае мы не будем выполнять в вершинном шейдере какой-то дополнительной работы, поэтому просто передадим информацию в Фрагментный шейдер.
 {% highlight text linenos %}
 // Выходные данные. Будут интерполироваться для каждого фрагмента.
@@ -160,12 +160,12 @@ void main(){
     // каждого фрагмента
     fragmentColor = vertexColor;
 }
-{% endhighlight %}
+```
 В Фрагментом шейдере мы опять объявляем fragmentColor:
 {% highlight text linenos %}
 // Интерполированные значения из вершинного шейдера
 in vec3 fragmentColor;
-{% endhighlight %}
+```
 ... и копируем это в финальный выходной цвет:
 {% highlight text linenos %}
 // Выходные данные
@@ -176,7 +176,7 @@ void main(){
     // интерполированному между 3 близлежащими вершинами.
     color = fragmentColor;
 }
-{% endhighlight %}
+```
 И вот, что мы получили в итоге:
 
 [<img title="missing_z_buffer" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/missing_z_buffer-300x231.png" width="300" height="231" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/missing_z_buffer.png)
@@ -205,12 +205,12 @@ void main(){
 glEnable(GL_DEPTH_TEST);
 // Фрагмент будет выводиться только в том, случае, если он находится ближе к камере, чем предыдущий
 glDepthFunc(GL_LESS);
-{% endhighlight %}
+```
 Вам также необходимо очищать буфер глубины перед каждым кадром:
 {% highlight text linenos %}
 // Очистка экрана
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-{% endhighlight %}
+```
 И этого достаточно, чтобы решить нашу проблему.
 
 [<img title="one_color_per_vertex" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/one_color_per_vertex-300x231.png" width="300" height="231" />]({{site.baseurl}}/assets/images/tuto-4-colored-cube/one_color_per_vertex.png)
@@ -228,7 +228,7 @@ for (int v = 0; v < 12*3 ; v++){
     g_color_buffer_data[3*v+1] = здесь зеленой;
     g_color_buffer_data[3*v+2] = и наконец значение синей компоненты;
 }
-{% endhighlight %}
+```
 
 * После выполнения предыдущих упражнений попробуйте сделать так, чтобы цвета менялись каждый кадр. Здесь вам понадобится вызывать glBufferData в каждом кадре. **Убедитесь, что перед этим не забыли привязать соответствующий буфер (glBindBuffer)!**
 

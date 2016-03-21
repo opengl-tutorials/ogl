@@ -63,7 +63,7 @@ Si tu as créé un programme à partir de rien, assure-toi d'avoir créé un VAO
 GLuint VertexArrayID;
  glGenVertexArrays(1, &VertexArrayID);
  glBindVertexArray(VertexArrayID);
-{% endhighlight %}
+```
 
 ##Bogue de GLEW
 
@@ -72,11 +72,11 @@ GLEW possède un bogue qui rend impossible l'utilisation d'un contexte core (sau
 * Demande à GLFW de fournir un profil de compatibilité à la place :
   {% highlight text linenos %}
   glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
-  {% endhighlight %}
+  ```
 * Utilise glewExperimental ; voici la méthode recommandée :
   {% highlight text linenos %}
   glewExperimental = true;
-  {% endhighlight %}
+  ```
 * Corrige GLEW ... [Voir ce patch](http://code.google.com/p/opengl-tutorial-org/source/browse/external/glew-1.5.8.patch?name=0009_33).
 
 ##CMake

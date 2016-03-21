@@ -23,11 +23,11 @@ N'oublie pas de copier/coller le code régulièrement.
 
 On ne va pas s'enfoncer dans les détails maintenant, mais on doit créer un **V**ertex **A**rray **O**bject et le définir comment objet courant.
 
-{% highlight cpp linenos %}
+``` cpp
 GLuint VertexArrayID;
 glGenVertexArrays(1, &VertexArrayID);
 glBindVertexArray(VertexArrayID);
-{% endhighlight %}
+```
 
 Fait-le une fois que ta fenêtre est créée (= après la création du contexte OpenGL) et avant tout autre appel OpenGL.
 
@@ -53,14 +53,14 @@ Mis à part cela, remarque aussi que tu peux bouger ta main librement : ton X, Y
 
 Donc, on a besoin de trois points 3D afin de faire un triangle ; les voici :
 
-{% highlight cpp linenos %}
+``` cpp
 // An array of 3 vectors which represents 3 vertices
 static const GLfloat g_vertex_buffer_data[] = {
    -1.0f, -1.0f, 0.0f,
    1.0f, -1.0f, 0.0f,
    0.0f,  1.0f, 0.0f,
 };
-{% endhighlight %}
+```
 
 Le premier sommet est (-1, -1, 0). Cela signifie que, sauf si nous le transformons d'une quelconque manière, il sera affiché à la position (-1, -1) à l'écran. Qu'est-ce que cela donne ? L'origine de l'écran est au centre, l'axe X va vers la droite, comme toujours et l'axe Y vers le haut. Voici ce que cela donne sur un écran large :
 
@@ -72,7 +72,7 @@ C'est une chose que tu ne peux pas modifier, c'est intégré dans ta carte graph
 
 La prochaine étape est de fournir ce triangle à OpenGL. Pour cela il faut créer un *buffer* (Tampon en Français) :
 
-{% highlight cpp linenos %}
+``` cpp
 // This will identify our vertex buffer
 GLuint vertexbuffer;
 // Generate 1 buffer, put the resulting identifier in vertexbuffer
@@ -81,13 +81,13 @@ glGenBuffers(1, &vertexbuffer);
 glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 // Give our vertices to OpenGL.
 glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-{% endhighlight %}
+```
 
 C'est nécessaire qu'une seule fois au lancement du programme.
 
 Maintenant, la boucle principale, où on ne dessiner *rien* dans le premier tuto. On peut maintenant dessiner un fantastique triangle :
 
-{% highlight cpp linenos %}
+``` cpp
 // 1rst attribute buffer : vertices
 glEnableVertexAttribArray(0);
 glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
@@ -102,7 +102,7 @@ glVertexAttribPointer(
 // Draw the triangle !
 glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
 glDisableVertexAttribArray(0);
-{% endhighlight %}
+```
 
 Si tu es chanceux, tu peux voir ce résultat (<span style="color: red">**Si tu vois rien, panique pas et continue !**</span>)
 
@@ -122,7 +122,7 @@ Les deux shaders sont généralement dans des fichiers distincts. Dans cet exemp
 
 Voici enfin le code pour charger des shaders. Il n'est pas très important de le comprendre entièrement, car on ne l'utilise qu'une seule fois dans un programme, les commentaires suffiront. Comme cette fonction va être utilisée dans tous les autres tutoriels, elle est placée dans un fichier à part : common/loadShader.cpp. On peut remarquer que, comme les *buffer*, les shaders ne sont pas directement accessibles : on n'a qu'un identifiant. L'implémentation actuelle est cachée par le pilote.
 
-{% highlight cpp linenos %}
+``` cpp
 GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path){
 
 	// Create the shaders
@@ -217,7 +217,7 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 	return ProgramID;
 }
 
-{% endhighlight %}
+```
 
 #Notre vertex shader
 
@@ -225,15 +225,15 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 
 La première ligne indique au compilateur que l'on va utiliser la syntaxe de OpenGL 3.
 
-{% highlight glsl linenos %}
+``` glsl
 #version 330 core
-{% endhighlight %}
+```
 
 La seconde ligne déclare les données d'entrées :
 
-{% highlight glsl linenos %}
+``` glsl
 layout(location = 0) in vec3 vertexPosition_modelspace;
-{% endhighlight %}
+```
 
 Expliquons-la en détail :
 
@@ -244,17 +244,17 @@ Expliquons-la en détail :
 
 La fonction qui est appelée pour chaque sommet est appelée main, tout comme en C :
 
-{% highlight glsl linenos %}
+``` glsl
 void main(){
-{% endhighlight %}
+```
 
 Notre fonction principale va simplement définir la position du vertex à ce qui est dans le buffer (tampon). Donc, si on donne (1, 1), le triangle aura l'un de ces sommets au coin supérieur droit de l'écran. On verra dans le prochain tutoriel comment effectuer des calculs plus intéressants sur les positions passées au shader.
 
-{% highlight glsl linenos %}
+``` glsl
   gl_Position.xyz = vertexPosition_modelspace;
   gl_Position.w = 1.0;
 }
-{% endhighlight %}
+```
 
 *gl_Position* est l'une des rares variables codé en dur dans le langage : _vous devez assigner une valeur à celle-ci_. Tout le reste est optionnel ; on verra « tout le reste » dans le quatrième tutoriel.
 
@@ -262,13 +262,13 @@ Notre fonction principale va simplement définir la position du vertex à ce qui
 
 Pour notre premier fragment shader, on va faire quelque chose de très simple : définir la couleur de chaque fragment à rouge. (Rappel-toi, il y a quatre fragments dans un pixel, car nous utilisons l'*A*nti-*A*liasing 4x.)
 
-{% highlight glsl linenos %}
+``` glsl
 #version 330 core
 out vec3 color;
 void main(){
   color = vec3(1,0,0);
 }
-{% endhighlight %}
+```
 
 Donc voilà, *vec3(1,0,0)* signifie rouge. Cela est dû aux écrans d'ordinateur. La couleur est représentée par un triplet rouge, vert, bleu, dans cet ordre. Donc (1, 0, 0) indique complètement rouge, pas de vert et pas de bleu.
 
@@ -276,24 +276,24 @@ Donc voilà, *vec3(1,0,0)* signifie rouge. Cela est dû aux écrans d'ordinateur
 
 Avant la boucle principale, on appelle la fonction LoadShaders :
 
-{% highlight cpp linenos %}
+``` cpp
 // Create and compile our GLSL program from the shaders
 GLuint programID = LoadShaders( "SimpleVertexShader.vertexshader", "SimpleFragmentShader.fragmentshader" );
-{% endhighlight %}
+```
 
 En premier, dans la boucle principale, on nettoie l'écran. Cela changera la couleur de fond en bleu foncé à cause de l'appel glClearColor(0.0f, 0.0f, 0.4f, 0.0f) au-dessus de la boucle principale.
 
-{% highlight cpp linenos %}
+``` cpp
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-{% endhighlight %}
+```
 
 Puis on indique à OpenGL que l'on souhaite les shaders vus précédemment :
 
-{% highlight cpp linenos %}
+``` cpp
 // Use our shader
 glUseProgram(programID);
 // Draw triangle...
-{% endhighlight %}
+```
 
 ... et voilà ton triangle rouge !
 

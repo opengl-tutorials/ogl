@@ -20,15 +20,15 @@ language: jp
 2002年当時のGPUは頂点シェーダやフラグメントシェーダがありませんでした。すべてはチップ内でハードコードされていました。これは固定機能パイプライン（FFP)と呼ばれていました。そのため当時の最新のAPI(OpenGL1.3)では”シェーダ”と呼ばれるものの作成、演算、使用はできませんでした。なぜならそもそも存在していないからです。しかしNVIDIAは、多くのフラグや状態変数の代わりに、実際のコードを使いレンダリングプロセスを表現することを決めました。このようにしてARB_fragment_programが生まれました。GLSLはありませんが、代わりに以下のように書くことができます。
 {% highlight text linenos %}
 !!ARBfp1.0 MOV result.color, fragment.color; END
-{% endhighlight %}
+```
 しかしOpenGLで上記のようなコードを使うには、OpenGLにはない特別な関数が必要でした。
 
 ##ARB_debug_output
 
 ARB_fragment_programは昔のものだからもう必要ないでしょ？といいたいのは分かります。しかしより使いやすくなった新しい拡張があります。そのうちの一つがARB_debug_outputで、OpenGL3.3にはない機能を提供します。それはGL_DEBUG_OUTPUT_SYNCHRONOUS_ARB orGL_DEBUG_SEVERITY_MEDIUM_ARBなどのトークンやDebugMessageCallbackARBの関数を定義しています。この機能の良い点は下のような間違ったコードを書いたときに、エラーメッセージや問題の場所を教えてくれます。
-{% highlight cpp linenos %}
+``` cpp
 glEnable(GL_TEXTURE); // 間違い! GL_TEXTURE_2Dが正しいのでは？
-{% endhighlight %}
+```
 エラーメッセージと問題の場所を教えてくれます：
 
 ・この拡張は最新のOpenGL3.3でさえとても便利です。
@@ -40,7 +40,7 @@ glEnable(GL_TEXTURE); // 間違い! GL_TEXTURE_2Dが正しいのでは？
 ##拡張機能を取得するー難しい方法
 
 ”手作業”で拡張機能をチェックする方法を下のコードに示します。 ([OpenGL.org wiki](http://www.opengl.org/wiki/GlGetString)にあります。) :
-{% highlight cpp linenos %}
+``` cpp
 int NumberOfExtensions;
 glGetIntegerv(GL_NUM_EXTENSIONS, &NumberOfExtensions);
 for(i=0; i<NumberOfExtensions; i++) {
@@ -51,14 +51,14 @@ for(i=0; i<NumberOfExtensions; i++) {
     glDebugMessageCallbackARB  = (PFNGLDEBUGMESSAGECALLBACKARBPROC) wglGetProcAddress("glDebugMessageCallbackARB");
   }
 }
-{% endhighlight %}
+```
 
 ##拡張機能をすべて取得するー簡単な方法
 
 拡張機能をすべて取得するー簡単な方法すべての機能を上記のような方法で取得するのは面倒です。GLEW、GLee、gl3wなどのライブラリはもっと簡単な方法を提供しています。例えばGLEWでは、ウィンドウを作った後でglewInit()を呼ぶだけで、便利な変数が作られます。
-{% highlight cpp linenos %}
+``` cpp
 if (GLEW_ARB_debug_output){ // Ta-Dah ! }
-{% endhighlight %}
+```
 （debug_outputは特殊で、コンテキストの作成時に有効にしないといけません。GLFWでは、glfwOpenWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1); とします。）
 
 ##ARB vs EXT vs ...
@@ -81,13 +81,13 @@ NV/AMD/INTEL : これはそのままの意味 =)
 OpenGL3.3のアプリケーションで膨大な量の線を描画ることを考えましょう。複雑な頂点シェーダを書くことでも実現できます。あるいは複雑な処理をあなたの代わりにやってくれる [GL_NV_path_rendering](http://www.opengl.org/registry/specs/NV/path_rendering.txt)に頼ることでも実現できます。
 
 以下のようなコードを書くことになるでしょう。
-{% highlight cpp linenos %}
+``` cpp
 if ( GLEW_NV_path_rendering ){
     glPathStringNV( ... ); // シェイプを描画するだけ！
 }else{
     // 古いNVIDEAハードウェアやAMD、INTEL上では自分で実装しなければなりません！
 }
-{% endhighlight %}
+```
 
 ##制限の選択
 

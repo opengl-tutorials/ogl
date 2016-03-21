@@ -38,7 +38,7 @@ language: jp
 
 ここでシャドウマップを格納するために、1024x1024で16ビットのデプステクスチャを使います。通常シャドウマップには16ビットで十分です。この値を変えて、適当に実験してみても良いでしょう。
 デプステクスチャを使うのであって、デプスrenderbuffeではありませね。なぜなら後でそれをサンプルする必要があるからです。
-{% highlight cpp linenos %}
+``` cpp
 // フレームバッファ、0か1かそれ以上のテクスチャと0か1のバッファを再編成する
  GLuint FramebufferName = 0;
  glGenFramebuffers(1, &FramebufferName);
@@ -61,14 +61,14 @@ language: jp
  // 常にフレームバッファが正しいかをチェックする
  if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
  return false;
-{% endhighlight %}
+```
 ライトの位置からシーンを描画するために使うMVP行列は次のように計算できます。
 
 * プロジェクション行列は正射行列で、 X、Y、Z軸それぞれが(-10,10),(-10,10),(-10,20)に位置合わせされた座標内ですべてを囲みます。
 * ビュー行列はカメラ空間となるように回転します。ライトの方向は-Zです。( [チュートリアル3](http://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/) 参照)
 * モデル行列はあなたが決めます。
 
-{% highlight cpp linenos %}
+``` cpp
 glm::vec3 lightInvDir = glm::vec3(0.5f,2,2);
 
  // ライトの視点からMVP行列を計算します。
@@ -79,12 +79,12 @@ glm::vec3 lightInvDir = glm::vec3(0.5f,2,2);
 
  // 現在バインドされているシェーダへ変換行列を送ります。MVPユニフォームで。
  glUniformMatrix4fv(depthMatrixID, 1, GL_FALSE, &depthMVP[0][0])
-{% endhighlight %}
+```
 
 ###シェーダ
 
 シェーダはこの過程ではとてもシンプルです。頂点シェーダは同次座標系で頂点の座標を単に計算するだけです。
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 #version 330 core
 
 // 入力頂点データ。このシェーダのすべての実行で異なる
@@ -96,10 +96,10 @@ uniform mat4 depthMVP;
 void main(){
  gl_Position =  depthMVP * vec4(vertexPosition_modelspace,1);
 }
-{% endhighlight %}
+```
 フラグメントシェーダもシンプルです。
 location0のフラグメントのデプスを単に書くだｋです。（つまりデプステクスチャです。）
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 #version 330 core
 
 // 出力データ
@@ -109,7 +109,7 @@ void main(){
     // OpenGLがやってくれるので、本当は必要ない
     fragmentdepth = gl_FragCoord.z;
 }
-{% endhighlight %}
+```
 シャドウマップを描画するのは通常の描画より2倍早くなります。なぜならデプスと色の両方の代わりに、低精度のデプスだけが書かれるからです。GPUではメモリ帯域幅が性能に大きくかかわります。
 
 
@@ -137,7 +137,7 @@ void main(){
 例えば、画面中央にあるフラグメントは同次座標では(0,0)ですが、テクスチャの中央からサンプルする場合はUVは(0,5,0.5)となります。
 
 これはフラグメントシェーダで取り出す座標を直接変更することでも実現できますが、同次座標に次のような行列を掛ける事でより効率的に実現できます。つまり、座標を2分の1にして(対角要素は[-1,1]->[-0.5,0.5])平行移動するような(一番下の行は[-0.5,0.5]->[0,1])行列です。
-{% highlight cpp linenos %}
+``` cpp
 glm::mat4 biasMatrix(
 0.5, 0.0, 0.0, 0.0,
 0.0, 0.5, 0.0, 0.0,
@@ -145,33 +145,33 @@ glm::mat4 biasMatrix(
 0.5, 0.5, 0.5, 1.0
 );
 glm::mat4 depthBiasMVP = biasMatrix*depthMVP;
-{% endhighlight %}
+```
 これで頂点シェーダを書くことができます。以前と同じですが、出力位置を一つから二つに変更します。
 
 * gl_Positionは現在のカメラから見た頂点の位置です。
 * ShadowCoordは最後のカメラ（ライト）から見た頂点の位置です。
 
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 // クリップ空間での頂点の出力位置：MVP * position
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
 // 同じ、ただしライトのビューマトリックス
 ShadowCoord = DepthBiasMVP * vec4(vertexPosition_modelspace,1);
-{% endhighlight %}
+```
 フラグメントシェーダはとてもシンプルです。
 
 * texture( shadowMap, ShadowCoord.xy ).zはライトと最も近い遮蔽物との距離です。
 * ShadowCoord.zはライトと現在のフラグメントとの距離です。
 
 だから現在のフラグメントが最も近い遮蔽物よりも遠ければ、これは（最も近い遮蔽物の）影の中にあるということを意味します。
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 float visibility = 1.0;
 if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z){
     visibility = 0.5;
 }
-{% endhighlight %}
+```
 この知識を使ってシェーディングを修正します。もちろん環境光の色は変更しません。なぜなら環境光は、影の中に居ようとも、いくつかの向かってくる光をごまかすためにあるからです。（そうしなければ、すべてのものは真っ黒となります。）
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 color =
  // 環境光：向かってくる光をシミュレートする
  MaterialAmbientColor +
@@ -179,7 +179,7 @@ color =
  visibility * MaterialDiffuseColor * LightColor * LightPower * cosTheta+
  // 鏡面光：鏡のように反射するハイライト
  visibility * MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5);
-{% endhighlight %}
+```
 
 ###結果-シャドウアクネ
 
@@ -206,13 +206,13 @@ color =
 
 
 一般的な修正方法はエラーマージンを追加することです。現在のフラグメントの（ライト空間での）デプスがライトマップの値よりも遠くにあれば影ます。これにバイアスを追加します。
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 float bias = 0.005;
 float visibility = 1.0;
 if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z-bias){
     visibility = 0.5;
 }
-{% endhighlight %}
+```
 結果はよりよくなったでしょう。
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/FixedBias.png)
@@ -221,10 +221,10 @@ if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z-bias){
 しかしこのバイアスのせいで地面と壁の間の部分がより悪くなりました。さらに、0.005というバイアスは地面にとっては大きすぎますが、曲面では十分ではないようです。シャドウアクネが円柱や球には残っています。
 
 一般的なアプローチは傾斜にしたがってバイアスを修正することです。
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 float bias = 0.005*tan(acos(cosTheta)); // cosThetaはdot( n,l )で0と1の間にします。
 bias = clamp(bias, 0,0.01);
-{% endhighlight %}
+```
 シャドウアクネは曲面以外ではなくなりました。
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/VariableBias.png)
@@ -236,15 +236,15 @@ bias = clamp(bias, 0,0.01);
 
 
 シャドウマップを描画するとき、前面向きの三角形をカリングします。
-{% highlight cpp linenos %}
+``` cpp
         // シェーダでバイアスは使いません。しかし代わりに、小さな距離によって既に前面から分離されているバックフェースを描画します。
         // （もし幾何学的な形がこのように作られているなら。）
         glCullFace(GL_FRONT); // 前面をカリング->後ろ向きの三角形のみ描画する。
-{% endhighlight %}
+```
 シーンを描画するとき普通に描画します。（バックフェースカリング）
-{% highlight cpp linenos %}
+``` cpp
          glCullFace(GL_BACK); // 背面をカリング->表向きの三角形のみ描画する。
-{% endhighlight %}
+```
 この方法はバイアスとともにコードで使われています。
 
 ##ピーターパニング
@@ -287,22 +287,22 @@ bias = clamp(bias, 0,0.01);
 ###ポアソンサンプリング
 
 簡単な方法はシャドウマップをサンプルする回数を一回からN回にするという方法です。PCFとの併用により、たとえ小さなNだとしても、とても良い結果を与えてくれます。ここに4サンプルのコードを示します。
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 for (int i=0;i<4;i++){
   if ( texture( shadowMap, ShadowCoord.xy + poissonDisk[i]/700.0 ).z  <  ShadowCoord.z-bias ){
     visibility-=0.2;
   }
 }
-{% endhighlight %}
+```
 poissonDiskは定数配列で次のように定義されています。
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 vec2 poissonDisk[4] = vec2[](
   vec2( -0.94201624, -0.39906216 ),
   vec2( 0.94558609, -0.76890725 ),
   vec2( -0.094184101, -0.92938870 ),
   vec2( 0.34495938, 0.29387760 )
 );
-{% endhighlight %}
+```
 このように、いくつのシャドウマップのサンプルが通過するかによりますが、作成されるフラグメントは多少なりとも暗くなります。
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/SoftShadows.png)
@@ -324,26 +324,26 @@ vec2 poissonDisk[4] = vec2[](
 各ピクセルで異なるサンプルを選ぶことでこのバンディングは取り除けます。主に二つの方法があります。階層ポアソンあるいは回転ポアソンです。階層は異なるサンプルを選び、回転は同じサンプルを使うが違うように見せるめにランダムに回転させます。このチュートリアルでは階層版を説明します。
 
 前のバージョンと違う点は *poissonDisk* をランダムにインデックスする点だけです。
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
     for (int i=0;i<4;i++){
         int index = // 0から15のうちのランダムな数字、各ピクセル（と各i)で違うようにする。
         visibility -= 0.2*(1.0-texture( shadowMap, vec3(ShadowCoord.xy + poissonDisk[index]/700.0,  (ShadowCoord.z-bias)/ShadowCoord.w) ));
     }
-{% endhighlight %}
+```
 次のコードのように[0,1[の間の乱数を生成します。
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
     float dot_product = dot(seed4, vec4(12.9898,78.233,45.164,94.673));
     return fract(sin(dot_product) * 43758.5453);
-{% endhighlight %}
+```
 このケースでは（4つの異なる点をサンプルするために）seed4はiのコンビネーションです。そしてgl_FragCoord（画面上のピクセルの位置）あるいはPosition_worldspaceを使います。
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
         //  -ピクセルの画面上の位置に応じて、ランダムにサンプルしたもの
         //    バンディングはありません。しかしカメラが移動すると影も動きます。
         int index = int(16.0*random(gl_FragCoord.xyy, i))%16;
         //  - ワールド空間でのピクセルの位置に応じてランダムにサンプルしたもの
         //    位置は大きなエイリアシングを避けるためにミリメータに直されます。
         //int index = int(16.0*random(floor(Position_worldspace.xyz*1000.0), i))%16;
-{% endhighlight %}
+```
 これは上の画像のようなパターンを作ります。ただし、良くできたノイズはあまりこのようなパターンにはなりません。
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/PCF_stratified_4tap.png)
@@ -363,20 +363,20 @@ tutorial16/ShadowMapping.fragmentshaderの3つの実装例を見てください�
 ##スポットライト
 
 スポットライトを扱うには少し変更を加えるだけで良いです。最も明らかな変更は正射投影行列をパースペクティブ投影行列に変えることです。
-{% highlight cpp linenos %}
+``` cpp
 glm::vec3 lightPos(5, 20, 20);
 glm::mat4 depthProjectionMatrix = glm::perspective<float>(45.0f, 1.0f, 2.0f, 50.0f);
 glm::mat4 depthViewMatrix = glm::lookAt(lightPos, lightPos-lightInvDir, glm::vec3(0,1,0));
-{% endhighlight %}
+```
 同じように、しかしパースペクティブ円錐台を正射円錐台の変わりに使います。texture2Dprojをパースペクティブ分割のために使います。（チュートリアル4を見てください。）
 
 二つ目のステップはシェーダにおいてパースペクティブを考慮に入れることです。（チュートリアル4を見てください。ナットシェルの中は、パースペクティブ投影行列はもはやパースペクティブしないでしょう。これは射影された座標をwで割ることによってハードウェアによって行われます。ここで、シェーダ内で変換をエミュレートします。だからパースペクティブ分割を自分自身でします。ところで、正射投影行列は常にw=1の同次ベクトルを生成します。そのためどんなパースペクティブも作り出しません。）
 
 GLSLで行うには二つの方法が在ります。二つ目はtextureProjという組み込み関数を使います。しかし二つの関数はまったく同じ結果を出します。
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 if ( texture( shadowMap, (ShadowCoord.xy/ShadowCoord.w) ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 if ( textureProj( shadowMap, ShadowCoord.xyw ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
-{% endhighlight %}
+```
  
 
 ##ポイントライト

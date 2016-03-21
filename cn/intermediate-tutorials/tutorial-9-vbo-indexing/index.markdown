@@ -42,7 +42,7 @@ order: 10
 #OpenGL中的索引VBO
 
 索引的用法很简单。首先，需要再创建一个缓冲来存储索引。代码与之前一样，不过参数由ARRAY_BUFFER变为了ELEMENT_ARRAY_BUFFER。
-{% highlight cpp linenos %}
+``` cpp
 std::vector indices;
 
 // fill "indices" as needed
@@ -52,9 +52,9 @@ std::vector indices;
  glGenBuffers(1, &elementbuffer);
  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
-{% endhighlight %}
+```
 只需把glDrawArrays替换为如下语句，即可绘制模型：
-{% highlight cpp linenos %}
+``` cpp
 // Index buffer
  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 
@@ -65,7 +65,7 @@ std::vector indices;
      GL_UNSIGNED_INT,   // type
      (void*)0           // element array buffer offset
  );
-{% endhighlight %}
+```
 （小提示：最好使用unsigned short，不要用unsigned int。这样更节省空间，速度也更快。）
 
 #填充索引缓冲
@@ -80,7 +80,7 @@ For each input vertex
         A similar vertex is already in the VBO, use it instead !
     If not found :
         No similar vertex found, add it to the VBO
-{% endhighlight %}
+```
 完整的C++代码位于common/vboindexer.cpp，注释很详尽。如果理解了以上算法，读懂代码应该没问题。
 
 若两顶点的坐标、UV坐标和法线都相等，则认为两顶点是同一顶点。若还有其他属性，就得视具体情况而定了。

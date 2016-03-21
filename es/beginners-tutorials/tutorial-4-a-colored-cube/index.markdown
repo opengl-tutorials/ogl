@@ -20,7 +20,7 @@ Bienvenido al cuarto tutorial ! Aqui vas a aprender a :
 
 Un cubo tiene seis caras cuadradas. Dado que OpenGl solo sabe de triangulos, tendrémos que dibujar 12 triangulos : dos por cada cara. Definimos los vertices de la misma forma que lo hicimos para los triangulos.
 
-{% highlight cpp linenos %}
+``` cpp
 // Nuestros vertices. Tres flotantes consecutivos hacen un vertice 3D; tres vertices consecutivos hacen un triangulo.
 // Un cubo tiene 6 caras con 2 triangulos cada una, esto significa 6*2=12 triangulos, y 12*3 vertices
 static const GLfloat g_vertex_buffer_data[] = {
@@ -61,14 +61,14 @@ static const GLfloat g_vertex_buffer_data[] = {
     -1.0f, 1.0f, 1.0f,
     1.0f,-1.0f, 1.0f
 };
-{% endhighlight %}
+```
 
 
 El buffer OpenGl es creado, asociado, llenado y configurado con las funciones estándar (glGenBuffers, glBindBuffer, glBufferData, glVertexAttribPointer) ; Mira el tutorial 2 para repasar. La función para pintar tampoco cambia, solo se le debe indicar el numero adecuado de vertices a dibujar :
-{% highlight cpp linenos %}
+``` cpp
 // Dibujar el triangulo !
 glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 los indices comienzan en 0 -> 12 triangulos -> 6 cuadrados
-{% endhighlight %}
+```
 Unos apuntes sobre este código :
 
 * Por ahora, nuestro modelo 3D es fijo : para cambiarlo, se debe modificar el código, recompilar la aplicación y esperar lo mejor. Vamos a aprender a cargar modelos de forma dinámica en el tutorial7
@@ -83,7 +83,7 @@ Conceptualmente, un color es lo mismo que una posición : solo son datos. En té
 
 Primero, declara tus colores : una tripla RGB por vértice. Aquí generé unos al azar, así que el resultado no se va a ver muy bien. Se puede hacer algo mejor, copiar la posición del vertice en el color.
 
-{% highlight cpp linenos %}
+``` cpp
 // Un color por vertice. Fueron generados al azar.
 static const GLfloat g_color_buffer_data[] = {
     0.583f,  0.771f,  0.014f,
@@ -123,16 +123,16 @@ static const GLfloat g_color_buffer_data[] = {
     0.820f,  0.883f,  0.371f,
     0.982f,  0.099f,  0.879f
 };
-{% endhighlight %}
+```
 El buffer es creado, asociado y llenado en la misma forma que el anterior :
-{% highlight cpp linenos %}
+``` cpp
 GLuint colorbuffer;
 glGenBuffers(1, &colorbuffer);
 glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
-{% endhighlight %}
+```
 La configuración también es idéntica :
-{% highlight cpp linenos %}
+``` cpp
 // 2do atributo del buffer : colores
 glEnableVertexAttribArray(1);
 glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
@@ -144,14 +144,14 @@ glVertexAttribPointer(
     0,                                // corrimiento
     (void*)0                          // corrimiento de buffer
 );
-{% endhighlight %}
+```
 Ahora en el vertex shader, tenemos que acceder a este buffer adicional :
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 // Nota que “1” aquí es igual al “1” en glVertexAttribPointer
 layout(location = 1) in vec3 vertexColor;
-{% endhighlight %}
+```
 En nuestro caso, no hacemos nada extraño con el en el vertex shader, simplemente se lo mandamos al fragment shader :
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 // Datos de salida, serán interpolados para cada fragmento.
 out vec3 fragmentColor;
 
@@ -162,14 +162,14 @@ void main(){
     // para producir el color de cada fragmento
     fragmentColor = vertexColor;
 }
-{% endhighlight %}
+```
 En el fragment shader, se declara fragmentColor de nuevo:
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 // Valores interpolados de los vertex shaders
 in vec3 fragmentColor;
-{% endhighlight %}
+```
 ... y es copiado en el color final
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 // datos de salida
 out vec3 color;
 
@@ -178,7 +178,7 @@ void main(){
     // Interpolado entre los 3 vertices alrededor
     color = fragmentColor;
 }
-{% endhighlight %}
+```
 Y esto es lo que obtenemos :
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/missing_z_buffer.png)
@@ -204,17 +204,17 @@ El lejano se esta pintando sobre el “cercano” aun cuando se supone que deber
 La solución a este problema es guardar el componente “Z” o profundidad para cada fragmento en un buffer, y cada vez que se quiere escribir un fragmento, primero se debe revisar si se debe pintar o estaba detrás y no debe ser pintado.
 
 Tu puedes hacer esto por ti mismo, pero es mucho más fácil pedirle al hardware que lo haga por ti :
-{% highlight cpp linenos %}
+``` cpp
 // Habilidad el test de profundidad
 glEnable(GL_DEPTH_TEST);
 // Aceptar el fragmento si esta mas cerca de la cámara que el fragmento anterior
 glDepthFunc(GL_LESS);
-{% endhighlight %}
+```
 También necesitas tanto la profunidad como el color de cada fragmento :
-{% highlight cpp linenos %}
+``` cpp
 // Limpiar la ventana
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-{% endhighlight %}
+```
 Y esto es suficiente para resolver todos los problemas. 
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/one_color_per_vertex.png)
@@ -226,14 +226,14 @@ Y esto es suficiente para resolver todos los problemas.
 
 * Genera los valores de colores tu mismo. Algunas ideas : al azar para que veas los colores cambiar en cada ejecución del programa. Dependiendo de la posición del vértice. Combinando los dos. Cualquier otra idea creativa :) Si sabes C, aquí está la sintáxis :
 
-{% highlight cpp linenos %}
+``` cpp
 static GLfloat g_color_buffer_data[12*3*3];
 for (int v = 0; v < 12*3 ; v++){
     g_color_buffer_data[3*v+0] = tu color rojo aquí;
     g_color_buffer_data[3*v+1] = tu color verde aquí;
     g_color_buffer_data[3*v+2] = tu color azul aquí;
 }
-{% endhighlight %}
+```
 
 * Una vez hayas hecho eso, haz que los colores cambien en cada cuadro. Tendrás que llamar a call glBufferData en cada cuadro. Asegurate de que el buffer esté correctamente asociado (usando glBindBuffer) con anterioridad !
 

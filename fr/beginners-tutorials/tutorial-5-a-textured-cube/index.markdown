@@ -36,17 +36,17 @@ Remarque comment la texture est déformée sur le triangle.
 Connaître le format de fichier BMP n'est pas important : nombreuses sont les bibliothèques pouvant le faire pour toi. Mais il est très simple et il peut t'aider à comprendre comment les choses fonctionnent en interne. Donc, on va écrire un chargeur de fichier BMP à partir de rien, afin que tu saches comment ça fonctionne, et ensuite on l'utilisera *plus jamais* !
 
 Voici la déclaration de la fonction de chargement :
-{% highlight cpp linenos %}
+``` cpp
 GLuint loadBMP_custom(const char * imagepath);
-{% endhighlight %}
+```
 Et elle s'utilise comme ça :
-{% highlight cpp linenos %}
+``` cpp
 GLuint image = loadBMP_custom("./my_texture.bmp");
-{% endhighlight %}
+```
 Maintenant, comment lire un fichier BMP ?
 
 Premièrement, on a besoin de quelques données. Ces variables seront définies lors de la lecture du fichier.
-{% highlight cpp linenos %}
+``` cpp
 // Data read from the header of the BMP file
 unsigned char header[54]; // Each BMP file begins by a 54-bytes header
 unsigned int dataPos;     // Position in the file where the actual data begins
@@ -54,47 +54,47 @@ unsigned int width, height;
 unsigned int imageSize;   // = width*height*3
 // Actual RGB data
 unsigned char * data;
-{% endhighlight %}
+```
 On doit maintenant ouvrir le fichier :
-{% highlight cpp linenos %}
+``` cpp
 // Open the file
 FILE * file = fopen(imagepath,"rb");
 if (!file){printf("Image could not be opened\n"); return 0;}
-{% endhighlight %}
+```
 La première chose dans le fichier est un en-tête de 54 octets. Il contient les informations telles que « est-ce vraiment un fichier BMP ? », la taille de l'image, le nombre de bits par pixel, etc. Donc, on lit l'en-tête :
-{% highlight cpp linenos %}
+``` cpp
 if ( fread(header, 1, 54, file)!=54 ){ // If not 54 bytes read : problem
     printf("Not a correct BMP file\n");
     return false;
 }
-{% endhighlight %}
+```
 L'en-tête démarre toujours avec BM. En fait, voici ce que tu obtiens lorsque tu ouvres un fichier .BMP dans un éditeur hexadécimal :
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/hexbmp.png)
 
 Donc, on vérifier si les deux premiers octets valent vraiment 'B' et 'M' :
-{% highlight cpp linenos %}
+``` cpp
 if ( header[0]!='B' || header[1]!='M' ){
     printf("Not a correct BMP file\n");
     return 0;
 }
-{% endhighlight %}
+```
 Maintenant, on peut lire la taille de l'image, l'emplacement des données dans le fichier, etc :
-{% highlight cpp linenos %}
+``` cpp
 // Read ints from the byte array
 dataPos    = *(int*)&(header[0x0A]);
 imageSize  = *(int*)&(header[0x22]);
 width      = *(int*)&(header[0x12]);
 height     = *(int*)&(header[0x16]);
-{% endhighlight %}
+```
 On doit compléter les informations pour les cas où elles sont manquantes :
-{% highlight cpp linenos %}
+``` cpp
 // Some BMP files are misformatted, guess missing information
 if (imageSize==0)    imageSize=width*height*3; // 3 : one byte for each Red, Green and Blue component
 if (dataPos==0)      dataPos=54; // The BMP header is done that way
-{% endhighlight %}
+```
 Maintenant que la taille de l'image est connue, on peut allouer de la mémoire pour la remplir avec l'image lue :
-{% highlight cpp linenos %}
+``` cpp
 // Create a buffer
 data = new unsigned char [imageSize];
 
@@ -103,12 +103,12 @@ fread(data,1,imageSize,file);
 
 //Everything is in memory now, the file can be closed
 fclose(file);
-{% endhighlight %}
+```
 On arrive à la vrai section OpenGL. La création de textures est très similaire à la création de tampons : créer une texture, la lier, la remplir et la configurer.
 
 Dans glTexImage2D, GL_RGB indique que l'on utilise une couleur ayant trois composantes et GL_BGR indique comment les données sont réellement disposées en mémoire. En fait, le fichier BMP ne stocke pas les pixels en Rouge->Vert->Bleu mais Bleu->Vert->Rouge, donc on doit en informer OpenGL.
 
-{% highlight cpp linenos %}
+``` cpp
 // Create one OpenGL texture
 GLuint textureID;
 glGenTextures(1, &textureID);
@@ -121,11 +121,11 @@ glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE
 
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-{% endhighlight %}
+```
 On va expliquer les deux dernières lignes plus tard. Dorénavant, du côté C++, vous pouvez utiliser la nouvelle fonction pour charger une texture :
-{% highlight cpp linenos %}
+``` cpp
 GLuint Texture = loadBMP_custom("uvtemplate.bmp");
-{% endhighlight %}
+```
 
 >Il est important d'utiliser des textures ayant des **tailles en puissances de deux** :
 >* correct : 128*128, 256*256, 1024*1024, 2*2 ...
@@ -135,7 +135,7 @@ GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 #Utiliser une texture dans OpenGL
 
 On commence par le fragment shader. Il est globalement simple :
-{% highlight glsl linenos cssclass=highlightglslfs %}
+``` glsl fs
 #version 330 core
 
 // Interpolated values from the vertex shaders
@@ -152,14 +152,14 @@ void main(){
     // Output color = color of the texture at the specified UV
     color = texture( myTextureSampler, UV ).rgb;
 }
-{% endhighlight %}
+```
 Trois choses :
 * Le fragment shader a besoin des coordonnées UV. Cela semble logique
 * Il a aussi besoin d'un « sampler2D » pour savoir à quelle texture accéder (vous pouvez accéder à plusieurs textures dans le même shader) ;
 * Finalement, l'accès à la texture est effectué avec texture(), renvoyant un vec4 contenant (R,G,B,A). On va voir ce qu'est le A, prochainement.
 
 Le vertex shader est simple aussi, vous devez juste passer les coordonnées UV au fragment shader :
-{% highlight glsl linenos cssclass=highlightglslvs %}
+``` glsl vs
 #version 330 core
 
 // Input vertex data, different for all executions of this shader.
@@ -180,9 +180,9 @@ void main(){
     // UV of the vertex. No special space for this one.
     UV = vertexUV;
 }
-{% endhighlight %}
+```
 Te souviens-tu du « layout(location = 1) in vec2 vertexUV » du [quatrième tutoriel]({{site.baseurl}}}/fr/beginners-tutorials/tutorial-4-a-colored-cube/) ? Eh bien, on doit faire exactement la même chose ici, mais au lieu de donner un tampon de triplets (R,G,B), on va donner une paire (U,V).
-{% highlight cpp linenos %}
+``` cpp
 // Two UV coordinatesfor each vertex. They were created with Blender. You'll learn shortly how to do this yourself.
 static const GLfloat g_uv_buffer_data[] = {
     0.000059f, 1.0f-0.000004f,
@@ -222,7 +222,7 @@ static const GLfloat g_uv_buffer_data[] = {
     1.000004f, 1.0f-0.671847f,
     0.667979f, 1.0f-0.335851f
 };
-{% endhighlight %}
+```
 Les coordonnées UV ci-dessus correspondent à ce modèle :
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/uv_mapping_blender.png)
@@ -240,10 +240,10 @@ et en zoomant un peu :
 #Que sont le filtrage et les MIP maps et comment les utiliser
 
 Comme tu peux le voir dans la capture ci-dessus, la qualité de la texture n'est pas superbe. C'est dû à ce que l'on a écrit dans la fonction loadBMP_custom :
-{% highlight cpp linenos %}
+``` cpp
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-{% endhighlight %}
+```
 Ça signifie que dans le fragment shader, la fonction texture() prend le texel qui est aux coordonnées (U, V) et continue joyeusement avec :
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearest.png)
@@ -276,14 +276,14 @@ Les filtrages linéaire et anisotrope ont tous les deux un souci. Si la texture 
 * Pour une qualité supérieure, on peut aussi échantillonner deux niveau de mipmaps et mélanger le résultat.
 
 Heureusement, tout cela est très simple à faire, OpenGL sait le faire pour toi si tu lui demandez gentiment :
-{% highlight cpp linenos %}
+``` cpp
 // When MAGnifying the image (no bigger mipmap available), use LINEAR filtering
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 // When MINifying the image, use a LINEAR blend of two mipmaps, each filtered LINEARLY too
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 // Generate mipmaps, by the way.
 glGenerateMipmap(GL_TEXTURE_2D);
-{% endhighlight %}
+```
 
 #Charger les images avec GLFW
 
@@ -291,7 +291,7 @@ La fonction loadBMP_custom est bien, car on l'a faite à partir de rien. Mais l'
 
 >*Le chargement des fichiers TGA dans GLFW est dépréciée depuis la version 3.*
 
-{% highlight cpp linenos %}
+``` cpp
 GLuint loadTGA_glfw(const char * imagepath){
 
     // Create one OpenGL texture
@@ -314,7 +314,7 @@ GLuint loadTGA_glfw(const char * imagepath){
     // Return the ID of the texture we just created
     return textureID;
 }
-{% endhighlight %}
+```
 
 #Les textures compressées
 
@@ -339,7 +339,7 @@ Il y a une meilleures options : les textures compressées.
 ##Utiliser la texture compressée
 
 Voici comment charger l'image. C'est très proche du code pour le BMP, sauf que l'en-tête est organisé différemment :
-{% highlight cpp linenos %}
+``` cpp
 GLuint loadDDS(const char * imagepath){
 
     unsigned char header[124];
@@ -367,10 +367,10 @@ GLuint loadDDS(const char * imagepath){
     unsigned int linearSize     = *(unsigned int*)&(header[16]);
     unsigned int mipMapCount = *(unsigned int*)&(header[24]);
     unsigned int fourCC      = *(unsigned int*)&(header[80]);
-{% endhighlight %}
+```
 Les données de l'image se trouvent après l'en-tête : tous les niveaux de MIP maps, les uns après les autres. On peut les lire en une fois :
  
-{% highlight cpp linenos %}
+``` cpp
     unsigned char * buffer;
     unsigned int bufsize;
     /* how big is it going to be including all mipmaps? */
@@ -379,9 +379,9 @@ Les données de l'image se trouvent après l'en-tête : tous les niveaux de MIP 
     fread(buffer, 1, bufsize, fp);
     /* close the file pointer */
     fclose(fp);
-{% endhighlight %}
+```
 Ici, on doit gérer trois formats différents : DXT1, DXT3 et DXT5. On doit convertir l'indicateur « fourCC » en une valeur que comprend OpenGL.
-{% highlight cpp linenos %}
+``` cpp
     unsigned int components  = (fourCC == FOURCC_DXT1) ? 3 : 4;
     unsigned int format;
     switch(fourCC)
@@ -399,18 +399,18 @@ Ici, on doit gérer trois formats différents : DXT1, DXT3 et DXT5. On doit conv
         free(buffer);
         return 0;
     }
-{% endhighlight %}
+```
 La création de texture est effectuée comme d'habitude :
-{% highlight cpp linenos %}
+``` cpp
     // Create one OpenGL texture
     GLuint textureID;
     glGenTextures(1, &textureID);
 
     // "Bind" the newly created texture : all future texture functions will modify this texture
     glBindTexture(GL_TEXTURE_2D, textureID);
-{% endhighlight %}
+```
 Et maintenant, on peut remplir chaque MIP map l'une après l'autre :
-{% highlight cpp linenos %}
+``` cpp
     unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
     unsigned int offset = 0;
 
@@ -428,7 +428,7 @@ Et maintenant, on peut remplir chaque MIP map l'une après l'autre :
     free(buffer); 
 
     return textureID;
-{% endhighlight %}
+```
 
 ##Inversing the UVs
 
