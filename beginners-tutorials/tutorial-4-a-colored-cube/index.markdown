@@ -20,6 +20,7 @@ Welcome for the 4rth tutorial ! You will do the following :
 # Draw a cube
 
 A cube has six square faces. Since OpenGL only knows about triangles, we'll have to draw 12 triangles : two for each face. We just define our vertices in the same way as we did for the triangle.
+
 ``` cpp
 // Our vertices. Three consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
 // A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
@@ -62,11 +63,14 @@ static const GLfloat g_vertex_buffer_data[] = {
     1.0f,-1.0f, 1.0f
 };
 ```
+
 The OpenGL buffer is created, bound, filled and configured with the standard functions (glGenBuffers, glBindBuffer, glBufferData, glVertexAttribPointer) ; see Tutorial 2 for a quick reminder. The draw call does not change either, you just have to set the right number of vertices that must be drawn :
+
 ``` cpp
 // Draw the triangle !
 glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles -> 6 squares
 ```
+
 A few remarks on this code :
 
 * For now, our 3D model is fixed : in order to change it, you have to modify the source code, recompile the application, and hope for the best. We'll learn how to load dynamic models in tutorial 7.
@@ -79,6 +83,7 @@ You now have all the needed pieces to draw the cube in white. Make the shaders w
 A color is, conceptually, exactly the same as a position : it's just data. In OpenGL terms, they are "attributes". As a matter of fact, we already used this with glEnableVertexAttribArray() and glVertexAttribPointer(). Let's add another attribute. The code is going to be very similar.
 
 First, declare your colors : one RGB triplet per vertex. Here I generated some randomly, so the result won't look that good, but you can do something better, for instance by copying the vertex's position into its own color.
+
 ``` cpp
 // One color for each vertex. They were generated randomly.
 static const GLfloat g_color_buffer_data[] = {
@@ -120,14 +125,18 @@ static const GLfloat g_color_buffer_data[] = {
     0.982f,  0.099f,  0.879f
 };
 ```
+
 The buffer is created, bound and filled in the exact same way as the previous one :
+
 ``` cpp
 GLuint colorbuffer;
 glGenBuffers(1, &colorbuffer);
 glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
 ```
+
 The configuration is also identical :
+
 ``` cpp
 // 2nd attribute buffer : colors
 glEnableVertexAttribArray(1);
@@ -141,12 +150,16 @@ glVertexAttribPointer(
     (void*)0                          // array buffer offset
 );
 ```
+
 Now, in the vertex shader, we have access to this additional buffer :
+
 ``` glsl vs
 // Notice that the "1" here equals the "1" in glVertexAttribPointer
 layout(location = 1) in vec3 vertexColor;
 ```
+
 In our case, we won't do anything fancy with it in the vertex shader. We will simply forward it to the fragment shader :
+
 ``` glsl vs
 // Output data ; will be interpolated for each fragment.
 out vec3 fragmentColor;
@@ -160,12 +173,16 @@ void main(){
     fragmentColor = vertexColor;
 }
 ```
+
 In the fragment shader, you declare fragmentColor again :
+
 ``` glsl fs
 // Interpolated values from the vertex shaders
 in vec3 fragmentColor;
 ```
+
 ... and copy it in the final output color :
+
 ``` glsl fs
 // Ouput data
 out vec3 color;
@@ -176,6 +193,7 @@ void main(){
     color = fragmentColor;
 }
 ```
+
 And that's what we get :
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/missing_z_buffer.png)
@@ -202,27 +220,28 @@ It overdraws the "near" one, even though it's supposed to be behind it ! This is
 The solution to this problem is to store the depth (i.e. "Z") component of each fragment in a buffer, and each and every time you want to write a fragment, you first check if you should (i.e the new fragment is closer than the previous one).
 
 You can do this yourself, but it's so much simpler to just ask the hardware to do it itself :
+
 ``` cpp
 // Enable depth test
 glEnable(GL_DEPTH_TEST);
 // Accept fragment if it closer to the camera than the former one
 glDepthFunc(GL_LESS);
 ```
+
 You also need to clear the depth each frame, instead of only the color :
+
 ``` cpp
 // Clear the screen
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 ```
+
 And this is enough to solve all your problems.
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/one_color_per_vertex.png)
 
-
 # Exercises
 
-
 * Draw the cube AND the triangle, at different locations. You will need to generate 2 MVP matrices, to make 2 draw calls in the main loop, but only 1 shader is required.
-
 
 * Generate the color values yourself. Some ideas : At random, so that colors change at each run; Depending on the position of the vertex; a mix of the two; Some other creative idea :) In case you don't know C, here's the syntax :
 
