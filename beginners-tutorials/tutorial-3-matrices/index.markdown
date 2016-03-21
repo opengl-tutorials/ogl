@@ -52,6 +52,7 @@ This isn't as scary as it looks. Put your left finger on the a, and your right f
 Now this is quite boring to compute, an we will do this often, so let's ask the computer to do it instead.
 
 **In C++, with GLM:**
+
 ``` cpp
 glm::mat4 myMatrix;
 glm::vec4 myVector;
@@ -60,6 +61,7 @@ glm::vec4 transformedVector = myMatrix * myVector; // Again, in this order ! thi
 ```
 
 **In GLSL :**
+
 ``` glsl
 mat4 myMatrix;
 vec4 myVector;
@@ -94,6 +96,7 @@ Let's now see what happens to a vector that represents a direction towards the -
 So, how does this translate to code ?
 
 **In C++, with GLM:**
+
 ``` cpp
 #include <glm/gtx/transform.hpp> // after <glm/glm.hpp>
  
@@ -103,9 +106,11 @@ glm::vec4 transformedVector = myMatrix * myVector; // guess the result
 ```
 
 **In GLSL :**
+
 ``` glsl
 vec4 transformedVector = myMatrix * myVector;
 ```
+
 Well, in fact, you almost never do this in GLSL. Most of the time, you use glm::translate() in C++ to compute your matrix, send it to GLSL, and do only the multiplication :
 
 ## The Identity matrix
@@ -115,9 +120,11 @@ This one is special. It doesn't do anything. But I mention it because it's as im
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/identityExample.png)
 
 **In C++ :**
+
 ``` cpp
 glm::mat4 myIdentityMatrix = glm::mat4(1.0f);
 ```
+
 ## Scaling matrices
 
 Scaling matrices are quite easy too :
@@ -133,15 +140,18 @@ and the w still didn't change. You may ask : what is the meaning of "scaling a d
 (notice that the identity matrix is only a special case of scaling matrices, with (X,Y,Z) = (1,1,1). It's also a special case of translation matrix with (X,Y,Z)=(0,0,0), by the way)
 
 **In C++ :**
+
 ``` cpp
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
 glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
 ```
+
 ## Rotation matrices
 
 These are quite complicated. I'll skip the details here, as it's not important to know their exact layout for everyday use. For more information, please have a look to the [Matrices and Quaternions FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html) (popular resource, probably available in your language as well). You can also have a look at the [Rotations tutorials]({{site.baseurl }}{{intermediate-tutorials/tutorial-17-quaternions}}) 
 
 **In C++ :**
+
 ``` cpp
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
 glm::vec3 myRotationAxis( ??, ??, ??);
@@ -178,15 +188,19 @@ As a matter of fact, the order above is what you will usually need for game char
 Matrix-matrix multiplication is very similar to matrix-vector multiplication, so I'll once again skip some details and redirect you the the [Matrices and Quaternions FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html#Q11) if needed. For now, we'll simply ask the computer to do it :
 
 **in C++, with GLM :**
+
 ``` cpp
 glm::mat4 myModelMatrix = myTranslationMatrix * myRotationMatrix * myScaleMatrix;
 glm::vec4 myTransformedVector = myModelMatrix * myOriginalVector;
 ```
+
 **in GLSL :**
+
 ``` glsl
 mat4 transform = mat2 * mat1;
 vec4 out_vec = transform * in_vec;
 ```
+
 # The Model, View and Projection matrices
 
 _For the rest of this tutorial, we will suppose that we know how to draw Blender's favourite 3d model : the monkey Suzanne._
@@ -310,10 +324,10 @@ glm::mat4 MVPmatrix = projection * view * model; // Remember : inverted !
 transformed_vertex = MVP * in_vertex;
 ```
 
-
 # Putting it all together
 
 *  First step : generating our MVP matrix. This must be done for each model you render.
+
 ``` cpp
 // Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float) width / (float)height, 0.1f, 100.0f);
@@ -333,7 +347,9 @@ glm::mat4 Model = glm::mat4(1.0f);
 // Our ModelViewProjection : multiplication of our 3 matrices
 glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is the other way around
 ```
+
 *  Second step : give it to GLSL
+
 ``` cpp
 // Get a handle for our "MVP" uniform
 // Only during the initialisation
@@ -343,7 +359,9 @@ GLuint MatrixID = glGetUniformLocation(program_id, "MVP");
 // This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
 glUniformMatrix4fv(mvp_handle, 1, GL_FALSE, &mvp[0][0]);
 ```
+
 * Third step : use it in GLSL to transform our vertices
+
 ``` glsl vs
 // Input vertex data, different for all executions of this shader.
 layout(location = 0) in vec3 vertexPosition_modelspace;
@@ -358,6 +376,7 @@ void main(){
 
 }
 ```
+
 * Done ! Here is the same triangle as in tutorial 2, still at the origin (0,0,0), but viewed in perspective from point (4,3,3), heads up (0,1,0), with a 45° field of view.
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/perspective_red_triangle.png)
