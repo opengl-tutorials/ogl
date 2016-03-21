@@ -106,7 +106,8 @@ for ( unsigned int i=0 ; i<length ; i++ ){
 
 有一点非常重要：这些坐标位于[0,800][0,600]范围内。也就是说，这里**不需要**矩阵。顶点着色器只需简单换算就可以把这些坐标转换到[-1,1][-1,1]范围内（也可以在C++代码中完成这一步）。
 
-``` glsl vs
+``` glsl
+
 void main(){
 
     // Output position of the vertex, in clip space
@@ -119,14 +120,17 @@ void main(){
     UV = vertexUV;
 }
 ```
+{: .highlightglslvs }
 
 片段着色器的工作量也很少：
 
-``` glsl fs
+``` glsl
+
 void main(){
     color = texture( myTextureSampler, UV );
 }
 ```
+{: .highlightglslfs }
 
 顺便说一下，这些代码只能处理拉丁字符，请勿将其应用到工程中。否则您的产品在印度、中国、日本（甚至德国，因为纹理上没有&szlig;这个字母）就难以出售了。这张纹理是我用法语字符集生成的，在法国使用没有问题（注意 &eacute;, &agrave;, &ccedil;等字母）。修改其他教程的代码时请注意库的版本。其他教程大多使用OpenGL 2，和本教程不兼容。不幸的是我不知道有什么库能较好地处理UTF-8字符集。
 

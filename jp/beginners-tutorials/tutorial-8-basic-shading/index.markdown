@@ -114,7 +114,8 @@ and
 
 これは、ピクセルの色を計算するときに、光の入ってきた角度と表面の法線との角度が重要になることを意味します。次のことを得ます。
 
-``` glsl fs
+``` glsl
+
 // 法線と光の方向の角度のコサイン
 // 0以上に固定します。
 //  - 光が三角形に水平の場合 -> 1
@@ -123,6 +124,7 @@ float cosTheta = dot( n,l );
 
 color = LightColor * cosTheta;
 ```
+{: .highlightglslfs }
 
 ここでnは表面の法線で、lは表面から光に向かう方向の単位ベクトルを表します。(反対の方向ではありません。直感的ではありませんが、計算を簡単にします。)
 
@@ -130,7 +132,8 @@ color = LightColor * cosTheta;
 
 上のcosThetaの式では何か忘れています。もし光が三角形の後ろにあると、nとlは反対になります。だからnとlは負になります。これは"色＝負の数"を意味しますがこれでは意味が分かりません。だからcosThetaの下限を0に固定します。
 
-``` glsl fs
+``` glsl
+
 // 法線と光の方向の角度のコサイン
 // clamped above 0
 //  - 光が三角形に水平の場合 -> 1
@@ -140,6 +143,7 @@ float cosTheta = clamp( dot( n,l ), 0,1 );
 
 color = LightColor * cosTheta;
 ```
+{: .highlightglslfs }
 
 ##物体の色
 
@@ -150,9 +154,11 @@ color = LightColor * cosTheta;
 
 簡単な計算式でこれを実現できます。
 
-``` glsl fs
+``` glsl
+
 color = MaterialDiffuseColor * LightColor * cosTheta;
 ```
+{: .highlightglslfs }
 
 ##光のモデル化
 
@@ -160,15 +166,19 @@ color = MaterialDiffuseColor * LightColor * cosTheta;
 
 そのような光の場合、表面に到達する光束は光との距離に依存します。つまり遠くでは少ない光しか届きません。実際、光の量は距離の2乗で少なくなります。
 
-``` glsl fs
+``` glsl
+
 color = MaterialDiffuseColor * LightColor * cosTheta / (distance*distance);
 ```
+{: .highlightglslfs }
 
 最後に、光の強さを調節するようなパラメータも必要です。これはLightColorにエンコードされます。(後のチュートリアルで見ます。)しかし、ここではただ色(例えば白色)と強さ(例えば60ワット)を持っていることとします。
 
-``` glsl fs
+``` glsl
+
 color = MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance);
 ```
+{: .highlightglslfs }
 
 ##すべてを合わせる
 
@@ -180,16 +190,19 @@ LightColorとLightPowerはGLSL uniformを通してシェーダでセットしま
 
 cosThetaはnとlに依存します。どの空間でも表現できますが、ここではカメラ空間を選びます。なぜならカメラ空間だと光の位置を計算するのが簡単だからです。
 
-``` glsl fs
+``` glsl
+
 // カメラ空間で、計算されたフラグメントの法線
  vec3 n = normalize( Normal_cameraspace );
  // 光の方向(フラグメントから光の方向)
  vec3 l = normalize( LightDirection_cameraspace );
 ```
+{: .highlightglslfs }
 
 Normal_cameraspaceとLightDirection_cameraspaceは頂点シェーダで計算され、フラグメントシェーダへ送られます。
 
-``` glsl vs
+``` glsl
+
 // クリップ空間での頂点の出力位置、MVP&times;位置
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
@@ -208,6 +221,7 @@ LightDirection_cameraspace = LightPosition_cameraspace + EyeDirection_cameraspac
 // カメラ空間での、頂点の法線
 Normal_cameraspace = ( V * M * vec4(vertexNormal_modelspace,0)).xyz; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
 ```
+{: .highlightglslvs }
 
 このコードは難しそうに見えますが、チュートリアル3で習ったこと以外は使っていません。各ベクトルの名前に空間の名前が入れるように注意しました。だから、何が起こっているかを追っていくのがより簡単になります。**あなたもそういう記法を取るべきです。**
 
@@ -238,17 +252,21 @@ MとVはモデル行列とビュー行列で、MVP行列と同じようにシェ
 
 これは次のように実現できます。
 
-``` glsl fs
+``` glsl
+
 vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
 ```
+{: .highlightglslfs }
 
-``` glsl fs
+``` glsl
+
 color =
  // 環境光：直接当たらない光をシミュレートします。
  MaterialAmbientColor +
  // 拡散光：物体の"色"
  MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) ;
 ```
+{: .highlightglslfs }
 
 どうなったか見てみましょう。
 
@@ -270,7 +288,8 @@ OK、少しよくなりました。より良い結果を得るために(0.1, 0.1
 
 (*鏡を得るためにパラメータを微調整することも出来ますが、ここでは、この鏡で考慮すべきことはランプだけです。だから風変わりな鏡のようになります。*)
 
-``` glsl fs
+``` glsl
+
 // アイ(目)ベクトル(カメラのほうへ向かう)
 vec3 E = normalize(EyeDirection_cameraspace);
 // 三角形が光を反射する方向
@@ -289,6 +308,7 @@ color =
     // 鏡面光：鏡のように反射したハイライト
     MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance*distance);
 ```
+{: .highlightglslfs }
 
 Rは光が反射する方向です。Eは目の方向とは逆です。("l"と同じです。)もし二つの角度が小さければ、反射する方向を見ていることを意味します。
 

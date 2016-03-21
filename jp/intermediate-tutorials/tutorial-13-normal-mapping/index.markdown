@@ -333,11 +333,13 @@ void computeTangentBasis(
 
 以前言ったように、カメラ空間ですべてを行います。なぜならこの空間ではフラグメントの位置をより簡単に取得できるからです。これがT、B、Nベクターにモデルビュー行列を掛けた理由です。
 
-``` glsl fs
+``` glsl
+
     vertexNormal_cameraspace = MV3x3 * normalize(vertexNormal_modelspace);
     vertexTangent_cameraspace = MV3x3 * normalize(vertexTangent_modelspace);
     vertexBitangent_cameraspace = MV3x3 * normalize(vertexBitangent_modelspace);
 ```
+{: .highlightglslfs }
 
 これらの3つのベクトルはTBN行列として定義され、次のように構築します。
 ```
@@ -360,10 +362,12 @@ void computeTangentBasis(
 
 接空間での法線はテクスチャから直接得られます。
 
-``` glsl fs
+``` glsl
+
     // 接空間でのローカル法線
     vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, UV ).rgb*2.0 - 1.0);
 ```
+{: .highlightglslfs }
 
 これで必要なものはすべてそろいました。拡散光は *clamp( dot( n,l ), 0,1 )* を使います。
 nとlは接空間で表されています。（内積や外積をとる場合、2ベクトルがどの空間にあるかは問題ではありませんが、同じ空間にある必要があります。）鏡面光では *clamp( dot( E,R ), 0,1 )* を使います。同様にEとRは接空間で表現されています。
@@ -385,9 +389,11 @@ nとlは接空間で表されています。（内積や外積をとる場合、
 
 頂点シェーダでは逆行列の変わりに転置行列を使いました。しかしこれは行列が表す空間が直交してることが前提です。幸運なことに、まだそういう状態でないときでも簡単に修正できます。TangentBasis()を計算する最後のほうで法線に直交するように接線を作る必要があります。
 
-``` glsl vs
+``` glsl
+
 t = glm::normalize(t - n * glm::dot(n, t));
 ```
+{: .highlightglslvs }
 
 上の式は理解しづらいかもしれません。以下の図が参考になります。
 
@@ -484,9 +490,11 @@ glEnd();
 
 デバッグするとき、ベクトルの値を可視化できると便利です。最も簡単な方法は、フラグメントシェーダで実際の色の代わりに使うことです。
 
-``` glsl fs
+``` glsl
+
 color.xyz = LightDirection_tangentspace;
 ```
+{: .highlightglslfs }
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/colordebugging.png)
 

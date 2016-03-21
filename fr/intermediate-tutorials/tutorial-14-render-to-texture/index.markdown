@@ -144,7 +144,8 @@ glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the 
 
 On peut dessiner le rectangle plein écran avec un tel shader :
 
-``` glsl fs
+``` glsl
+
 #version 330 core
 
 in vec2 UV;
@@ -158,6 +159,7 @@ void main(){
     color = texture( renderedTexture, UV + 0.005*vec2( sin(time+1024.0*UV.x),cos(time+768.0*UV.y)) ).xyz;
 }
 ```
+{: .highlightglslfs }
 
 Ce code échantillonne simplement la texture, mais ajoute un léger décalage dépendant du temps.
 
@@ -202,9 +204,11 @@ Tu peux écrire dans plusieurs textures en même temps.
 
 Crée simplement plusieurs textures (toutes avec la même et correcte taille !), appele glFramebufferTexture avec une couleur d'attache différente pour chaque, appele glDrawBuffers avec des paramètres mis à jour (quelque chose comme (2, {GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1})) et ajoutez une autre variable de sortie dans votre fragment shader :
 
-``` glsl fs
+``` glsl
+
 layout(location = 1) out vec3 normal_tangentspace; // or whatever
 ```
+{: .highlightglslfs }
 
 > Si tu as besoin d'écrire un vecteur dans une texture, les textures à virgule flottante existe, avec une précision de 16 ou 32 bits au lieu de 8 ... voir la documentation de [glTexImage2D](http://www.opengl.org/sdk/docs/man/xhtml/glTexImage2D.xml) (ctrl+f GL_FLOAT).
 

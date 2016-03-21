@@ -148,7 +148,8 @@ glViewport(0,0,1024,768); //フレームバッファ全体に描画する。左�
 
 次のようなシェーダでフルスクリーン四角形を描画できます。
 
-``` glsl fs
+``` glsl
+
 #version 330 core
 
 in vec2 UV;
@@ -162,6 +163,7 @@ void main(){
     color = texture( renderedTexture, UV + 0.005*vec2( sin(time+1024.0*UV.x),cos(time+768.0*UV.y)) ).xyz;
 }
 ```
+{: .highlightglslfs }
 
 このコードは単純にテクスチャをサンプルします。ただし、時刻に応じて小さなオフセットを追加します。
 
@@ -210,9 +212,11 @@ glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT24, 1024, 768, 0,GL_DEPTH_COMPON
 
 単純に複数の（同じサイズの）テクスチャを作り、それぞれ別のアタッチメントでglFramebufferTextureを呼び、更新したパラメータでglDrawBuffersを呼びます。（たとえば (2,{GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1}})のように。）そしてフラグメントシェーダにもう一方の出力変数を加えます。
 
-``` glsl fs
+``` glsl
+
 layout(location = 1) out vec3 normal_tangentspace; // or whatever
 ```
+{: .highlightglslfs }
 
 ヒント：テクスチャで効果的にベクトルを出力したいなら、浮動小数点テクスチャがあります。
 それは8ビットの代わりに16ビットや32ビットの精度です。 [glTexImage2D](http://www.opengl.org/sdk/docs/man/xhtml/glTexImage2D.xml)のリファレンスを見てください。（GL_FLOATで検索）

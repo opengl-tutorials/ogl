@@ -175,7 +175,6 @@ void main(){
     fragmentColor = vertexColor;
 }
 ```
-
 {: .highlightglslvs }
 
 In the fragment shader, you declare fragmentColor again :
@@ -184,7 +183,6 @@ In the fragment shader, you declare fragmentColor again :
 // Interpolated values from the vertex shaders
 in vec3 fragmentColor;
 ```
-
 {: .highlightglslfs }
 
 ... and copy it in the final output color :
@@ -199,7 +197,6 @@ void main(){
     color = fragmentColor;
 }
 ```
-
 {: .highlightglslfs }
 
 And that's what we get :

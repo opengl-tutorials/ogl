@@ -147,7 +147,8 @@ glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the 
 
 We can draw our full-screen quad with such a shader:
 
-``` glsl fs
+``` glsl
+
 #version 330 core
 
 in vec2 UV;
@@ -161,6 +162,7 @@ void main(){
     color = texture( renderedTexture, UV + 0.005*vec2( sin(time+1024.0*UV.x),cos(time+768.0*UV.y)) ).xyz;
 }
 ```
+{: .highlightglslfs }
 
 This code simply sample the texture, but adds a tiny offset which depends on time.
 
@@ -209,9 +211,11 @@ You may write to several textures at the same time.
 
 Simply create several textures (all with the correct and same size !), call glFramebufferTexture with a different color attachement for each, call glDrawBuffers with updated parameters ( something like (2,{GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1}})), and add another output variable in your fragment shader :
 
-``` glsl fs
+``` glsl
+
 layout(location = 1) out vec3 normal_tangentspace; // or whatever
 ```
+{: .highlightglslfs }
 
 Hint : If you effectively need to output a vector in a texture, floating-point textures exist, with 16 or 32 bit precision instead of 8... See [glTexImage2D](http://www.opengl.org/sdk/docs/man/xhtml/glTexImage2D.xml)'s reference (search for GL_FLOAT).
 

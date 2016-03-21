@@ -316,10 +316,12 @@ Et c'est cette image qui est affichée !
 glm::mat4 MVPmatrix = projection * view * model; // Remember : inverted !
 ```
 
-``` glsl fs
+``` glsl
+
 // GLSL : apply it
 transformed_vertex = MVP * in_vertex;
 ```
+{: .highlightglslfs }
 
 # Mettre tout ensemble
 
@@ -359,7 +361,8 @@ glUniformMatrix4fv(mvp_handle, 1, GL_FALSE, &mvp[0][0]);
 
 * Third step : use it in GLSL to transform our vertices
 
-``` glsl vs
+``` glsl
+
 // Input vertex data, different for all executions of this shader.
 layout(location = 0) in vec3 vertexPosition_modelspace;
 
@@ -373,6 +376,7 @@ void main(){
 
 }
 ```
+{: .highlightglslvs }
 
 * Fini ! Voici le triangle du second tutoriel, toujours à l'origine (0, 0, 0), mais vu en perspective à partir du point (4, 3, 3), la tête en haut (0, 1, 0), avec un champ de vision de 45°.
 

@@ -71,12 +71,14 @@ CameraUp_worldspace = {ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]}
 
 一度これを得れば、最終的な頂点位置を計算するのはとても簡単です。
 
-``` glsl vs
+``` glsl
+
 vec3 vertexPosition_worldspace =
     particleCenter_wordspace
     + CameraRight_worldspace * squareVertices.x * BillboardSize.x
     + CameraUp_worldspace * squareVertices.y * BillboardSize.y;
 ```
+{: .highlightglslvs }
 
 * particleCenter_worldspaceは名前が示すとおり、ビルボードの中心位置です。これはvec3で表されます。.
 * squareVerticesはオリジナルのメッシュです。左の頂点のため、squareVertices.xは-0.5です。これはカメラの左方向へ移動されます。（*CameraRight_worldspace のため。）

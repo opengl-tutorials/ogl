@@ -40,8 +40,8 @@ During the last few tutorials you've been dealing with normal without really kno
 The normal of a plane is a vector of length 1 that is perpendicular to this plane.
 
 The normal of a triangle is a vector of length 1 that is perpendicular to this triangle. It is easily computed by taking the cross product of two of its edges (the cross product of a and b produces a vector that is perpendicular to both a and b, remember ?), and normalized : its length is brought back to 1. In pseudo-code :
-```
 
+```
 triangle ( v1, v2, v3 )
 edge1 = v2-v1
 edge2 = v3-v1
@@ -53,8 +53,8 @@ Don't mix up normal and normalize(). Normalize() divides a vector (any vector, n
 ## Vertex normals
 
 By extension, we call the normal of a vertex the combination of the normals of the surroundings triangles. This is handy because in vertex shaders, we deal with vertices, not triangles, so it's better to have information on the vertex. And any way, we can't have information on triangles in OpenGL. In pseudo-code :
-```
 
+```
 vertex v1, v2, v3, ....
 triangle tr1, tr2, tr3 // all share vertex v1
 v1.normal = normalize( tr1.normal + tr2.normal + tr3.normal )
@@ -110,7 +110,8 @@ This means that each point of the surface will look darker with gazing light (bu
 
 This means that when we compute the colour of a pixel, the angle between the incoming light and the surface normal matters. We thus have :
 
-``` glsl fs
+``` glsl
+
 // Cosine of the angle between the normal and the light direction,
 // clamped above 0
 //  - light is at the vertical of the triangle -> 1
@@ -119,6 +120,7 @@ float cosTheta = dot( n,l );
 
 color = LightColor * cosTheta;
 ```
+{: .highlightglslfs }
 
 In this code, n is the surface normal and l is the unit vector that goes from the surface to the light (and not the contrary, even if it's non inuitive. It makes the math easier).
 
@@ -126,7 +128,8 @@ In this code, n is the surface normal and l is the unit vector that goes from th
 
 Something is missing in the formula of our cosTheta. If the light is behind the triangle, n and l will be opposed, so n.l will be negative. This would mean that colour = someNegativeNumber, which doesn't mean much. So we have to clamp cosTheta to 0 :
 
-``` glsl fs
+``` glsl
+
 // Cosine of the angle between the normal and the light direction,
 // clamped above 0
 //  - light is at the vertical of the triangle -> 1
@@ -136,6 +139,7 @@ float cosTheta = clamp( dot( n,l ), 0,1 );
 
 color = LightColor * cosTheta;
 ```
+{: .highlightglslfs }
 
 ## Material Color
 
@@ -146,9 +150,11 @@ Of course, the output colour also depends on the colour of the material. In this
 
 We can model this by a simple multiplication :
 
-``` glsl fs
+``` glsl
+
 color = MaterialDiffuseColor * LightColor * cosTheta;
 ```
+{: .highlightglslfs }
 
 ## Modeling the light
 
@@ -156,15 +162,19 @@ We will first assume that we have a punctual light that emits in all directions 
 
 With such a light, the luminous flux that our surface will receive will depend on its distance to the light source: the further away, the less light. In fact, the amount of light will diminish with the square of the distance :
 
-``` glsl fs
+``` glsl
+
 color = MaterialDiffuseColor * LightColor * cosTheta / (distance*distance);
 ```
+{: .highlightglslfs }
 
 Lastly, we need another parameter to control the power of the light. This could be encoded into LightColor (and we will in a later tutorial), but for now let's just have a color (e.g. white) and a power (e.g. 60 Watts).
 
-``` glsl fs
+``` glsl
+
 color = MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance);
 ```
+{: .highlightglslfs }
 
 ## Putting it all together
 
@@ -176,16 +186,19 @@ LightColor and LightPower are set in the shader through GLSL uniforms.
 
 cosTheta depends on n and l. We can express them in any space provided it's the same for both. We choose the camera space because it's easy to compute the light's position in this space :
 
-``` glsl fs
+``` glsl
+
 // Normal of the computed fragment, in camera space
  vec3 n = normalize( Normal_cameraspace );
  // Direction of the light (from the fragment to the light)
  vec3 l = normalize( LightDirection_cameraspace );
 ```
+{: .highlightglslfs }
 
 with Normal_cameraspace and LightDirection_cameraspace computed in the Vertex shader and passed to the fragment shader :
 
-``` glsl vs
+``` glsl
+
 // Output position of the vertex, in clip space : MVP * position
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
@@ -204,6 +217,7 @@ LightDirection_cameraspace = LightPosition_cameraspace + EyeDirection_cameraspac
 // Normal of the the vertex, in camera space
 Normal_cameraspace = ( V * M * vec4(vertexNormal_modelspace,0)).xyz; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
 ```
+{: .highlightglslvs }
 
 This code can seem impressive but it's nothing we didn't learn in Tutorial 3 : Matrices. I paid attention to write the name of the space in each vector's name, so that keeping track of what is happening is much easier. **You should do that, too.**
 
@@ -234,17 +248,21 @@ So the usual hack is to simply fake some light. In fact, is simply makes the 3D 
 
 This can be done this way :
 
-``` glsl fs
+``` glsl
+
 vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
 ```
+{: .highlightglslfs }
 
-``` glsl fs
+``` glsl
+
 color =
  // Ambient : simulates indirect lighting
  MaterialAmbientColor +
  // Diffuse : "color" of the object
  MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) ;
 ```
+{: .highlightglslfs }
 
 Let's see what it gives
 
@@ -266,7 +284,8 @@ As you can see in the image, it forms a kind of lobe. In extreme cases, the diff
 
 (*we can indeed tweak the parameters to get a mirror, but in our case, the only thing we take into account in this mirror is the lamp. So this would make for a weird mirror)*
 
-``` glsl fs
+``` glsl
+
 // Eye vector (towards the camera)
 vec3 E = normalize(EyeDirection_cameraspace);
 // Direction in which the triangle reflects the light
@@ -285,6 +304,7 @@ color =
     // Specular : reflective highlight, like a mirror
     MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance*distance);
 ```
+{: .highlightglslfs }
 
 R is the direction in which the light reflects. E is the inverse direction of the eye (just like we did for "l"); If the angle between these two is little, it means we are looking straight into the reflection.
 

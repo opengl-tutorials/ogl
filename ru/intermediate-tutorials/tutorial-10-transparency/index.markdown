@@ -15,16 +15,20 @@ language: ru
 
 The concept of the alpha channel is pretty simple. Instead of a writing an RGB result, you write an RGBA :
 
-``` glsl fs
+``` glsl
+
 // Ouput data : it's now a vec4
 out vec4 color;
 ```
+{: .highlightglslfs }
 
 the first 3 components are still accessed with the .xyz swizzle operator, while the last one is accessed with .a :
 
-``` glsl fs
+``` glsl
+
 color.a = 0.3;
 ```
+{: .highlightglslfs }
 
 Unintuitively, alpha = opaqueness, so alpha = 1 means fully opaque while alpha = 0 means fully transparent.
 

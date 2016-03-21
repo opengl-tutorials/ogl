@@ -15,16 +15,20 @@ language: jp
 
 アルファチャネルの概念はとても単純です。RGBを書くの代わりに、RGBAを書きます：
 
-``` glsl fs
+``` glsl
+
 // 出力データ：今回はvec4です。
 out vec4 color;
 ```
+{: .highlightglslfs }
 
 最初の3要素は.xyzでアクセスでき、最後の要素は.aでアクセスします：
 
-``` glsl fs
+``` glsl
+
 color.a = 0.3;
 ```
+{: .highlightglslfs }
 
 直感的ではありませんが、alpha=不透明度、そのためalpha=1は完全な不透明を、一方でalpha=0は完全な透明を表します。
 

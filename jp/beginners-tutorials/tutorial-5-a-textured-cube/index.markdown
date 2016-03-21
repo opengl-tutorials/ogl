@@ -159,7 +159,8 @@ GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 
 はじめにフラグメントシェーダを見ていきましょう。これは簡単です。
 
-``` glsl fs
+``` glsl
+
 #version 330 core
 
 // 頂点シェーダからの値を書き込みます
@@ -177,6 +178,7 @@ void main(){
     color = texture( myTextureSampler, UV ).rgb;
 }
 ```
+{: .highlightglslfs }
 
 3点述べておきます。
 
@@ -186,7 +188,8 @@ void main(){
 
 頂点シェーダも簡単です。UV座標をただフラグメントシェーダに送るだけです。
 
-``` glsl vs
+``` glsl
+
 #version 330 core
 
 // インプット頂点データ。このシェーダの実行ごとに異なります。
@@ -208,6 +211,7 @@ void main(){
     UV = vertexUV;
 }
 ```
+{: .highlightglslvs }
 
 チュートリアル4で学んだ"layout(location = 1) in vec2 vertexUV"を思い出せますか？ここでは丁度それと同じことをやろうとしています。ただし、(R,G,B)バッファの変わりに(U,V)のバッファを与えます。
 

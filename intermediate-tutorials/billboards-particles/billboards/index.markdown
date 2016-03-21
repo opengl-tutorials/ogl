@@ -72,12 +72,14 @@ CameraUp_worldspace = {ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]}
 
 Once we have this, it's very easy to compute the final vertex' position :
 
-``` glsl vs
+``` glsl
+
 vec3 vertexPosition_worldspace =
     particleCenter_wordspace
     + CameraRight_worldspace * squareVertices.x * BillboardSize.x
     + CameraUp_worldspace * squareVertices.y * BillboardSize.y;
 ```
+{: .highlightglslvs }
 
 * particleCenter_worldspace is, as its name suggests, the billboard's center position. It is specified with an uniform vec3.
 * squareVertices is the original mesh. squareVertices.x is -0.5 for the left vertices, which are thus moved towars the left of the camera (because of the *CameraRight_worldspace)

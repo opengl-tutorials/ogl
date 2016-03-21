@@ -335,11 +335,13 @@ So the full drawing code becomes :
 
 As said before, we'll do everything in camera space, because it's simpler to get the fragment's position in this space. This is why we multiply our T,B,N vectors with the ModelView matrix.
 
-``` glsl fs
+``` glsl
+
     vertexNormal_cameraspace = MV3x3 * normalize(vertexNormal_modelspace);
     vertexTangent_cameraspace = MV3x3 * normalize(vertexTangent_modelspace);
     vertexBitangent_cameraspace = MV3x3 * normalize(vertexBitangent_modelspace);
 ```
+{: .highlightglslfs }
 
 These three vector define a the TBN matrix, which is constructed this way :
 ```
@@ -362,10 +364,12 @@ This matrix goes from camera space to tangent space (The same matrix, but with X
 
 Our normal, in tangent space, is really straightforward to get : it's our texture :
 
-``` glsl fs
+``` glsl
+
     // Local normal, in tangent space
     vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, UV ).rgb*2.0 - 1.0);
 ```
+{: .highlightglslfs }
 
 So we've got everything we need now. Diffuse lighting uses *clamp( dot( n,l ), 0,1 )*, with n and l expressed in tangent space (it doesn't matter in which space you make your dot and cross products; the important thing is that n and l are both expressed in the same space). Specular lighting uses *clamp( dot( E,R ), 0,1 )*, again with E and R expressed in tangent space. Yay !
 
@@ -386,9 +390,11 @@ Here is our result so far. You can notice that :
 
 In our vertex shader we took the transpose instead of the inverse because it's faster. But it only works if the space that the matrix represents is orthogonal, which is not yet the case. Luckily, this is very easy to fix : we just have to make the tangent perpendicular to the normal at he end of computeTangentBasis() :
 
-``` glsl vs
+``` glsl
+
 t = glm::normalize(t - n * glm::dot(n, t));
 ```
+{: .highlightglslvs }
 
 This formula may be hard to grasp, so a little schema might help :
 
@@ -485,9 +491,11 @@ Remember : don't use immediate mode in real world ! Only for debugging ! And don
 
 When debugging, it can be useful to visualize the value of a vector. The easiest way to do this is to write it on the framebuffer instead of the actual colour. For instance, let's visualize LightDirection_tangentspace :
 
-``` glsl fs
+``` glsl
+
 color.xyz = LightDirection_tangentspace;
 ```
+{: .highlightglslfs }
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/colordebugging.png)
 

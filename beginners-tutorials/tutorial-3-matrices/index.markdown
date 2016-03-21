@@ -318,10 +318,12 @@ And this is the image that is actually rendered !
 glm::mat4 MVPmatrix = projection * view * model; // Remember : inverted !
 ```
 
-``` glsl fs
+``` glsl
+
 // GLSL : apply it
 transformed_vertex = MVP * in_vertex;
 ```
+{: .highlightglslfs }
 
 # Putting it all together
 

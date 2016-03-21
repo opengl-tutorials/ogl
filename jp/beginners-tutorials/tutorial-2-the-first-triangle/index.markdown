@@ -218,15 +218,19 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 まず頂点シェーダを書いていきましょう。
 最初の行はコンパイラにOpenGL3のシンタックスを使うことを知らせています。
 
-``` glsl vs
+``` glsl
+
 #version 330 core
 ```
+{: .highlightglslvs }
 
 2行目はインプットデータを宣言します。
 
-``` glsl vs
+``` glsl
+
 layout(location = 0) in vec3 vertexPosition_modelspace;
 ```
+{: .highlightglslvs }
 
 これをより詳しく説明しましょう。
 
@@ -238,17 +242,21 @@ layout(location = 0) in vec3 vertexPosition_modelspace;
 
 各頂点で呼ばれるこの関数はmainで呼ばれます。Cのように。
 
-``` glsl vs
+``` glsl
+
 void main(){
 ```
+{: .highlightglslvs }
 
 メイン関数では単に頂点位置にバッファ内に何があるかをセットします。だから(1,1)を与えれば、三角形はスクリーンの右上を頂点の一つとして持つということになります。次のチュートリアルでは、インプット位置上の、より興味深い処理を見ていきます。
 
-``` glsl vs
+``` glsl
+
     gl_Position.xyz = vertexPosition_modelspace;
     gl_Position.w = 1.0;
  }
 ```
+{: .highlightglslvs }
 
 gl_Position is one of the few built-in variables : you *have *to assign some value to it. Everything else is optional; we'll see what "everything else" means in Tutorial 4.
 
@@ -256,7 +264,8 @@ gl_Position is one of the few built-in variables : you *have *to assign some val
 
 最初のフラグメントシェーダは、とてもシンプルなものとなります。各フラグメントに赤をセットします。(注意してほしいのは、4x AAを使っているので、各ピクセルごとに4つのフラグメントがあります。)
 
-``` glsl fs
+``` glsl
+
 #version 330 core
 out vec3 color;
 
@@ -264,6 +273,7 @@ void main(){
     color = vec3(1,0,0);
 }
 ```
+{: .highlightglslfs }
 
 だから、vec3(1,0,0)は赤を意味します。これはコンピュータスクリーンでは色は赤、緑、青の順番の3つ組で表されるからです。だから(1,0,0)はすべて赤で、緑と青はありません。
 

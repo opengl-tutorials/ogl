@@ -159,7 +159,8 @@ Otro punto muy importante :** Usar texturas en potencias de dos !**
 
 Le daremos unn vistazo primero al fragment shader. La mayor parte es bastante simple :
 
-``` glsl fs
+``` glsl
+
 #version 330 core
 
 // Valores interpolados de los vertex shaders
@@ -177,6 +178,7 @@ void main(){
     color = texture( myTextureSampler, UV ).rgb;
 }
 ```
+{: .highlightglslfs }
 
 Tres cosas :
 
@@ -186,7 +188,8 @@ Tres cosas :
 
 El vertex shader es simple también. Sólo tienes que pasar coordeandas UV al fragment shader :
 
-``` glsl vs
+``` glsl
+
 #version 330 core
 
 // Información de entrada de los vértices. Es diferente para cada una de las ejecuciones de este shader.
@@ -208,6 +211,7 @@ void main(){
     UV = vertexUV;
 }
 ```
+{: .highlightglslvs }
 
 ¿Recuerdas la línea "layout(location = 1) in vec2 vertexUV" del Tutorial 4 ? Bien, tendremos que hacer exactamente lo mismo aquí, pero en lugar de darle un buffer de tripletas (R,G,B), le daremos un buffer de parejas (U,V).
 

@@ -109,7 +109,8 @@ Cela signifie que chaque point de la surface sera plus sombre avec une lumière 
 
 Cela signifie que lorsque vous calculez la couleur d'un pixel, l'angle entre le rayon de lumière et la normale de la surface entre en jeu. Donc, on obtient :
 
-``` glsl fs
+``` glsl
+
 // Cosine of the angle between the normal and the light direction,
 // clamped above 0
 //  - light is at the vertical of the triangle -> 1
@@ -118,6 +119,7 @@ float cosTheta = dot( n,l );
 
 color = LightColor * cosTheta;
 ```
+{: .highlightglslfs }
 
 Dans ce code, *n* est la normale de la surface et *l* est le vecteur unitaire qui va de la surface vers la lumière (et non le contraire, même si ce n'est pas intuitif, cela rend les mathématiques plus simples).
 
@@ -125,7 +127,8 @@ Dans ce code, *n* est la normale de la surface et *l* est le vecteur unitaire qu
 
 Quelque chose manque dans la formule du cosTheta. Si la lumière est derrière le triangle, n et l seront opposés, donc n.l sera négatif. Cela signifie que la couleur aura une valeur négative, ce qui ne veut rien dire. Donc nous devons limiter cosTheta à 0 :
 
-``` glsl fs
+``` glsl
+
 // Cosine of the angle between the normal and the light direction,
 // clamped above 0
 //  - light is at the vertical of the triangle -> 1
@@ -135,6 +138,7 @@ float cosTheta = clamp( dot( n,l ), 0,1 );
 
 color = LightColor * cosTheta;
 ```
+{: .highlightglslfs }
 
 ##Couleur de matériel
 
@@ -144,9 +148,11 @@ Bien sûr, la couleur de sortie dépend aussi de la couleur du matériel. Dans c
 
 On peut modéliser cela par une simple multiplication :
 
-``` glsl fs
+``` glsl
+
 color = MaterialDiffuseColor * LightColor * cosTheta;
 ```
+{: .highlightglslfs }
 
 ##Modéliser la lumière
 
@@ -154,15 +160,19 @@ Premièrement, on fera l'hypothèse que l'on a une lumière ponctuelle qui émet
 
 Avec une telle lumière, le flux lumineux que recevra la surface dépendra de sa distance avec la source de lumière : plus loin elle est, moins elle est illuminée. En fait, la lumière diminuera avec le carré de la distance :
 
-``` glsl fs
+``` glsl
+
 color = MaterialDiffuseColor * LightColor * cosTheta / (distance*distance);
 ```
+{: .highlightglslfs }
 
 Enfin, on a besoin d'un autre paramètre pour contrôler la puissance de la lumière. Cela peut être ajouté à LightColor (et on le fera dans un prochain tutoriel), mais pour le moment utilisez deux variables : la couleur (par exemple, blanche) et la puissance (par exemple 60 watts).
 
-``` glsl fs
+``` glsl
+
 color = MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance);
 ```
+{: .highlightglslfs }
 
 ##Combiner le tout
 
@@ -174,16 +184,19 @@ Pour que ce code fonctionne, on a besoin de plusieurs paramètres (les différen
 
 *cosTheta* dépend de *n* et *l*. On peut les exprimer dans n'importe quel espace de coordonnées tant qu'il est le même pour les deux. On choisit l'espace caméra car c'est facile de calculer la position de la lumière dans cet espace :
 
-``` glsl fs
+``` glsl
+
 // Normal of the computed fragment, in camera space
  vec3 n = normalize( Normal_cameraspace );
  // Direction of the light (from the fragment to the light)
  vec3 l = normalize( LightDirection_cameraspace );
 ```
+{: .highlightglslfs }
 
 avec les variables *Normal_cameraspace* et *LightDirection_cameraspace* calculées dans le vertex shader et passées au fragment shader :
 
-``` glsl vs
+``` glsl
+
 // Output position of the vertex, in clip space : MVP * position
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
@@ -202,6 +215,7 @@ LightDirection_cameraspace = LightPosition_cameraspace + EyeDirection_cameraspac
 // Normal of the the vertex, in camera space
 Normal_cameraspace = ( V * M * vec4(vertexNormal_modelspace,0)).xyz; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
 ```
+{: .highlightglslvs }
 
 Ce code peut sembler impressionnant mais il n'y a rien que l'on n'ait pas vu dans le troisième tutoriel : les matrices. J'ai fait attention d'écrire le nom de chaque espace dans le nom des vecteurs pour qu'il soit plus simple de garder trace de ce qui se passe. **Tu devrais aussi faire ça.**
 
@@ -231,17 +245,21 @@ Donc, l'astuce habituelle est de simplement imiter cette lumière. En fait, le m
 
 Cela peut être fait de cette façon :
 
-``` glsl fs
+``` glsl
+
 vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
 ```
+{: .highlightglslfs }
 
-``` glsl fs
+``` glsl
+
 color =
  // Ambient : simulates indirect lighting
  MaterialAmbientColor +
  // Diffuse : "color" of the object
  MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) ;
 ```
+{: .highlightglslfs }
 
 Voyons ce que ça donne.
 
@@ -261,7 +279,8 @@ Comme tu peux le voir dans cette image, cela forme une sorte de lobe. Dans les c
 
 (*on peut effectivement ajuster les paramètres pour obtenir un miroir mais, dans notre cas, la seule chose que l'on prend en compte dans ce miroir est la lampe. Donc, cela ferait un miroir très étrange.*)
 
-``` glsl fs
+``` glsl
+
 // Eye vector (towards the camera)
 vec3 E = normalize(EyeDirection_cameraspace);
 // Direction in which the triangle reflects the light
@@ -280,6 +299,7 @@ color =
     // Specular : reflective highlight, like a mirror
     MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance*distance);
 ```
+{: .highlightglslfs }
 
 *R* est la direction vers laquelle la lumière reflète. *E* la direction inverse de la vue (tout comme nous l'avons fait pour l) ; si l'angle entre ces deux vecteurs est petit, cela signifie que l'on regarde directement dans le reflet.
 

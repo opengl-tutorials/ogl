@@ -325,11 +325,13 @@ Au final le code de rendu complet donne :
 
 Comme dit précédemment, on va tout faire dans l'espace de la caméra, car il est plus simple d'obtenir la position du fragment dans cet espace. C'est pourquoi on multiplie nos vecteurs T, B et N avec la matrice de modèle-vue.
 
-``` glsl fs
+``` glsl
+
     vertexNormal_cameraspace = MV3x3 * normalize(vertexNormal_modelspace);
     vertexTangent_cameraspace = MV3x3 * normalize(vertexTangent_modelspace);
     vertexBitangent_cameraspace = MV3x3 * normalize(vertexBitangent_modelspace);
 ```
+{: .highlightglslfs }
 
 Ces trois vecteurs définissent la matrice TBN, qui est créée de cette façon :
 
@@ -354,10 +356,12 @@ Cette matrice passe de l'espace de la caméra à l'espace tangent (la même matr
 
 La normale, dans l'espace tangent, est immédiate à obtenir, c'est la texture :
 
-``` glsl fs
+``` glsl
+
     // Local normal, in tangent space
     vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, UV ).rgb*2.0 - 1.0);
 ```
+{: .highlightglslfs }
 
 Donc, on a tout ce dont nous avons besoin. La lumière diffuse utilise clamp(dot(n,l), 0, 1), avec n et l exprimé dans l'espace tangent (l'espace dans lequel on effectue nos produits scalaire et vectoriel n'importe pas ; la chose importante est que l et n soit tous les deux exprimés dans le même espace). La lumière spéculaire utilise clamp(dot(E,R), 0, 1), où, encore une fois, E et R sont exprimés dans l'espace tangent. Super !
 
@@ -376,9 +380,11 @@ Voici le résultat obtenu. Tu peux remarquer que :
 
 Dans le vertex shader on prend la transposée au lieu de l'inverse, car c'est plus rapide. Mais cela ne fonctionne que si l'espace représenté par la matrice est orthogonal, ce qui n'est pas encore le cas à ce moment là. Heureusement, c'est facilement corrigeable : on doit simplement faire que la tangente soit perpendiculaire à la normale à la fin de computeTangentBasis() :
 
-``` glsl vs
+``` glsl
+
 t = glm::normalize(t - n * glm::dot(n, t));
 ```
+{: .highlightglslvs }
 
 La formule peut être difficile à saisir, donc voici un petit schéma pour aider :
 
@@ -471,9 +477,11 @@ Rappel-toi : n'utilise pas le mode immédiat dans une vraie application ! Unique
 
 Lors du débogage, il peut être utile de visualiser la valeur d'un vecteur. La façon la plus simple pour ce faire est d'écrire sa valeur dans le tampon d'image au lieu de la couleur actuelle. Par exemple, pour visualiser *LightDiretion_tangentspace* :
 
-``` glsl fs
+``` glsl
+
 color.xyz = LightDirection_tangentspace;
 ```
+{: .highlightglslfs }
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/colordebugging.png)
 

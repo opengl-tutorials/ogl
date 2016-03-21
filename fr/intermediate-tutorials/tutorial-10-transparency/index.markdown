@@ -14,16 +14,20 @@ language: fr
 
 Le concept du canal alpha est très simple. À la place d'écrire un résultat en RGB, on écris un résultat en RGBA :
 
-``` glsl fs
+``` glsl
+
 // Données de sorties : c'est maintenant un vec4 
 out vec4 color;
 ```
+{: .highlightglslfs }
 
 Les trois premières composantes sont toujours accessibles avec *.xyz* (ou *.rgb*), tandis que la dernière est accessible avec *.a* :
 
-``` glsl fs
+``` glsl
+
 color.a = 0.3;
 ```
+{: .highlightglslfs }
 
 Contre toute logique, alpha = opacité, donc alpha = 1 signifie complètement opaque alors que alpha = 0 signifie complètement transparent.
 

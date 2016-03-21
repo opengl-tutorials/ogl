@@ -318,10 +318,12 @@ Y esta imagen de hecho es el render !
 glm::mat4 MVPmatrix = projection * view * model; // Recurda : invertida !
 ```
 
-``` glsl fs
+``` glsl
+
 // GLSL : aplicala
 transformed_vertex = MVP * in_vertex;
 ```
+{: .highlightglslfs }
 
 # Uniendo todo
 

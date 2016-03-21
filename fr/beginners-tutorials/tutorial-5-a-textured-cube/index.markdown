@@ -156,7 +156,8 @@ GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 
 On commence par le fragment shader. Il est globalement simple :
 
-``` glsl fs
+``` glsl
+
 #version 330 core
 
 // Interpolated values from the vertex shaders
@@ -174,6 +175,7 @@ void main(){
     color = texture( myTextureSampler, UV ).rgb;
 }
 ```
+{: .highlightglslfs }
 
 Trois choses :
 * Le fragment shader a besoin des coordonnées UV. Cela semble logique
@@ -182,7 +184,8 @@ Trois choses :
 
 Le vertex shader est simple aussi, vous devez juste passer les coordonnées UV au fragment shader :
 
-``` glsl vs
+``` glsl
+
 #version 330 core
 
 // Input vertex data, different for all executions of this shader.
@@ -204,6 +207,7 @@ void main(){
     UV = vertexUV;
 }
 ```
+{: .highlightglslvs }
 
 Te souviens-tu du « layout(location = 1) in vec2 vertexUV » du [quatrième tutoriel]({{site.baseurl}}}/fr/beginners-tutorials/tutorial-4-a-colored-cube/) ? Eh bien, on doit faire exactement la même chose ici, mais au lieu de donner un tampon de triplets (R,G,B), on va donner une paire (U,V).
 

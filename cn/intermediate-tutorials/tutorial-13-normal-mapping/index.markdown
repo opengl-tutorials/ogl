@@ -331,11 +331,13 @@ void computeTangentBasis(
 
 如前所述，所有计算都摄像机空间中做，因为在这一空间中更容易获取片段坐标。这就是为什么要用模型视图矩阵乘T、B、N向量。
 
-``` glsl fs
+``` glsl
+
     vertexNormal_cameraspace = MV3x3 * normalize(vertexNormal_modelspace);
     vertexTangent_cameraspace = MV3x3 * normalize(vertexTangent_modelspace);
     vertexBitangent_cameraspace = MV3x3 * normalize(vertexBitangent_modelspace);
 ```
+{: .highlightglslfs }
 
 这三个向量确定了TBN矩阵，其创建方式如下：
 ```
@@ -358,10 +360,12 @@ void computeTangentBasis(
 
 切线空间中的法线很容易获取--就在纹理中：
 
-``` glsl fs
+``` glsl
+
     // Local normal, in tangent space
     vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, UV ).rgb*2.0 - 1.0);
 ```
+{: .highlightglslfs }
 
 一切准备就绪。漫反射光的值由切线空间中的n和l计算得来（在哪个空间中计算并不重要，关键是n和l必须位于同一空间中），并用*clamp( dot( n,l ), 0,1 )*截取。镜面光用*clamp( dot( E,R ), 0,1 )*截取，E和R也必须位于同一空间中。大功告成！
 
@@ -382,9 +386,11 @@ void computeTangentBasis(
 
 顶点着色器中，为了计算速度，我们没有进行矩阵求逆，而是进行了转置。这只有当矩阵表示的空间正交时才成立，而这个矩阵还不是正交的。好在这个问题很容易解决：只需在computeTangentBasis()末尾让切线与法线垂直。
 
-``` glsl vs
+``` glsl
+
 t = glm::normalize(t - n * glm::dot(n, t));
 ```
+{: .highlightglslvs }
 
 这个公式有点难理解，来看看图：
 
@@ -479,9 +485,11 @@ glEnd();
 
 调试时，将向量的值可视化很有用处。最简单的方法是把向量都写到帧缓冲。举个例子，我们把LightDirection_tangentspace可视化一下试试：
 
-``` glsl fs
+``` glsl
+
 color.xyz = LightDirection_tangentspace;
 ```
+{: .highlightglslfs }
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/colordebugging.png)
 

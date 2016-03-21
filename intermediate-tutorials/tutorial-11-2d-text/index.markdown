@@ -106,7 +106,8 @@ The rest is just as usual : bind the buffers, fill them, select the shader progr
 
 Note a very important thing : the coordinates are generated in the [0,800][0,600] range. In other words, there is NO NEED for a matrix here. The vertex shader simply has to put it in the [-1,1][-1,1] range with very simple math (this could be done in C++ too) :
 
-``` glsl vs
+``` glsl
+
 void main(){
 
     // Output position of the vertex, in clip space
@@ -119,14 +120,17 @@ void main(){
     UV = vertexUV;
 }
 ```
+{: .highlightglslvs }
 
 The fragment shader does very little too :
 
-``` glsl fs
+``` glsl
+
 void main(){
     color = texture( myTextureSampler, UV );
 }
 ```
+{: .highlightglslfs }
 
 By the way, don't use this code for production, since it only handles the Latin alphabet. Or don't sell anything to India, China, Japan ( or even Germany, since there is no &szlig; on this image ). This texture will mostly work in France (notice the &eacute;, &agrave;, &ccedil;, etc) because it's been generated with my locale. And beware while adapting code from other tutorials of when using libraries, most of them use OpenGL 2, which isn't compatible. Unfortunately I don't know any good-enough library which handles UTF-8.
 

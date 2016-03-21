@@ -104,7 +104,8 @@ Le reste est habituel : lier les buffers (tampons), les remplir, sélectionner l
 
 > Très important ! Les coordonnées sont générées sur l'échelle [0-800][0-600]. En d'autres mots, il n'y a PAS BESOIN de matrices ici. Le vertex shader doit juste les passer à l'échelle [-1,1][-1,1] avec une simple opération mathématique (cela aurait aussi pu être fait en C++).
 
-``` glsl vs
+``` glsl
+
 void main(){
 
     // Output position of the vertex, in clip space
@@ -117,14 +118,17 @@ void main(){
     UV = vertexUV;
 }
 ```
+{: .highlightglslvs }
 
 Le fragment shader ne fait que très peu de choses aussi :
 
-``` glsl fs
+``` glsl
+
 void main(){
     color = texture( myTextureSampler, UV );
 }
 ```
+{: .highlightglslfs }
 
 D'ailleurs, n'utilise pas ce code en production, car il ne gère que l'alphabet latin. Ou alors ne vend rien en Inde, Chine, Japon (ou même Allemagne, car il n'y a pas de ß dans cette image). Cette texture marchera principalement en France (remarque la présence des é, à, ç, etc.) car elle a été générée avec ma locale. Et fait attention lors de l'adaptation du code d'autres tutoriels provenant d'autres sites, ou encore lorsque tu as recours à des bibliothèques, la plupart d'entre eux/elles utilisent OpenGL 2, qui n'est pas compatible avec l'UTF8. Malheureusement, je ne connais pas de bibliothèque qui gère UTF-8.
 

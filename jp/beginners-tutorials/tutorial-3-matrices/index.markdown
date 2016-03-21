@@ -63,12 +63,14 @@ glm::vec4 transformedVector = myMatrix * myVector; // もう一度言います�
 
 **GLSL：**
 
-``` glsl vs
+``` glsl
+
 mat4 myMatrix;
 vec4 myVector;
 // 何らかの方法でmyMatrixとmyVector満たす。
 vec4 transformedVector = myMatrix * myVector; // そうです、GLMととても似ています。
 ```
+{: .highlightglslvs }
 
 ( コードにこれをコピー＆ペーストしましたか？やってみましょう。)
 
@@ -205,10 +207,12 @@ glm::vec4 myTransformedVector = myModelMatrix * myOriginalVector;
 
 **GLSL：**
 
-``` glsl vs
+``` glsl
+
 mat4 transform = mat2 * mat1;
 vec4 out_vec = transform * in_vec;
 ```
+{: .highlightglslvs }
 
 #モデル行列、ビュー行列、射影行列
 
@@ -340,10 +344,12 @@ glm::mat4 projectionMatrix = glm::perspective(
 glm::mat4 MVPmatrix = projection * view * model; // 逆になることを思い出して!
 ```
 
-``` glsl vs
+``` glsl
+
 // GLSL：適用する
 transformed_vertex = MVP * in_vertex;
 ```
+{: .highlightglslvs }
 
 #すべてを合わせる
 
@@ -379,7 +385,8 @@ glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 
 * ステップ3：頂点を変換させるためにGLSLで行列を使います。
 
-``` glsl vs
+``` glsl
+
 in vec3 vertexPosition_modelspace;
 uniform mat4 MVP;
 
@@ -390,6 +397,7 @@ void main(){
     gl_Position = MVP * v;
 }
 ```
+{: .highlightglslvs }
 
 * できました！チュートリアル2と同じ三角形ができました。原点は(0,0,0)ですが、(4,3,3,)から見て、(0,1,0)が上方向で、45&deg;の視界です。
 

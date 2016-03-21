@@ -65,12 +65,14 @@ CameraUp_worldspace = {ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]}
 
 Une fois que l'on a ça, il est très simple de calculer la position finale du sommet :
 
-``` glsl vs
+``` glsl
+
 vec3 vertexPosition_worldspace =
     particleCenter_wordspace
     + CameraRight_worldspace * squareVertices.x * BillboardSize.x
     + CameraUp_worldspace * squareVertices.y * BillboardSize.y;
 ```
+{: .highlightglslvs }
 
 * *particleCenter_worldspace* est, comme son nom l'indique, la position du centre du billboard : elle est déterminée en utilisant une variable uniforme vec3
 * *squareVertices* est le modèle original. SquareVertices.x est -0.5 pour les sommets de gauche, qui sont donc déplacé vers la gauche de la caméra (à cause du *CameraRight_worldsspace)
