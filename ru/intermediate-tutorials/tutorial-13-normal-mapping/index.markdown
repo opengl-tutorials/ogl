@@ -85,7 +85,7 @@ invTBN = transpose(TBN)
 #Preparing our VBO
 
 
-##Computing the tangents and bitangents
+## Computing the tangents and bitangents
 
 Since we need our tangents and bitangents on top of our normals, we have to compute them for the whole mesh. We'll do this in a separate function :
 
@@ -150,7 +150,7 @@ Finally, we fill the *tangents *and *bitangents *buffers. Remember, these buffer
     }
 ```
 
-##Indexing
+## Indexing
 
 Indexing our VBO is very similar to what we used to do, but there is a subtle difference.
 
@@ -178,7 +178,7 @@ Note that we don't normalize anything here. This is actually handy, because this
 #The shader
 
 
-##Additional buffers & uniforms
+## Additional buffers & uniforms
 
 We need two new buffers : one for the tangents, and one for the bitangents :
 
@@ -331,12 +331,11 @@ So the full drawing code becomes :
         glfwSwapBuffers();
 ```
 
-##Vertex shader
+## Vertex shader
 
 As said before, we'll do everything in camera space, because it's simpler to get the fragment's position in this space. This is why we multiply our T,B,N vectors with the ModelView matrix.
 
-``` glsl
-
+^```s*glsls*
     vertexNormal_cameraspace = MV3x3 * normalize(vertexNormal_modelspace);
     vertexTangent_cameraspace = MV3x3 * normalize(vertexTangent_modelspace);
     vertexBitangent_cameraspace = MV3x3 * normalize(vertexBitangent_modelspace);
@@ -360,12 +359,11 @@ This matrix goes from camera space to tangent space (The same matrix, but with X
     EyeDirection_tangentspace =  TBN * EyeDirection_cameraspace;
 ```
 
-##Fragment shader
+## Fragment shader
 
 Our normal, in tangent space, is really straightforward to get : it's our texture :
 
-``` glsl
-
+^```s*glsls*
     // Local normal, in tangent space
     vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, UV ).rgb*2.0 - 1.0);
 ```
@@ -386,12 +384,11 @@ Here is our result so far. You can notice that :
 #Going further
 
 
-##Orthogonalization
+## Orthogonalization
 
 In our vertex shader we took the transpose instead of the inverse because it's faster. But it only works if the space that the matrix represents is orthogonal, which is not yet the case. Luckily, this is very easy to fix : we just have to make the tangent perpendicular to the normal at he end of computeTangentBasis() :
 
-``` glsl
-
+^```s*glsls*
 t = glm::normalize(t - n * glm::dot(n, t));
 ```
 {: .highlightglslvs }
@@ -405,7 +402,7 @@ n and t are almost perpendicular, so we "push" t in the direction of -n by a fac
 
 [Here](http://www.cse.illinois.edu/iem/least_squares/gram_schmidt/)'s a little applet that explains it too (Use only 2 vectors).
 
-##Handedness
+## Handedness
 
 You usually don't have to worry about that, but in some cases, when you use symmetric models, UVs are oriented in the wrong way, and your T has the wrong orientation.
 
@@ -423,7 +420,7 @@ if (glm::dot(glm::cross(n, t), b) < 0.0f){
 
 This is also done for each vertex at the end of computeTangentBasis().
 
-##Specular texture
+## Specular texture
 
 Just for fun, I added a specular texture to the code. It looks like this :
 
@@ -437,7 +434,7 @@ and is used instead of the simple "vec3(0.3,0.3,0.3)" grey that we used as specu
 
 Notice that now, cement is always black : the texture says that it has no specular component.
 
-##Debugging with the immediate mode
+## Debugging with the immediate mode
 
 The real aim of this website is that you DON'T use immediate mode, which is deprecated, slow, and problematic in many aspects.
 
@@ -487,12 +484,11 @@ glEnd();
 
 Remember : don't use immediate mode in real world ! Only for debugging ! And don't forget to re-enable the core profile afterwards, it will make sure that you don't do such things.
 
-##Debugging with colors
+## Debugging with colors
 
 When debugging, it can be useful to visualize the value of a vector. The easiest way to do this is to write it on the framebuffer instead of the actual colour. For instance, let's visualize LightDirection_tangentspace :
 
-``` glsl
-
+^```s*glsls*
 color.xyz = LightDirection_tangentspace;
 ```
 {: .highlightglslfs }
@@ -514,13 +510,13 @@ A few tips :
 
  
 
-##Debugging with variable names
+## Debugging with variable names
 
 As already stated before, it's crucial to exactly know in which space your vectors are. Don't take the dot product of a vector in camera space and a vector in model space.
 
 Appending the space of each vector in their names ("..._modelspace") helps fixing math bugs tremendously.
 
-##How to create a normal map
+## How to create a normal map
 
 Created by James O'Hare. Click to enlarge.
 

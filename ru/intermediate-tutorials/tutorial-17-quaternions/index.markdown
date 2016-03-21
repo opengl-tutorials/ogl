@@ -75,17 +75,17 @@ RotationAngle is the angle of rotation around this axis.
 
 So essentially quaternions store a *rotation axis* and a *rotation angle*, in a way that makes combining rotations easy.
 
-##Reading quaternions
+## Reading quaternions
 
 This format is definitely less intuitive than Euler angles, but it's still readable: the xyz components match roughly the rotation axis, and w is the acos of the rotation angle (divided by 2). For instance, imagine that you see the following values in the debugger: [ 0.7 0 0 0.7 ]. x=0.7, it's bigger than y and z, so you know it's mostly a rotation around the X axis; and 2*acos(0.7) = 1.59 radians, so it's a rotation of 90&deg;.
 
 Similarly, [0 0 0 1] (w=1) means that angle = 2*acos(1) = 0, so this is a *unit quaternion*, which makes no rotation at all.
 
-##Basic operations
+## Basic operations
 
 Knowing the math behind the quaternions is rarely useful: the representation is so unintuitive that you usually only rely on utility functions which do the math for you. If you're interested, see the math books in the [Useful Tools & Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) page.
 
-###How do I create a quaternion in C++ ?
+### How do I create a quaternion in C++ ?
 
 ``` cpp
 // Don't forget to #include <glm/gtc/quaternion.hpp> and <glm/gtx/quaternion.hpp>
@@ -106,13 +106,13 @@ MyQuaternion = quat(EulerAngles);
 MyQuaternion = gtx::quaternion::angleAxis(degrees(RotationAngle), RotationAxis);
 ```
 
-###How do I create a quaternion in GLSL ?
+### How do I create a quaternion in GLSL ?
 
 You don't. Convert your quaternion to a rotation matrix, and use it in the Model Matrix. Your vertices will be rotated as usual, with the MVP matrix.
 
 In some cases, you might actually want to use quaternions in GLSL, for instance if you do skeletal animation on the GPU. There is no quaternion type in GLSL, but you can pack one in a vec4, and do the math yourself in the shader.
 
-###How do I convert a quaternion to a matrix ?
+### How do I convert a quaternion to a matrix ?
 
 ``` cpp
 mat4 RotationMatrix = quaternion::toMat4(quaternion);
@@ -166,7 +166,7 @@ if ( abs(matching-1.0) < 0.001 ){
 
 You can also get the angle between q1 and q2 by taking the acos() of this dot product.
 
-##How do I apply a rotation to a point ?
+## How do I apply a rotation to a point ?
 
 You can do the following:
 
@@ -182,7 +182,7 @@ Note that the center of rotation is always the origin. If you want to rotate aro
 rotated_point = origin + (orientation_quaternion * (point-origin));
 ```
 
-##How do I interpolate between 2 quaternions ?
+## How do I interpolate between 2 quaternions ?
 
 This is called a SLERP: Spherical Linear intERPolation. With GLM, you can do this with mix:
 
@@ -190,7 +190,7 @@ This is called a SLERP: Spherical Linear intERPolation. With GLM, you can do thi
 glm::quat interpolatedquat = quaternion::mix(quat1, quat2, 0.5f); // or whatever factor
 ```
 
-##How do I cumulate 2 rotations ?
+## How do I cumulate 2 rotations ?
 
 Simple ! Just multiply the two quaternions together. The order is the same as for matrices, i.e. reverse:
 
@@ -198,7 +198,7 @@ Simple ! Just multiply the two quaternions together. The order is the same as fo
 quat combined_rotation = second_rotation * first_rotation;
 ```
 
-##How do I find the rotation between 2 vectors ?
+## How do I find the rotation between 2 vectors ?
 
 (in other words: the quaternion needed to rotate v1 so that it matches v2)
 
@@ -246,7 +246,7 @@ quat RotationBetweenVectors(vec3 start, vec3 dest){
 
 (You can find this function in common/quaternion_utils.cpp)
 
-##I need an equivalent of gluLookAt. How do I orient an object towards a point ?
+## I need an equivalent of gluLookAt. How do I orient an object towards a point ?
 
 Use RotationBetweenVectors !
 
@@ -282,7 +282,7 @@ Once you have this target orientation, you will probably want to interpolate bet
 
 (You can find this function in common/quaternion_utils.cpp)
 
-##How do I use LookAt, but limit the rotation at a certain speed ?
+## How do I use LookAt, but limit the rotation at a certain speed ?
 
 The basic idea is to do a SLERP ( = use glm::mix ), but play with the interpolation value so that the angle is not bigger than the desired value:
 
@@ -341,6 +341,6 @@ CurrentOrientation = RotateTowards(CurrentOrientation, TargetOrientation, 3.14f 
 
 (You can find this function in common/quaternion_utils.cpp)
 
-##How do I...
+## How do I...
 
 If you can't figure it out, drop us an email, and we'll add it to the list !

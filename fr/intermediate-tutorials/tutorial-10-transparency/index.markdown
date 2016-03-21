@@ -14,8 +14,7 @@ language: fr
 
 Le concept du canal alpha est très simple. À la place d'écrire un résultat en RGB, on écris un résultat en RGBA :
 
-``` glsl
-
+^```s*glsls*
 // Données de sorties : c'est maintenant un vec4 
 out vec4 color;
 ```
@@ -23,8 +22,7 @@ out vec4 color;
 
 Les trois premières composantes sont toujours accessibles avec *.xyz* (ou *.rgb*), tandis que la dernière est accessible avec *.a* :
 
-``` glsl
-
+^```s*glsls*
 color.a = 0.3;
 ```
 {: .highlightglslfs }
@@ -41,7 +39,7 @@ Voici le résultat. Assures-toi de désactiver le « backface culling » (suppre
 
 La capture d'écran précédente paraît correcte, mais c'est uniquement car on est chanceux.
 
-##Le problème
+## Le problème
 
 Ici, j'ai dessiné deux carrés ayant 50 % d'alpha, un vert et un rouge. Tu peux voir que l'ordre est important, la couleur finale donne une importante piste visuelle sur la perception de la profondeur.
 
@@ -54,7 +52,7 @@ Ce phénomène se produit aussi sur la scène. Si tu change un peu ton point de 
 On voit tout de suite le problème apparaitre.
 En fait, c'est un problème très complexe. Tu ne vois jamais énormément de transparence dans les jeux vidéo, n'est-ce pas ?
 
-##Solution classique
+## Solution classique
 
 La solution classique est de trier tous les triangles transparents. Oui, TOUS les triangles transparents.
 
@@ -64,7 +62,7 @@ La solution classique est de trier tous les triangles transparents. Oui, TOUS le
 
 Tu peux trier ce que tu veux avec qsort (en C) ou std::sort (en C++). Je n'entrerai pas dans les détails, car...
 
-##Mise en garde
+## Mise en garde
 
 Faire comme cela fonctionne (plus de détails dans la section suivante), mais :
 
@@ -80,7 +78,7 @@ Une solution assez bonne est souvent de :
 * S'ils sont sensés être très différents, utilise ta texture (atlas) !
 * Si tu peux éviter le tri et que ça ne soit pas trop moche, tu peux t'estimer chanceux :)
 
-##Transparence indépendante de l'ordre
+## Transparence indépendante de l'ordre
 
 De nombreuses autres techniques sont intéressantes si ton moteur a vraiment, vraiment besoin de l'état de l'art de la transparence :
 

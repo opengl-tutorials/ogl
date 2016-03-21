@@ -395,7 +395,7 @@ http://developer.download.nvidia.com/whitepapers/2007/SDK10/SoftParticles_hi.pdf
 
 [http://www.gdcvault.com/search.php#&category=free&firstfocus=&keyword=Chris+Tchou's%2BHalo%2BReach%2BEffects&conference_id=](http://www.gdcvault.com/search.php#&category=free&firstfocus=&keyword=Chris+Tchou's%2BHalo%2BReach%2BEffects&conference_id=)
 
-##GPUシミュレーション
+## GPUシミュレーション
 
 上で言ったように、GPU上で粒子の動きを完璧にシミュレートできます。まだ粒子のライフサイクルをCPU上で管理したいでしょう。
 

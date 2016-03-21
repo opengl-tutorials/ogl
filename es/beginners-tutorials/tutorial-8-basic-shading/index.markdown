@@ -36,7 +36,7 @@ En una palabra: Basico.
 
 En los ultimos tutoriales, hemos estado hablando de normales y probablemente aun no entiendas qué son.
 
-##Normal de un triángulo
+## Normal de un triángulo
 
 La normal de un plano es un vector de longitud 1 que es perpendicular a ese plano.
 
@@ -51,7 +51,7 @@ triangle.normal = cross(edge1, edge2).normalize()
 
 No confundas normal con normalize(). Normalize() divide un vector (cualquier vector, no solo una normal) por su  longitud para que de como resultado 1. Normal es solamente el nombre que se le da a los vectores que representan, pues, una normal.
 
-##Normal de un vértice
+## Normal de un vértice
 
 Por extensión, llamamos normal de un vértice a la combinación de las normales de las caras triangulares que rodean al vertice. Esto se vuelve útil por que en los vertex shaders, lidiamos con vertices, no triangulos, asi que es mejor tener información de un vertice. Ademas, en OpenGL no tenemos nunca información sobre triangulos. Aqui el pseudo código.
 
@@ -61,7 +61,7 @@ triangle tr1, tr2, tr3 // all share vertex v1
 v1.normal = normalize( tr1.normal + tr2.normal + tr3.normal )
 ```
 
-##Usando normales en OpenGL
+## Usando normales en OpenGL
 
 Usar normales en OpenGL es muy fácil. Una normal es un atributo de un vértice, como lo es su posición, su color y sus coordenadas UV. Así que sólo hacemos lo usual. Nuestra función loadOBJ del tutorial 7 ya sabe traer esta información del archivo OBJ.
 
@@ -93,7 +93,7 @@ y esto es suficiente para empezar.
 
 #La parte difusa
 
-##La importancia de una normal a la superficie
+## La importancia de una normal a la superficie
 
 Cuando la luz toca un objeto, una gran parte de ella es reflejada en todas las direcciones. Este es el “componente difuso”. Ya veremos que pasa con el resto de la luz.
 
@@ -109,8 +109,7 @@ Esto significa que cada punto de la superficie se verá mas oscuro con la luz en
 
 Esto significa que cuando calculamos el color de un pixel, el angulo entre la luz entrante y la normal de la superficie importan, y mucho, resultando :
 
-``` glsl
-
+^```s*glsls*
 // Coseno del angulo entre la normal y la dirección de la luz ,
 // restringido a mayor que 0
 //  - la luz esta en la vertical del triangulo -> 1
@@ -123,7 +122,7 @@ color = LightColor * cosTheta;
 
 En este codigo, n es la normal y I es el vector unitario que va de la superficie hacia la luz (y no al contrario. Pueda que no sea intuitivo pero las matemáticas son mas fáciles).
 
-##Cuidado con el signo
+## Cuidado con el signo
 
 Falta algo en nuestra formula de coseno de teta. Si la luz esta detras del triangulo, n y I seràn opuestos asi que n.I será negativo. Esto significa que el color resultará un número negativo. Por eso limitamos la función a todo lo que es mayor que 0 :
 
@@ -139,7 +138,7 @@ color = LightColor * cosTheta;
 ```
 {: .highlightglslfs }
 
-##Color del material
+## Color del material
 
 Por supuesto que el color de salida depende del color del material. En esta imagen, la luz blanca esta hecha de verde rojo y azul. Cuando toca material rojo, la luz verde y azul son absorbidas reflejando solo el rojo.
 
@@ -147,20 +146,18 @@ Por supuesto que el color de salida depende del color del material. En esta imag
 
 Podemos modelar esto con una multiplicaión simple :
 
-``` glsl
-
+^```s*glsls*
 color = MaterialDiffuseColor * LightColor * cosTheta;
 ```
 {: .highlightglslfs }
 
-##Modelando la luz
+## Modelando la luz
 
 Primero asumiremos que tenemos una luz puntual que emite luz en todas las direcciónes en el espacio, como una vela.
 
 Con esa luz, el flujo que nuestra superficie recibe depende de la disancia de la luz al objeto. Entre mas lejos, menos luz. De hecho, la cantidad de luz decrece con el cudrado de la distancia :
 
-``` glsl
-
+^```s*glsls*
 color = MaterialDiffuseColor * LightColor * cosTheta / (distance*distance);
 ```
 {: .highlightglslfs }
@@ -172,7 +169,7 @@ color = MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*di
 ```
 {: .highlightglslfs }
 
-##Uniendo todo
+## Uniendo todo
 
 Para que este código funcione, necesitamos varios parámetros (varios colores y potencias)  y más código.
 
@@ -192,8 +189,7 @@ cosTheta depende de n y l. Podemos expresarlos en cualquier espacio que sea el m
 
 Con Normal_cameraspace y LightDirection_cameraspace calculados en el the Vertex shader y enviados al fragment shader :
 
-``` glsl
-
+^```s*glsls*
 // Posición de salida del vertice : MVP * position
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
@@ -218,11 +214,11 @@ Este código puede parece impresionante, pero no es nada que no hayamos aprendid
 
 M y V son las matrices Modelo y Vista, que son enviadas al shader de la misma forma que MVP.
 
-##Hora de trabajar
+## Hora de trabajar
 
 En este momento sabes todo lo que necesitas saber para hacer el código de una iluminación difusa. Ve y aprende de la forma dificil ;)
 
-##Resultado
+## Resultado
 
 Solo con el componente difuso tenemos el siguiente resultado (disculpa la textura fea nuevamente) :
 
@@ -242,14 +238,12 @@ Asi que vamos a crear una luz falsa. De hecho simplemente hace que el modelo 3D 
 
 Se puede hacer asi :
 
-``` glsl
-
+^```s*glsls*
 vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
 ```
 {: .highlightglslfs }
 
-``` glsl
-
+^```s*glsls*
 color =
  // Ambiente : simulates luz indirecta
  MaterialAmbientColor +
@@ -260,7 +254,7 @@ color =
 
 Veamos en qué resulta 
 
-##Resultados
+## Resultados
 
 Ok, se ve un poco mejor. Puedes ajustar el (0.1, 0.1, 0.1) si quieres mejores resultados.
 
@@ -276,8 +270,7 @@ Como puedes ver en la imagen, se forma algo como un circulo de reflejo. En casos
 
 (*Podemos variar los parametros para obtener un espejo, pero en nuestro caso , lo unico que debemos tener en cuenta en este espejo es la lampara, lo que haría un espejo muy raro*
 
-``` glsl
-
+^```s*glsls*
 // Vector del ojo (hacia la camara)
 vec3 E = normalize(EyeDirection_cameraspace);
 // Direccion en la que el triangulo refleja la luz
@@ -302,7 +295,7 @@ R es la direccion en la que la luz se refleja. E es el inverso de la direccion d
 
 pow(cosAlpha,5) se usa para controlar el ancho del reflejo especular, aumenta en 5 para obtener un reflejo mas pequeño.
 
-##Resultado final
+## Resultado final
 
 ![]({{site.baseurl}}/assets/images/tuto-8-basic-shading/diffuse_ambiant_specular.png)
 

@@ -33,7 +33,7 @@ bool loadOBJ(
 
 Queremos que loadObj lea el archivo en "path", escriba la información en out_vertices/out_uvs/out_normals, y devuelva falso si algo sale mal. std::vector es la manera que tiene C++ para declarar un arreglo de tipo glm::vec3 cuyo tamaño puede ser modificado a voluntad: No tiene nada que ver con un vector en el sentido matemático. Es sólo un arreglo, de verdad. Finalmente, el símbolo & significa que la función será capaz de modificar los std::vectors.
 
-##Archivo OBJ de ejemplo
+## Archivo OBJ de ejemplo
 
 Un archivo OBJ se ve más o menos así :
 ```
@@ -108,14 +108,14 @@ v, vt y vn son simples de entender. f es algo más complicado. Así, para f 8/11
 Estos números son llamados índices. Esto es útil dado que si varios vértices comparten la misma posición, sólo tiene que escribir una vez un "v" en el archivo y usarlo varias veces, ahorrando espacio en memoria.
 
 La mala noticia es que no es posible decirle a OpenGL que use un índice para la posición, otro para la tectura y otro para la normal. Así que para este tutorial hice una malla estandar, sin indexación y más adelante me ocupo del indexamiento en el Tutorial 9, que explica como esquivar esto.
-##Crear un archivo OBJ en Blender
+## Crear un archivo OBJ en Blender
 
 Dado que nuestra pequeña función de carga es bastante limitada, tenemos que ser extremadamente cuidadosos para activar las opaciones adecuadas cuando exportemos el archivo. Así es como debería verse en Blender:
 
 ![]({{site.baseurl}}/assets/images/tuto-7-model-loading/Blender.png)
 
 
-##Leyendo el archivo
+## Leyendo el archivo
 
 Bien, ahora vamos al código en cuestión. Necesitamos algunas variables temporales en las que almacenaremos los contenidos del .obj :
 
@@ -205,7 +205,7 @@ Y ahora la "f", lo cual es más difícil :
 
 Este código es bastante similar al anterior, excepto que hay más información para leer.
 
-##Procesando la información
+## Procesando la información
 
 Lo que hicimos fue, simplemente, cambiar la forma general de la información. Teníamos un string y ahora tenemos un conjunto de std::vectors. No obstante, esto no es suficiente, y tenemos que organizarla de tal manera que a OpenGl le guste. Es decir, removeremos los índices y tendremos objetos glm::vec3 simplemente. Esta operación es lo que se denomina "indexar".
 

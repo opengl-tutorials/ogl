@@ -42,7 +42,7 @@ And of course, read this FAQ first. It's called FAQ for a reason =)
 
 Several possible reasons :
 
-##Incompatible GPU/OS
+## Incompatible GPU/OS
 
 Please check if you have an Intel card. You can do so using glewinfo, GPU Caps Viewer, or any other tool.
 
@@ -50,7 +50,7 @@ Intel cards, except recent HD4000, don't support OpenGL 3.3. As a matter of fact
 
 The other possible reason is that you're on a Mac, with a pre-Lion version. Same stuff applies...
 
-##Wrong working directory
+## Wrong working directory
 
 Chances are that you don't run them from the right directory. Try double-clicking on the .exe from the explorer.
 
@@ -58,7 +58,7 @@ See Tutorial 1 for configuring the IDE so that you can debug the executable.
 
 Please note that the .exe is compiled in the *build* directory, but automatically copied to the *source* directory, so that it can find the needed resources (images, 3D models, shaders).
 
-##No VAO
+## No VAO
 
 If you created a program from scratch, make sure you created a VAO :
 ```
@@ -68,7 +68,7 @@ GLuint VertexArrayID;
  glBindVertexArray(VertexArrayID);
 ```
 
-##GLEW bug
+## GLEW bug
 
 GLEW has a bug which make it impossible to use a core context (except when you use the source code from the tutorials, which has been fixed). 3 solutions:
 
@@ -89,7 +89,7 @@ glewExperimental = true;
 * Actually fix glew... See [this patch](http://code.google.com/p/opengl-tutorial-org/source/browse/external/glew-1.5.8.patch?name=0009_33).
 
 
-##CMake
+## CMake
 
 You did read Tutorial 1, right ? You didn't try to write your own makefile and build everything yourself, RIGHT ?
 

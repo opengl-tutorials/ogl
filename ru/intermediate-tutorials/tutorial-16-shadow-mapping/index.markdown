@@ -28,11 +28,11 @@ The following image might help you understand the principle :
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/shadowmapping.png)
 
 
-##Rendering the shadow map
+## Rendering the shadow map
 
 In this tutorial, we'll only consider directional lights - lights that are so far away that all the light rays can be considered parallel. As such, rendering the shadow map is done with an orthographic projection matrix. An orthographic matrix is just like a usual perspective projection matrix, except that no perspective is taken into account - an object will look the same whether it's far or near the camera.
 
-###Setting up the rendertarget and the MVP matrix
+### Setting up the rendertarget and the MVP matrix
 
 Since Tutorial 14, you know how to render the scene into a texture in order to access it later from a shader.
 
@@ -83,12 +83,11 @@ glm::vec3 lightInvDir = glm::vec3(0.5f,2,2);
  glUniformMatrix4fv(depthMatrixID, 1, GL_FALSE, &depthMVP[0][0])
 ```
 
-###The shaders
+### The shaders
 
 The shaders used during this pass are very simple. The vertex shader is a pass-through shader which simply compute the vertex' position in homogeneous coordinates :
 
-``` glsl
-
+^```s*glsls*
 #version 330 core
 
 // Input vertex data, different for all executions of this shader.
@@ -105,8 +104,7 @@ void main(){
 
 The fragment shader is just as simple : it simply writes the depth of the fragment at location 0 (i.e. in our depth texture).
 
-``` glsl
-
+^```s*glsls*
 #version 330 core
 
 // Ouput data
@@ -121,7 +119,7 @@ void main(){
 
 Rendering a shadow map is usually more than twice as fast as the normal render, because only low precision depth is written, instead of both the depth and the color; Memory bandwidth is often the biggest performance issue on GPUs.
 
-###Result
+### Result
 
 The resulting texture looks like this :
 
@@ -130,10 +128,10 @@ The resulting texture looks like this :
 
 A dark colour means a small z ; hence, the upper-right corner of the wall is near the camera. At the opposite, white means z=1 (in homogeneous coordinates), so this is very far.
 
-##Using the shadow map
+## Using the shadow map
 
 
-###Basic shader
+### Basic shader
 
 Now we go back to our usual shader. For each fragment that we compute, we must test whether it is "behind" the shadow map or not.
 
@@ -160,8 +158,7 @@ We can now write our vertex shader. It's the same as before, but we output 2 pos
 * gl_Position is the position of the vertex as seen from the current camera
 * ShadowCoord is the position of the vertex as seen from the last camera (the light)
 
-``` glsl
-
+^```s*glsls*
 // Output position of the vertex, in clip space : MVP * position
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
@@ -177,8 +174,7 @@ The fragment shader is then very simple :
 
 ... so if the current fragment is further than the nearest occluder, this means we are in the shadow (of said nearest occluder) :
 
-``` glsl
-
+^```s*glsls*
 float visibility = 1.0;
 if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z){
     visibility = 0.5;
@@ -188,8 +184,7 @@ if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z){
 
 We just have to use this knowledge to modify our shading. Of course, the ambient colour isn't modified, since its purpose in life is to fake some incoming light even when we're in the shadow (or everything would be pure black)
 
-``` glsl
-
+^```s*glsls*
 color =
  // Ambient : simulates indirect lighting
  MaterialAmbientColor +
@@ -200,7 +195,7 @@ color =
 ```
 {: .highlightglslfs }
 
-###Result - Shadow acne
+### Result - Shadow acne
 
 Here's the result of the current code. Obviously, the global idea it there, but the quality is unacceptable.
 
@@ -212,7 +207,7 @@ Let's look at each problem in this image. The code has 2 projects : shadowmaps a
 #Problems
 
 
-##Shadow acne
+## Shadow acne
 
 The most obvious problem is called *shadow acne* :
 
@@ -226,8 +221,7 @@ This phenomenon is easily explained with a simple image :
 
 The usual "fix" for this is to add an error margin : we only shade if the current fragment's depth (again, in light space) is really far away from the lightmap value. We do this by adding a bias :
 
-``` glsl
-
+^```s*glsls*
 float bias = 0.005;
 float visibility = 1.0;
 if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z-bias){
@@ -245,8 +239,7 @@ However, you can notice that because of our bias, the artefact between the groun
 
 A common approach is to modify the bias according to the slope :
 
-``` glsl
-
+^```s*glsls*
 float bias = 0.005*tan(acos(cosTheta)); // cosTheta is dot( n,l ), clamped between 0 and 1
 bias = clamp(bias, 0,0.01);
 ```
@@ -279,7 +272,7 @@ And when rendering the scene, render normally (backface culling)
 
 This method is used in the code, in addition to the bias.
 
-##Peter Panning
+## Peter Panning
 
 We have no shadow acne anymore, but we still have this wrong shading of the ground, making the wall to look as if it's flying (hence the term "Peter Panning"). In fact, adding the bias made it worse.
 
@@ -296,14 +289,14 @@ The drawback is that you have more triangles to render ( two times per frame ! )
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/NoPeterPanning.png)
 
 
-##Aliasing
+## Aliasing
 
 Even with these two tricks, you'll notice that there is still aliasing on the border of the shadow. In other words, one pixel is white, and the next is black, without a smooth transition inbetween.
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/Aliasing.png)
 
 
-###PCF
+### PCF
 
 The easiest way to improve this is to change the shadowmap's sampler type to *sampler2DShadow*. The consequence is that when you sample the shadowmap once, the hardware will in fact also sample the neighboring texels, do the comparison for all of them, and return a float in [0,1] with a bilinear filtering of the comparison results.
 
@@ -316,12 +309,11 @@ Note that it's not the same than a single sampling of a filtered depth map ! A c
 
 As you can see, shadow borders are smooth, but shadowmap's texels are still visible.
 
-###Poisson Sampling
+### Poisson Sampling
 
 An easy way to deal with this is to sample the shadowmap N times instead of once. Used in combination with PCF, this can give very good results, even with a small N. Here's the code for 4 samples :
 
-``` glsl
-
+^```s*glsls*
 for (int i=0;i<4;i++){
   if ( texture( shadowMap, ShadowCoord.xy + poissonDisk[i]/700.0 ).z  <  ShadowCoord.z-bias ){
     visibility-=0.2;
@@ -332,8 +324,7 @@ for (int i=0;i<4;i++){
 
 poissonDisk is a constant array defines for instance as follows :
 
-``` glsl
-
+^```s*glsls*
 vec2 poissonDisk[4] = vec2[](
   vec2( -0.94201624, -0.39906216 ),
   vec2( 0.94558609, -0.76890725 ),
@@ -359,14 +350,13 @@ The 700.0 constant defines how much the samples are "spread". Spread them too li
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/SoftShadows_Wide.png)
 
 
-###Stratified Poisson Sampling
+### Stratified Poisson Sampling
 
 We can remove this banding by choosing different samples for each pixel. There are two main methods : Stratified Poisson or Rotated Poisson. Stratified chooses different samples; Rotated always use the same, but with a random rotation so that they look different. In this tutorial I will only explain the stratified version.
 
 The only difference with the previous version is that we index *poissonDisk* with a random index :
 
-``` glsl
-
+^```s*glsls*
     for (int i=0;i<4;i++){
         int index = // A random number between 0 and 15, different for each pixel (and each i !)
         visibility -= 0.2*(1.0-texture( shadowMap, vec3(ShadowCoord.xy + poissonDisk[index]/700.0,  (ShadowCoord.z-bias)/ShadowCoord.w) ));
@@ -376,8 +366,7 @@ The only difference with the previous version is that we index *poissonDisk* wit
 
 We can generate a random number with a code like this, which returns a random number in [0,1[ :
 
-``` glsl
-
+^```s*glsls*
     float dot_product = dot(seed4, vec4(12.9898,78.233,45.164,94.673));
     return fract(sin(dot_product) * 43758.5453);
 ```
@@ -385,8 +374,7 @@ We can generate a random number with a code like this, which returns a random nu
 
 In our case, seed4 will be the combination of i (so that we sample at 4 different locations) and ... something else. We can use gl_FragCoord ( the pixel's location on the screen ), or Position_worldspace :
 
-``` glsl
-
+^```s*glsls*
         //  - A random sample, based on the pixel's screen location.
         //    No banding, but the shadow moves with the camera, which looks weird.
         int index = int(16.0*random(gl_FragCoord.xyy, i))%16;
@@ -407,11 +395,11 @@ See tutorial16/ShadowMapping.fragmentshader for three example implementions.
 
 Even with all these tricks, there are many, many ways in which our shadows could be improved. Here are the most common :
 
-##Early bailing
+## Early bailing
 
 Instead of taking 16 samples for each fragment (again, it's a lot), take 4 distant samples. If all of them are in the light or in the shadow, you can probably consider that all 16 samples would have given the same result : bail early. If some are different, you're probably on a shadow boundary, so the 16 samples are needed.
 
-##Spot lights
+## Spot lights
 
 Dealing with spot lights requires very few changes. The most obvious one is to change the orthographic projection matrix into a perspective projection matrix :
 
@@ -427,24 +415,23 @@ The second step is to take into account the perspective in the shader. (see foot
 
 Here are two way to do this in GLSL. The second uses the built-in textureProj function, but both methods produce exactly the same result.
 
-``` glsl
-
+^```s*glsls*
 if ( texture( shadowMap, (ShadowCoord.xy/ShadowCoord.w) ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 if ( textureProj( shadowMap, ShadowCoord.xyw ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 ```
 {: .highlightglslfs }
 
-##Point lights
+## Point lights
 
 Same thing, but with depth cubemaps. A cubemap is a set of 6 textures, one on each side of a cube; what's more, it is not accessed with standard UV coordinates, but with a 3D vector representing a direction.
 
 The depth is stored for all directions in space, which make possible for shadows to be cast all around the point light.
 
-##Combination of several lights
+## Combination of several lights
 
 The algorithm handles several lights, but keep in mind that each light requires an additional rendering of the scene in order to produce the shadowmap. This will require an enormous amount of memory when applying the shadows, and you might become bandwidth-limited very quickly.
 
-##Automatic light frustum
+## Automatic light frustum
 
 In this tutorial, the light frustum hand-crafted to contain the whole scene. While this works in this restricted example, it should be avoided. If your map is 1Km x 1Km, each texel of your 1024x1024 shadowmap will take 1 square meter; this is lame. The projection matrix of the light should be as tight as possible.
 
@@ -462,19 +449,19 @@ Precise computation of these sets involve computing convex hulls intersections, 
 
 This method will result in popping when objects disappear from the frustum, because the shadowmap resolution will suddenly increase. Cascaded Shadow Maps don't have this problem, but are harder to implement, and you can still compensate by smoothing the values over time.
 
-##Exponential shadow maps
+## Exponential shadow maps
 
 Exponential shadow maps try to limit aliasing by assuming that a fragment which is in the shadow, but near the light surface, is in fact "somewhere in the middle". This is related to the bias, except that the test isn't binary anymore : the fragment gets darker and darker when its distance to the lit surface increases.
 
 This is cheating, obviously, and artefacts can appear when two objects overlap.
 
-##Light-space perspective Shadow Maps
+## Light-space perspective Shadow Maps
 
 LiSPSM tweaks the light projection matrix in order to get more precision near the camera. This is especially important in case of "duelling frustra" : you look in a direction, but a spot light "looks" in the opposite direction. You have a lot of shadowmap precision near the light, i.e. far from you, and a low resolution near the camera, where you need it the most.
 
 However LiSPM is tricky to implement. See the references for details on the implementation.
 
-##Cascaded shadow maps
+## Cascaded shadow maps
 
 CSM deals with the exact same problem than LiSPSM, but in a different way. It simply uses several (2-4) standard shadow maps for different parts of the view frustum. The first one deals with the first meters, so you'll get great resolution for a quite little zone. The next shadowmap deals with more distant objects. The last shadowmap deals with a big part of the scene, but due tu the perspective, it won't be more visually important than the nearest zone.
 

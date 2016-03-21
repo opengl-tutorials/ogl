@@ -156,8 +156,7 @@ GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 
 On commence par le fragment shader. Il est globalement simple :
 
-``` glsl
-
+^```s*glsls*
 #version 330 core
 
 // Interpolated values from the vertex shaders
@@ -184,8 +183,7 @@ Trois choses :
 
 Le vertex shader est simple aussi, vous devez juste passer les coordonnées UV au fragment shader :
 
-``` glsl
-
+^```s*glsls*
 #version 330 core
 
 // Input vertex data, different for all executions of this shader.
@@ -282,7 +280,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 Il y a de plusieurs choses que l'on peut faire pour améliorer cela.
 
-##Filtrage linéaire
+## Filtrage linéaire
 
 Avec le filtrage linéaire, la fonction texture() regarde aussi les texels autour et mélange les couleurs suivant la distance de chaque centre. Cela évite les bordures nettes vues précédemment.
 
@@ -290,13 +288,13 @@ Avec le filtrage linéaire, la fonction texture() regarde aussi les texels autou
 
 C'est beaucoup mieux et c'est beaucoup utilisé, mais si tu veux une meilleure qualité, tu peux aussi utiliser le filtrage anisotrope, qui est un peu plus lent mais plus joli.
 
-##Filtrage anisotrope
+## Filtrage anisotrope
 
 Celui-ci se rapproche de la partie de l'image qui est réellement vue dans le fragment. Par exemple, si la texture suivante est vue sur le côté et légèrement tournée, le filtrage anisotrope calculera la couleur contenue dans le rectangle bleu en prenant un nombre fixe d'échantillons (le niveau d'anisotropie) suivant sa direction principale :
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/aniso.png)
 
-##Mipmaps
+## Mipmaps
 
 Les filtrages linéaire et anisotrope ont tous les deux un souci. Si la texture est vue de très loin, le mélange de quatre texels ne suffira pas. En fait, si votre modèle 3D est très loin et qu'il ne prend qu'un fragment sur l'écran, TOUS les texels de l'image vont être pris en compte pour calculer la moyenne afin de produire la couleur finale. Évidemment, cela n'est pas fait pour préserver les performances. À la place, on introduit les MIP maps :
 
@@ -358,7 +356,7 @@ Tu devras décompresser ton image en JPEG et la donner à ta carte graphique: Tu
 
 Il y a une meilleures options : les textures compressées.
 
-##Créer une texture compressée
+## Créer une texture compressée
 
 * Télécharge l'outil d'ATI : [Le Compressonator](http://developer.amd.com/Resources/archive/ArchivedTools/gpu/compressonator/Pages/default.aspx)
 * Charge une texture en puissance de deux avec.
@@ -369,7 +367,7 @@ Il y a une meilleures options : les textures compressées.
 
 À ce moment, ton image est compressée dans un format qui est directement compatible avec le GPU. Pour n'importe quel appel à texture() dans un shader, le GPU décompressera la texture à la volée. Cela peut sembler lent, mais comme cela prend TELLEMENT moins de mémoire, moins de données ont besoin d'être transférées, sachant que les transferts mémoire sont lents, et que la décompression de texture est gratuite (il y a des puces dédiées à cela). Généralement, l'utilisation de la compression de texture augmente les performances de 20 %.
 
-##Utiliser la texture compressée
+## Utiliser la texture compressée
 
 Voici comment charger l'image. C'est très proche du code pour le BMP, sauf que l'en-tête est organisé différemment :
 
@@ -472,7 +470,7 @@ Et maintenant, on peut remplir chaque MIP map l'une après l'autre :
     return textureID;
 ```
 
-##Inversing the UVs
+## Inversing the UVs
 
 La compression DXT vient du monde DirectX, où les coordonnées de texture UV sont inversées par rapport à OpenGL. Donc, si tu utilises les textures compressées, tu dois utiliser (coord.u, 1.0-coord.v) pour récupérer le texel adéquat. Tu peux le faire quand tu le souhaite : dans ton script d'exportation, dans ton chargeur, dans ton shader ...
 

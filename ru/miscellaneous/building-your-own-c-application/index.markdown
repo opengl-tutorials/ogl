@@ -20,7 +20,7 @@ So, this tutorial will explain how to build your own C application from scatch. 
 # The C application model
 
 
-##Preprocessing
+## Preprocessing
 
 This is what all those *#defines* and *#includes* are about.
 
@@ -62,7 +62,7 @@ At the end of this step we have a preprocessed C++ file, without any #define, #i
 
 As an example, here is the main.cpp file of the 6th tutorial, fully preprocessed in Visual : [tutorial06_preprocessed]({{site.baseurl}}/assets/images/build-own-app/tutorial06_preprocessed.txt). Warning, it's a huge file ! But it's worth knowing what a seemingly simple .cpp really looks to the compiler.
 
-##Compilation
+## Compilation
 
 The compiler translates C++ code into a representation that the CPU can directly understand. For instance, the following code :
 
@@ -87,7 +87,7 @@ Each .cpp file is compiled separately, and the resulting binary code is written 
 
 Note that we don't have an executable yet : one remaining step is needed.
 
-##Linking
+## Linking
 
 The linker takes all the binary code (yours, and the one from external libraries), and generates the final executable. A few notes :
 
@@ -100,7 +100,7 @@ When the linker has run, you have an executable (.exe on Windows, .nothing_at_al
 ![]({{site.baseurl}}/assets/images/build-own-app/linking.png)
 
 
-##Runtime
+## Runtime
 
 When you launch the executable, the OS will open the .exe, and put the x86 opcodes in memory. As said earlier, some code isn't available at this point : the code from dynamic libraries. But the linker was nice enough to say where to look for it : the .exe clearly says that the glClearColor function is implemented in OpenGL32.dll.
 
@@ -126,28 +126,28 @@ The instructions on how to build an OpenGL application are separated from the fo
 
  
 
-##Visual Studio
+## Visual Studio
 
 
-###Creating a new project
+### Creating a new project
 
 File -> New -> Project -> Empty project. Don't use any weird wizard. Don't use any option you may not know about (disable MFC, ATL, precompiled headers, stdafx, main file).
 
-###Adding a source file in a project
+### Adding a source file in a project
 
 Right clic on Source Files -> Add new.
 
-###Adding include directories
+### Adding include directories
 
 Right clic on project -> Project Properties -> C++ -> General -> Additional include directories. This is actually a dropdown list, you can modify the list conveniently.
 
-###Link with a library
+### Link with a library
 
 Right clic on project -> Project Properties -> Linker -> Input -> Additional dependencies : type the name of the .lib. For instance : opengl32.lib
 
 In Project Properties -> Linker -> General -> Additional library directories, make sure that the path to the above library is present.
 
-###Build, Run & Debug
+### Build, Run & Debug
 
 Setting the working directory (where your textures & shaders are) : Project Properties -> Debugging -> Working directory
 
@@ -162,11 +162,11 @@ A short list of debugging shortcuts :
 
 You also have plenty of debugging windows : watched variables, callstack, threads, ...
 
-##QtCreator
+## QtCreator
 
 QtCreator is available for free at [http://qt-project.org/](http://qt-project.org/).
 
-###Creating a new project
+### Creating a new project
 
 Use a plain C or C++ project; avoid the templates filled with Qt stuff.
 
@@ -175,7 +175,7 @@ Use a plain C or C++ project; avoid the templates filled with Qt stuff.
 
 Use default options.
 
-###Adding a source file in a project
+### Adding a source file in a project
 
 Use the GUI, or add the file in the .pro :
 ```
@@ -185,7 +185,7 @@ SOURCES += main.cpp \
            foo.cpp
 ```
 
-###Adding include directories
+### Adding include directories
 
 In the .pro file :
 ```
@@ -193,7 +193,7 @@ In the .pro file :
 <code>INCLUDEPATH += <your path> \ <other path> </code>
 ```
 
-###Link with a library
+### Link with a library
 
 Right clic on project -> Add library
 
@@ -205,7 +205,7 @@ Right clic on project -> Add library
 * If not, use "System Library". Browse to where you compiled it.
 
 
-###Build, Run & Debug
+### Build, Run & Debug
 
 Building : Ctrl-B, or the hammer on the bottom left corner.
 
@@ -220,30 +220,30 @@ Debugging :
 
 You also have plenty of debugging windows : watched variables, callstack, threads, ...
 
-##XCode
+## XCode
 
 Work in progress...
 
-###Creating a new project
+### Creating a new project
 
 
-###Adding a source file in a project
+### Adding a source file in a project
 
 
-###Adding include directories
+### Adding include directories
 
 
-###Link with a library
+### Link with a library
 
 
-###Build, Run & Debug
+### Build, Run & Debug
 
 
-##CMake
+## CMake
 
 CMake will create projects for almost any software building tool : Visual, QtCreator, XCode, make, Code::Blocks, Eclipse, etc, on any OS. This frees you from maintaining many project files.
 
-###Creating a new project
+### Creating a new project
 
 Create a CMakeLists.txt file and write the following inside (adapt if needed) :
 ```
@@ -262,11 +262,11 @@ add_executable(your_exe_name
 
 Launch the CMake GUI, browse to your .txt file, and select your build folder. Click Configure, then Generate. Your solution will be created in the build folder.
 
-###Adding a source file in a project
+### Adding a source file in a project
 
 Simply add a line in the add_executable command.
 
-###Adding include directories
+### Adding include directories
 
 ```
 
@@ -279,7 +279,7 @@ include_directories(
 )
 ```
 
-###Link with a library
+### Link with a library
 
 ```
 
@@ -295,15 +295,15 @@ target_link_libraries(tutorial01_first_window
 )
 ```
 
-###Build, Run & Debug
+### Build, Run & Debug
 
 CMake doesn't do that. Use your favourite IDE.
 
-##make
+## make
 
 Please, just don't use that.
 
-##gcc
+## gcc
 
 It might be worth compiling a small project "by hand" in order to gain a better comprehension of the workflow. Just don't do this on a real project...
 
@@ -414,7 +414,7 @@ You will have many compiler errors. We will analyse all of them, one by one.
 
 The error messages below are for Visual Studio 2010, but they are more or less similar on GCC.
 
-##Visual Studio - fatal error C1083: Cannot open filetype file: 'GL/glew.h' : No such file or directory
+## Visual Studio - fatal error C1083: Cannot open filetype file: 'GL/glew.h' : No such file or directory
 
 (or whichever other file)
 
@@ -434,7 +434,7 @@ external/glew-1.5.8/include
 
 Repeat until all files are found.
 
-##GCC - fatal error: GL/glew.h: No such file or directory
+## GCC - fatal error: GL/glew.h: No such file or directory
 
 (or whichever other file)
 
@@ -446,7 +446,7 @@ sudo apt-get install libglfw-dev libglm-dev libglew1.6-dev
 
 If this is not a widespread library, see the answer for Visual Studio above.
 
-##Visual Studio - error LNK2019: unresolved external symbol glfwGetWindowParam referenced in function main
+## Visual Studio - error LNK2019: unresolved external symbol glfwGetWindowParam referenced in function main
 
 (or whichever other symbol in whichever other function)
 
@@ -468,7 +468,7 @@ C:\Where\You\Put\The\Library\glfw.lib
 C:\Where\You\Put\The\Other\Library\glew32.lib
 ```
 
-##GCC - main.cpp: undefined reference to `glfwInit'
+## GCC - main.cpp: undefined reference to `glfwInit'
 
 (or whichever other symbol in whichever other file)
 
@@ -476,11 +476,11 @@ Same answer than for Visual Studio.
 
 Note that on Linux, GLFW and GLEW (and many others) are usually installed with apt-get or similar : sudo apt-get install libglew-dev libglfw-dev (may vary). When you do that, the library is copied in the compiler's standard directory, so you don't have to specify the path. Just link to glfw and glew as shown in the 1rst section.
 
-##I set everything right, but I still have an "unresolved external symbol" error !
+## I set everything right, but I still have an "unresolved external symbol" error !
 
 This might me tricky to track down. Here are several options:
 
-###I have a linker error with _imp_glewInit or some other symbol that begins with _imp
+### I have a linker error with _imp_glewInit or some other symbol that begins with _imp
 
 This means that the library (in this case, glew) has been compiled as a *static* library, but you're trying to use it as a *dynamic* library. Simply add the following preprocessor directive in your compiler's options (for your own project, not glew's) :
 ```
@@ -488,7 +488,7 @@ This means that the library (in this case, glew) has been compiled as a *static*
 GLEW_STATIC
 ```
 
-###I have some other weird problem with GLFW
+### I have some other weird problem with GLFW
 
 Maybe GLFW was built as a dynamic library, but you're trying to use it as a static one ?
 
@@ -502,7 +502,7 @@ GLFW_DLL
 
 Please send us a detailed report and a fully featured zipped project, and we'll add instructions.
 
-###I'd like to solve this myself. What are the generic rules ?
+### I'd like to solve this myself. What are the generic rules ?
 
 Let's say you're the author of GLFW. You want to provide the function glfwInit().
 
@@ -523,15 +523,15 @@ So the rule is : these flags must be consistent. If you build a lib (any lib, no
 
  
 
-##My program crashes !
+## My program crashes !
 
 There are many reasons why a C++ OpenGL application might crash. Here are a few. If you don't know the exact line where your program crashes, learn how to use a debugger ( see shortcuts above). PLEASE don't debug with printf().
 
-###I don't even go inside main()
+### I don't even go inside main()
 
 This is most probably because some dll could not be found. Try opening your application with Dependency Walker (Windows) or ldd (Linux; try also [this](http://stackoverflow.com/questions/6977298/dependency-walker-equivalent-for-linux))
 
-###My program crashes on glfwOpenWindow(), or any other function that creates an OpenGL context
+### My program crashes on glfwOpenWindow(), or any other function that creates an OpenGL context
 
 Several possible reasons :
 
@@ -540,7 +540,7 @@ Several possible reasons :
 * You're trying to use GLEW with an OpenGL Core context (i.e. without all the deprecated stuff). This is a GLEW bug. Use glewExperimental=true before glewInit(), or use a compatibility profile ( i.e. use GLFW_OPENGL_COMPAT_PROFILE instead of GLFW_OPENGL_CORE_PROFILE )
 
 
-##My program crashes on the first OpenGL call, or on the first buffer creation
+## My program crashes on the first OpenGL call, or on the first buffer creation
 
 Three possible reasons :
 
@@ -559,7 +559,7 @@ Three possible reasons :
     glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 ```
 
-##My program crashes when I try to load some file
+## My program crashes when I try to load some file
 
 Setup your working directory correctly. See Tutorial 1.
 
@@ -573,7 +573,7 @@ if ( fopen("test.txt", "r" ) == NULL ){
 
 <span style="color: #ff0000;">USE THE DEBUGGER !!!! </span>Seriously ! Don't debug with printf(); use a good IDE. [http://www.dotnetperls.com/debugging](http://www.dotnetperls.com/debugging) is for C# but is valid for C++ too. Will vary for XCode and QtCreator, but concepts remain exactly the same.
 
-##Something else is wrong
+## Something else is wrong
 
 Please contact us by mail
 

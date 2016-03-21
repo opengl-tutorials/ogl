@@ -14,16 +14,16 @@ language: cn
 #Trigonometry
 
 
-##Pi
+## Pi
 
 const float pi = 3.14159265f; // but an infinity of digits in reality
 
-##Cosinus & Sinus
+## Cosinus & Sinus
 
 <img class="alignnone" title="Sine_cosine_one_period" src="http://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Sine_cosine_one_period.svg/600px-Sine_cosine_one_period.svg.png" alt="" width="600" height="240" />
 *(From http://commons.wikimedia.org/wiki/User:Geek3 , under GNU Free Documentation License )*
 
-##Unit circle
+## Unit circle
 
 ![]({{site.baseurl}}/assets/images/math-cheatsheet/UnitCircle.png)
 
@@ -41,7 +41,7 @@ const float pi = 3.14159265f; // but an infinity of digits in reality
 
 ALWAYS know in which coordinates your vector is. See section 3 for details.
 
-##Homogeneous coordinates
+## Homogeneous coordinates
 
 A 3D vector is (x,y,z), but a homogeneous 3D vector is (x,y,z,w).
 
@@ -51,17 +51,17 @@ A 3D vector is (x,y,z), but a homogeneous 3D vector is (x,y,z,w).
 
 You can only multiply a 4x4 matrix with a homogeneous vector.
 
-##Length
+## Length
 
 Just like cartesian distance : sqrt( x&sup2; + y&sup2; + z&sup2; ). w doesn't count.
 
-##Cross product
+## Cross product
 
 ![]({{site.baseurl}}/assets/images/math-cheatsheet/Right_hand_rule_cross_product.png)
 
 *( Modified from http://en.wikipedia.org/wiki/User:Acdx , former image under Creative Commons 3.0 )*The X is the notation for the cross product. length( a x b ) == length(a) * length(b) * sin(&theta;), so you may want to normalize() the result.
 
-##Dot product
+## Dot product
 
 
 ##![]({{site.baseurl}}/assets/images/math-cheatsheet/DotProduct.png)
@@ -69,7 +69,7 @@ Just like cartesian distance : sqrt( x&sup2; + y&sup2; + z&sup2; ). w doesn't co
 
 *( from http://en.wikipedia.org/wiki/File:Dot_Product.svg )*A.B = length(A)*cos(Theta) , but most likely computed as A.x*B.x +A.y*B.y +A.z*B.z
 
-##Addition and substraction
+## Addition and substraction
 
 compontent-wise :
 ```
@@ -79,7 +79,7 @@ res.y = A.y + B.y
 ...
 ```
 
-##Multiplication
+## Multiplication
 
 compontent-wise :
 ```
@@ -89,7 +89,7 @@ res.y = A.y * B.y
 ...
 ```
 
-##Normalization
+## Normalization
 
 Divide the vector by its length :
 ```
@@ -100,7 +100,7 @@ normalizedVector = vec * ( 1.0f / vec.length() )
 #Matrices
 
 
-##Matrix-Matrix multiplication
+## Matrix-Matrix multiplication
 
 example for a translation matrix :
 
@@ -109,7 +109,7 @@ example for a translation matrix :
 
  
 
-##Matrix-Vector multiplication
+## Matrix-Vector multiplication
 
 ![]({{site.baseurl}}/assets/images/math-cheatsheet/MatrixXVect.gif)
 

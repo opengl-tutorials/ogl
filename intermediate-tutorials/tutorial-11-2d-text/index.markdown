@@ -106,8 +106,7 @@ The rest is just as usual : bind the buffers, fill them, select the shader progr
 
 Note a very important thing : the coordinates are generated in the [0,800][0,600] range. In other words, there is NO NEED for a matrix here. The vertex shader simply has to put it in the [-1,1][-1,1] range with very simple math (this could be done in C++ too) :
 
-``` glsl
-
+^```s*glsls*
 void main(){
 
     // Output position of the vertex, in clip space
@@ -124,8 +123,7 @@ void main(){
 
 The fragment shader does very little too :
 
-``` glsl
-
+^```s*glsls*
 void main(){
     color = texture( myTextureSampler, UV );
 }

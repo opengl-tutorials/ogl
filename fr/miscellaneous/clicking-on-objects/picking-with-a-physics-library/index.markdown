@@ -85,7 +85,7 @@ En d'autres mots : n'utilise pas le code ci-dessus dans la vraie vie ! Ce n'est 
 
 #Lancer de rayon
 
-##Trouver la position/direction du rayon
+## Trouver la position/direction du rayon
 
 Premièrement, on doit trouver un rayon qui commence à la position de la caméra et va « à travers la souris ». Cela est fait dans la fonction ScreenPosToWorldRay().
 
@@ -142,7 +142,7 @@ glm::vec3 lRayDir_world(lRayEnd_world - lRayStart_world);
 lRayDir_world = glm::normalize(lRayDir_world);
 ```
 
-##Utiliser RayTest()
+## Utiliser RayTest()
 
 Le lancer de rayon est très simple, aucun besoin de commentaire :
 

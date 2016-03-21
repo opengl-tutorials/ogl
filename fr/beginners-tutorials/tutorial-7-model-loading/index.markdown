@@ -31,7 +31,7 @@ bool loadOBJ(
 
 On souhaite que loadOBJ lise le fichier « path », écrive les données dans out_vertices/out_uvs/out_normals et retourne false si quelque chose s'est mal passé. *std::vector<glm::vec3>* est la façon de déclarer un tableau de glm::vec3 en C++ dont la taille peut être modifiée à volonté : cela n'a rien à voir avec un vecteur mathématique. Sincèrement, ce n'est qu'un tableau. Finalement, le & signifie que la fonction sera capable de modifier les std::vector.
 
-##Exemple de fichier OBJ
+## Exemple de fichier OBJ
 
 Un fichier OBJ ressemble plus ou moins à ceci :
 ```
@@ -107,13 +107,13 @@ Ces nombres sont appelés des indices. Ils sont pratiques, car si plusieurs somm
 
 La mauvaise nouvelle est que l'on ne peut pas indiquer à OpenGL d'utiliser un indice pour la position, un autre pour la texture et un dernier pour la normale. Donc l'approche que j'ai choisie est de faire un modèle classique, non indexé et de gérer l'indexage plus tard, dans le neuvième tutoriel qui expliquera comment contourner cela.
 
-##Créer un fichier OBJ avec Blender
+## Créer un fichier OBJ avec Blender
 
 Comme notre chargeur va être très limité, on doit être très précautionneux et définir les bonnes options lors de l'exportation du fichier. Voici comment cela devrait être dans Blender :
 
 ![]({{site.baseurl}}/assets/images/tuto-7-model-loading/Blender.png)
 
-##Lecture du fichier
+## Lecture du fichier
 
 Ok, voilà le code. On doit définir des variables temporaires dans lesquelles on stocke le contenu du .obj :
 
@@ -203,7 +203,7 @@ Et maintenant le 'f', qui est plus difficile :
 
 Le code est en réalité très similaire au précédent, sauf qu'il y a plus de données à lire.
 
-##Traiter les données
+## Traiter les données
 
 Donc, ce que l'on a fait c'est simplement changer la « forme » des données. On avait une chaîne de caractères, on a maintenant un ensemble de std::vector. Mais ce n'est pas suffisant, nous avons à mettre ceux-ci dans une forme que OpenGL aime. Plus précisément en retirant les indices et en ayant que des glm::vec3 à la place. Cette opération est appelée indexation.
 

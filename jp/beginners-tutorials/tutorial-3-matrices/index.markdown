@@ -63,8 +63,7 @@ glm::vec4 transformedVector = myMatrix * myVector; // もう一度言います�
 
 **GLSL：**
 
-``` glsl
-
+^```s*glsls*
 mat4 myMatrix;
 vec4 myVector;
 // 何らかの方法でmyMatrixとmyVector満たす。
@@ -207,8 +206,7 @@ glm::vec4 myTransformedVector = myModelMatrix * myOriginalVector;
 
 **GLSL：**
 
-``` glsl
-
+^```s*glsls*
 mat4 transform = mat2 * mat1;
 vec4 out_vec = transform * in_vec;
 ```
@@ -344,8 +342,7 @@ glm::mat4 projectionMatrix = glm::perspective(
 glm::mat4 MVPmatrix = projection * view * model; // 逆になることを思い出して!
 ```
 
-``` glsl
-
+^```s*glsls*
 // GLSL：適用する
 transformed_vertex = MVP * in_vertex;
 ```
@@ -385,8 +382,7 @@ glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 
 * ステップ3：頂点を変換させるためにGLSLで行列を使います。
 
-``` glsl
-
+^```s*glsls*
 in vec3 vertexPosition_modelspace;
 uniform mat4 MVP;
 

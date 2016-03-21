@@ -68,7 +68,7 @@ Le champ de vision (FoV en anglais) est le niveau de zoom. 80° = un grand angle
 
 Premièrement, on va recalculer la position, l'angle horizontal, l'angle vertical et le champ de vision selon les entrées, puis on va calculer les matrices de vue et de projection à partir de la position, de l'angle horizontal, de l'angle vertical et du champ de vision.
 
-##Orientation
+## Orientation
 
 Lire les informations de la souris est facile :
 
@@ -143,7 +143,7 @@ glm::vec3 up = glm::cross( right, direction );
 
 Pour se souvenir de ce que fait le produit vectoriel, c'est très simple. Rappele-toi la règle de la main droite du troisième tutoriel. Le premier vecteur est le pouce ; le second l'index et le résultat est le majeur. C'est très pratique.
 
-##Position
+## Position
 
 Le code est facile à comprendre. D'ailleurs, j'ai utilisé les touches fléchées à la place de aswd, car je suis sur un clavier azerty et aswd correspond à zqsd. C'est aussi différent avec les claviers qwerZ et passons les claviers coréens. Je ne sais même pas quelle disposition les coréens ont, mais je suppose que c'est différent.
 
@@ -183,7 +183,7 @@ double currentTime = glfwGetTime();
 float deltaTime = float(currentTime - lastTime);
 ```
 
-##Champ de vision
+## Champ de vision
 
 Pour s'amuser, on peut aussi lier la roulette de la souris au champ de vision pour faire rapidement un zoom :
 
@@ -191,7 +191,7 @@ Pour s'amuser, on peut aussi lier la roulette de la souris au champ de vision po
 float FoV = initialFoV - 5 * glfwGetMouseWheel();
 ```
 
-##Calculer les matrices
+## Calculer les matrices
 
 Le calcul des matrices est maintenant très simple. On utilise les mêmes fonctions que précédemment mais avec les nouveaux paramètres.
 
@@ -210,7 +210,7 @@ ViewMatrix       = glm::lookAt(
 
 ![]({{site.baseurl}}/assets/images/tuto-6-mouse-keyboard/moveanim.gif)
 
-##Backface Culling
+## Backface Culling
 
 Maintenant que tu peux librement te déplacer, si tu vas dans le cube, tu vas remarquer que les polygones sont toujours affichés. Cela peut sembler évident, mais cette remarque ouvre en réalité une possibilité d'optimisation. En effet, normalement dans les applications, tu n'es jamais _dans_ un object 3D.
 

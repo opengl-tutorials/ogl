@@ -370,7 +370,7 @@ There's a better option.
 
 At this point, your image is compressed in a format that is directly compatible with the GPU. Whenever calling texture() in a shader, it will uncompress it on-the-fly. This can seem slow, but since it takes a LOT less memory, less data needs to be transferred. But memory transfers are expensive; and texture decompression is free (there is dedicated hardware for that). Typically, using texture compression yields a 20% increase in performance. So you save on performance and memory, at the expense of reduced quality.
 
-##Using the compressed texture
+## Using the compressed texture
 
 Let's see how to load the image. It's very similar to the BMP code, except that the header is organized differently :
 

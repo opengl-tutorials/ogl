@@ -38,7 +38,7 @@ Tous les tutoriels peuvent être compilés sur Windows, Linux et Mac. Pour ces p
 * Compile le projet
 * Joue avec les exemples
 
-##Compilation sous Windows
+## Compilation sous Windows
 
  
 
@@ -63,7 +63,7 @@ Tu peux aussi démarrer n'importe quel tutoriel à partir de Visual Studio. Fait
 ![]({{site.baseurl}}/assets/images/tuto-1-window/StartupProject.png)
 
 
-##Compilation sous Linux
+## Compilation sous Linux
 
 Il y a tellement de variantes disponibles de Linux qu'il est impossible de lister toutes les plates-formes possibles. Adapte les instructions si nécessaire et n'hésite pas à lire la documentation de ta distribution.
 
@@ -88,7 +88,7 @@ Tu devrais vraiment utiliser un IDE comme [Qt Creator](http://qt-project.org/). 
 * Clique sur le marteau en bas. Les tutoriels peuvent maintenant être lancés à partir du répertoire tutorials/
 * Pour exécuter les tutoriels dans Qt Creator, clique sur Projets→Paramètres d'exécution→Répertoire de travail et sélectionne le répertoire où les shaders, textures et modèles sont. Par exemple, pour le second tutoriel : ~/opengl-tutorial/tutorial02_red_triangle/.
 
-##Compilation sur Mac
+## Compilation sur Mac
 
 La procédure est très similaire à celle de Windows (les Makefiles sont aussi supportés, mais on ne l'expliquera pas ici) :
 
@@ -102,7 +102,7 @@ La procédure est très similaire à celle de Windows (les Makefiles sont aussi 
 * Sélectionne le tutoriel dans le panneau de projet que tu souhaites lancer et utilise le bouton *Lancer* pour compiler et exécuter :
 ![]({{site.baseurl}}/assets/images/tuto-1-window/Xcode-projectselection.png)
 
-##Notes pour Code::Blocks
+## Notes pour Code::Blocks
 
 À cause de deux bogues (un dans Code::Blocks, un dans CMake), tu dois éditer la ligne de commande dans Projet→Options de compilation→Commandes Make, comme suit :
 

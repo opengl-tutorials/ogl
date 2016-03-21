@@ -15,7 +15,7 @@ language: jp
 
 最近はGPUの性能向上などによりより多くの三角形やピクセルの描画が可能となっています。しかし、そのような単純な性能向上だけに関心があるわけではありません。NVIDIAやAMD、Intelはよりよい機能を提供することでグラフィックカードの性能を向上させています。その例を見ていきましょう。
 
-##ARB_fragment_program
+## ARB_fragment_program
 
 2002年当時のGPUは頂点シェーダやフラグメントシェーダがありませんでした。すべてはチップ内でハードコードされていました。これは固定機能パイプライン（FFP)と呼ばれていました。そのため当時の最新のAPI(OpenGL1.3)では”シェーダ”と呼ばれるものの作成、演算、使用はできませんでした。なぜならそもそも存在していないからです。しかしNVIDIAは、多くのフラグや状態変数の代わりに、実際のコードを使いレンダリングプロセスを表現することを決めました。このようにしてARB_fragment_programが生まれました。GLSLはありませんが、代わりに以下のように書くことができます。
 ```
@@ -25,7 +25,7 @@ language: jp
 
 しかしOpenGLで上記のようなコードを使うには、OpenGLにはない特別な関数が必要でした。
 
-##ARB_debug_output
+## ARB_debug_output
 
 ARB_fragment_programは昔のものだからもう必要ないでしょ？といいたいのは分かります。しかしより使いやすくなった新しい拡張があります。そのうちの一つがARB_debug_outputで、OpenGL3.3にはない機能を提供します。それはGL_DEBUG_OUTPUT_SYNCHRONOUS_ARB orGL_DEBUG_SEVERITY_MEDIUM_ARBなどのトークンやDebugMessageCallbackARBの関数を定義しています。この機能の良い点は下のような間違ったコードを書いたときに、エラーメッセージや問題の場所を教えてくれます。
 
@@ -68,7 +68,7 @@ if (GLEW_ARB_debug_output){ // Ta-Dah ! }
 
 （debug_outputは特殊で、コンテキストの作成時に有効にしないといけません。GLFWでは、glfwOpenWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1); とします。）
 
-##ARB vs EXT vs ...
+## ARB vs EXT vs ...
 
 拡張機能の名前には機能情報が込められています。
 

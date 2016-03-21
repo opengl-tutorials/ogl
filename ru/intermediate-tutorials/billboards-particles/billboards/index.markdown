@@ -73,8 +73,7 @@ CameraUp_worldspace = {ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]}
 
 Once we have this, it's very easy to compute the final vertex' position :
 
-``` glsl
-
+^```s*glsls*
 vec3 vertexPosition_worldspace =
     particleCenter_wordspace
     + CameraRight_worldspace * squareVertices.x * BillboardSize.x

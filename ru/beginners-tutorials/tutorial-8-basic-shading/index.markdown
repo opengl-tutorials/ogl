@@ -36,7 +36,7 @@ In a word : Basic.
 
 During the last few tutorials you've been dealing with normal without really knowing what they were.
 
-##Triangle normals
+## Triangle normals
 
 The normal of a plane is a vector of length 1 that is perpendicular to this plane.
 
@@ -51,7 +51,7 @@ triangle.normal = cross(edge1, edge2).normalize()
 
 Don't mix up normal and normalize(). Normalize() divides a vector (any vector, not necessarily a normal) by its length so that its new length is 1. normal is just the name for some vectors that happen to represent, well, a normal.
 
-##Vertex normals
+## Vertex normals
 
 By extension, we call the normal of a vertex the combination of the normals of the surroundings triangles. This is handy because in vertex shaders, we deal with vertices, not triangles, so it's better to have information on the vertex. And any way, we can't have information on triangles in OpenGL. In pseudo-code :
 ```
@@ -61,7 +61,7 @@ triangle tr1, tr2, tr3 // all share vertex v1
 v1.normal = normalize( tr1.normal + tr2.normal + tr3.normal )
 ```
 
-##Using vertex normals in OpenGL
+## Using vertex normals in OpenGL
 
 To use normals in OpenGL, it's very easy. A normal is an attribute of a vertex, just like its position, its color, its UV coordinates... so just do the usual stuff. Our loadOBJ function from Tutorial 7 already reads them from the OBJ file.
 
@@ -93,7 +93,7 @@ and this is enough to get us started.
 #The Diffuse part
 
 
-##The importance of the surface normal
+## The importance of the surface normal
 
 When light hits an object, an important fraction of it is reflected in all directions. This is the "diffuse component". (We'll see what happens with the other fraction soon)
 
@@ -111,8 +111,7 @@ This means that each point of the surface will look darker with gazing light (bu
 
 This means that when we compute the colour of a pixel, the angle between the incoming light and the surface normal matters.We thus have :
 
-``` glsl
-
+^```s*glsls*
 // Cosine of the angle between the normal and the light direction,
 // clamped above 0
 //  - light is at the vertical of the triangle -> 1
@@ -125,12 +124,11 @@ color = LightColor * cosTheta;
 
 In this code, n is the surface normal and l is the unit vector that goes from the surface to the light (and not the contrary, even if it's non inuitive. It makes the math easier).
 
-##Beware of the sign
+## Beware of the sign
 
 Something is missing in the formula of our cosTheta. If the light is behind the triangle, n and l will be opposed, so n.l will be negative. This would mean that colour = someNegativeNumber, which doesn't mean much. So we have to clamp cosTheta to 0 :
 
-``` glsl
-
+^```s*glsls*
 // Cosine of the angle between the normal and the light direction,
 // clamped above 0
 //  - light is at the vertical of the triangle -> 1
@@ -142,7 +140,7 @@ color = LightColor * cosTheta;
 ```
 {: .highlightglslfs }
 
-##Material Color
+## Material Color
 
 Of course, the output colour also depends on the colour of the material. In this image, the white light is made out of green, red and blue light. When colliding with the red material, green and blue light is absorbed, and only the red remains.
 
@@ -151,33 +149,30 @@ Of course, the output colour also depends on the colour of the material. In this
 
 We can model this by a simple multiplication :
 
-``` glsl
-
+^```s*glsls*
 color = MaterialDiffuseColor * LightColor * cosTheta;
 ```
 {: .highlightglslfs }
 
-##Modeling the light
+## Modeling the light
 
 We will first assume that we have a punctual light that emits in all directions in space, like a candle.
 
 With such a light, the luminous flux that our surface will receive will depend on its distance to the light source: the further away, the less light. In fact, the amount of light will diminish with the square of the distance :
 
-``` glsl
-
+^```s*glsls*
 color = MaterialDiffuseColor * LightColor * cosTheta / (distance*distance);
 ```
 {: .highlightglslfs }
 
 Lastly, we need another parameter to control the power of the light. This could be encoded into LightColor (and we will in a later tutorial), but for now let's just have a color (e.g. white) and a power (e.g. 60 Watts).
 
-``` glsl
-
+^```s*glsls*
 color = MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance);
 ```
 {: .highlightglslfs }
 
-##Putting it all together
+## Putting it all together
 
 For this code to work, we need a handful of parameters (the various colours and powers) and some more code.
 
@@ -187,8 +182,7 @@ LightColor and LightPower are set in the shader through GLSL uniforms.
 
 cosTheta depends on n and l. We can express them in any space provided it's the same for both. We choose the camera space because it's easy to compute the light's position in this space :
 
-``` glsl
-
+^```s*glsls*
 // Normal of the computed fragment, in camera space
  vec3 n = normalize( Normal_cameraspace );
  // Direction of the light (from the fragment to the light)
@@ -198,8 +192,7 @@ cosTheta depends on n and l. We can express them in any space provided it's the 
 
 with Normal_cameraspace and LightDirection_cameraspace computed in the Vertex shader and passed to the fragment shader :
 
-``` glsl
-
+^```s*glsls*
 // Output position of the vertex, in clip space : MVP * position
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
@@ -224,11 +217,11 @@ This code can seem impressive but it's nothing we didn't learn in Tutorial 3 : M
 
 M and V are the Model and View matrices, which are passed to the shader in the exact same way as MVP.
 
-##Time for work
+## Time for work
 
 You've got everything you need to code a diffuse lighting. Go ahead, and learn the hard way :)
 
-##Result
+## Result
 
 With only the Diffuse component, we have the following result (sorry for the lame texture again) :
 
@@ -249,14 +242,12 @@ So the usual hack is to simply fake some light. In fact, is simply makes the 3D 
 
 This can be done this way :
 
-``` glsl
-
+^```s*glsls*
 vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
 ```
 {: .highlightglslfs }
 
-``` glsl
-
+^```s*glsls*
 color =
  // Ambient : simulates indirect lighting
  MaterialAmbientColor +
@@ -267,7 +258,7 @@ color =
 
 Let's see what it gives
 
-##Results
+## Results
 
 Ok so that's a little bit better. You can adjust the (0.1, 0.1, 0.1) if you want better results.
 
@@ -285,8 +276,7 @@ As you can see in the image, it forms a kind of lobe. In extreme cases, the diff
 
 (*we can indeed tweak the parameters to get a mirror, but in our case, the only thing we take into account in this mirror is the lamp. So this would make for a weird mirror)*
 
-``` glsl
-
+^```s*glsls*
 // Eye vector (towards the camera)
 vec3 E = normalize(EyeDirection_cameraspace);
 // Direction in which the triangle reflects the light
@@ -311,7 +301,7 @@ R is the direction in which the light reflects. E is the inverse direction of th
 
 pow(cosAlpha,5) is used to control the width of the specular lobe. Increase 5 to get a thinner lobe.
 
-##Final result
+## Final result
 
 ![]({{site.baseurl}}/assets/images/tuto-8-basic-shading/diffuse_ambiant_specular.png)
 

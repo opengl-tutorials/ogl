@@ -19,7 +19,7 @@ N'oublie pas de copier/coller le code régulièrement.
 
 **<span style="color: red">Si le programme crashe au démarrage, tu l'exécute certainement à partir du mauvais répertoire. Lis PRÉCAUTIONNEUSEMENT le premier tutoriel sur comment configurer Visual Studio.</span>**
 
-##Le VAO
+## Le VAO
 
 On ne va pas s'enfoncer dans les détails maintenant, mais on doit créer un **V**ertex **A**rray **O**bject et le définir comment objet courant.
 
@@ -33,7 +33,7 @@ Fait-le une fois que ta fenêtre est créée (= après la création du contexte 
 
 Si tu souhaite vraiment en apprendre plus sur les VAO, il y a quelques autres tutoriels sur le Web, mais ce n'est pas très important pour l'instant.
 
-##Coordonnées écran
+## Coordonnées écran
 
 Un triangle est défini par trois points. Lorsque l'on parle de « points » en graphismes 3D, on utilise habituellement le terme de *sommet* (en anglais *vertex*, *vertices* au pluriel). Un sommet possède trois coordonnées : X, Y et Z. Tu peux imaginer ces trois coordonnées de la manière suivante 
 
@@ -68,7 +68,7 @@ Le premier sommet est (-1, -1, 0). Cela signifie que, sauf si nous le transformo
 
 C'est une chose que tu ne peux pas modifier, c'est intégré dans ta carte graphique. Donc (-1, -1) est le coin inférieur gauche de votre écran. (1, -1) est le coin inférieur droit et (0, 1), le milieu haut. Donc ce triangle devrait couvrir la majorité de l'écran.
 
-##Dessiner notre triangle
+## Dessiner notre triangle
 
 La prochaine étape est de fournir ce triangle à OpenGL. Pour cela il faut créer un *buffer* (Tampon en Français) :
 
@@ -110,7 +110,7 @@ Si tu es chanceux, tu peux voir ce résultat (<span style="color: red">**Si tu v
 
 C'est juste du blanc ennuyeux. Voyons voir comment l'améliorer en l'affichant en rouge. Cela peut être fait avec quelque chose appelé *shader*.
 
-##Shaders
+## Shaders
 
 #Compilation de shader
 
@@ -272,7 +272,7 @@ void main(){
 
 Donc voilà, *vec3(1,0,0)* signifie rouge. Cela est dû aux écrans d'ordinateur. La couleur est représentée par un triplet rouge, vert, bleu, dans cet ordre. Donc (1, 0, 0) indique complètement rouge, pas de vert et pas de bleu.
 
-##Mettre tout ensemble
+## Mettre tout ensemble
 
 Avant la boucle principale, on appelle la fonction LoadShaders :
 

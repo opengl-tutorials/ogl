@@ -15,7 +15,7 @@ language: ru
 
 With each new generation, the performance of GPU increases, allowing to render more triangles and more pixels. However, raw performance isn't the only concern. NVIDIA, AMD and Intel also improve their graphic cards by providing more functionality. Let's have a look at some examples.
 
-##ARB_fragment_program
+## ARB_fragment_program
 
 Back in 2002, GPUs had no vertex shaders or fragment shaders : everything was hardcoded inside the chip. This was called the Fixed-Function Pipeline (FFP). As such, the most recent version of the API, which was OpenGL 1.3, proposed no way to create, manipulate and use so-called "shaders", since it didn't even exist. But then NVIDIA decided that it could be handy to describe the rendering process with actual code, instead of hundreds of flags and state variables. This is how ARB_fragment_program was created : there was no GLSL, but instead you could write stuff like this :
 ```
@@ -25,7 +25,7 @@ Back in 2002, GPUs had no vertex shaders or fragment shaders : everything was ha
 
 But obviously to tell OpenGL to use such code, you needed special functions, which were not yet in OpenGL. Before moving on to the explanations, one more example.
 
-##ARB_debug_output
+## ARB_debug_output
 
 Ok, you say, but this ARB_fragment_program is too old, surely I don't need this extension stuff anymore ? Well there are newer extensions which are very handy. One of them is ARB_debug_output, which expose a functionality that doesn't exist in OpenGL 3.3 but that you can/should use anyway. It defines tokens like GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB or GL_DEBUG_SEVERITY_MEDIUM_ARB, and functions like DebugMessageCallbackARB. The great thing about this extension is that whenever you write some incorrect code, for instance :
 
@@ -41,7 +41,7 @@ you can have an error message and the exact location of the problem. Lessons lea
 ![]({{site.baseurl}}/assets/images/tuto-12-ogl-ext/breakpoint.png)
 
 
-##Getting an extension - the hard way
+## Getting an extension - the hard way
 
 The "manual" way for checking is an extension is present is to use this code snippet (from the [OpenGL.org wiki](http://www.opengl.org/wiki/GlGetString)) :
 
@@ -58,7 +58,7 @@ for(i=0; i<NumberOfExtensions; i++) {
 }
 ```
 
-##Getting all extensions - the easy way
+## Getting all extensions - the easy way
 
 All in all this is very complicated. Libraries like GLEW, GLee, gl3w, etc, make it much easier. For instance, with GLEW, you just have to call glewInit() after you created your window, and handy variables are created :
 
@@ -68,7 +68,7 @@ if (GLEW_ARB_debug_output){ // Ta-Dah ! }
 
 ( a word of caution : debug_output is special because you have to enable it at context creation. In GLFW, this is done with glfwOpenWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1); )
 
-##ARB vs EXT vs ...
+## ARB vs EXT vs ...
 
 The name of each extention contains information on its availability :
 
@@ -83,7 +83,7 @@ NV/AMD/INTEL : Quite self-explanatory =)
 #Designing with Extentions
 
 
-##The problem
+## The problem
 
 Let's say that your OpenGL 3.3 application needs to render some large lines. You could write a complicated vertex shader to do that, or simply rely on [GL_NV_path_rendering](http://www.opengl.org/registry/specs/NV/path_rendering.txt), which will handle all the complicated stuff for you.
 
@@ -99,7 +99,7 @@ if ( GLEW_NV_path_rendering ){
 }
 ```
 
-##Choosing the limit
+## Choosing the limit
 
 One usually choose to use an extention when the gain in rendering quality or performance outweights the pain of maintaining two different paths.
 

@@ -35,7 +35,7 @@ En un mot : simple.
 
 Au cours des tutoriels précédents tu as utilisé des normales sans vraiment savoir ce que c'est.
 
-##Les normales de triangle
+## Les normales de triangle
 
 La normale d'un plan est un vecteur de longueur 1 perpendiculaire à ce plan.
 
@@ -51,7 +51,7 @@ triangle.normale = cross(edge1, edge2).normalize()
 
 Ne mélange pas la normale et *normalize()*. normalize() divise un vecteur (n'importe quel vecteur et pas seulement une normale) par sa longueur afin que sa nouvelle longueur soit de 1. normale n'est qu'un nom pour quelques vecteurs qui représentent, eh bien, la normale.
 
-##Les normales de sommet
+## Les normales de sommet
 
 Par extension, on appelle la normale d'un sommet la combinaison des normales des triangles alentour. Cela est pratique car dans un vertex shader, on gère des sommets, donc c'est mieux d'avoir l'information sur le sommet. Et en aucun cas, on ne peut avoir d'informations sur les triangles en OpenGL. En pseudo code :
 
@@ -62,7 +62,7 @@ triangle tr1, tr2, tr3 // all share vertex v1
 v1.normal = normalize( tr1.normal + tr2.normal + tr3.normal )
 ```
 
-##Utiliser les normales de sommet en OpenGL
+## Utiliser les normales de sommet en OpenGL
 
 Pour utiliser les normales en OpenGL, c'est très simple. Une normale est un attribut de sommet, tout comme sa position, sa couleur, ses coordonnées UV... donc, on fait comme d'habitude. La fonction loadOBJ du [septième tutoriel]({{site.baseurl}}/fr/beginners-tutorials/tutorial-7-model-loading) lit déjà les normales à partir du fichier OBJ.
 
@@ -93,7 +93,7 @@ et c'est suffisant pour démarrer.
 
 #La partie diffuse
 
-##L'importance de la normale de la surface
+## L'importance de la normale de la surface
 
 Lorsque la lumière touche un objet, une importante partie de celle-ci est reflétée dans toutes les directions. C'est la composante « diffuse ». (On verra bientôt ce qui se passe avec l'autre partie.)
 
@@ -109,8 +109,7 @@ Cela signifie que chaque point de la surface sera plus sombre avec une lumière 
 
 Cela signifie que lorsque vous calculez la couleur d'un pixel, l'angle entre le rayon de lumière et la normale de la surface entre en jeu. Donc, on obtient :
 
-``` glsl
-
+^```s*glsls*
 // Cosine of the angle between the normal and the light direction,
 // clamped above 0
 //  - light is at the vertical of the triangle -> 1
@@ -123,12 +122,11 @@ color = LightColor * cosTheta;
 
 Dans ce code, *n* est la normale de la surface et *l* est le vecteur unitaire qui va de la surface vers la lumière (et non le contraire, même si ce n'est pas intuitif, cela rend les mathématiques plus simples).
 
-##Méfie toi du signe
+## Méfie toi du signe
 
 Quelque chose manque dans la formule du cosTheta. Si la lumière est derrière le triangle, n et l seront opposés, donc n.l sera négatif. Cela signifie que la couleur aura une valeur négative, ce qui ne veut rien dire. Donc nous devons limiter cosTheta à 0 :
 
-``` glsl
-
+^```s*glsls*
 // Cosine of the angle between the normal and the light direction,
 // clamped above 0
 //  - light is at the vertical of the triangle -> 1
@@ -140,7 +138,7 @@ color = LightColor * cosTheta;
 ```
 {: .highlightglslfs }
 
-##Couleur de matériel
+## Couleur de matériel
 
 Bien sûr, la couleur de sortie dépend aussi de la couleur du matériel. Dans cette image, la lumière blanche est composée de lumière verte, rouge et bleue. Lors de la collision avec le matériel rouge, les lumières verte et bleue sont absorbées et seule la lumière rouge reste.
 
@@ -148,33 +146,30 @@ Bien sûr, la couleur de sortie dépend aussi de la couleur du matériel. Dans c
 
 On peut modéliser cela par une simple multiplication :
 
-``` glsl
-
+^```s*glsls*
 color = MaterialDiffuseColor * LightColor * cosTheta;
 ```
 {: .highlightglslfs }
 
-##Modéliser la lumière
+## Modéliser la lumière
 
 Premièrement, on fera l'hypothèse que l'on a une lumière ponctuelle qui émet dans toutes les directions de l'espace, comme une bougie.
 
 Avec une telle lumière, le flux lumineux que recevra la surface dépendra de sa distance avec la source de lumière : plus loin elle est, moins elle est illuminée. En fait, la lumière diminuera avec le carré de la distance :
 
-``` glsl
-
+^```s*glsls*
 color = MaterialDiffuseColor * LightColor * cosTheta / (distance*distance);
 ```
 {: .highlightglslfs }
 
 Enfin, on a besoin d'un autre paramètre pour contrôler la puissance de la lumière. Cela peut être ajouté à LightColor (et on le fera dans un prochain tutoriel), mais pour le moment utilisez deux variables : la couleur (par exemple, blanche) et la puissance (par exemple 60 watts).
 
-``` glsl
-
+^```s*glsls*
 color = MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance);
 ```
 {: .highlightglslfs }
 
-##Combiner le tout
+## Combiner le tout
 
 Pour que ce code fonctionne, on a besoin de plusieurs paramètres (les différentes couleurs et puissances) et d'un peu plus de code.
 
@@ -184,8 +179,7 @@ Pour que ce code fonctionne, on a besoin de plusieurs paramètres (les différen
 
 *cosTheta* dépend de *n* et *l*. On peut les exprimer dans n'importe quel espace de coordonnées tant qu'il est le même pour les deux. On choisit l'espace caméra car c'est facile de calculer la position de la lumière dans cet espace :
 
-``` glsl
-
+^```s*glsls*
 // Normal of the computed fragment, in camera space
  vec3 n = normalize( Normal_cameraspace );
  // Direction of the light (from the fragment to the light)
@@ -195,8 +189,7 @@ Pour que ce code fonctionne, on a besoin de plusieurs paramètres (les différen
 
 avec les variables *Normal_cameraspace* et *LightDirection_cameraspace* calculées dans le vertex shader et passées au fragment shader :
 
-``` glsl
-
+^```s*glsls*
 // Output position of the vertex, in clip space : MVP * position
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
@@ -221,11 +214,11 @@ Ce code peut sembler impressionnant mais il n'y a rien que l'on n'ait pas vu dan
 
 *M* et *V* sont les matrices de Modèle et de Vue, qui sont passées aux shaders de la même façon que *MVP*.
 
-##C'est l'heure de bosser
+## C'est l'heure de bosser
 
 Tu as tout ce qu'il faut pour coder la lumière diffuse. Vas-y et apprend à la dure :)
 
-##Résultat
+## Résultat
 
 Avec seulement la composante diffuse, on obtient le résultat suivant (désolé pour la texture moche encore une fois) :
 
@@ -245,14 +238,12 @@ Donc, l'astuce habituelle est de simplement imiter cette lumière. En fait, le m
 
 Cela peut être fait de cette façon :
 
-``` glsl
-
+^```s*glsls*
 vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
 ```
 {: .highlightglslfs }
 
-``` glsl
-
+^```s*glsls*
 color =
  // Ambient : simulates indirect lighting
  MaterialAmbientColor +
@@ -263,7 +254,7 @@ color =
 
 Voyons ce que ça donne.
 
-##Résultat
+## Résultat
 
 Ok, donc c'est un petit peu mieux. Tu peux ajuster le (0.1, 0.1, 0.1) si tu souhaites un meilleur résultat.
 
@@ -279,8 +270,7 @@ Comme tu peux le voir dans cette image, cela forme une sorte de lobe. Dans les c
 
 (*on peut effectivement ajuster les paramètres pour obtenir un miroir mais, dans notre cas, la seule chose que l'on prend en compte dans ce miroir est la lampe. Donc, cela ferait un miroir très étrange.*)
 
-``` glsl
-
+^```s*glsls*
 // Eye vector (towards the camera)
 vec3 E = normalize(EyeDirection_cameraspace);
 // Direction in which the triangle reflects the light
@@ -305,7 +295,7 @@ color =
 
 pow(cosAlpha,5) est utilisé pour contrôler la largeur du lobe de lumière spéculaire. Augmentez le *5* pour obtenir un lobe plus mince.
 
-##Résultat final
+## Résultat final
 
 ![]({{site.baseurl}}/assets/images/tuto-8-basic-shading/diffuse_ambiant_specular.png)
 

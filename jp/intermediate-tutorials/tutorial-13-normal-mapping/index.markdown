@@ -333,8 +333,7 @@ void computeTangentBasis(
 
 以前言ったように、カメラ空間ですべてを行います。なぜならこの空間ではフラグメントの位置をより簡単に取得できるからです。これがT、B、Nベクターにモデルビュー行列を掛けた理由です。
 
-``` glsl
-
+^```s*glsls*
     vertexNormal_cameraspace = MV3x3 * normalize(vertexNormal_modelspace);
     vertexTangent_cameraspace = MV3x3 * normalize(vertexTangent_modelspace);
     vertexBitangent_cameraspace = MV3x3 * normalize(vertexBitangent_modelspace);
@@ -362,8 +361,7 @@ void computeTangentBasis(
 
 接空間での法線はテクスチャから直接得られます。
 
-``` glsl
-
+^```s*glsls*
     // 接空間でのローカル法線
     vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, UV ).rgb*2.0 - 1.0);
 ```
@@ -389,8 +387,7 @@ nとlは接空間で表されています。（内積や外積をとる場合、
 
 頂点シェーダでは逆行列の変わりに転置行列を使いました。しかしこれは行列が表す空間が直交してることが前提です。幸運なことに、まだそういう状態でないときでも簡単に修正できます。TangentBasis()を計算する最後のほうで法線に直交するように接線を作る必要があります。
 
-``` glsl
-
+^```s*glsls*
 t = glm::normalize(t - n * glm::dot(n, t));
 ```
 {: .highlightglslvs }
@@ -436,7 +433,7 @@ TangentBasis()を計算し終わったときに、各頂点で同様の処理を
 
 これでセメントは常に黒くなりました。なぜならテクスチャが鏡面光はないものとしているからです。
 
-##immediateモードによるデバッグ
+## immediateモードによるデバッグ
 
 このウェブサイトの本当の目的は、あなたがimmediateモードを使わないようにすることです。immediateモードは遅いなど様々な面で問題を抱えています。
 
@@ -490,8 +487,7 @@ glEnd();
 
 デバッグするとき、ベクトルの値を可視化できると便利です。最も簡単な方法は、フラグメントシェーダで実際の色の代わりに使うことです。
 
-``` glsl
-
+^```s*glsls*
 color.xyz = LightDirection_tangentspace;
 ```
 {: .highlightglslfs }

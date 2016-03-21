@@ -159,8 +159,7 @@ GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 
 はじめにフラグメントシェーダを見ていきましょう。これは簡単です。
 
-``` glsl
-
+^```s*glsls*
 #version 330 core
 
 // 頂点シェーダからの値を書き込みます
@@ -188,8 +187,7 @@ void main(){
 
 頂点シェーダも簡単です。UV座標をただフラグメントシェーダに送るだけです。
 
-``` glsl
-
+^```s*glsls*
 #version 330 core
 
 // インプット頂点データ。このシェーダの実行ごとに異なります。
@@ -473,7 +471,7 @@ And now, we just have to fill each mipmap one after another :
     return textureID;
 ```
 
-##UVを逆さまにする
+## UVを逆さまにする
 
 DXT圧縮はDirectXの世界から来ました。DirectXではVテクスチャ座標がOpenGLとは逆向きになっています。だから圧縮されたテクスチャを使う場合、正しいテクセルを取り出すために( coord.u, 1.0-coord.v)を使う必要があります。これは好きなときに出来ます。例えば、エクスポートスクリプトで、ローダで、シェーダで...。
 

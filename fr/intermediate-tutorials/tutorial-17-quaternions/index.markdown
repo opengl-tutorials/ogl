@@ -74,17 +74,17 @@ w = cos(RotationAngle / 2)
 
 Donc fondamentalement, les quaternions stockent un *axe de rotation* et un *angle de rotation*, d'une façon qui simplifira la combinaison des rotations.
 
-##Lire des quaternions
+## Lire des quaternions
 
 Le format est définitivement moins intuitif que celui des angles d'Euler, mais il reste lisible : les composantes xyz correspondent grossièrement à l'axe de rotation et w est l'arc cosinus de l'angle de rotation (divisé par 2). Par exemple, imagines que tu veux les valeurs suivantes dans le débogueur : [0.7, 0, 0, 0.7]. x = 0.7, c'est plus grand que y et z, donc vous savez grossièrement que la rotation est principalement autour de l'axe X, et 2 * acos(0.7) = 1.59 radians, donc que la rotation est de 90°.
 
 Pareillement, [0, 0, 0, 1] (w = 1) signifie que l'angle = 2*acos(1) = 0, donc que c'est un quaternion unitaire, ne faisant aucune rotation.
 
-##Opérations de bases
+## Opérations de bases
 
 Connaître les mathématiques derrière les quaternions n'est que rarement utile : la représentation est tellement non intuitive que tu te reposes habituellement sur les fonctions utilitaires qui feront les calculs pour toi. Si tu êtes intéressés, regardez les livres de mathématiques dans la page des [outils et liens utiles]({{site.baseurl}}}/miscellaneous/useful-tools-links/).
 
-###Comment créer un quaternion en C++ ?
+### Comment créer un quaternion en C++ ?
 
 ``` cpp
 // Don't forget to #include <glm/gtc/quaternion.hpp> and <glm/gtx/quaternion.hpp>
@@ -105,13 +105,13 @@ MyQuaternion = quat(EulerAngles);
 MyQuaternion = gtx::quaternion::angleAxis(degrees(RotationAngle), RotationAxis);
 ```
 
-###Comment créer un quaternion en GLSL ?
+### Comment créer un quaternion en GLSL ?
 
 Tu ne le fais pas. Convertis le quaternion vers une matrice de rotation et utilises-la dans la matrice de modèle. Tes sommets seront tournés comme d'habitude, avec la matrice MVP.
 
 Dans quelques cas, tu peux réellement vouloir utiliser les quaternions en GLSL, par exemple si tu fais l'animation d'un squelette sur le GPU. Il n'y a pas de type pour les quaternions en GLSL, mais tu peux utiliser un vec4 et faire les mathématiques toi-même dans le shader.
 
-###Comment convertir un quaternion vers une matrice ?
+### Comment convertir un quaternion vers une matrice ?
 
 ``` cpp
 mat4 RotationMatrix = quaternion::toMat4(quaternion);
@@ -145,7 +145,7 @@ Tu vas être capable de gérer tout ce que tu veux (ou du moins, cela sera plus 
 
 #Feuille de triche
 
-##Comment savoir que deux quaternions sont similaires ?
+## Comment savoir que deux quaternions sont similaires ?
 
 Lors de l'utilisation d'un vecteur, le produit scalaire donne le cosinus de l'angle entre ces deux vecteurs. Si cette valeur est 1, alors les vecteurs sont dans la même direction.
 
@@ -160,7 +160,7 @@ if ( abs(matching-1.0) < 0.001 ){
 
 Tu peux aussi obtenir l'angle entre q1 et q2 en prenant le acos() de ce produit scalaire.
 
-##Comment appliquer une rotation sur un point ?
+## Comment appliquer une rotation sur un point ?
 
 Tu peux faire comme ça :
 
@@ -178,7 +178,7 @@ Si tu souhaites tourner autour d'un autre point :
 rotated_point = origin + (orientation_quaternion * (point-origin));
 ```
 
-##Comment interpoler entre deux quaternions ?
+## Comment interpoler entre deux quaternions ?
 
 Cela s'appelle SLERP : **S**phérical **L**iner int**ERP**olation. Avec GLM, tu peux le faire avec la fonction mix :
 
@@ -186,7 +186,7 @@ Cela s'appelle SLERP : **S**phérical **L**iner int**ERP**olation. Avec GLM, tu 
 glm::quat interpolatedquat = quaternion::mix(quat1, quat2, 0.5f); // or whatever factor
 ```
 
-##Comment accumuler deux rotations ?
+## Comment accumuler deux rotations ?
 
 C'est simple ! Multiplie les deux quaternions ensemble. L'ordre est identique à celui des matrices, c'est-à-dire l'inverse :
 
@@ -194,7 +194,7 @@ C'est simple ! Multiplie les deux quaternions ensemble. L'ordre est identique à
 quat combined_rotation = second_rotation * first_rotation;
 ```
 
-##Comment trouver la rotation entre deux vecteurs ?
+## Comment trouver la rotation entre deux vecteurs ?
 
 (En d'autres mots : Comment trouver le quaternion dont on a besoin pour tourner v1 et qu'il corresponde à v2.)
 
@@ -242,7 +242,7 @@ quat RotationBetweenVectors(vec3 start, vec3 dest){
 
 (Tu peux trouver cette fonction dans [common/quaternion_utils.cpp](https://github.com/opengl-tutorials/ogl/blob/master/common/quaternion_utils.cpp).)
 
-##J'ai besoin d'un équivalent à gluLookAt. Comment orienter un objet vers un point ?
+## J'ai besoin d'un équivalent à gluLookAt. Comment orienter un objet vers un point ?
 
 Utilise RotationBetweenVectors !
 
@@ -277,7 +277,7 @@ Attention, « direction » est, bien sûr, une direction et non la position cibl
 Une fois que tu as l'orientation cible, tu vas probablement souhaiter effectuer une interpolation entre startOrientation et targetOrientation.
 (Tu peux trouver cette fonction dans [common/quaternion_utils.cpp](https://github.com/opengl-tutorials/ogl/blob/master/common/quaternion_utils.cpp)).
 
-##Comment utiliser LookAt mais en limitant la rotation à une certaine vitesse ?
+## Comment utiliser LookAt mais en limitant la rotation à une certaine vitesse ?
 
 L'idée de base est d'effectuer un SLERP (utilise glm::mix), mais de jouer avec la valeur d'interpolation afin que l'angle ne soit pas supérieur à la valeur désirée :
 
@@ -336,6 +336,6 @@ CurrentOrientation = RotateTowards(CurrentOrientation, TargetOrientation, 3.14f 
 
 (Tu peux trouver cette fonction dans [common/quaternion_utils.cpp](https://github.com/opengl-tutorials/ogl/blob/master/common/quaternion_utils.cpp))
 
-##Comment je peux ...
+## Comment je peux ...
 
 Si tu arrives pas à trouver comment faire quelque chose, envoie nous un email, et on l'ajoutera à la liste !

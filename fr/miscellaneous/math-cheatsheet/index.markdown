@@ -12,16 +12,16 @@ language: fr
 
 #Trigonométrie
 
-##Pi
+## Pi
 
 const float pi = 3.14159265f; // avec une infinité de nombre après
 
-##Cosinus & Sinus
+## Cosinus & Sinus
 
 ![](http://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Sine_cosine_one_period.svg/600px-Sine_cosine_one_period.svg.png")
 *(Provient de [http://commons.wikimedia.org/wiki/User:Geek3](http://commons.wikimedia.org/wiki/User:Geek3) , sous la licence GNU Free Documentation)*
 
-##Cercle unitaire
+## Cercle unitaire
 
 ![]({{site.baseurl}}/assets/images/math-cheatsheet/UnitCircle.png)
 
@@ -39,7 +39,7 @@ const float pi = 3.14159265f; // avec une infinité de nombre après
 
 Fait TOUJOURS attention au repère dans lesquels tes vecteur sont. Regarde la section 3 pour plus de détails.
 
-##Coordonées homogène 
+## Coordonées homogène 
 
 Un vecteur 3D est représenté par : (x, y, z), mais un vecteur 3D en coordonées homogène est représenté par : (x, y, z, w) :
 
@@ -49,24 +49,24 @@ Un vecteur 3D est représenté par : (x, y, z), mais un vecteur 3D en coordonée
 
 On ne peut multiplier une matrice 4*4 qu'avec un vecteur homogène.
 
-##Longueur
+## Longueur
 
 Comme pour une distance cartésienne : racine carrée(x&sup2; + y&sup2; + z&sup2;). w n'est pas pris en compte.
 
-##Produit en croix
+## Produit en croix
 
 ![]({{site.baseurl}}/assets/images/math-cheatsheet/Right_hand_rule_cross_product.png)
 
 *( Modifié depuis [http://en.wikipedia.org/wiki/User:Acdx](http://en.wikipedia.org/wiki/User:Acdx) , image sous la license: Creative Commons 3.0 )*Le X est la notation du produit en croix. longueur( a x b ) == longueur(a) * longueur(b) * sin(&theta;), donc tu voudra peut être normaliser le résultat
 
-##Produit scalaire (Dot product en anglais)
+## Produit scalaire (Dot product en anglais)
 
 ##![]({{site.baseurl}}/assets/images/math-cheatsheet/DotProduct.png)
 
 
 *( Depuis [http://en.wikipedia.org/wiki/File:Dot_Product.svg](http://en.wikipedia.org/wiki/File:Dot_Product.svg) )*A.B = longueur(A)*cos(&theta;) , mais on peut le calculer comme ça: A.x*B.x +A.y*B.y +A.z*B.z
 
-##Addition et soustraction
+## Addition et soustraction
 
 Pour chaque composante (x, y, ...) :
 ```
@@ -76,7 +76,7 @@ res.y = A.y + B.y
 ...
 ```
 
-##Multiplication
+## Multiplication
 
 Pour chaque composante (x, y, ...) :
 ```
@@ -86,7 +86,7 @@ res.y = A.y * B.y
 ...
 ```
 
-##Normalisation
+## Normalisation
 
 On divise le vecteur par sa longueur
 ```
@@ -96,13 +96,13 @@ normalizedVector = vec * ( 1.0f / vec.length() )
 
 #Matrices
 
-##Multiplication Matrice à Matrices
+## Multiplication Matrice à Matrices
 
 Example pour une matrice de translation :
 
 ![]({{site.baseurl}}/assets/images/math-cheatsheet/translationExamplePosition1.png)
 
-##Multiplication matrice à vecteur
+## Multiplication matrice à vecteur
 
 ![]({{site.baseurl}}/assets/images/math-cheatsheet/MatrixXVect.gif)
 

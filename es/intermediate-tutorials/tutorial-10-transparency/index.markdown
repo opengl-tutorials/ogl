@@ -23,8 +23,7 @@ out vec4 color;
 
 the first 3 components are still accessed with the .xyz swizzle operator, while the last one is accessed with .a :
 
-``` glsl
-
+^```s*glsls*
 color.a = 0.3;
 ```
 {: .highlightglslfs }
@@ -42,7 +41,7 @@ Here's the result. Make sure to turn backface culling off (glDisable(GL_CULL_FAC
 
 The previous screenshot looks okay-ish, but that's just because we're lucky.
 
-##The problem
+## The problem
 
 Here, I drew two squares with 50% alpha, one green and one red. You can see that order is important, the final colour gives an important clue to the eyes for proper depth perception.
 
@@ -56,7 +55,7 @@ This phenomena also happens in our scene. Let's change the viewpoint a bit :
 
 It turns out that this is a very hard problem. You never see lots of transparency in games, do you ?
 
-##Usual solution
+## Usual solution
 
 The usual solution is to sort all transparent triangles. Yes, ALL transparent triangles.
 
@@ -66,7 +65,7 @@ The usual solution is to sort all transparent triangles. Yes, ALL transparent tr
 
 You can sort whatever you want with qsort (in C) or std::sort (in C++). I won't dig in the details, because...
 
-##Caveat
+## Caveat
 
 Doing so will work ( more on this in the next section ), but :
 
@@ -83,7 +82,7 @@ A good enough solution is often to :
 * If you can avoid sorting, and it still doesn't look *too *bad, consider yourself lucky.
 
 
-##Order-Independent Transparency
+## Order-Independent Transparency
 
 A number of other techniques are worth investigating if your engine really, really needs state-of-the-art transparency :
 

@@ -35,7 +35,7 @@ Les coordonnées homogènes permettent d'utiliser une simple formule mathématiq
 #Matrices de transformation
 
 
-##Une introduction aux matrices
+## Une introduction aux matrices
 
 De façon simple, une matrice est un tableau de nombres avec un nombre prédéfini de lignes et colonnes. Par exemple, une matrice 2x3 ressemble à ceci :
 
@@ -71,7 +71,7 @@ vec4 transformedVector = myMatrix * myVector; // Yeah, it's pretty much the same
 
 (as-tu copié/collé ça dans ton code ? Vas-y ! Essaye ! )
 
-##Matrices de translation
+## Matrices de translation
 
 Ce sont les plus simples matrices de transformation à comprendre. Une matrice de translation ressemble à ça :
 
@@ -112,7 +112,7 @@ Bon, en fait, vous ne le ferez presque jamais. La plupart du temps, vous utilise
 vec4 transformedVector = myMatrix * myVector;
 ```
 
-##La matrice d'identité
+## La matrice d'identité
 
 Celle-ci est spéciale. Elle ne fait rien. Mais on la mentionne car c'est important de pas oublier que A fois 1.0 donne A.
 
@@ -124,7 +124,7 @@ Celle-ci est spéciale. Elle ne fait rien. Mais on la mentionne car c'est import
 glm::mat4 myIdentityMatrix = glm::mat4(1.0f);
 ```
 
-##Matrices de mise à l'échelle
+## Matrices de mise à l'échelle
 
 Les matrices de mise à l'échelle sont aussi assez simples :
 
@@ -145,7 +145,7 @@ et la valeur de w ne change pas. Tu peux te demander : quel est le sens d'une mi
 glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
 ```
 
-##Matrices de rotation
+## Matrices de rotation
 
 Elles sont assez compliquées. Je vais passer les détails ici, sachant qu'il n'est pas important de connaître leur fonctionnement pour un usage quotidien. Pour plus d'informations, jete un oeil à cette populaire [FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html) sur les matrices et quaternions (en anglais). Tu peux aussi regarder le [tutoriel sur les rotations]({{site.baseurl}}{{intermediate-tutorials/tutorial-17-quaternions}}).
 
@@ -157,7 +157,7 @@ glm::vec3 myRotationAxis( ??, ??, ??);
 glm::rotate( angle_in_degrees, myRotationAxis );
 ```
 
-##Combiner les transformations
+## Combiner les transformations
 
 Voilà, on sait comment tourner, déplacer et redimensionner nos vecteurs. Cela serait bien si on pouvait combiner ces transformations. C'est possible en multipliant les matrices ensemble, par exemple :
 
@@ -204,7 +204,7 @@ _Pour la suite du tutoriel, on supposera savoir comment dessiner le modèle 3D f
 
 Les matrices de modèle, de vue et de projection sont des outils pratiques pour différencier proprement les transformations. Tu peux ne pas les utiliser (après tout, c'est ce que l'on a fait dans les deux premiers tutoriels). Mais tu devrais. C'est la façon que *tout le monde* utilise, car c'est une approche propre, comme on va le voir.
 
-##La matrice de modèle
+## La matrice de modèle
 
 Le modèle, tout comme notre triangle rouge adoré, est défini par un ensemble de sommets. Les coordonnées X, Y, Z de ces sommets sont définies par rapport au centre de l'objet : ce qui veut dire que si un vertex est en (0, 0, 0), il est au centre de l'objet.
 
@@ -222,7 +222,7 @@ On peut résumer cela avec le diagramme suivant :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/M.png)
 
-##La matrice de vue
+## La matrice de vue
 
 Voici une nouvelle fois la citation de Futurama :
 
@@ -259,7 +259,7 @@ Voici le diagramme obligatoire :
 
 Ce n'est pas encore fini. C'est vrai que c'est beaucoup d'un coup, mais accroche toi. t'y es presque !
 
-##La matrice de projection
+## La matrice de projection
 
 On est maintenant dans le repère de la caméra. Cela signifie qu'après toutes ces transformations, un sommet ayant les coordonnées x == 0 et y == 0 devrait être affiché au centre de l'écran. Mais on ne peut pas utiliser uniquement les coordonnées x et y pour déterminer où un objet devrait être placé à l'écran : sa distance par rapport à la caméra (z) est aussi importante ! Pour deux sommets avec les même coordonnées x et y, le sommet avec la plus grande coordonnée z sera plus au centre de l'écran que l'autre.
 
@@ -307,7 +307,7 @@ C'est l'image que vous obtenez ! C'est simplement un peu trop carré, donc une a
 
 Et c'est cette image qui est affichée !
 
-##Combiner des transformations : la matrice ModelViewProjection
+## Combiner des transformations : la matrice ModelViewProjection
 
 ... est une simple multiplication de matrices comme tu les aimes déjà :
 
@@ -316,8 +316,7 @@ Et c'est cette image qui est affichée !
 glm::mat4 MVPmatrix = projection * view * model; // Remember : inverted !
 ```
 
-``` glsl
-
+^```s*glsls*
 // GLSL : apply it
 transformed_vertex = MVP * in_vertex;
 ```
@@ -361,8 +360,7 @@ glUniformMatrix4fv(mvp_handle, 1, GL_FALSE, &mvp[0][0]);
 
 * Third step : use it in GLSL to transform our vertices
 
-``` glsl
-
+^```s*glsls*
 // Input vertex data, different for all executions of this shader.
 layout(location = 0) in vec3 vertexPosition_modelspace;
 

@@ -32,7 +32,7 @@ bool loadOBJ(
 
 We want loadOBJ to read the file "path", write the data in out_vertices/out_uvs/out_normals, and return false if something went wrong. std::vector is the C++ way to declare an array of glm::vec3 which size can be modified at will: it has nothing to do with a mathematical vector. Just an array, really. And finally, the & means that function will be able to modify the std::vectors.
 
-##Example OBJ file
+## Example OBJ file
 
 An OBJ file looks more or less like this :
 ```
@@ -108,14 +108,14 @@ These numbers are called indices. It's handy because if several vertices share t
 
 The bad news is that OpenGL can't be told to use one index for the position, another for the texture, and another for the normal. So the approach I took for this tutorial is to make a standard, non-indexed mesh, and deal with indexing later, in Tutorial 9, which will explain how to work around this.
 
-##Creating an OBJ file in Blender
+## Creating an OBJ file in Blender
 
 Since our toy loader will severely limited, we have to be extra careful to set the right options when exporting the file. Here's how it should look in Blender :
 
 ![]({{site.baseurl}}/assets/images/tuto-7-model-loading/Blender.png)
 
 
-##Reading the file
+## Reading the file
 
 Ok, down with the actual code. We need some temporary variables in which we will store the contents of the .obj :
 
@@ -205,7 +205,7 @@ And now the "f", which is more difficult :
 
 This code is in fact very similar to the previous one, except that there is more data to read.
 
-##Processing the data
+## Processing the data
 
 So what we did there was simply to change the "shape" of the data. We had a string, we now have a set of std::vectors. But it's not enough, we have to put this into a form that OpenGL likes. Namely, removing the indexes and have plain glm::vec3 instead. This operation is called indexing.
 

@@ -87,8 +87,7 @@ glm::vec3 lightInvDir = glm::vec3(0.5f,2,2);
 
 シェーダはこの過程ではとてもシンプルです。頂点シェーダは同次座標系で頂点の座標を単に計算するだけです。
 
-``` glsl
-
+^```s*glsls*
 #version 330 core
 
 // 入力頂点データ。このシェーダのすべての実行で異なる
@@ -106,8 +105,7 @@ void main(){
 フラグメントシェーダもシンプルです。
 location0のフラグメントのデプスを単に書くだｋです。（つまりデプステクスチャです。）
 
-``` glsl
-
+^```s*glsls*
 #version 330 core
 
 // 出力データ
@@ -163,8 +161,7 @@ glm::mat4 depthBiasMVP = biasMatrix*depthMVP;
 * gl_Positionは現在のカメラから見た頂点の位置です。
 * ShadowCoordは最後のカメラ（ライト）から見た頂点の位置です。
 
-``` glsl
-
+^```s*glsls*
 // クリップ空間での頂点の出力位置：MVP * position
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
@@ -180,8 +177,7 @@ ShadowCoord = DepthBiasMVP * vec4(vertexPosition_modelspace,1);
 
 だから現在のフラグメントが最も近い遮蔽物よりも遠ければ、これは（最も近い遮蔽物の）影の中にあるということを意味します。
 
-``` glsl
-
+^```s*glsls*
 float visibility = 1.0;
 if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z){
     visibility = 0.5;
@@ -191,8 +187,7 @@ if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z){
 
 この知識を使ってシェーディングを修正します。もちろん環境光の色は変更しません。なぜなら環境光は、影の中に居ようとも、いくつかの向かってくる光をごまかすためにあるからです。（そうしなければ、すべてのものは真っ黒となります。）
 
-``` glsl
-
+^```s*glsls*
 color =
  // 環境光：向かってくる光をシミュレートする
  MaterialAmbientColor +
@@ -229,8 +224,7 @@ color =
 
 一般的な修正方法はエラーマージンを追加することです。現在のフラグメントの（ライト空間での）デプスがライトマップの値よりも遠くにあれば影ます。これにバイアスを追加します。
 
-``` glsl
-
+^```s*glsls*
 float bias = 0.005;
 float visibility = 1.0;
 if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z-bias){
@@ -248,8 +242,7 @@ if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z-bias){
 
 一般的なアプローチは傾斜にしたがってバイアスを修正することです。
 
-``` glsl
-
+^```s*glsls*
 float bias = 0.005*tan(acos(cosTheta)); // cosThetaはdot( n,l )で0と1の間にします。
 bias = clamp(bias, 0,0.01);
 ```
@@ -305,7 +298,7 @@ bias = clamp(bias, 0,0.01);
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/Aliasing.png)
 
 
-###PCF
+### PCF
 
 最も簡単な改善法はシャドウマップのサンプルタイプを *sampler2DShadow* に変えることです。これはシャドウマップから一度サンプルするとき、ハードウェアが周りのテクセルも同様にサンプルし、それらと比較し、比較結果のバイリニアフィルタリングによって[0,1]の範囲の浮動小数点を返します。
 
@@ -322,8 +315,7 @@ bias = clamp(bias, 0,0.01);
 
 簡単な方法はシャドウマップをサンプルする回数を一回からN回にするという方法です。PCFとの併用により、たとえ小さなNだとしても、とても良い結果を与えてくれます。ここに4サンプルのコードを示します。
 
-``` glsl
-
+^```s*glsls*
 for (int i=0;i<4;i++){
   if ( texture( shadowMap, ShadowCoord.xy + poissonDisk[i]/700.0 ).z  <  ShadowCoord.z-bias ){
     visibility-=0.2;
@@ -334,8 +326,7 @@ for (int i=0;i<4;i++){
 
 poissonDiskは定数配列で次のように定義されています。
 
-``` glsl
-
+^```s*glsls*
 vec2 poissonDisk[4] = vec2[](
   vec2( -0.94201624, -0.39906216 ),
   vec2( 0.94558609, -0.76890725 ),
@@ -367,8 +358,7 @@ vec2 poissonDisk[4] = vec2[](
 
 前のバージョンと違う点は *poissonDisk* をランダムにインデックスする点だけです。
 
-``` glsl
-
+^```s*glsls*
     for (int i=0;i<4;i++){
         int index = // 0から15のうちのランダムな数字、各ピクセル（と各i)で違うようにする。
         visibility -= 0.2*(1.0-texture( shadowMap, vec3(ShadowCoord.xy + poissonDisk[index]/700.0,  (ShadowCoord.z-bias)/ShadowCoord.w) ));
@@ -378,8 +368,7 @@ vec2 poissonDisk[4] = vec2[](
 
 次のコードのように[0,1[の間の乱数を生成します。
 
-``` glsl
-
+^```s*glsls*
     float dot_product = dot(seed4, vec4(12.9898,78.233,45.164,94.673));
     return fract(sin(dot_product) * 43758.5453);
 ```
@@ -387,8 +376,7 @@ vec2 poissonDisk[4] = vec2[](
 
 このケースでは（4つの異なる点をサンプルするために）seed4はiのコンビネーションです。そしてgl_FragCoord（画面上のピクセルの位置）あるいはPosition_worldspaceを使います。
 
-``` glsl
-
+^```s*glsls*
         //  -ピクセルの画面上の位置に応じて、ランダムにサンプルしたもの
         //    バンディングはありません。しかしカメラが移動すると影も動きます。
         int index = int(16.0*random(gl_FragCoord.xyy, i))%16;
@@ -430,8 +418,7 @@ glm::mat4 depthViewMatrix = glm::lookAt(lightPos, lightPos-lightInvDir, glm::vec
 
 GLSLで行うには二つの方法が在ります。二つ目はtextureProjという組み込み関数を使います。しかし二つの関数はまったく同じ結果を出します。
 
-``` glsl
-
+^```s*glsls*
 if ( texture( shadowMap, (ShadowCoord.xy/ShadowCoord.w) ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 if ( textureProj( shadowMap, ShadowCoord.xyw ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 ```

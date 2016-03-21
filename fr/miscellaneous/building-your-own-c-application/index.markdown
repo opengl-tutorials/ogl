@@ -18,7 +18,7 @@ Donc, ce tutoriel va expliquer comment compiler ta propre application C à parti
 
 #Le modèle des applications C
 
-##Le préprocesseur
+## Le préprocesseur
 
 On parle ici des *#define* et *#include*.
 
@@ -61,7 +61,7 @@ De façon similaire, les *#define* sont copiées-collées, les *#if* sont analys
 
 Par exemple, voici le fichier main.cpp du sixième tutoriel, complètement prétraité dans Visual : [fichier préprocessé]({{site.baseurl}}/assets/images/build-own-app/tutorial06_preprocessed.txt). Attention, c'est un immense fichier ! Mais ça vaut le coup de savoir ce qu'un fichier .cpp simple est réellement pour le compilateur.
 
-##Compilation
+## Compilation
 
 Le compilateur traduit le code C++ en une représentation que le CPU peut comprendre directement. Par exemple, le code suivant :
 
@@ -86,7 +86,7 @@ Chaque fichier .cpp est compilé séparément et le code binaire résultant est 
 
 > Nous n'avons pas encore l'exécutable : il reste une étape à faire.
 
-##Linking
+## Linking
 
 Le linker prend tout le code binaire (le tien, mais aussi celui des bibliothèques externes) et génère l'exécutable final. Quelques notes :
 
@@ -98,7 +98,7 @@ Lorsque le linker a été exécuté, on obtient un exécutable (.exe sous Window
 
 ![]({{site.baseurl}}/assets/images/build-own-app/linking.png)
 
-##Exécution
+## Exécution
 
 Lorsque tu lances l'exécutable, le système d'exploitation va ouvrir le .exe et placer les opcodes x86 en mémoire. Comme indiqué précédemment, certains codes ne sont pas disponibles à ce moment-là : le code des bibliothèques dynamiques. Mais le linker a été assez gentil pour indiquer où les trouver : le .exe indique clairement que la fonction glClearColor est implémentée dans le fichier OpenGL32.dll.
 
@@ -119,27 +119,27 @@ On va expliquer les opérations de base de création d'un projet séparement des
 * Premièrement, tu devras faire les opérations de base tout le temps, donc tu as plutot intérêt à les connaître par coeur
 * Deuxièmement, vous allez connaître ce qui est spécifique à OpenGL de ce qui ne l'est pas
 
-##Visual Studio
+## Visual Studio
 
-###Creating a new project
+### Creating a new project
 
 Fichier (File) -> Nouveau (New) -> Projet (Project) -> Projet vide (Empty Project). N'utilise pas ces étranges assistants. N'utilise aucune option que tu ne connais pas (désactivez MFC, ATL, les entêtes précompilés, stdafx, le fichier main).
 
-###Adding a source file in a project
+### Adding a source file in a project
 
 Faites un clic droit sur Fichiers sources (Sources Files) -> Ajouter nouveau (Add new).
 
-###Ajouter un fichier source dans un projet
+### Ajouter un fichier source dans un projet
 
 Fait un clic droit sur projet (Project) -> Propriétés du projet (Project Properties) -> C++ -> Général -> Répertoire d'inclusion additionnel (Additional include directories). C'est une liste déroulante, tu peux la modifier comme tu le souhaites.
 
-###Lier une bibliothèque
+### Lier une bibliothèque
 
 Fait un clic droit sur projet (Project) -> Propriétés du projet (Project Properties) -> Éditeur de liens (Linker) -> Entrée (Input) -> Dépendances additionnelles (Additional dependencies) : tape le nom du fichier .lib. Par exemple : opengl32.lib.
 
 Dans les propriétés du projet (Project Properties) -> Éditeur de liens (Linker) -> Général -> répertoires de bibliothèques additionnels (Additional library directories), assures-toi que le chemin de la bibliothèque ci-dessus est présent.
 
-###Compiler, exécuter et déboguer
+### Compiler, exécuter et déboguer
 
 Pour définir le répertoire de travail (là où sont les textures et les shaders) : Propriétés du projet (Project Properties) -> Débogage (Debugging) -> Répertoire de travail (Working Directory).
 
@@ -154,11 +154,11 @@ Voici une courte liste de raccourcis pour le débogage :
 
 Tu as aussi de nombreuses fenêtres de débogage : les variables observées, la pile d'appels, les threads…
 
-##QtCreator
+## QtCreator
 
 QtCreator est disponible gratuitement [ici](http://qt-project.org/).
 
-###Créer un nouveau projet
+### Créer un nouveau projet
 
 Utilise un projet vide C ou C++ ; éviter les templates contenant des trucs de Qt.
 
@@ -166,7 +166,7 @@ Utilise un projet vide C ou C++ ; éviter les templates contenant des trucs de Q
 
 Utilise les options par défaut.
 
-###Ajouter un fichier source dans un projet
+### Ajouter un fichier source dans un projet
 
 Utilise l'interface, ou ajoute un fichier dans le .pro :
 
@@ -177,7 +177,7 @@ SOURCES += main.cpp \
            foo.cpp
 ```
 
-###Ajouter un répertoire d'inclusion
+### Ajouter un répertoire d'inclusion
 
 Dans le fichier .pro :
 
@@ -186,7 +186,7 @@ Dans le fichier .pro :
 INCLUDEPATH += [ton chemin] \ [ton autre chemin]
 ```
 
-###Lier avec une bibliothèque
+### Lier avec une bibliothèque
 
 Clic droit sur le projet -> Ajout une bibliothèque (Add library)
 
@@ -196,7 +196,7 @@ Clic droit sur le projet -> Ajout une bibliothèque (Add library)
 
 * Sinon, utilise « Bibliothèque système » (System library) et navigue jusqu'à atteindre le dossier où tu as compilée ta lib.
 
-###Compiler, exécuter et déboguer
+### Compiler, exécuter et déboguer
 
 Pour compiler : Ctrl-B ou le marteau dans le coin inférieur gauche.
 
@@ -211,15 +211,15 @@ Pour déboguer :
 
 Tu as aussi de nombreuses fenêtres de débogage : les variables observées, la pile d'appels, les threads ...
 
-##XCode
+## XCode
 
 En cours ...
 
-##CMake
+## CMake
 
 CMake créera les projets et cela pour pratiquement tous les IDE : Visual, Qt Creator, XCode, make, Code::Blocks, Eclipse, etc., sur n'importe quel système d'exploitation. Ça te libère de la maintenance de multiples fichiers de projet.
 
-###Créer un nouveau projet
+### Créer un nouveau projet
 
 Crée un fichier CMakeLists.txt et écris ceci (adapte au besoin) :
 
@@ -239,11 +239,11 @@ add_executable(your_exe_name
 
 Lance l'interface graphique de CMake, navigue jusqu'à atteindre ton fichier .txt et sélectionne ton dossier de compilation. Clique sur « Configurer » (Configure) puis « Générer » (Generate). Ta solution va être créée dans le dossier de compilation.
 
-###Ajouter un fichier source dans un projet
+### Ajouter un fichier source dans un projet
 
 Ajoute simplement une ligne dans la commande *add_executable*.
 
-###Ajouter des répertoires d'inclusion
+### Ajouter des répertoires d'inclusion
 
 ```
 
@@ -256,7 +256,7 @@ include_directories(
 )
 ```
 
-###Lier une bibliothèque
+### Lier une bibliothèque
 
 ```
 
@@ -272,15 +272,15 @@ target_link_libraries(tutorial01_first_window
 )
 ```
 
-###Compiler, exécuter et déboguer
+### Compiler, exécuter et déboguer
 
 CMake ne fait pas cela. Utilisez votre IDE favori.
 
-##make
+## make
 
 Vraiment ??
 
-##GCC
+## GCC
 
 Cela peut être intéressant de compiler un petit projet « à la main » afin de mieux comprendre ce qui se passe. Ne le fait pas sur un vrai projet ...
 
@@ -393,7 +393,7 @@ Tu vas obtenir de nombreuses erreurs de compilation. On va les analyser une par 
 
 Les messages d'erreurs ci-dessous sont pour Visual Studio 2010, mais ils sont plus ou moins proches de ceux de GCC.
 
-##Visual Studio - fatal error C1083 : impossible d'ouvrir le fichier 'GL/glew.h' : Aucun fichier trouvé.
+## Visual Studio - fatal error C1083 : impossible d'ouvrir le fichier 'GL/glew.h' : Aucun fichier trouvé.
 
 (Ou n'importe quel autre fichier.)
 
@@ -414,7 +414,7 @@ external/glew-1.5.8/include
 
 Répéte ça jusqu'à ce que tous les fichiers soient trouvés.
 
-##GCC - fatal error : GL/glew.h : aucun fichier trouvé
+## GCC - fatal error : GL/glew.h : aucun fichier trouvé
 
 (ou n'importe quel autre fichier.)
 
@@ -427,7 +427,7 @@ sudo apt-get install libglfw-dev libglm-dev libglew1.6-dev
 
 Si ce n'est pas une bibliothèque répandue, regarde la réponse pour Visual Studio ci-dessus.
 
-##Visual Studio - error LNK2019 : symbole non résolu glfwGetWindowParam référencé dans la fonction main
+## Visual Studio - error LNK2019 : symbole non résolu glfwGetWindowParam référencé dans la fonction main
 
 (ou n'importe quel autre symbole dans n'importe quelle autre fonction.)
 
@@ -451,7 +451,7 @@ C:\Where\You\Put\The\Library\glfw.lib
 C:\Where\You\Put\The\Other\Library\glew32.lib
 ```
 
-##GCC - main.cpp : référence indéfinie vers 'glfwInit'
+## GCC - main.cpp : référence indéfinie vers 'glfwInit'
 
 (ou n'importe quel autre symbole.)
 
@@ -459,11 +459,11 @@ Même réponse que pour Visual Studio ci-dessus.
 
 > Sur Linux, GLFW et GLEW (et plein d'autres) sont généralement installées avec apt-get ou autre : *sudo apt-get install libglew-dev libglfw-dev* (cela peut changer). Lorsque tu fais ça, les bibliothèques sont copiées dans les répertoires standards du compilateur, donc tu n'as pas à préciser le chemin. Lie simplement glfw et glew comme présenté dans la première section.
 
-##J'ai tout configuré correctement, mais j'ai toujours une erreur « unresolved external error » !
+## J'ai tout configuré correctement, mais j'ai toujours une erreur « unresolved external error » !
 
 Ça peut être quelque peu difficile à tracer. Il y a plusieurs solutions :
 
-###J'ai une erreur durant l'édition des liens avec _imp_glewInit ou d'autres symboles qui commencent par _imp
+### J'ai une erreur durant l'édition des liens avec _imp_glewInit ou d'autres symboles qui commencent par _imp
 
 Ça signifie que la bibliothèque (dans ce cas, glew) a été compilée comme bibliothèque statique, mais tu essayes de l'utiliser comme bibliothèque dynamique. Ajoute simplement la définition pour le préprocesseur suivante dans les options du compilateur (pour ton propre projet, et non celui de glew) :
 
@@ -472,7 +472,7 @@ Même réponse que pour Visual Studio ci-dessus.
 GLEW_STATIC
 ```
 
-###J'ai quelques problèmes étranges avec GLFW
+### J'ai quelques problèmes étranges avec GLFW
 
 Peut-être, car GLFW a été compilée comme bibliothèque dynamique, mais tu essayes de l'utiliser comme bibliothèque statique ?
 
@@ -483,11 +483,11 @@ Essaye d'ajouter la définition pour le préprocesseur suivante :
 GLFW_DLL
 ```
 
-###J'ai un autre problème avec l'éditeur de liens ! Aidez-moi, je suis bloqué !
+### J'ai un autre problème avec l'éditeur de liens ! Aidez-moi, je suis bloqué !
 
 Envoie nous par mail ton projet complet compressé dans un zip et on te répondra et ajoutera les indications manquantes.
 
-###J'aimerais résoudre cela moi-même. Quelles sont les règles générales ?
+### J'aimerais résoudre cela moi-même. Quelles sont les règles générales ?
 
 Admettons que tu es l'auteur de la GLFW. Tu veux fournir la fonction glfwInit().
 
@@ -506,15 +506,15 @@ Donc tu utilises une définition pratique #define : GLFWAPI et tu l'utilises pou
 
 Donc la règle est : ces indications doivent être consistantes. Si tu compiles une bibliothèque (n'importe quelle bibliothèque, pas que GLFW) en DLL, utilise la bonne définition pour le préprocesseur : GLFW_DLL, GLEW_STATIC.
 
-##Mon programme crashe !
+## Mon programme crashe !
 
 Il y a de multiples raisons pour qu'une application C++ OpenGL plante. Voici quelques-unes d'entre elles. Si tu ne sais pas la ligne exacte où ton programme plante, apprend à utiliser un débogueur (voir les raccourcis ci-dessus). NE débogue PAS avec printf().
 
-###Je n'atteins même pas le main()
+### Je n'atteins même pas le main()
 
 C'est certainement dû à des DLL qui n'ont pas pu être trouvées. Essaye d'ouvrir ton application avec Dependency Walker (Windows) ou ldd (Linux ; essaye aussi [ceci](http://stackoverflow.com/questions/6977298/dependency-walker-equivalent-for-linux)).
 
-###Mon programme crashe sur glfwOpenWindow(), ou toute autre fonction qui crée un contexte OpenGL
+### Mon programme crashe sur glfwOpenWindow(), ou toute autre fonction qui crée un contexte OpenGL
 
 Plusieurs raisons possible :
 
@@ -522,7 +522,7 @@ Plusieurs raisons possible :
 * Ton système d'exploitation ne supporte pas la version OpenGL demandée : Mac OS pre-Lion ... même réponse
 * Tu essayes d'utiliser GLEW avec un contexte OpenGL core (c'est-à-dire, sans les choses dépréciées). C'est un bogue de GLEW. Utilise glewExperimental=true avec glewInit() ou utilise le mode de compatibilité (c'est-à-dire utilise GLFW_OPENGL_COMPAT_PROFILE à la place de GLFW_OPENGL_CORE_PROFILE).
 
-##Mon programme crash au premier appel OpenGL, ou a la création du premier buffer
+## Mon programme crash au premier appel OpenGL, ou a la création du premier buffer
 
 Trois raisons possible:
 
@@ -541,7 +541,7 @@ Trois raisons possible:
     glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 ```
 
-##Mon programme crashe lorsque j'essaie de charger un fichier
+## Mon programme crashe lorsque j'essaie de charger un fichier
 
 Définis ton répertoire de travail correctement. Lis le premier tutoriel.
 
@@ -556,7 +556,7 @@ if ( fopen("test.txt", "r" ) == NULL ){
 <span style="color: #ff0000;">UTILISE LE DÉBOGUEUR !!!!</span>
 Sincèrement ! Ne débogue pas avec printf() ; utilise un bon EDI. [http://www.dotnetperls.com/debugging](http://www.dotnetperls.com/debugging) est pour le C# mais c'est aussi valide pour le C++. Cela peut être différent pour XCode ou Qt Creator, mais les concepts restent exactement les mêmes.
 
-##Autre chose ne va pas
+## Autre chose ne va pas
 
 Envoie nous un courriel !
 

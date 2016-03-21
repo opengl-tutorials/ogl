@@ -69,7 +69,7 @@ FoV es el nivel de acercamiento. 80&deg; = ángulo muy amplio, con enormes defor
 
 Lo primero que haremos es recalcular position, horizontalAngle, verticalAngle y FoV a partir de las entradas y luego evaluaremos las matrices de Vista y Proyección a partir de dichas variables.
 
-##Orientación
+## Orientación
 
 Leer la posición del ratón es fácil:
 
@@ -142,7 +142,7 @@ glm::vec3 up = glm::cross( right, direction );
 
 En resumen, lo que hace el producto cruz es muy simple: Recuerda la Regla de la Mano Derecha del Tutorial 3: El primer vector es el pulgar, el segundo es el dedo índice y el tercero es el dedo corazón. Esta astucia es bastante útil para que recordemos cómo funciona éste cálculo.
 
-##Posición
+## Posición
 
 El código es bastante directo. Por cierto, Por cierto, aquí usamos las teclas de las flechas arriba/abajo/derecha en lugar de AWSD dado que en mi teclado, AWSD es en realidad ZQSD, al igual que los teclado QUERZ, eso sin mencionar los teclados coreanos. No tengo idea de cómo son los teclados coreanos, pero voy a suponer que también son diferentes.
 
@@ -182,7 +182,7 @@ double currentTime = glfwGetTime();
 float deltaTime = float(currentTime - lastTime);
 ```
 
-##Campo de Visión
+## Campo de Visión
 
 Sólo por diversión, vamos a ligar la rueda del ratón al Campo de Visión, para obtener una manera simple de hacer zoom:
 
@@ -190,7 +190,7 @@ Sólo por diversión, vamos a ligar la rueda del ratón al Campo de Visión, par
 float FoV = initialFoV - 5 * glfwGetMouseWheel();
 ```
 
-##Calculando las matrices
+## Calculando las matrices
 
 Con todo lo que hemos hecho, hallar las matrices es bastante directo. Usaremos exactamente las mismas funciones que antes, pero con nuestros nuevos parámetros.
 
@@ -210,7 +210,7 @@ ViewMatrix       = glm::lookAt(
 ![]({{site.baseurl}}/assets/images/tuto-6-mouse-keyboard/moveanim.gif)
 
 
-##Backface Culling (Ocultación de las caras posteriores)
+## Backface Culling (Ocultación de las caras posteriores)
 
 Ahora que puedes moverte libremente alrededor, puedes darte cuenta que si vas dentro del cubo, los polígonos aún se muestran. Esto puedo parecer obvio, pero darse cuenta de esto nos da la oportunidad de optimizar nuestra aplicación. De hecho, en una aplicación tradicional, nunca deberías estar _dentro_ del cubo.
 

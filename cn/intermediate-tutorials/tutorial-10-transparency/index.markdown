@@ -15,8 +15,7 @@ order: 20
 
 alpha通道的概念很简单。我们以前的计算结果是RGB值，现在则是RGBA值：
 
-``` glsl
-
+^```s*glsls*
 // Ouput data : it's now a vec4
 out vec4 color;
 ```
@@ -24,8 +23,7 @@ out vec4 color;
 
 前三个分量仍可以通过重组操作符（swizzle operator）.xyz访问，最后一个分量通过.a访问：
 
-``` glsl
-
+^```s*glsls*
 color.a = 0.3;
 ```
 {: .highlightglslfs }

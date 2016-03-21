@@ -43,7 +43,7 @@ OpenGLの世界に飛び込む前に、最初に各チュートリアルで使�
 
 各プラットフォームごとの詳しい手順を以下に示します。少しの変更は必要かもしれません。もし自信がなければ、Windowsでの導入方法を読んでから、それぞれに合うようにやってみてください。
 
-##Windowsでのビルド
+## Windowsでのビルド
 
 
 * ドライバのアップデートは簡単です。NVIDIAやAMDのウェブサイトに行ってドライバをダウンロードしてください。もしGPUモデルが分からないなら、コントロールパネル&rarr;システムとセキュリティ&rarr;システム&rarr;デバイスマネージャー&rarr;ディスプレイアダプター を確認してください。もしインテル内臓GPUならば、ドライバはOEM(Dell、HP、...)から提供されます。
@@ -80,7 +80,7 @@ Visual Studioから各チュートリアルを起動できます。Playgroundを
 
 
 
-##Linuxでのビルド
+## Linuxでのビルド
 
 Linuxの各プラットフォームごとに説明するのは不可能なので、必要に応じて変更してください。そして各ディストリビューションのドキュメントを読むのを嫌がらないでください。
 
@@ -112,7 +112,7 @@ GNUなどではありませんが、きちんと動きます。
 * QtCreatorからチュートリアルを実行するために、Projects->Execution parameters->Working Directoryをクリックし、シェーダとテクスチャとモデルがあるディレクトリを選んでください。チュートリアル2では~/opengl-tutorial/tutorial02_red_triangle/となります。
 
 
-##Macでのビルド
+## Macでのビルド
 
 MacOSはOpenGL3.3をサポートしていません。最新のMacOS 10.7 LionとコンパティブルGPUはOpenGL3.2は実行できます。(3.3ではありません。)代わりに、チュートリアルの2.1ポートを使用してください。それは別として、手順はWindowsと良く似ています。(MakeFileもサポートされていますが、ここでは説明しません。)
 
@@ -128,7 +128,7 @@ MacOSはOpenGL3.3をサポートしていません。最新のMacOS 10.7 Lionと
 ![]({{site.baseurl}}/assets/images/tuto-1-window/Xcode-projectselection.png)
 
 
-##Code::Blocksに関するメモ
+## Code::Blocksに関するメモ
 
 2つのバグ(ひとつはC::B、もう一つはCMake)のため、Project->Build Options->Make commandsのコマンドラインを次のように編集する必要があります。
 

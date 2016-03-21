@@ -75,7 +75,7 @@ Soit :
 
 #Préparation du VBO
 
-##Calcul des tangentes et bitangentes
+## Calcul des tangentes et bitangentes
 
 Comme les tangentes et bitangentes sont nécessaires en plus des normales, on doit les calculer pour la globalité du modèle. On fait cela dans une fonction à part :
 
@@ -140,7 +140,7 @@ Finalement, on remplit les tampons tangents et bitangents. Rappels-toi, ces tamp
     }
 ```
 
-##Indexation
+## Indexation
 
 L'indexation du VBO est très similaire à ce que l'on avait l'habitude de faire, mais il y a une légère différence.
 
@@ -168,7 +168,7 @@ Remarque que l'on ne normalise rien ici. En réalité c'est pratique, car de cet
 #Le shader
 
 
-##Tampons et variables uniformes supplémentaires
+## Tampons et variables uniformes supplémentaires
 
 On a besoin de deux nouveaux buffer, un pour les tangentes, l'autre pour les bitangentes :
 
@@ -321,12 +321,11 @@ Au final le code de rendu complet donne :
         glfwSwapBuffers();
 ```
 
-##Vertex shader
+## Vertex shader
 
 Comme dit précédemment, on va tout faire dans l'espace de la caméra, car il est plus simple d'obtenir la position du fragment dans cet espace. C'est pourquoi on multiplie nos vecteurs T, B et N avec la matrice de modèle-vue.
 
-``` glsl
-
+^```s*glsls*
     vertexNormal_cameraspace = MV3x3 * normalize(vertexNormal_modelspace);
     vertexTangent_cameraspace = MV3x3 * normalize(vertexTangent_modelspace);
     vertexBitangent_cameraspace = MV3x3 * normalize(vertexBitangent_modelspace);
@@ -352,12 +351,11 @@ Cette matrice passe de l'espace de la caméra à l'espace tangent (la même matr
     EyeDirection_tangentspace =  TBN * EyeDirection_cameraspace;
 ```
 
-##Fragment shader
+## Fragment shader
 
 La normale, dans l'espace tangent, est immédiate à obtenir, c'est la texture :
 
-``` glsl
-
+^```s*glsls*
     // Local normal, in tangent space
     vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, UV ).rgb*2.0 - 1.0);
 ```
@@ -376,12 +374,11 @@ Voici le résultat obtenu. Tu peux remarquer que :
 
 #Aller plus loin
 
-##Orthogonalisation
+## Orthogonalisation
 
 Dans le vertex shader on prend la transposée au lieu de l'inverse, car c'est plus rapide. Mais cela ne fonctionne que si l'espace représenté par la matrice est orthogonal, ce qui n'est pas encore le cas à ce moment là. Heureusement, c'est facilement corrigeable : on doit simplement faire que la tangente soit perpendiculaire à la normale à la fin de computeTangentBasis() :
 
-``` glsl
-
+^```s*glsls*
 t = glm::normalize(t - n * glm::dot(n, t));
 ```
 {: .highlightglslvs }
@@ -394,7 +391,7 @@ n et t sont presque perpendiculaire, donc on « pousse » t dans la direction de
 
 Avant il y avait [une petite application](http://www.cse.illinois.edu/iem/least_squares/gram_schmidt/) qui expliquait aussi cela (utilise seulement deux vecteurs si jamais elle remarche ^^).
 
-##Règle de la main droite
+## Règle de la main droite
 
 Tu n'as normalement pas à t'en inquiéter, mais dans quelques cas, lorsque tu utilises des modèles symétriques, les coordonnées UV sont orientées dans le mauvais sens et ton T possède la mauvaise orientation.
 
@@ -412,7 +409,7 @@ if (glm::dot(glm::cross(n, t), b) < 0.0f){
 
 Cela est aussi effectué pour chaque sommet à la fin de la fonction computeTangentBasis().
 
-##Texture spéculaire
+## Texture spéculaire
 
 Pour le fun, j'ai ajouté une texture spéculaire au code. Ça ressemble à ça :
 
@@ -424,7 +421,7 @@ et je l'ai utilisée pour remplacer le simple gris « vec3(0.3,0.3,0.3) » que l
 
 Le ciment est toujours noir : la texture indique qu'il n'y a pas de composante spéculaire.
 
-##Débogage avec le mode immédiat
+## Débogage avec le mode immédiat
 
 Le vrai but de ce site Web est que **tu N'utilises PAS le mode immédiat**, qui est obsolète, lent et problématique en de nombreux aspects.
 
@@ -473,12 +470,11 @@ glEnd();
 
 Rappel-toi : n'utilise pas le mode immédiat dans une vraie application ! Uniquement pour du débogage ! Et n'oublie pas de réactiver le profil core après coup, cela t'empêcheras d'utiliser le mode immédiat par inadvertence.
 
-##Débogage avec les couleurs
+## Débogage avec les couleurs
 
 Lors du débogage, il peut être utile de visualiser la valeur d'un vecteur. La façon la plus simple pour ce faire est d'écrire sa valeur dans le tampon d'image au lieu de la couleur actuelle. Par exemple, pour visualiser *LightDiretion_tangentspace* :
 
-``` glsl
-
+^```s*glsls*
 color.xyz = LightDirection_tangentspace;
 ```
 {: .highlightglslfs }
@@ -497,13 +493,13 @@ Quelques conseils :
 * Evite de jouer avec l'alpha, c'est trop compliqué :)
 * Si tu veux visualiser une valeur négative, tu peux utiliser la même astuce que celle pour notre texture de normales : visualise (v+1.0)/2.0 à la place. Le noir signifie -1 et la couleur +1. Toutefois, c'est pas toujurs facile d'interpréter le rendu.
 
-##Débogage avec les noms des variables
+## Débogage avec les noms des variables
 
 Comme dit précédemment, il est important de connaître exactement dans quel espace vos vecteurs se trouvent. Ne faites pas le produit scalaire d'un vecteur situé dans l'espace de la caméra avec un vecteur dans l'espace modèle.
 
 Ajouter l'espace de chaque vecteur à son nom (« ..._modelspace ») aide énormement à la correction de bogues mathématiques.
 
-##Comment créer une texture de normales
+## Comment créer une texture de normales
 
 Créé par James O'Hare. Clique pour agrandir :
 

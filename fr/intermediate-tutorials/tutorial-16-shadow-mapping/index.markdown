@@ -29,11 +29,11 @@ L'image suivante aide à comprendre le principe :
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/shadowmapping.png)
 
 
-##Génération de la shadow map
+## Génération de la shadow map
 
 Dans ce tutoriel, on ne considérera que les lumières directionnelles - lumières qui sont si loin que l'on peut considérer les rayons comme étant parallèles. Ainsi, la génération de la texture d'ombre est effectuée avec une matrice de projection orthographique. Une matrice de projection orthographique est exactement comme une matrice de projection en perspective, sauf qu'aucune perspective n'est prise en compte - un objet sera identique indépendamment de sa distance avec la caméra.
 
-###Configurer le renderbuffer et la matrice MVP
+### Configurer le renderbuffer et la matrice MVP
 
 Depuis le [quatorzième tutoriel]({{site.baseurl}}/fr/intermediate-tutorials/tutorial-14-render-to-texture/), tu sais comment dessiner une scène dans une texture afin d'y accéder plus tard à partir d'un shader.
 
@@ -86,12 +86,11 @@ glm::vec3 lightInvDir = glm::vec3(0.5f,2,2);
  glUniformMatrix4fv(depthMatrixID, 1, GL_FALSE, &depthMVP[0][0])
 ```
 
-###Les shaders
+### Les shaders
 
 Les shaders utilisés durant cette passe sont très simples. Le vertex shader est un shader passant les données au fragment shader qui calcule simplement la position des sommets en coordonnées homogènes :
 
-``` glsl
-
+^```s*glsls*
 #version 330 core
 
 // Input vertex data, different for all executions of this shader.
@@ -108,8 +107,7 @@ void main(){
 
 Le fragment shader est tout aussi simple : il écrit la profondeur du fragment à l'emplacement 0 (c'est-à-dire dans la texture de profondeur).
 
-``` glsl
-
+^```s*glsls*
 #version 330 core
 
 // Ouput data
@@ -124,7 +122,7 @@ void main(){
 
 Le rendu d'une shadow map est généralement deux fois plus rapide qu'un rendu normal, car seule une profondeur en faible précision est écrite, au lieu de la profondeur *et* de la couleur. La bande passante mémoire est souvent le plus grand problème de performance sur les GPU.
 
-###Résultat
+### Résultat
 
 La texture ressemble à ça :
 
@@ -132,9 +130,9 @@ La texture ressemble à ça :
 
 Une couleur sombre signifie un petit z ; donc, le coin supérieur droit du mur est proche de la caméra. Au contraire, le blanc signifie z=1 (en coordonnées homogènes), donc que l'élément est très loin.
 
-##Utiliser la shadow map
+## Utiliser la shadow map
 
-###Shader de base
+### Shader de base
 
 Maintenant, on retourne à notre shader habituel. Pour chaque fragment que l'on calcule, on doit tester s'il se trouve « derrière » la texture d'ombre ou pas.
 
@@ -161,8 +159,7 @@ On peut maintenant écrire le vertex shader. Il est identique au précédent, ma
 * gl_Position est la position du sommet tel qu'il est vu par la caméra actuelle.
 * ShadowCoord est la position du sommet tel qu'il est vu à partir de l'ancienne caméra (la lumière).
 
-``` glsl
-
+^```s*glsls*
 // Output position of the vertex, in clip space : MVP * position
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
@@ -178,8 +175,7 @@ Ensuite, le fragment shader est très simple :
 
 Donc si le fragment actuel est plus loin que l'objet le plus proche, cela signifie que l'on se trouve dans l'ombre (de objet plus proche) :
 
-``` glsl
-
+^```s*glsls*
 float visibility = 1.0;
 if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z){
     visibility = 0.5;
@@ -189,8 +185,7 @@ if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z){
 
 On a juste besoin d'utiliser ça pour modifier l'ombrage. Bien sûr, la couleur ambiante n'est pas modifiée, car son but est d'imiter une lumière arrivant même lorsqu'on se trouve dans l'ombrage (ou sinon tout ce qui est dans l'ombre serait complètement noir).
 
-``` glsl
-
+^```s*glsls*
 color =
  // Ambient : simulates indirect lighting
  MaterialAmbientColor +
@@ -201,7 +196,7 @@ color =
 ```
 {: .highlightglslfs }
 
-###Résultat - acné d'ombre
+### Résultat - acné d'ombre
 
 Voici le résultat du code actuel. Évidemment, l'idée générale est présente, mais la qualité est inacceptable.
 
@@ -211,7 +206,7 @@ On va regarder chacun des problèmes de l'image dans les sections suivantes. Le 
 
 #Problèmes
 
-##Acné d'ombre
+## Acné d'ombre
 
 Le problème le plus évident s'appelle *shadow acne* (acné de d'ombre) :
 
@@ -223,8 +218,7 @@ Ce phénomène est facilement explicable avec une image :
 
 Le « correctif » habituel pour ça consiste à utiliser une marge d'erreur : on n'ajoute l'ombre que si la profondeur du fragment actuel (encore une fois, dans l'espace de la lumière) est vraiment loin de la valeur de la texture de lumière. On fait ça en ajoutant un biais :
 
-``` glsl
-
+^```s*glsls*
 float bias = 0.005;
 float visibility = 1.0;
 if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z-bias){
@@ -241,8 +235,7 @@ Par contre, tu peux remarquer qu'à cause de notre biais, l'artefact entre le so
 
 Une approche commune consiste à modifier le biais suivant la pente :
 
-``` glsl
-
+^```s*glsls*
 float bias = 0.005*tan(acos(cosTheta)); // cosTheta is dot( n,l ), clamped between 0 and 1
 bias = clamp(bias, 0,0.01);
 ```
@@ -273,7 +266,7 @@ Et ensuite, affiche la scène avec un rendu normal (suppression des faces arriè
 
 Cette méthode est utilisée dans le code, en plus du biais.
 
-##Peter Panning
+## Peter Panning
 
 On n'a plus d'acné d'ombrages, mais on a toujours un mauvais ombrage sur le sol, faisant comme si les murs volaient (d'où le terme « Peter Panning »). En fait, en ajoutant le biais, c'est devenu pire.
 
@@ -288,13 +281,13 @@ L'inconvénient est que tu as plus de triangles à afficher (deux fois par image
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/NoPeterPanning.png)
 
-##Aliasing
+## Aliasing
 
 Mais avec ces deux astuces, tu vas remarquer qu'il y a toujours du crénelage sur le bord de l'ombre. En d'autres termes, un pixel est blanc et le prochain noir, sans même de transition douce entre les deux.
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/Aliasing.png)
 
-###PCF
+### PCF
 
 La façon la plus simple d'améliorer ça est de changer le type d'échantillonnage de la texture d'ombre en shadow2DShadow. La conséquence est que, lorsque tu échantillonnes une fois, le matériel fera en réalité aussi un échantillonnage des pixels voisins, une comparaison entre eux et retournera un nombre à virgule flottante compris dans [0, 1] avec un filtrage bilinéaire du résultat de la comparaison.
 
@@ -310,8 +303,7 @@ Comme vous pouvez le voir, les bordures de l'ombre sont douces, mais la texture 
 
 Une méthode simple pour le gérer est d'échantillonner la texture d'ombre N fois au lieu d'une seule. En combinaison avec le PCF, cela peut donner de très bons résultats, même avec un petit N. Voici le code pour quatre échantillonnages :
 
-``` glsl
-
+^```s*glsls*
 for (int i=0;i<4;i++){
   if ( texture( shadowMap, ShadowCoord.xy + poissonDisk[i]/700.0 ).z  <  ShadowCoord.z-bias ){
     visibility-=0.2;
@@ -322,8 +314,7 @@ for (int i=0;i<4;i++){
 
 poissonDisk est un tableau constant qui peut être défini comme suit :
 
-``` glsl
-
+^```s*glsls*
 vec2 poissonDisk[4] = vec2[](
   vec2( -0.94201624, -0.39906216 ),
   vec2( 0.94558609, -0.76890725 ),
@@ -349,8 +340,7 @@ On peut supprimer cet effet de bande en choisissant différents échantillons po
 
 La seule différence avec la version précédente est que l'on indexe poissonDisk avec un indice aléatoire :
 
-``` glsl
-
+^```s*glsls*
     for (int i=0;i<4;i++){
         int index = // A random number between 0 and 15, different for each pixel (and each i !)
         visibility -= 0.2*(1.0-texture( shadowMap, vec3(ShadowCoord.xy + poissonDisk[index]/700.0,  (ShadowCoord.z-bias)/ShadowCoord.w) ));
@@ -360,8 +350,7 @@ La seule différence avec la version précédente est que l'on indexe poissonDis
 
 On peut générer un nombre aléatoire avec une ligne comme celle-ci, qui retourne un nombre entre [0, 1[ :
 
-``` glsl
-
+^```s*glsls*
     float dot_product = dot(seed4, vec4(12.9898,78.233,45.164,94.673));
     return fract(sin(dot_product) * 43758.5453);
 ```
@@ -369,8 +358,7 @@ On peut générer un nombre aléatoire avec une ligne comme celle-ci, qui retour
 
 Dans notre cas, seed4 sera une combinaison de i (faisant que l'on échantillonne à quatre emplacements différents) et ... quelque chose d'autre. On peut utiliser gl_FragCoord (l'emplacement du pixel sur l'image) ou Position_worldspace :
 
-``` glsl
-
+^```s*glsls*
         //  - A random sample, based on the pixel's screen location.
         //    No banding, but the shadow moves with the camera, which looks weird.
         int index = int(16.0*random(gl_FragCoord.xyy, i))%16;
@@ -390,11 +378,11 @@ Regarde le fichier [tutorial16/ShadowMapping.fragmentshader](https://github.com/
 
 Même avec toutes ces astuces, il reste de nombreuses, très nombreuses méthodes pour améliorer tes ombres. Voici les plus répandues :
 
-##Early bailing
+## Early bailing
 
 Au lieu de prendre seize échantillons pour chaque fragment (encore une fois, c'est beaucoup), on prend quatre échantillons distants. S'ils sont tous dans la lumière ou dans l'ombre, tu peux sûrement considérer que les seize échantillons auraient donné le même résultat : tu peux arrêter tout de suite (bail early). Si certains sont différents, tu es probablement sur une bordure d'ombre, donc les seize sont nécessaires.
 
-##Spot lights
+## Spot lights
 
 La gestion des lumières de type "spots" nécessite quelques petites modifications. La plus évidente est de changer la matrice de projection orthographique pour une matrice de projection en perspective :
 
@@ -410,24 +398,23 @@ La seconde étape consiste à prendre en compte la perspective dans le shader (v
 
 Voici deux façons de faire cela en GLSL. La seconde utilise la fonction du langage textureProj, mais les deux méthodes produisent le exactement le même résultat.
 
-``` glsl
-
+^```s*glsls*
 if ( texture( shadowMap, (ShadowCoord.xy/ShadowCoord.w) ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 if ( textureProj( shadowMap, ShadowCoord.xyw ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 ```
 {: .highlightglslfs }
 
-##Lumières ponctuelles
+## Lumières ponctuelles
 
 Même chose, mais avec une cubemap (carte cubique) de profondeur. Une cubemap est un ensemble de six textures, une pour chaque côté du cube. De plus, l'accès ne se fait pas avec des coordonnées UV standard, mais avec un vecteur 3D représentant une direction.
 
 La profondeur est conservée pour chaque direction dans l'espace, rendant possible la projection des ombres tout autour de la lumière ponctuelle.
 
-##Combination of several lights
+## Combination of several lights
 
 L'algorithme gère plusieurs lumières, mais garde à l'esprit que chaque lumière nécessite un rendu supplémentaire de la scène afin de produire la carte d'ombres. Cela nécessitera une quantité énorme de mémoire lors de l'application des ombres et tu peux être très rapidement limité par la bande passante.
 
-##Automatic light frustum
+## Automatic light frustum
 
 Dans ce tutoriel, la zone de lumière est produite à la main pour contenir toute la scène. Bien que cela fonctionne dans cet exemple restreint, c'est à éviter. Si ta carte s'étend sur 1 km x 1 km, chaque texel de ta shadow map 1024x1024 prendra un mètre carré, ce qui est honteux. La matrice de projection de la lumière doit être aussi compacte que possible.
 
@@ -445,19 +432,19 @@ Le calcul précis de ces ensembles implique le calcul d'intersections d'envelopp
 
 Cette méthode provoquera des apparitions soudaines lorsque les objets disparaîtrons de la zone, car la résolution de la texture d'ombre diminuera brusquement. Les textures d'ombre en cascade ne souffrent pas de ce problème, mais sont plus compliquées à implémenter et tu peux toujours compenser cela en adoucissant le redimensionnement de la texture dans le temps.
 
-##Shadow maps exponentielles
+## Shadow maps exponentielles
 
 Les cartes d'ombres exponentielles tentent de limiter le crénelage en supposant qu'un fragment se situant dans l'ombre, mais proche de la surface éclairée, est en fait « quelque part entre les deux ». Cela est lié au biais, sauf que le test n'est plus binaire : le fragment devient plus sombre lorsque la distance de la surface éclairée augmente.
 
 C'est de la triche, évidemment, et des artefacts peuvent apparaître lorsque deux objets se recouvrent.
 
-##Light-space perspective shadow maps
+## Light-space perspective shadow maps
 
 Les LiSPSM ajustent la matrice de projection de la lumière afin d'obtenir une plus grande précision pour les objets proches de la caméra. C'est très important dans les cas de « duelling frustra » : tu regardes dans une direction, mais la lumière spot « semble » dans la direction opposée. Vous avez une grande précision pour la carte d'ombres près de la lumière, soit loin de toi et une faible résolution proche de la caméra, là où tu en as le plus besoin.
 
 Par contre, les LiSPSM sont délicates à implémenter. Lis les références pour des détails d'implémentation.
 
-##Shadow maps en cascade
+## Shadow maps en cascade
 
 Les CSM gèrent le même problème que les LiSPSM mais d'une manière différente. Elles utilisent simplement plusieurs (2-4) cartes d'ombres standards pour les différentes parties de la zone vue. La première gère les premiers mètres, donc tu vas obtenir une bonne résolution pour une petite zone. La prochaine carte d'ombres gère les objets plus loin. La dernière carte d'ombres gère la grosse partie de la scène, mais à cause de la perspective, elle ne sera pas aussi importante visuellement que la zone la plus proche.
 

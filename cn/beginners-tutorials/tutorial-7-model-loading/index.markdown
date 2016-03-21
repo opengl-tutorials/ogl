@@ -32,7 +32,7 @@ bool loadOBJ(
 
 我们让loadOBJ读取文件路径，把数据写入out_vertices/out_uvs/out_normals。如果出错则返回false。std::vector是C++中的数组，可存放glm::vec3类型的数据，数组大小可任意修改，不过std::vector和数学中的向量（vector）是两码事。其实它只是个数组。最后提一点，符号&意思是这个函数将会直接修改这些数组。
 
-##OBJ文件示例
+## OBJ文件示例
 
 OBJ文件大概是这个模样：
 ```

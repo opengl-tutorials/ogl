@@ -15,7 +15,7 @@ language: cn
 
 
 
-##OpenGL references
+## OpenGL references
 
 
 * [OpenGL 3.2 Quick Reference](http://www.khronos.org/files/opengl-quick-reference-card.pdf)
@@ -25,7 +25,7 @@ language: cn
 * [List of all extensions](http://www.opengl.org/registry/) If your GPU is recent enough, some (many) of them will be available through GLEW
 
 
-##Other tutorials
+## Other tutorials
 
 
 * [http://arcsynthesis.org/gltut/](http://arcsynthesis.org/gltut/) A very thorough tutorial; high learning curve
@@ -34,7 +34,7 @@ language: cn
 * [NeHe ](http://nehe.gamedev.net/)Extensive OpenGL 1.1 programming tutorials and resources. Mostly deprecated now, but there are still a few intersting things.
 
 
-##Books
+## Books
 
 
 * [Real-time Rendering 3](http://www.realtimerendering.com/)
@@ -42,7 +42,7 @@ language: cn
 * [More Opengl Programming](http://glbook.gamedev.net/GLBOOK/glbook.gamedev.net/moglgp/index.html)
 
 
-##Others
+## Others
 
 
 * [A trip trough the graphic pipeline](http://fgiesen.wordpress.com/2011/07/09/a-trip-through-the-graphics-pipeline-2011-index/) : In-depth information about how the drivers & GPUs actually work. Fantastic source of information. Highly recommended.
@@ -62,7 +62,7 @@ language: cn
 #Libraries
 
 
-##Windowing & misc
+## Windowing & misc
 
 
 * [GLFW ](http://www.glfw.org/), the one we use
@@ -72,7 +72,7 @@ language: cn
 * [SFML](http://www.sfml-dev.org/index-fr.php). Includes a coffee machine, a washing machine, and a cellular.
 
 
-##Extension loading
+## Extension loading
 
 Beware, most extensions loading library don't work well with OpenGL 3+ Core. Actually, GLEW is the only one I managed to make work, with changes in the source code.
 
@@ -83,7 +83,7 @@ If unsure, simply use the GLEW version included in the source code.
 * [gl3w ](https://github.com/skaslev/gl3w/wiki). A Python scripts that generates a C++ file.
 
 
-##Math library
+## Math library
 
 
 * [GLM](http://glm.g-truc.net/), the one we use. Very complete. Directly OpenGL and CUDA compatible.
@@ -91,7 +91,7 @@ If unsure, simply use the GLEW version included in the source code.
 * [Boost.ublas ](http://www.boost.org/). Heavyweight. I don't recommend it for OpenGL.
 
 
-##Image loading
+## Image loading
 
 
 * [stbimage](http://nothings.org/) A single .c file to include to your project, and you can load jpeg, bmp and png files !!!
@@ -103,20 +103,20 @@ If unsure, simply use the GLEW version included in the source code.
 * libpng Same thing here.
 
 
-##Static objects loading
+## Static objects loading
 
 
 * [ASSIMP ](http://assimp.sourceforge.net/)
 
 
-##Articulated objects loading & stuff
+## Articulated objects loading & stuff
 
 
 * Any Quake III or Quake IV loader around
 * [Cal3D](http://gna.org/projects/cal3d/)
 
 
-##Physics
+## Physics
 
 
 * [Bullet](http://bulletphysics.org/wordpress/) Open source, used by many games and even films

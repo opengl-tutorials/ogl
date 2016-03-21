@@ -107,7 +107,7 @@ MyQuaternion = quat(EulerAngles);
 MyQuaternion = gtx::quaternion::angleAxis(degrees(RotationAngle), RotationAxis);
 ```
 
-###GLSLでのクォータニオンの作りかた
+### GLSLでのクォータニオンの作りかた
 
 できません。クォータニオンを回転行列に変換して、モデル行列で使います。頂点はいつもどおりMVP行列で回転されます。
 
@@ -246,7 +246,7 @@ quat RotationBetweenVectors(vec3 start, vec3 dest){
 
 この関数はcommon/quaternion_utils.cppにあります。
 
-##gluLookAtと同じように、オブジェクトをある点の方向へ向けさせたい。
+## gluLookAtと同じように、オブジェクトをある点の方向へ向けさせたい。
 
 RotationBetweenVectorsを使いましょう！
 

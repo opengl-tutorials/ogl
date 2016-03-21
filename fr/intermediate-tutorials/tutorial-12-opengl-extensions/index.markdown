@@ -14,7 +14,7 @@ language: fr
 
 Avec chaque nouvelle génération, les performances des GPU augmentent, permettant ainsi d'afficher plus de triangles et plus de pixels. Néanmoins, la performance brute n'est pas le seul intérêt. NVIDIA, AMD et Intel améliorent aussi leurs cartes graphiques en y ajoutant des nouvelles fonctionnalités. En voici quelques exemples.
 
-##ARB_fragment_program
+## ARB_fragment_program
 
 En 2002, les GPU n'avaient pas de vertex shader ni de fragment shader : tout était codé en dur dans la puce. C'était ce que l'on appelait le pipeline à fonctionnalités fixes (Fixed-Function Pipeline (FFP)). La plus récente version de l'API l'OpenGL, qui était alors OpenGL 1.3, ne proposait aucun moyen de créer, manipuler et utiliser les « shaders », car ils n'existaient même pas. Mais NVIDIA a décidé que cela pourrait être pratique de décrire le processus de rendu avec du code, à la place de la centaine d'indicateurs et de variables d'états. C'est ainsi qu'a été créé ARB_fragment_program : il n'y avait pas de GLSL, mais à la place, vous pouviez écrire des trucs comme :
 
@@ -25,7 +25,7 @@ En 2002, les GPU n'avaient pas de vertex shader ni de fragment shader : tout ét
 
 Évidemment, pour indiquer à OpenGL d'utiliser un tel code, on avait besoin de fonctions spéciales, qui n'étaient pas encore dans OpenGL. Avant de plonger dans les explications, un autre exemple.
 
-##ARB_debug_output
+## ARB_debug_output
 
 Ok, tu te dis que ce ARB_fragment_program est trop vieux, ou que je suis un dinosaure, et que tu n'as certainement plus besoin de ce truc ? En fait, il y a de *nouvelles* extensions qui sont très pratiques. L'une d'entre elles est ARB_debug_output, qui expose une fonctionnalité qui n'existait pas dans OpenGL 3.3 mais que tu peux/dois tout de même utiliser. Elle définit des symboles comme GL_DEBUG_SYNCHRONOUS_ARB ou GL_DEBUG_SEVERITY_MEDIUM_ARB et des fonctions comme DebugMessageCallbackARB. Le bon point de cette extension est qu'à chaque fois que tu écris un code incorrect, comme :
 
@@ -41,7 +41,7 @@ Tu viens donc d'apprendre que :
 
 ![]({{site.baseurl}}/assets/images/tuto-12-ogl-ext/breakpoint.png)
 
-##Récupérer une extension - la méthode difficile
+## Récupérer une extension - la méthode difficile
 
 La méthode « manuelle » pour vérifier si une extension est disponible est d'utiliser ce morceau de code (provenant du [wiki OpenGL.org](http://www.opengl.org/wiki/GlGetString)) :
 
@@ -58,7 +58,7 @@ for(i=0; i<NumberOfExtensions; i++) {
 }
 ```
 
-##Récupérer toutes les extension - la méthode facile
+## Récupérer toutes les extension - la méthode facile
 
 Somme toute, c'est très compliqué. Les bibliothèques comme GLEW, Glee, gl3w, etc. rendent cela plus facile. Par exemple, avec GLEW, tu n'as qu'à appeler glewInit() après avoir créé la fenêtre, et hop ! Tu as des variables pratiques qui sont créées pour toi comme :
 
@@ -84,7 +84,7 @@ Le nom de chaque extension contient des informations sur sa disponibilité :
 
 #Concevoir avec les extensions
 
-##Le problème
+## Le problème
 
 Disons que ton application OpenGL 3.3 a besoin d'afficher quelques lignes larges. Tu peux écrire un vertex shader compliqué pour ce faire, ou simplement t'appuyer sur [GL_NV_path_rendering](http://www.opengl.org/registry/specs/NV/path_rendering.txt), qui gère tous les problèmes pour toi.
 
@@ -100,7 +100,7 @@ if ( GLEW_NV_path_rendering ){
 }
 ```
 
-##Choisir la limite
+## Choisir la limite
 
 Une possibilité est de choisir d'utiliser une extension lorsque le gain dans la qualité du rendu ou la performance dépasse les souffrances de la maintenance de deux codes.
 

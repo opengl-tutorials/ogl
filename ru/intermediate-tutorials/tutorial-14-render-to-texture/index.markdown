@@ -19,7 +19,7 @@ Applications include in-game cameras, post-processing, and as many GFX as you ca
 
 We have three tasks : creating the texture in which we're going to render ; actually rendering something in it ; and using the generated texture.
 
-##Creating the Render Target
+## Creating the Render Target
 
 What we're going to render to is called a Framebuffer. It's a container for textures and an optional depth buffer. It's created just like any other object in OpenGL :
 
@@ -78,7 +78,7 @@ if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 return false;
 ```
 
-##Rendering to the texture
+## Rendering to the texture
 
 Rendering to the texture is straightforward. Simply bind your framebuffer, and draw your scene as usual. Easy !
 
@@ -107,7 +107,7 @@ Note : there is no layout(location=i) in OpenGL < 3.3, but you use glFragData[i]
 <div><span style="font-size: medium;"><span style="line-height: 24px;">
 </span></span></div>
 
-##Using the rendered texture
+## Using the rendered texture
 
 We're going to draw a simple quad that fills the screen. We need the usual buffers, shaders, IDs, ...
 
@@ -147,8 +147,7 @@ glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the 
 
 We can draw our full-screen quad with such a shader:
 
-``` glsl
-
+^```s*glsls*
 #version 330 core
 
 in vec2 UV;
@@ -176,7 +175,7 @@ This code simply sample the texture, but adds a tiny offset which depends on tim
 #Going further
 
 
-##Using the depth
+## Using the depth
 
 In some cases you might need the depth when using the rendered texture. In this case, simply render to a texture created as follows :
 
@@ -195,7 +194,7 @@ In this screenshot, the depth levels are artificially "prettified". Usually, its
 ![]({{site.baseurl}}/assets/images/tuto-14-render-to-texture/wavvydepth.png)
 
 
-##Multisampling
+## Multisampling
 
 You can write to multisampled textures instead of "basic" textures : you just have to replace glTexImage2D by [glTexImage2DMultisample](http://www.opengl.org/sdk/docs/man3/xhtml/glTexImage2DMultisample.xml) in the C++ code, and sampler2D/texture by sampler2DMS/texelFetch in the fragment shader.
 
@@ -205,14 +204,13 @@ So you may have to resolve the MS texture yourself, in another, non-MS texture, 
 
 Nothing difficult, but it's just bulky.
 
-##Multiple Render Targets
+## Multiple Render Targets
 
 You may write to several textures at the same time.
 
 Simply create several textures (all with the correct and same size !), call glFramebufferTexture with a different color attachement for each, call glDrawBuffers with updated parameters ( something like (2,{GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1}})), and add another output variable in your fragment shader :
 
-``` glsl
-
+^```s*glsls*
 layout(location = 1) out vec3 normal_tangentspace; // or whatever
 ```
 {: .highlightglslfs }

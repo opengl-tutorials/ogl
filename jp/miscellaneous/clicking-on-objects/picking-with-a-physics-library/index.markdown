@@ -88,7 +88,7 @@ In other words : please don't use the above code in real life ! It's just for de
 #Raycasting
 
 
-##Finding the ray direction
+## Finding the ray direction
 
 First, we need to find a ray which starts at the camera and goes "through the mouse". This is done in the *ScreenPosToWorldRay()* function.
 
@@ -146,7 +146,7 @@ glm::vec3 lRayDir_world(lRayEnd_world - lRayStart_world);
 lRayDir_world = glm::normalize(lRayDir_world);
 ```
 
-##Using rayTest()
+## Using rayTest()
 
 Raycasting is very simple, no need for special comments :
 

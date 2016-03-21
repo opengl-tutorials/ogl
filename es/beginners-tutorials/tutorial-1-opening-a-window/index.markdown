@@ -41,7 +41,7 @@ Todos los tutoriales pueden ser compilados en Windows, Linux y Mac. Para todas l
 
 Ahora en detalle para cada plataforma. Es posible que se necesite adaptar el proceso. Si no estas seguro, sigue las instrucciones para Windows y trate de adaptarlas.
 
-##Generando en Windows
+## Generando en Windows
 
 * Actualizar tus controladores debe ser fácil. Solo ve a los sitios de NVIDIA o AMD y descarga los controladores. Si no sabes tu modelo de GPU usa : Panel de Control -> Sistema y Seguridad -> Sistema -> Administrador de Dispositivos -> Adaptadores de antalla. Si tienes una tarjeta gráfica integrada, los controladores usualmente han sido ya instalados por el fabricante del equipo (Dell, HP, ...).
 * Sugerimos que uses Visual Studio 2015 Express de escritorio como compilador. Puedes descargarlo grátis [aquí](https://www.visualstudio.com/en-US/products/visual-studio-express-vs). Si prefieres puedes usar MinGW, en ese caso te recomendamos usar [Qt Creator](http://qt-project.org/). Instala cualquiera que desees. Los pasos a continuación son para Visual Studio, pero son los mismo para cualquier IDE.
@@ -65,7 +65,7 @@ Puedes ejecutar los tutoriales desde Visual Studio. Clic derecho en el proyecto 
 
 ![]({{site.baseurl}}/assets/images/tuto-1-window/StartupProject.png)
 
-##Generando en Linux
+## Generando en Linux
 
 Hay tantas variantes de Linux en el mundo que es imposible listar para cada plataforma posible. Adapte estas instrucciones si y de ser necesario consulta la documentación de tu distribución.
 
@@ -93,7 +93,7 @@ Nota: Es recomendable usar un IDE como [Qt Creator](http://qt-project.org/). En 
 * haz clic en el martillo de abajo. Estos tutoriales pueden ser ejecutados desde el directorio tutorials/.
 
 
-##Generando en Mac
+## Generando en Mac
 
 El procedimiento es muy similar a Windows (También se puede usar Makefiles pero no los vamos a explicar aquí) :
 
@@ -109,7 +109,7 @@ El procedimiento es muy similar a Windows (También se puede usar Makefiles pero
 ![]({{site.baseurl}}/assets/images/tuto-1-window/Xcode-projectselection.png)
 
 
-##Nota para Code::Blocks
+## Nota para Code::Blocks
 
 Por culpa de 2 bugs (uno en C::B y otro en CMake), debes editar la linea de comando en Proyecto->Opciones de construcción->Comandos Make, así :
 

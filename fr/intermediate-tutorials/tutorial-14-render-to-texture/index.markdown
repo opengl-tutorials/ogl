@@ -18,7 +18,7 @@ Les applications de cette technique incluent les caméras dans les jeux, le post
 
 On a trois tâches : créer une texture dans laquelle on va faire le rendu, faire le rendu dans celle-ci et utiliser la texture générée.
 
-##Créer la render target
+## Créer la render target
 
 La chose dans laquelle on va dessiner s'appelle un Framebuffer (tampon d'image). C'est un conteneur pour les textures et optionnellement un Z buffer (tampon de profondeur). Il est créé exactement comme n'importe quel un autre objet OpenGL :
 
@@ -77,7 +77,7 @@ if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 return false;
 ```
 
-##Dessiner dans la texture
+## Dessiner dans la texture
 
 Le rendu dans la texture est direct. On lie simplement le framebuffer et on dessine notre scène comme d'hab. Facile !
 
@@ -104,7 +104,7 @@ Pour récapituler :
 
 > Il n'y a pas de layout(location=i) dans OpenGL < 3.3, mais tu peux utiliser glFragData[i] = myvalue à la place.
 
-##Utiliser la texture générée
+## Utiliser la texture générée
 
 On va dessiner un simple rectangle pour remplir l'écran. On doit utiliser les tampons habituels, shaders, identifiants ...
 
@@ -144,8 +144,7 @@ glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the 
 
 On peut dessiner le rectangle plein écran avec un tel shader :
 
-``` glsl
-
+^```s*glsls*
 #version 330 core
 
 in vec2 UV;
@@ -170,7 +169,7 @@ Ce code échantillonne simplement la texture, mais ajoute un léger décalage d�
 
 #Aller plus loin
 
-##Utiliser la profondeur
+## Utiliser la profondeur
 
 Dans quelques cas tu peux avoir besoin de la profondeur lors de l'utilisation de la texture générée. Dans ce cas, dessine simplement la texture comme suit :
 
@@ -188,7 +187,7 @@ Dans cette capture d'écran, les niveaux de profondeur sont rendu artificielleme
 
 ![]({{site.baseurl}}/assets/images/tuto-14-render-to-texture/wavvydepth.png)
 
-##Multi-échantillonnage
+## Multi-échantillonnage
 
 Tu peux écrire dans des textures utilisant le multi-échantillonnage au lieu d'utiliser les textures de « base » : tu dois simplement remplacer glTexImage2D par [glTexImage2DMultisample](http://www.opengl.org/sdk/docs/man3/xhtml/glTexImage2DMultisample.xml) dans le code C++ et sampler2D/texture par sampler2DMS/texelFetch dans le fragment shader.
 
@@ -198,14 +197,13 @@ Donc, vous devras peut être résoudre la texture utilisant le multi-échantillo
 
 Rien de difficile, mais c'est simplement pénible.
 
-##Cible de rendu multiples
+## Cible de rendu multiples
 
 Tu peux écrire dans plusieurs textures en même temps.
 
 Crée simplement plusieurs textures (toutes avec la même et correcte taille !), appele glFramebufferTexture avec une couleur d'attache différente pour chaque, appele glDrawBuffers avec des paramètres mis à jour (quelque chose comme (2, {GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1})) et ajoutez une autre variable de sortie dans votre fragment shader :
 
-``` glsl
-
+^```s*glsls*
 layout(location = 1) out vec3 normal_tangentspace; // or whatever
 ```
 {: .highlightglslfs }

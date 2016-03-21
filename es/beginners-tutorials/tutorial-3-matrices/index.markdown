@@ -74,7 +74,7 @@ vec4 transformedVector = myMatrix * myVector; // Si basicamente es lo mismo que 
 
 ( Ya copiaste y pegaste el codigo? intentalo )
 
-##Matrices de translacion\
+## Matrices de translacion\
 
 Estas son las matrices mas faciles de entender. Una matriz de translacion se ve asi :
 
@@ -318,8 +318,7 @@ Y esta imagen de hecho es el render !
 glm::mat4 MVPmatrix = projection * view * model; // Recurda : invertida !
 ```
 
-``` glsl
-
+^```s*glsls*
 // GLSL : aplicala
 transformed_vertex = MVP * in_vertex;
 ```

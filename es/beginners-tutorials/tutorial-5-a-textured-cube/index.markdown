@@ -159,8 +159,7 @@ Otro punto muy importante :** Usar texturas en potencias de dos !**
 
 Le daremos unn vistazo primero al fragment shader. La mayor parte es bastante simple :
 
-``` glsl
-
+^```s*glsls*
 #version 330 core
 
 // Valores interpolados de los vertex shaders
@@ -188,8 +187,7 @@ Tres cosas :
 
 El vertex shader es simple también. Sólo tienes que pasar coordeandas UV al fragment shader :
 
-``` glsl
-
+^```s*glsls*
 #version 330 core
 
 // Información de entrada de los vértices. Es diferente para cada una de las ejecuciones de este shader.
@@ -286,7 +284,7 @@ Esto significa que en nuestro fragment shader, texture() toma the texel que est�
 
 Hay varias maneras en las que podemos mejorar esto.
 
-##Filtrado Lineal
+## Filtrado Lineal
 
 Con el filtrado lineal, texture() también mira los otros texeles alrededor y mezcla los colores de acuerdo con su distancia al centro. Esto nos permite evitar los bordes duros que vemos en el ejemplo.
 
@@ -294,13 +292,13 @@ Con el filtrado lineal, texture() también mira los otros texeles alrededor y me
 
 Así está mucho mejor. Esta es una solución muy utilizada, pero si quieres una mejor calidad, puedes emplear un filtrado anisotrópico, que es algo más lento.
 
-##Filtrado Anisotrópico
+## Filtrado Anisotrópico
 
 Este aproxima la parte de la imagen que está siendo vista realmente a través del fragmento. Por ejemplo, si la siguiente textura está siendo vista de lado y de forma un poco rotada, el filtrado anisotr´pico calculará el color contenido en el rectángulo azul tomando un número fijo de muestras (el "nivel anisotrópico") en esa dirección.
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/aniso.png)
 
-##Mapas MIP
+## Mapas MIP
 
 El filtrado lineal y el filtrado anisotrópico tienen un problema. Si la textura es vista desde una distancia muy lejana, mezclar solamente 4 texeles no será suficiente. De hecho, si tu modelo 3D está ubicado suficientemente lejos, sólo requerirá un fragmento en la pantalla. TODOS los texeles de la imagen deberían ser entonces promediados para producir el color final. Esto no se hace por razones obvias, pero en su lugar, presentamos los mapas MIP :
 
@@ -359,7 +357,7 @@ La respuesta corta a esta pregunta es : No lo hagas. Las GPUs no entienden JPEG,
 
 Hay una mejor opción
 
-##Creación de Texturas Comprimidas
+## Creación de Texturas Comprimidas
 
 
 * Descarga [The Compressonator](http://developer.amd.com/Resources/archive/ArchivedTools/gpu/compressonator/Pages/default.aspx), una herramienta de AMD
@@ -373,7 +371,7 @@ Hay una mejor opción
 
 En este munto, tu imagen está comprimida en un formato que es directamente compatible con la GPU. Cuando llames la función texture() en un shader, éste la descomprimirá por el camino. Esto puede parecer lento, pero dado que consume MUCHO menos memoria, habrá menos datos que necesiten ser transferidos. Las trasnferencias de memoria son costosas, pero la descompresión de texturas no tiene costo (hay hardware dedicado para ello). Típicamente, usar compresión de texturas aumenta el desemeño en un 20%. Así que mejoras rendimiento y disminuyes el uso de memoria a cambio de reducir un poco la calidad de tu textura.
 
-##Usando la Textura Comprimida
+## Usando la Textura Comprimida
 
 Vamos ahora como cargar la imagen. El códig es muy similar al código de BMP, excepto que el encabezado está organizado de manera diferente :
 
@@ -477,7 +475,7 @@ Y ahora rellenamos cada mapa MIP uno después del otro :
     return textureID;
 ```
 
-##Invirtiendo las coordenadas UV
+## Invirtiendo las coordenadas UV
 
 La compresión DXT  viene del mundo DirectX, en dónde las la coordenada Vde la textura es invertida en comparación a OpenGL. Así que si usas texturas comprimidas, tendrás que usar ( coord.u, 1.0-coord.v) para localizar el texel correcto. Puedes hacer esto en dónde desees: En el script que importa la textura, en el método de carga, en el shader...
 

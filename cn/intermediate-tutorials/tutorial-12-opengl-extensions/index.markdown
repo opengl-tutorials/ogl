@@ -15,7 +15,7 @@ order: 40
 
 GPU的性能随着更新换代一直在提高，支持渲染更多的三角形和像素点。然而，原始性能不是我们唯一关心的。NVIDIA, AMD和Intel也通过增加功能来改善他们的显卡。来看一些例子。
 
-##ARB_fragment_program
+## ARB_fragment_program
 
 回溯到2002年，GPU都没有顶点着色器或片断着色器：所有的一切都硬编码在芯片中。这被称为固定功能流水线（Fixed-Function Pipeline (FFP)）。同样地，当时最新的OpenGL 1.3中也没有接口可以创建、操作和使用所谓的"着色器"，因为它根本不存在。接着NVIDIA决定用实际代码描述渲染过程，来取代数以百计的标记和状态量。这就是ARB_fragment_program的由来。当时还没有GLSL，但你可以写这样的程序：
 ```
@@ -25,7 +25,7 @@ GPU的性能随着更新换代一直在提高，支持渲染更多的三角形�
 
 但若要显式地令OpenGL使用这些代码，你需要一些还不在OpenGL里的特殊函数。在进行解释前，再举个例子。
 
-##ARB_debug_output
+## ARB_debug_output
 
 好，你说『ARB_fragment_program太老了，所以我不需要扩展这东西』？其实有不少新的扩展非常方便。其中一个便是ARB_debug_output，它提供了一个不存在于OpenGL 3.3中的，但你可以/应该用到的功能。它定义了像GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB或GL_DEBUG_SEVERITY_MEDIUM_ARB之类的字符串，和DebugMessageCallbackARB这样的函数。这个扩展的伟大之处在于，当你写了一些不正确的代码，例如：
 ```
@@ -68,7 +68,7 @@ if (GLEW_ARB_debug_output){ // Ta-Dah ! }
 
 (小心：debug_output是特殊的，因为你需要在上下文创建的时候启用它。在GLFW中，这通过glfwOpenWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1)完成。)
 
-##ARB vs EXT vs ...
+## ARB vs EXT vs ...
 
 扩展的名字暗示了它的适用范围：
 

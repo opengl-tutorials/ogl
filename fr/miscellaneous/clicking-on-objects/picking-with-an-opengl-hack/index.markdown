@@ -31,13 +31,13 @@ Bien sûr, tu ne veux pas voir l'image avec toutes ces couleurs étranges donc t
 
 #Implémentation
 
-##Donner un identifiant à chaque objet
+## Donner un identifiant à chaque objet
 
 Chaque objet de la scène doit avoir un identifiant unique. La façon la plus facile de le faire est de donner à chaque objet un entier et de le convertir en une couleur. Cette couleur ne doit pas avoir de sens ; cette technique est simplement un hack de toute façon.
 
 Dans le code source accompagnant ce tutoriel, 100 objets sont créés et conservés dans un std::vector dont l'identifiant n'est que l'index de l'objet dans ce vecteur. Si tu as une hiérarchie plus complexe, tu dois sans doute ajouter l'identifiant dans ta classe de Mesh et maintenir une sorte de std::map pour associer l'identifiant à l'objet.
 
-##Détecter le clic
+## Détecter le clic
 
 Dans cet exemple simple, le picking est effectué à chaque image lorsque le bouton gauche de la souris est appuyé :
 
@@ -47,7 +47,7 @@ Dans cet exemple simple, le picking est effectué à chaque image lorsque le bou
 
 Dans une application réelle, tu veux certainement le faire uniquement lorsque l'utilisateur relâche le bouton et donc tu dois garder un booléen estCeQueLeBoutonGaucheAEteAppuyeLorsDeLImagePrecedente, ou mieux, utiliser glfwSetMouseButtonCallback() (lis le manuel GLFW pour savoir comment l'utiliser).
 
-##Convertir l'identifiant en une couleur spécifique
+## Convertir l'identifiant en une couleur spécifique
 
 Comme on doit afficher chaque modèle avec une couleur différente, la première étape est de calculer cette couleur. Une méthode simple est de placer les bits de poids faible dans le canal rouge et les bits de poids fort dans le canal bleu :
 
@@ -60,12 +60,11 @@ int b = (i & 0x00FF0000) >> 16;
 
 Ça peut paraître effrayant, mais c'est un code de manipulation de bits standard. Tu obtiens finalement trois entiers, chacun compris entre 0 et 255. Avec cette méthode, tu peux représenter 255^3 = 16 millions d'objets différents, ce qui est sans doute suffisant.
 
-##Afficher la scène avec ces couleurs
+## Afficher la scène avec ces couleurs
 
 On a maintenant besoin d'un shader pour utiliser cette couleur. C'est très simple. Le vertex shader ne fait rien :
 
-``` glsl
-
+^```s*glsls*
 #version 330 core
 
 // Input vertex data, different for all executions of this shader.
@@ -85,8 +84,7 @@ void main(){
 
 Et le fragment shader écrit simplement la couleur voulue dans le framebuffer :
 
-``` glsl
-
+^```s*glsls*
 #version 330 core
 
 // Ouput data
@@ -114,7 +112,7 @@ glUniform4f(pickingColorID, r/255.0f, g/255.0f, b/255.0f, 1.0f);
 
 Tu peux maintenant dessiner les modèles comme d'habitude (glBindBuffer, glVertexAttribBuffer, glDrawElements) et tu obtiendra l'étrange image ci-dessus.
 
-##Obtenir la couleur sous le curseur de souris
+## Obtenir la couleur sous le curseur de souris
 
 Lorsque tu as dessiné tous les modèles (certainement avec une boucle for()), tu dois appeler *glReadPixels()*, permettant d'obtenir les pixels rasterizés sur le CPU. Mais pour que cela fonctionne, quelques étapes supplémentaires sont nécessaires.
 
@@ -148,7 +146,7 @@ Ta couleur est maintenant dans le tableau data. Par exemple ci-dessous, tu peux 
 
 ![]({{site.baseurl}}/assets/images/tuto-picking-color/DataArray.png)
 
-##Convertir la couleur en un identifiant
+## Convertir la couleur en un identifiant
 
 Tu peux maintenant retrouver ton identifiant à partir du tampon data. Le code est exactement l'opposé du code de conversion de l'identifiant en une couleur :
 
@@ -160,7 +158,7 @@ int pickedID =
 	data[2] * 256*256;
 ```
 
-##Utiliser cet identifiant
+## Utiliser cet identifiant
 
 Tu peux maintenant utiliser l'identifiant comme tu veux. Dans l'exemple, le texte de l'interface est mis à jour, mais bien sûr, tu peux faire ce que tu veux.
 

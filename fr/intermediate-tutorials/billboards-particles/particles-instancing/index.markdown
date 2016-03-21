@@ -35,7 +35,7 @@ Il y a plusieurs façons pour le faire ; en voici trois :
 
 Dans ce tutoriel, nous allons utiliser la troisième option : c'est un bon compromis entre les performances et la disponibilité et par-dessus tout, il est facile d'ajouter le support de la première méthode une fois que celle-ci fonctionne.
 
-##Instanciation
+## Instanciation
 
 « Instanciation » signifie que l'on a un modèle de base (dans ce cas, un simple rectangle fait de deux triangles), mais de nombreuses instances de ce rectangle.
 
@@ -166,7 +166,7 @@ glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticlesCount);
 
 Comme vous pouvez le voir, l'instanciation est très polyvalente, car tu peux passer n'importe quel entier comme AttribDivisor. Par exemple, avec glVertexAttribDivisor(2, 10), chaque groupe de dix instances aura la même couleur.
 
-##Quel est le but ?
+## Quel est le but ?
 
 Le but est que maintenant, on doit seulement mettre à jour un petit buffer à chaque image (le centre des particules) et non plus un immense modèle. C'est un gain de 75 % pour la bande passante !
 
@@ -174,7 +174,7 @@ Le but est que maintenant, on doit seulement mettre à jour un petit buffer à c
 
 Contrairement à la plupart des objets de la scène, les particules meurent et naissent à un grand débit. On doit trouver une méthode convenablement rapide pour obtenir de nouvelles particules et se débarrasser d'elles, quelque chose de mieux que new Particle().
 
-##Créer de nouvelles particules
+## Créer de nouvelles particules
 
 Pour cela, on doit avoir un grand conteneur de particules :
 
@@ -236,7 +236,7 @@ if (newparticles > (int)(0.016f*10000.0))
     newparticles = (int)(0.016f*10000.0);
 ```
 
-##Supprimer les vieilles particules
+## Supprimer les vieilles particules
 
 Il y a une astuce, comme montré ci-dessous =)
 
@@ -292,7 +292,7 @@ Voici ce que t'obtiens. Presque réussi, mais il y a un souci ...
 
 ![]({{site.baseurl}}/assets/images/tuto-particules/particles_unsorted.png)
 
-##Tri
+## Tri
 
 Comme expliqué dans le [dixième tutoriel]({{site.baseurl}}/fr/intermediate-tutorials/tutorial-10-transparency/), tu dois trier les objets semi-transparents du plus loin au plus proche pour que le mélange soit correct.
 
@@ -324,13 +324,13 @@ struct Particle{
 
 #Aller plus loin
 
-##Particules animées
+## Particules animées
 
 Tu peux animer ta texture de particules avec une texture atlas. Envoie *l'âge* de chaque particule avec la position et dans les shaders, calcule les coordonnées UV comme on l'a fait dans le [tutoriel de police 2D]({{site.baseurl}}/fr/intermediate-tutorials/tutorial-11-2d-text/). Une texture atlas ressemble à ça :
 
 ![]({{site.baseurl}}/assets/images/tuto-particules/ParticleAtlas.png)
 
-##Gérer plusieurs systèmes de particules
+## Gérer plusieurs systèmes de particules
 
 Si tu as besoin de plus d'un système de particules, tu as deux options : soit utiliser un seul ParticleContainer, soit un par système.
 
@@ -340,7 +340,7 @@ Si tu as un conteneur par système de particules, d'un autre côté, les particu
 
 Bien sûr, tu peux aussi utiliser un système hybride avec plusieurs systèmes de particules et chacun avec un (petit et gérable) atlas.
 
-##Particules douces
+## Particules douces
 
 Tu vas remarquer très rapidement un artefact classique : lorsque tes particules croisent une géométrie, la limite devient très visible et moche :
 
@@ -354,7 +354,7 @@ Par contre, tu vas devoir échantillonner le Z-buffer (buffer de profondeur), ce
 
 [http://developer.download.nvidia.com/whitepapers/2007/SDK10/SoftParticles_hi.pdf](http://developer.download.nvidia.com/whitepapers/2007/SDK10/SoftParticles_hi.pdf)
 
-##Amélioration du taux de remplissage
+## Amélioration du taux de remplissage
 
 L'un des facteurs les plus limitants dans les GPU modernes est le taux de remplissage : le nombre de fragments (pixels) que le GPU peut écrire en 16,6 ms, permis pour obtenir 60 FPS.
 
@@ -368,7 +368,7 @@ Ce petit utilitaire calcule un modèle (celui que tu es supposé dessiner avec g
 
 [http://www.humus.name/index.php?page=Cool&ID=8](http://www.humus.name/index.php?page=Cool&ID=8). Le site de Emil Person contient plein d'autres articles fascinant.
 
-##Physique des particules
+## Physique des particules
 
 Au bout d'un moment, tu vas probablement souhaiter que tes particules interagissent un peu plus avec le reste de l'environement. En particulier, les particules pourraient rebondir sur le sol.
 
@@ -384,7 +384,7 @@ Voici quelques liens sur ces techniques :
 
 [http://www.gdcvault.com/search.php#&category=free&[...]](http://www.gdcvault.com/search.php#&category=free&firstfocus=&keyword=Chris+Tchou's%2BHalo%2BReach%2BEffects&conference_id=)
 
-##Simulation GPU
+## Simulation GPU
 
 Comme indiqué précédemment, tu peux complètement simuler le mouvement des particules sur le GPU. Tu vas toujours devoir gérer le cycle de vie de tes particules sur le CPU - au moins pour les faire apparaître.
 
