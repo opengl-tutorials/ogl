@@ -10,24 +10,24 @@ order: 10
 tags: []
 ---
 
-#Introduction
+# Introduction
 
 Welcome to the first tutorial !
 
 Before jumping into OpenGL, you will first learn how to build the code that goes with each tutorial, how to run it, and most importantly, how to play with the code yourself.
 
-#Prerequisites
+# Prerequisites
 
 No special prerequisite is needed to follow these tutorials. Experience with any programming langage ( C, Java, Lisp, Javascript, whatever ) is better to fully understand the code, but not needed ; it will merely be more complicated to learn two things at the same time.
 
 All tutorials are written in "Easy C++" : Lots of effort has been made to make the code as simple as possible. No templates, no classes, no pointers. This way, you will be able to understand everything even if you only know Java.
 
-#Forget Everything
+# Forget Everything
 
 You don't have to know anything, but you have to forget everything you know about OpenGL.
 If you know about something that looks like glBegin(), forget it. Here you will learn modern OpenGL (OpenGL 3 and 4) , and most online tutorials teach "old" OpenGL (OpenGL 1 and 2). So forget everything you might know before your brain melts from the mix.
 
-#Building the tutorials
+# Building the tutorials
 
 All tutorials can be built on Windows, Linux and Mac. For all these platforms, the procedure is roughly the same :
 
@@ -41,7 +41,7 @@ All tutorials can be built on Windows, Linux and Mac. For all these platforms, t
 
 Detailed procedures will now be given for each platform. Adaptations may be required. If unsure, read the instruction for Windows and try to adapt them.
 
-##Building on Windows
+## Building on Windows
 
  
 
@@ -78,7 +78,7 @@ You can also launch any tutorial from inside Visual Studio. Right-click on Playg
 
 
 
-##Building on Linux
+## Building on Linux
 
 They are so many Linux variants out there that it's impossible to list every possible platform. Adapt if required, and don't hesitate to read your distribution's documentation.
 
@@ -109,7 +109,7 @@ Note that you really should use an IDE like [Qt Creator](http://qt-project.org/)
 * To run the tutorials from QtCreator, click on Projects->Execution parameters->Working Directory, and select the directory where the shaders, textures & models live. Example for tutorial 2 : ~/opengl-tutorial/tutorial02_red_triangle/
 
 
-##Building on Mac
+## Building on Mac
 
 The procedure is very similar to Windows' (Makefiles are also supported, but won't be explained here) :
 
@@ -125,7 +125,7 @@ The procedure is very similar to Windows' (Makefiles are also supported, but won
 ![]({{site.baseurl}}/assets/images/tuto-1-window/Xcode-projectselection.png)
 
 
-##Note for Code::Blocks
+## Note for Code::Blocks
 
 Due to 2 bugs (one in C::B, one in CMake), you have to edit the command-line in Project->Build Options->Make commands, as follows :
 
@@ -134,19 +134,19 @@ Due to 2 bugs (one in C::B, one in CMake), you have to edit the command-line in 
 
 You also have to setup the working directory yourself : Project->Properties -> Build targets -> tutorial N -> execution working dir ( it's src_dir/tutorial_N/ ).
 
-#Running the tutorials
+# Running the tutorials
 
 You should run the tutorials directly from the right directory : simply double-click on the executable. If you like command line best, cd to the right directory.
 
 If you want to run the tutorials from the IDE, don't forget to read the instructions above to set the correct working directory.
 
-#How to follow these tutorials
+# How to follow these tutorials
 
 Each tutorial comes with its source code and data, which can be found in tutorialXX/. However, you will never modify these projects : they are for reference only. Open playground/playground.cpp, and tweak this file instead. Torture it in any way you like. If you are lost, simply cut'n paste any tutorial in it, and everything should be back to normal.
 
 We will provide snippets of code all along the tutorials. Don't hesitate to cut'n paste them directly in the playground while you're reading : experimentation is good. Avoid simply reading the finished code, you won't learn a lot this way. Even with simple cut'n pasting, you'll get your boatload of problems.
 
-#Opening a window
+# Opening a window
 
 Finally ! OpenGL code !
 Well, not really. All tutorials show you the "low level" way to do things, so that you can see that no magic happens. But this part is actually very boring and useless, so we will use GLFW, an external library, to do this for us instead. If you really wanted to, you could use the Win32 API on Windows, the X11 API on Linux, and the Cocoa API on Mac; or use another high-level library like SFML, FreeGLUT, SDL, ... see the [Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) page.
