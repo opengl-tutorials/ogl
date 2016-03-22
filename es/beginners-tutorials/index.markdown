@@ -2,14 +2,14 @@
 layout: page
 status: publish
 published: true
-title: Basic OpenGL
+title: OpenGL básico
 date: '2011-05-07 10:45:02 +0200'
 date_gmt: '2011-05-07 10:45:02 +0200'
 categories: [section]
 tags: []
 language: es
 ---
-Follow them in the right order !
+Síguelos en el orden correcto!
 
 {% assign sorted_pages = site.pages | sort:"order" %}
 {% for p in sorted_pages %}

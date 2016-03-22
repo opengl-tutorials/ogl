@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: 'Tutorial 6 : Keyboard and Mouse'
+title: 'Tutorial 6 : Teclado y ratón'
 date: '2011-05-08 08:26:13 +0200'
 date_gmt: '2011-05-08 08:26:13 +0200'
 categories: [tuto]
@@ -40,10 +40,10 @@ do{
 Este código necesita 3 nuevas funciones :
 
 * computeMatricesFromInputs() que lee las entradas del teclado y el ratón y calcula las matrices de la Vista y la Proyección. Aquí es en donde toda la magia tiene lugar.
-* getProjectionMatrix() retorna la matrix de Proyección calculada.
-* getViewMatrix() retorna la matrix de Vista calculada.
+* getProjectionMatrix() retorna la matriz de Proyección calculada.
+* getViewMatrix() retorna la matriz de Vista calculada.
 
-Esta es sólo una de las formas para hacerlo, claro está. Si no te gusta la manera en como están implementadas estas funciones, cámbialas con completa libertad.
+Esta es sólo una de las formas para hacerlo, claro está. Si no te gusta la manera en cómo están implementadas estas funciones, cámbialas con completa libertad.
 
 Veamos ahora que hay dentro de controls.cpp.
 
@@ -106,7 +106,7 @@ Leamos esto de derecha a izquierda :
 Podemos ahora calcular un vector que representa, en Coordenadas del Mundo, la dirección en la que estamos mirando.
 
 ``` cpp
-// Direction : Spherical coordinates to Cartesian coordinates conversion
+// Direction : Spherical coordinates to Cartesian coordinates conversión
 glm::vec3 direction(
     cos(verticalAngle) * sin(horizontalAngle),
     sin(verticalAngle),
@@ -122,7 +122,7 @@ La fórmula arriba es tan sólo una generalización para tres dimensiones.
 
 Ahora queremos calcular el vector "arriba" de manera confiable. Observa que "arriba" no está siempre apuntando en la dirección +Y : si miras hacia abajo, por ejemplo, el vector "arriba" estará en posición horizontal. Aquí hay un ejemplo de cámera con la misma posición, el mismo objetivo, pero diferente vector "arriba".
 
-En nuestro caso, la única constante es que el vector que va hacia la derecha de la cámara será siemrpe horizontal. Puedes verificar esto poniendo tu brazo en posición horizontal, mirando hacia arriba, abajo y en cualquier dirección. Definamos entonces nuestro vector "derecho": Sus coordenada en Y es 0 ya que siempre será horizontal. Sus coordenadas X y Z son las que se muestran en la figura más abajo, pero con lso ángulos rotados 90&deg, o Pi/2 radianes.
+En nuestro caso, la única constante es que el vector que va hacia la derecha de la cámara será siempre horizontal. Puedes verificar esto poniendo tu brazo en posición horizontal, mirando hacia arriba, abajo y en cualquier dirección. Definamos entonces nuestro vector "derecho": Sus coordenada en Y es 0 ya que siempre será horizontal. Sus coordenadas X y Z son las que se muestran en la figura más abajo, pero con los ángulos rotados 90&deg, o Pi/2 radianes.
 
 ``` cpp
 // Right vector
@@ -167,13 +167,13 @@ if (glfwGetKey( GLFW_KEY_LEFT ) == GLFW_PRESS){
 
 El único elemento especial aquí es la variable deltaTime. No vas a querer moverte en una unidad para cada cuadro por una simple razón :
 
-* Si tienes un ordenador rápido y corre la aplicación a 60 cuadros por segundo, te moverás a 60*speed unidades en 1 segundo.
-* Si tienes un ordeandor lento y corre la aplicación a 20 cuadros por segundo, te moverás el equivalente a 20*speed unidades en 1 segundo.
+* Si tienes un computador rápido y corre la aplicación a 60 cuadros por segundo, te moverás a 60*speed unidades en 1 segundo.
+* Si tienes un computador lento y corre la aplicación a 20 cuadros por segundo, te moverás el equivalente a 20*speed unidades en 1 segundo.
 
-Dado que tener un mejor ordenador no es una excusa para ir más rápido, tienes que ajustar la distancia a una escala diferente, definida por el "tiempo desde el último del cuadro" o "deltaTime".
+Dado que tener un mejor computador no es una excusa para ir más rápido, tienes que ajustar la distancia a una escala diferente, definida por el "tiempo desde el último del cuadro" o "deltaTime".
 
-*  Si tienes un ordenador rápido y corre la aplicación a 60 cuadros por segundo, te moverás a 1/60 * speed unidades en 1 cuadro, es decir 1*speed en 1 segundo.
-*  Si tienes un ordeandor lento y corre la aplicación a 20 cuadros por segundo, te moverás a 1/20 * speed unidades en 1 cuadro, es decir 1*speed en 1 segundo.
+*  Si tienes un computador rápido y corre la aplicación a 60 cuadros por segundo, te moverás a 1/60 * speed unidades en 1 cuadro, es decir 1*speed en 1 segundo.
+*  Si tienes un computador  lento y corre la aplicación a 20 cuadros por segundo, te moverás a 1/20 * speed unidades en 1 cuadro, es decir 1*speed en 1 segundo.
 
 Lo cual es mucho mejor. deltaTime es bastante sencillo de calcular :
 
@@ -199,9 +199,9 @@ Con todo lo que hemos hecho, hallar las matrices es bastante directo. Usaremos e
 ProjectionMatrix = glm::perspective(FoV, 4.0f / 3.0f, 0.1f, 100.0f);
 // Camera matrix
 ViewMatrix       = glm::lookAt(
-    position,           // Camera is here
-    position+direction, // and looks here : at the same position, plus "direction"
-    up                  // Head is up (set to 0,-1,0 to look upside-down)
+    position,           // La cámara está aquí
+    position+direction, // y mira aquí. En posición más dirección
+    up                  // La cámara mira hacia arriba (pon 0,-1,0 para mirar cabeza abajo)
 );
 ```
 
@@ -214,7 +214,7 @@ ViewMatrix       = glm::lookAt(
 
 Ahora que puedes moverte libremente alrededor, puedes darte cuenta que si vas dentro del cubo, los polígonos aún se muestran. Esto puedo parecer obvio, pero darse cuenta de esto nos da la oportunidad de optimizar nuestra aplicación. De hecho, en una aplicación tradicional, nunca deberías estar _dentro_ del cubo.
 
-La idea es dejar que la GPU verifique si la cámara está detrás o en frente de un triángulo. Si está en frente, se muestra el triángulo, si está detrás y la malla es cerrada y no estamos dentro de la mallo, entonces habrá otro triángulo en frenten de ella y nadie se dará cuenta de nada excepto que todo irá más rápido: pintaremos en promedio dos veces menos triángulos!
+La idea es dejar que la GPU verifique si la cámara está detrás o enfrente de un triángulo. Si está en frente, se muestra el triángulo, si está detrás y la malla es cerrada y no estamos dentro de la mallo, entonces habrá otro triángulo enfrente de ella y nadie se dará cuenta de nada excepto que todo irá más rápido: pintaremos en promedio dos veces menos triángulos!
 
 Lo mejor de todo, es que verificar esto es muy fácil. La GPU calcula el vector normal de un triángulo (usando el producto cruz, ¿recuerdas?) y verifica si dicha normal apunta hacia la cámara o no.
 
@@ -233,5 +233,3 @@ glEnable(GL_CULL_FACE);
 * Restringe verticalAngle de tal manera que la cámara no pueda quedar de cabeza
 * Crea una cámara que gire alrededor de un objeto en particular ( position = ObjectCenter + ( radius * cos(time), height, radius * sin(time) ) ); liga el radio/altura/tiempo al teclado o al ratón o lo que quieras.
 * Diviértete !
-
- 

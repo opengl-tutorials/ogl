@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: 'Tutorial 5 : A Textured Cube'
+title: 'Tutorial 5 : Un cubo con textura'
 date: '2011-04-26 07:55:58 +0200'
 date_gmt: '2011-04-26 07:55:58 +0200'
 categories: [tuto]
@@ -107,7 +107,7 @@ Tenemos que rellenar algunas piezas de información en caso de que estén ausent
 ``` cpp
 // Algunos archivos BMP tienen un mal formato, así que adivinamos la información faltante
 if (imageSize==0)    imageSize=width*height*3; // 3 : un byte por cada componente Rojo (Red), Verde (Green) y Azul(Blue)
-if (dataPos==0)      dataPos=54; // El encabezado del BMP está hecho de esta manera
+if (dataPos==0)      dataPos=54; // El encabezado del BMP está hecho de ésta manera
 ```
 
 Ahora que sabemos el tamaño de la imagen, podemos reservar algo de memoria para la imagen que vamos a leer :
@@ -157,7 +157,7 @@ Otro punto muy importante :** Usar texturas en potencias de dos !**
 
 # Usando la textura en OpenGL
 
-Le daremos unn vistazo primero al fragment shader. La mayor parte es bastante simple :
+Le daremos un vistazo primero al fragment shader. La mayor parte es bastante simple :
 
 ``` glsl
 #version 330 core
@@ -185,7 +185,7 @@ Tres cosas :
 * También necesita un  "sampler2D" para saber qué textura debe acceder (puedes acceder varias texturas en el mismo shader).
 * Finalmente, el acceso a una textura se realiza con la función texture() que retorna un vec4 de la forma (R,G,B,A) vec4. Más adelante hablaremos de lo que significa esa última A.
 
-El vertex shader es simple también. Sólo tienes que pasar coordeandas UV al fragment shader :
+El vertex shader es simple también. Sólo tienes que pasar coordenadas UV al fragment shader :
 
 ``` glsl
 #version 330 core
@@ -255,7 +255,7 @@ static const GLfloat g_uv_buffer_data[] = {
 };
 ```
 
-Las coordeandas UV arriba correpsonden al siguiente modelo :
+Las coordenadas UV arriba corresponden al siguiente modelo :
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/uv_mapping_blender.png)
 
@@ -294,7 +294,7 @@ Así está mucho mejor. Esta es una solución muy utilizada, pero si quieres una
 
 ## Filtrado Anisotrópico
 
-Este aproxima la parte de la imagen que está siendo vista realmente a través del fragmento. Por ejemplo, si la siguiente textura está siendo vista de lado y de forma un poco rotada, el filtrado anisotr´pico calculará el color contenido en el rectángulo azul tomando un número fijo de muestras (el "nivel anisotrópico") en esa dirección.
+Este aproxima la parte de la imagen que está siendo vista realmente a través del fragmento. Por ejemplo, si la siguiente textura está siendo vista de lado y de forma un poco rotada, el filtrado anisotrópico calculará el color contenido en el rectángulo azul tomando un número fijo de muestras (el "nivel anisotrópico") en esa dirección.
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/aniso.png)
 
@@ -305,7 +305,7 @@ El filtrado lineal y el filtrado anisotrópico tienen un problema. Si la textura
 ![](http://upload.wikimedia.org/wikipedia/commons/5/5c/MipMap_Example_STS101.jpg)
 
 * En el cuadro de inicialización, reduces la escala de tu imagen en 2 sucesivamente hasta que tengas una imagen de 1x1 image (la cuál es efectivamente el promedio de todos los texeles presentes en la imagen original)
-* Cuando dibujas una malla, selecciona que mapa MIP es el más apropiado para usar en razón de qué tan grande debería ser el texel.
+* Cuando dibujas una malla, selecciona qué mapa MIP es el más apropiado para usar en razón de qué tan grande debería ser el texel.
 * Muestrea este mapa MIP con el filtrado lineal o anisotrópico.
 * Para calidad adicional, puedes muestrear dos mapas MIP y mezclar los resultados.
 
@@ -322,7 +322,7 @@ glGenerateMipmap(GL_TEXTURE_2D);
 
 # Cómo cargar una textura con GLFW
 
-Nuestra función loadBMP_custom es genial porque la hicimos nosotros mismos, pero usar una librería dedicada es aún mejor. GLFW2 puede hacer esto también (pero solo para archivos TGA y esta característica ha sido removida de GLFW3 que es que usaremos) :
+Nuestra función loadBMP_custom es genial porque la hicimos nosotros mismos, pero usar una librería dedicada es aún mejor. GLFW2 puede hacer esto también (pero solo para archivos TGA y está característica ha sido removida de GLFW3 que es que usaremos) :
 
 ``` cpp
 GLuint loadTGA_glfw(const char * imagepath){
@@ -331,27 +331,27 @@ GLuint loadTGA_glfw(const char * imagepath){
     GLuint textureID;
     glGenTextures(1, &textureID);
 
-    // Se "Ata" la nueva textura : Todas las futuras funciones de texturas van a modificar esta textura
+    // Se "Ata" la nueva textura : Todas las futuras funciones de texturas van a modificar está textura
     glBindTexture(GL_TEXTURE_2D, textureID);
 
     // Se lee el archivo. Se hace el llamado a glTexImage2D con los parámetros correctos
     glfwLoadTexture2D(imagepath, 0);
 
-    // Un bonito filtrado trilinear
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    // Un bonito filtrado trilineal
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glGenerateMipmap(GL_TEXTURE_2D);
 
     // Retornamos la ID de la textura que acabamos de crear
-	return textureID;
+    return textureID;
 }
 ```
 
 # Texturas Comprimidas
 
-En este punto, te estarás preguntando como cargar archivos JPEG en lugar de TGA.
+En este punto, te estarás preguntando cómo cargar archivos JPEG en lugar de TGA.
 
 La respuesta corta a esta pregunta es : No lo hagas. Las GPUs no entienden JPEG, así que vas a comprimir tu imagen original en JPEG y luego a descomprimirla para que la GPU pueda entenderla. Así que al final, terminas trabajando con las mismas imágenes en bruto pero habiendo perdido calidad al haberla comprimido a JPEG.
 
@@ -369,11 +369,11 @@ Hay una mejor opción
 
 * Expórtala como un archivo .DDS.
 
-En este munto, tu imagen está comprimida en un formato que es directamente compatible con la GPU. Cuando llames la función texture() en un shader, éste la descomprimirá por el camino. Esto puede parecer lento, pero dado que consume MUCHO menos memoria, habrá menos datos que necesiten ser transferidos. Las trasnferencias de memoria son costosas, pero la descompresión de texturas no tiene costo (hay hardware dedicado para ello). Típicamente, usar compresión de texturas aumenta el desemeño en un 20%. Así que mejoras rendimiento y disminuyes el uso de memoria a cambio de reducir un poco la calidad de tu textura.
+En este mundo, tu imagen está comprimida en un formato que es directamente compatible con la GPU. Cuando llames la función texture() en un shader, éste la descomprimirá por el camino. Esto puede parecer lento, pero dado que consume MUCHO menos memoria, habrá menos datos que necesiten ser transferidos. Las transferencias de memoria son costosas, pero la descompresión de texturas no tiene costo (hay hardware dedicado para ello). Típicamente, usar compresión de texturas aumenta el desempeño en un 20%. Así que mejoras rendimiento y disminuyes el uso de memoria a cambio de reducir un poco la calidad de tu textura.
 
 ## Usando la Textura Comprimida
 
-Vamos ahora como cargar la imagen. El códig es muy similar al código de BMP, excepto que el encabezado está organizado de manera diferente :
+Veamos ahora cómo cargar la imagen. El código es muy similar al código de BMP, excepto que el encabezado está organizado de manera diferente :
 
 ``` cpp
 GLuint loadDDS(const char * imagepath){
@@ -449,7 +449,7 @@ La creación de la textura se hace de la forma habitual :
     GLuint textureID;
     glGenTextures(1, &textureID);
 
-    //  Se "Ata" la nueva textura : Todas las futuras funciones de texturas van a modificar esta textura
+    //  Se "Ata" la nueva textura : Todas las futuras funciones de texturas van a modificar está textura
     glBindTexture(GL_TEXTURE_2D, textureID);
 ```
 
@@ -497,4 +497,5 @@ En general, deberías usar sólo texturas comprimidas, dado que ocupan menos esp
 
 
 * [Using texture compression in OpenGL](http://www.oldunreal.com/editing/s3tc/ARB_texture_compression.pdf) , S&eacute;bastien Domine, NVIDIA
+
 

@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: 'Tutorial 4 : A Colored Cube'
+title: 'Tutorial 4 : Un cubo con color'
 date: '2011-04-26 07:55:37 +0200'
 date_gmt: '2011-04-26 07:55:37 +0200'
 categories: [tuto]
@@ -10,7 +10,7 @@ order: 40
 tags: []
 language: es
 ---
-Bienvenido al cuarto tutorial ! Aqui vas a aprender a :
+Bienvenido al cuarto tutorial ! Aquí vas a aprender a :
 
 * Dibujar un cubo en vez de un triángulo aburrido
 * Añadir colores geniales
@@ -18,18 +18,18 @@ Bienvenido al cuarto tutorial ! Aqui vas a aprender a :
 
 # Dibujar un cubo
 
-Un cubo tiene seis caras cuadradas. Dado que OpenGl solo sabe de triangulos, tendrémos que dibujar 12 triangulos : dos por cada cara. Definimos los vertices de la misma forma que lo hicimos para los triangulos.
+Un cubo tiene seis caras cuadradas. Dado que OpenGl solo sabe de triángulos, tendrémos que dibujar 12 triángulos : dos por cada cara. Definimos los vértices de la misma forma que lo hicimos para los triángulos.
 
 ``` cpp
-// Nuestros vertices. Tres flotantes consecutivos hacen un vertice 3D; tres vertices consecutivos hacen un triangulo.
-// Un cubo tiene 6 caras con 2 triangulos cada una, esto significa 6*2=12 triangulos, y 12*3 vertices
+// Nuestros vértices. Tres flotantes consecutivos hacen un vértice 3D; tres vértices consecutivos hacen un triángulo.
+// Un cubo tiene 6 caras con 2 triángulos cada una, esto significa 6*2=12 triángulos, y 12*3 vértices
 static const GLfloat g_vertex_buffer_data[] = {
-    -1.0f,-1.0f,-1.0f, // triangulo 1 : comienza
+    -1.0f,-1.0f,-1.0f, // triángulo 1 : comienza
     -1.0f,-1.0f, 1.0f,
-    -1.0f, 1.0f, 1.0f, // triangulo 1 : termina
-    1.0f, 1.0f,-1.0f, // triangulo 2 : comienza
+    -1.0f, 1.0f, 1.0f, // triángulo 1 : termina
+    1.0f, 1.0f,-1.0f, // triángulo 2 : comienza
     -1.0f,-1.0f,-1.0f,
-    -1.0f, 1.0f,-1.0f, // triangulo 2 : termina
+    -1.0f, 1.0f,-1.0f, // triángulo 2 : termina
     1.0f,-1.0f, 1.0f,
     -1.0f,-1.0f,-1.0f,
     1.0f,-1.0f,-1.0f,
@@ -63,17 +63,17 @@ static const GLfloat g_vertex_buffer_data[] = {
 };
 ```
 
-El buffer OpenGl es creado, asociado, llenado y configurado con las funciones estándar (glGenBuffers, glBindBuffer, glBufferData, glVertexAttribPointer) ; Mira el tutorial 2 para repasar. La función para pintar tampoco cambia, solo se le debe indicar el numero adecuado de vertices a dibujar :
+El buffer OpenGl es creado, asociado, llenado y configurado con las funciones estándar (glGenBuffers, glBindBuffer, glBufferData, glVertexAttribPointer) ; Mira el tutorial 2 para repasar. La función para pintar tampoco cambia, solo se le debe indicar el número adecuado de vértices a dibujar :
 
 ``` cpp
-// Dibujar el triangulo !
-glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 los indices comienzan en 0 -> 12 triangulos -> 6 cuadrados
+// Dibujar el triángulo !
+glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 los índices comienzan en 0 -> 12 triángulos -> 6 cuadrados
 ```
 
 Unos apuntes sobre este código :
 
-* Por ahora, nuestro modelo 3D es fijo : para cambiarlo, se debe modificar el código, recompilar la aplicación y esperar lo mejor. Vamos a aprender a cargar modelos de forma dinámica en el tutorial7
-* Cada vertice esta siendo escrito almenos 3 veces (busca "-1.0f,-1.0f,-1.0f" en el código arriba). Es un espacio terrible en memoria y vamos a lidiar con esto en el tutorial 9.
+* Por ahora, nuestro modelo 3D es fijo : para cambiarlo, se debe modificar el código, recompilar la aplicación y esperar lo mejor. Vamos a aprender a cargar modelos de forma dinámica en el tutorial 7
+* Cada vértice está siendo escrito al menos 3 veces (busca "-1.0f,-1.0f,-1.0f" en el código arriba). Es un espacio terrible en memoria y vamos a lidiar con esto en el tutorial 9.
 
 Ahora que tenemos las piezas para dibujar el cubo en blanco, vamos a hacer funcionar los shaders ! Vamos, por lo menos intenta :)
 
@@ -82,10 +82,10 @@ Ahora que tenemos las piezas para dibujar el cubo en blanco, vamos a hacer funci
 
 Conceptualmente, un color es lo mismo que una posición : solo son datos. En términos de OpenGL son “atributos”. De hecho, ya usamos esto en las funciones glEnableVertexAttribArray() y glVertexAttribPointer(). Vamos a añadir otro atributo. El código va a ser muy parecido 
 
-Primero, declara tus colores : una tripla RGB por vértice. Aquí generé unos al azar, así que el resultado no se va a ver muy bien. Se puede hacer algo mejor, copiar la posición del vertice en el color.
+Primero, declara tus colores : una tripla RGB por vértice. Aquí generé unos al azar, así que el resultado no se va a ver muy bien. Se puede hacer algo mejor, copiar la posición del vértice en el color.
 
 ``` cpp
-// Un color por vertice. Fueron generados al azar.
+// Un color por vértice. Fueron generados al azar.
 static const GLfloat g_color_buffer_data[] = {
     0.583f,  0.771f,  0.014f,
     0.609f,  0.115f,  0.436f,
@@ -168,7 +168,7 @@ out vec3 fragmentColor;
 void main(){
     [...]
 
-    // El color de cada vertice será interpolado
+    // El color de cada vértice será interpolado
     // para producir el color de cada fragmento
     fragmentColor = vertexColor;
 }
@@ -191,7 +191,7 @@ out vec3 color;
 
 void main(){
     // Color de salida = color especificado en el vertex shader,
-    // Interpolado entre los 3 vertices alrededor
+    // Interpolado entre los 3 vértices alrededor
     color = fragmentColor;
 }
 ```
@@ -206,15 +206,15 @@ Urgh. Qué feo. Para entender lo que pasa, vamos a ver como se ve un triángulo 
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/FarNear.png)
  
-Parece bien. Ahora  pinta el triangulo “lejano” de último :
+Parece bien. Ahora  pinta el triángulo “lejano” de último :
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/NearFar.png)
 
-El lejano se esta pintando sobre el “cercano” aun cuando se supone que debería estar atrás ! Esto es lo que pasa con nuestro cubo : algunas caras se supone estan escondidas, pero como se dibujan al final, se ven encima. ¿ Ahora, quién podrá defendernos ? El Z-Buffer al rescate !
+El lejano se está pintando sobre el “cercano” aun cuando se supone que debería estár atrás ! Esto es lo que pasa con nuestro cubo : algunas caras se supone están escondidas, pero como se dibujan al final, se ven encima. ¿ Ahora, quién podrá defendernos ? El Z-Buffer al rescate !
 
-* Nota 1: Si no ves cual es el problema, cambia la posición de la camara a (4,3,-3)
+* Nota 1: Si no ves cual es el problema, cambia la posición de la cámara a (4,3,-3)
 
-* Nota 2* : Si color, como la posición, es un atributo, ¿por qué necesitamos declarar out vec3 fragmentColor e in vec3 fragmentColor para el color y no para la posición? Porque la posición es especial : Es la única cosa obligatoria en OpenGL (de lo contrario no sabría dónde pintar el triangulo). Así que en el vertex shader la variable gl_Position es una variable incorporada, viene declarada dentro de OpenGL.
+* Nota 2* : Si color, como la posición, es un atributo, ¿por qué necesitamos declarar out vec3 fragmentColor e in vec3 fragmentColor para el color y no para la posición? Porque la posición es especial : Es la única cosa obligatoria en OpenGL (de lo contrario no sabría dónde pintar el triángulo). Así que en el vertex shader la variable gl_Position es una variable incorporada, viene declarada dentro de OpenGL.
 
 # El Z-Buffer
 
@@ -226,11 +226,11 @@ Tu puedes hacer esto por ti mismo, pero es mucho más fácil pedirle al hardware
 ``` cpp
 // Habilidad el test de profundidad
 glEnable(GL_DEPTH_TEST);
-// Aceptar el fragmento si esta mas cerca de la cámara que el fragmento anterior
+// Aceptar el fragmento si está más cerca de la cámara que el fragmento anterior
 glDepthFunc(GL_LESS);
 ```
 
-También necesitas tanto la profunidad como el color de cada fragmento :
+También necesitas tanto la profundidad como el color de cada fragmento :
 
 ``` cpp
 // Limpiar la ventana
@@ -246,7 +246,7 @@ Y esto es suficiente para resolver todos los problemas.
 
 * Dibujar el cubo Y el triángulo en diferentes ubicaciones. Necesitarás generar 2 matrices MVP para hacer 2 llamadas en el bucle principal, pero solo se necesita un shader.
 
-* Genera los valores de colores tu mismo. Algunas ideas : al azar para que veas los colores cambiar en cada ejecución del programa. Dependiendo de la posición del vértice. Combinando los dos. Cualquier otra idea creativa :) Si sabes C, aquí está la sintáxis :
+* Genera los valores de colores tu mismo. Algunas ideas : al azar para que veas los colores cambiar en cada ejecución del programa. Dependiendo de la posición del vértice. Combinando los dos. Cualquier otra idea creativa :) Si sabes C, aquí está la sintaxis :
 
 ``` cpp
 static GLfloat g_color_buffer_data[12*3*3];
@@ -258,6 +258,7 @@ for (int v = 0; v < 12*3 ; v++){
 ```
 
 * Una vez hayas hecho eso, haz que los colores cambien en cada cuadro. Tendrás que llamar a call glBufferData en cada cuadro. Asegurate de que el buffer esté correctamente asociado (usando glBindBuffer) con anterioridad !
+
 
 
 
