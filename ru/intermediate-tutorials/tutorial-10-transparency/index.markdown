@@ -11,7 +11,7 @@ tags: []
 language: ru
 ---
 
-#The alpha channel
+# The alpha channel
 
 The concept of the alpha channel is pretty simple. Instead of a writing an RGB result, you write an RGBA :
 
@@ -37,7 +37,7 @@ Here's the result. Make sure to turn backface culling off (glDisable(GL_CULL_FAC
 ![]({{site.baseurl}}/assets/images/tuto-10-transparency/transparencyok.png)
 
 
-#Order matters !
+# Order matters !
 
 The previous screenshot looks okay-ish, but that's just because we're lucky.
 
@@ -94,7 +94,7 @@ A number of other techniques are worth investigating if your engine really, real
 
 Note that even a recent game like Little Big Planet, which ran on a powerful console, used only 1 layer of transparency.
 
-#The blend function
+# The blend function
 
 In order for the previous code to work, you need to setup your blend function.
 

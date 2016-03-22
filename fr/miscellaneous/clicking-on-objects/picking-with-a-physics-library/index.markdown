@@ -16,7 +16,7 @@ L'idée est que le moteur de jeu devra intégrer un moteur physique dans tous le
 
 Dans ce tutoriel, nous allons utiliser le moteur Bullet Physics Engine, mais les concepts sont identiques pour n'importe quel autre : PhysX, HavoK, etc.
 
-#Intégration de Bullet
+# Intégration de Bullet
 
 De nombreux tutoriels expliquent comment intégrer Bullet ; en particulier, le [wiki de Bullet](http://bulletphysics.org/mediawiki-1.5.8/index.php/Main_Page) est très bien fait.
 
@@ -83,7 +83,7 @@ rigidBody->setUserPointer((void*)i);
 
 En d'autres mots : n'utilise pas le code ci-dessus dans la vraie vie ! Ce n'est que pour les besoins de la démonstration.
 
-#Lancer de rayon
+# Lancer de rayon
 
 ## Trouver la position/direction du rayon
 
@@ -172,7 +172,7 @@ La seule chose est que pour une raison étrange, tu dois définir la position de
 
 C'est tout, tu sais comment implémenter le picking[^picker] dans Bullet !
 
-#Avantages et inconvénients
+# Avantages et inconvénients
 
 Avantages :
 
@@ -185,7 +185,7 @@ Inconvénients :
 * Probablement pas la bonne solution si tu n'as pas besoin de simulation physique ou d'un moteur de collision.
 
 
-#Remarques finales
+# Remarques finales
 
 Tous les moteurs physiques possèdent une vue de débogage. Le code d'exemple montre comment l'activer avec Bullet. Tu obtiendras une représentation de ce que Bullet sait sur votre scène, ce qui est vraiment très utile pour déboguer les problèmes liés à la physique, notamment pour être sûr que le « monde visuel » est consistant avec le « monde physique ».
 

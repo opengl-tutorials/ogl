@@ -31,7 +31,7 @@ Cela n'inclut *pas* :
 
 En un mot : simple.
 
-#Les normales
+# Les normales
 
 Au cours des tutoriels précédents tu as utilisé des normales sans vraiment savoir ce que c'est.
 
@@ -91,7 +91,7 @@ et
 
 et c'est suffisant pour démarrer.
 
-#La partie diffuse
+# La partie diffuse
 
 ## L'importance de la normale de la surface
 
@@ -226,7 +226,7 @@ Avec seulement la composante diffuse, on obtient le résultat suivant (désolé 
 
 C'est mieux qu'avant, mais c'est encore bien incomplet. En particulier, l'arrière de Suzanne est complètement noir car nous avons utilisé clamp().
 
-#La composante ambiante
+# La composante ambiante
 
 La composante ambiante est la plus grande triche qui existe !
 
@@ -260,7 +260,7 @@ Ok, donc c'est un petit peu mieux. Tu peux ajuster le (0.1, 0.1, 0.1) si tu souh
 
 ![]({{site.baseurl}}/assets/images/tuto-8-basic-shading/diffuse_ambiant.png)
 
-#La composante spéculaire
+# La composante spéculaire
 
 L'autre partie de la lumière qui est réfléchie l'est principalement dans la direction qui est le reflet de la source de lumière sur la surface. C'est la composante spéculaire.
 

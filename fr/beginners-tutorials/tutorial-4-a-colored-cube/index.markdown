@@ -15,7 +15,7 @@ Bienvenue dans le quatrième tutoriel ! Dans celui-ci on va :
 * Ajouter de jolies couleur
 * Apprendre ce qu'est le Z-buffer (tampon de profondeur)
 
-#Afficher un cube
+# Afficher un cube
 
 Un cube possède six faces carrées. Comme OpenGL ne connaît que les triangles, on doit dessiner douze triangles : deux pour chaque face. On définit les sommets de la même façon que pour le triangle.   
 
@@ -76,7 +76,7 @@ Quelques remarques sur ce code :
 
 Tu as maintenant tous les morceaux pour dessiner le cube en blanc. Fait fonctionner les shaders ! Allez va y, ou au moins, essaye :)
 
-#Ajouter des couleurs
+# Ajouter des couleurs
 
 Une couleur est, conceptuellement, exactement identique à une position : ce ne sont que des données. Avec les mots d'OpenGL, ce sont des « attributs ». En fait, on les a déjà utilisés avec glEnableVertexAttribArray() et glVertexAttribPointer(). On ajoute un autre attribut à chaque sommet. Le code va ressembler à celui pour les positions.
 
@@ -214,7 +214,7 @@ Il recouvre le triangle « proche » même s'il est supposé être derrière ! C
 
 >Si « la couleur est comme une position, c'est un attribut », pourquoi doit-on déclarer *out vec3 fragmentColor* ; et *in vec3 fragmentColor* ; pour la couleur et pas pour la position ? Car la position est un peu spéciale : c'est la seule qui est obligatoire (sinon OpenGL ne saurait pas où dessiner le triangle !). Donc, dans le vertex shader, gl_Position est une variable intégrée du langage.
 
-#Le Z-Buffer (tampon de profondeur)
+# Le Z-Buffer (tampon de profondeur)
 
 La solution à ce problème est de conserver la profondeur ('Z') de chaque fragment dans un tampon et pour toutes les fois où on veut écrire un fragment, on vérifiez d'abord si on peut le faire (si le nouveau fragment est plus proche que l'ancien).
 
@@ -238,7 +238,7 @@ Et ça suffit pour régler tous nos problèmes.
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/one_color_per_vertex.png)
 
-#Exercices
+# Exercices
 
 * Dessine le cube ET le triangle à deux emplacements différents. Tu auras besoin de générer deux matrices MVP, de faire deux appels pour l'affichage dans la boucle principale, mais seulement un shader est nécessaire.
 

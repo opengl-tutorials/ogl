@@ -14,7 +14,7 @@ Bienvenue dans le treizième tutoriel ! Aujourd'hui on parle de normal mapping.
 
 Depuis le [huitème tutoriel : shaders de base]({{site.baseurl}}/fr/beginners-tutorials/tutorial-8-basic-shading/), tu sais comment obtenir un ombrage décent en utilisant les normales des triangles. Jusqu'à présent, il existait un inconvénient : on n'avait qu'une seule normale par sommet dans chaque triangle et elle va varier doucement, contrairement aux couleurs, qui sont échantillonnées à partir d'une texture. L'idée de base de l'application des normales (normal mapping) est de donner aux normales des variations similaires.
 
-#Textures de normales
+# Textures de normales
 
 Une « texture de normales » ressemble à ça :
 
@@ -30,7 +30,7 @@ La texture a une teinte bleue car après tout, la normale pointe vers « l'exté
 
 Cette texture est appliquée exactement comme la texture de diffusion ; le gros problème est la conversion de notre normale, qui est exprimée dans l'espace de chaque triangle (espace tangent, aussi appelé espace de l'image), vers l'espace modèle (car c'est ce que l'on utilise dans notre équation d'ombrage).
 
-#Tangente et bitangente
+# Tangente et bitangente
 
 Maintenant, que tu connais les matrices tellement bien que tu sais que pour définir un espace (dans notre cas, l'espace tangent), on a besoin de trois vecteurs. On a déjà le vecteur UP : c'est la normale, donnée par Blender ou calculée à partir du triangle à l'aide d'un produit scalaire. Elle est représentée en bleu, tout comme la teinte de la texture de normales :
 
@@ -73,7 +73,7 @@ Soit :
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/transposeTBN.png)
 
-#Préparation du VBO
+# Préparation du VBO
 
 ## Calcul des tangentes et bitangentes
 
@@ -165,7 +165,7 @@ Si on trouve un sommet similaire (même position, même normale, même coordonn�
 
 Remarque que l'on ne normalise rien ici. En réalité c'est pratique, car de cette façon, les petits triangles, qui ont une tangente et bitangente plus petites, auront un effet diminué sur le vecteur final par rapport aux grands triangles (qui contribueront plus à la forme finale).
 
-#Le shader
+# Le shader
 
 
 ## Tampons et variables uniformes supplémentaires
@@ -363,7 +363,7 @@ La normale, dans l'espace tangent, est immédiate à obtenir, c'est la texture :
 
 Donc, on a tout ce dont nous avons besoin. La lumière diffuse utilise clamp(dot(n,l), 0, 1), avec n et l exprimé dans l'espace tangent (l'espace dans lequel on effectue nos produits scalaire et vectoriel n'importe pas ; la chose importante est que l et n soit tous les deux exprimés dans le même espace). La lumière spéculaire utilise clamp(dot(E,R), 0, 1), où, encore une fois, E et R sont exprimés dans l'espace tangent. Super !
 
-#Résultats
+# Résultats
 
 Voici le résultat obtenu. Tu peux remarquer que :
 
@@ -372,7 +372,7 @@ Voici le résultat obtenu. Tu peux remarquer que :
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/normalmapping.png)
 
-#Aller plus loin
+# Aller plus loin
 
 ## Orthogonalisation
 
@@ -505,12 +505,12 @@ Créé par James O'Hare. Clique pour agrandir :
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/normalMapMiniTut.jpg)
 
-#Exercices
+# Exercices
 
 * Normalise les vecteurs dans indexVBO_TBN avant l'addition et vois ce que ça fait.
 * Visualise les autres vecteurs (par exemple, EyeDirection_tangentspace) dans le mode de débogage avec les couleurs et essayez de comprendre ce que tu vois
 
-#Outils et liens
+# Outils et liens
 
 * [Crazybump](http://www.crazybump.com/), un outil super pour faire des textures de normales. Payant.
 * [Plugin Nvidia pour Photoshop](http://developer.nvidia.com/nvidia-texture-tools-adobe-photoshop). Gratuit, mais Photoshop ne l'est pas ...
@@ -518,7 +518,7 @@ Créé par James O'Hare. Clique pour agrandir :
 * [Faites vos propres textures de normales à partir d'une photo](http://www.katsbits.com/tutorials/textures/making-normal-maps-from-photographs.php).
 * Plus d'informations sur la [transposition de matrices](http://www.katjaas.nl/transpose/transpose.html).
 
-#References
+# References
 
 * [Lengyel, Eric. “Computing Tangent Space Basis Vectors for an Arbitrary Mesh”. Terathon Software 3D Graphics Library, 2001.](http://www.terathon.com/code/tangent.html)
 * [Real Time Rendering, troisième édition.](http://www.amazon.com/dp/1568814240)

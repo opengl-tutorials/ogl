@@ -15,7 +15,7 @@ Welcome for our 13th tutorial ! Today we will talk about normal mapping.
 
 Since [Tutorial 8 : Basic shading](http://www.opengl-tutorial.org/beginners-tutorials/tutorial-8-basic-shading/) , you know how to get decent shading using triangle normals. One caveat is that until now, we only had one normal per vertex : inside each triangle, they vary smoothly, on the opposite to the colour, which samples a texture. The basic idea of normal mapping is to give normals similar variations.
 
-#Normal textures
+# Normal textures
 
 A "normal texture" looks like this :
 
@@ -32,7 +32,7 @@ The texture has a general blue tone because overall, the normal is towards the "
 
 This texture is mapped just like the diffuse one; The big problem is how to convert our normal, which is expressed in the space each individual triangle ( tangent space, also called image space), in model space (since this is what is used in our shading equation).
 
-#Tangent and Bitangent
+# Tangent and Bitangent
 
 You are now so familiar with matrices that you know that in order to define a space (in our case, the tangent space), we need 3 vectors. We already have our UP vector : it's the normal, given by Blender or computed from the triangle by a simple cross product. It's represented in blue, just like the overall color of the normal map :
 
@@ -82,7 +82,7 @@ invTBN = transpose(TBN)
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/transposeTBN.png)
 
 
-#Preparing our VBO
+# Preparing our VBO
 
 
 ## Computing the tangents and bitangents
@@ -175,7 +175,7 @@ If we find a similar vertex (same position, same normal, same texture coordinate
 
 Note that we don't normalize anything here. This is actually handy, because this way, small triangles, which have smaller tangent and bitangent vectors, will have a weaker effect on the final vectors than big triangles (which contribute more to the final shape).
 
-#The shader
+# The shader
 
 
 ## Additional buffers & uniforms
@@ -371,7 +371,7 @@ Our normal, in tangent space, is really straightforward to get : it's our textur
 
 So we've got everything we need now. Diffuse lighting uses *clamp( dot( n,l ), 0,1 )*, with n and l expressed in tangent space (it doesn't matter in which space you make your dot and cross products; the important thing is that n and l are both expressed in the same space). Specular lighting uses *clamp( dot( E,R ), 0,1 )*, again with E and R expressed in tangent space. Yay !
 
-#Results
+# Results
 
 Here is our result so far. You can notice that :
 
@@ -381,7 +381,7 @@ Here is our result so far. You can notice that :
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/normalmapping.png)
 
 
-#Going further
+# Going further
 
 
 ## Orthogonalization
@@ -523,14 +523,14 @@ Created by James O'Hare. Click to enlarge.
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/normalMapMiniTut.jpg)
 
 
-#Exercises
+# Exercises
 
 
 * Normalize the vectors in indexVBO_TBN before the addition and see what it does.
 * Visualize other vectors (for instance, EyeDirection_tangentspace) in color mode, and try to make sense of what you see
 
 
-#Tools & Links
+# Tools & Links
 
 
 * [Crazybump](http://www.crazybump.com/) , a great tool to make normal maps. Not free.
@@ -540,7 +540,7 @@ Created by James O'Hare. Click to enlarge.
 * Some more info on [matrix transpose](http://www.katjaas.nl/transpose/transpose.html)
 
 
-#References
+# References
 
 
 * [Lengyel, Eric. "Computing Tangent Space Basis Vectors for an Arbitrary Mesh". Terathon Software 3D Graphics Library, 2001.](http://www.terathon.com/code/tangent.html)

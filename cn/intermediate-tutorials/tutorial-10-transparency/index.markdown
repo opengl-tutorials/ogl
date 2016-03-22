@@ -11,7 +11,7 @@ language: cn
 order: 20
 ---
 
-#alpha通道
+# alpha通道
 
 alpha通道的概念很简单。我们以前的计算结果是RGB值，现在则是RGBA值：
 
@@ -37,7 +37,7 @@ color.a = 0.3;
 ![]({{site.baseurl}}/assets/images/tuto-10-transparency/transparencyok.png)
 
 
-#顺序很重要！
+# 顺序很重要！
 
 上一个截图看上去还行，但这仅仅是运气好罢了。
 
@@ -94,7 +94,7 @@ color.a = 0.3;
 
 注意，即便是《小小大星球》（*Little Big Planet*）这种刚出炉的、运行在高端主机上的游戏，也只用了一层透明。
 
-#混合函数
+# 混合函数
 
 要让上述代码运行起来，得设置好混合函数。
 

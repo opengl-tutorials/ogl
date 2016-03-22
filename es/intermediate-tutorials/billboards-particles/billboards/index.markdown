@@ -17,7 +17,7 @@ What's different with billboards is that they are positionned at a specific loca
 
  
 
-#Solution #1 : The 2D way
+# Solution #1 : The 2D way
 
 This one is supra-easy.
 
@@ -40,7 +40,7 @@ On the plus side, this method is really easy, and the billboard will have the sa
 
  
 
-#Solution #2 : The 3D way
+# Solution #2 : The 3D way
 
 This one is usually better and not much more complicated.
 
@@ -103,7 +103,7 @@ For the record, here's how squareVertices is made :
  };
 ```
 
-#Solution #3 : The fixed-size 3D way
+# Solution #3 : The fixed-size 3D way
 
 As you can see above, the size of the billboard changes with respect to the camera's distance. This is the expected result in some cases, but in others, such as health bars, you probably want a fixed-size instead.
 
@@ -131,7 +131,7 @@ If you want a size in pixels, easy : just use (ScreenSizeInPixels / BillboardSiz
 
  
 
-#Solution #4 : Vertical rotation only
+# Solution #4 : Vertical rotation only
 
 Some systems model faraway trees and lamps as billboards. But you really, really don't want your tree to be bent : it MUST be vertical. So you need an hybrid system that rotates only around one axis.
 

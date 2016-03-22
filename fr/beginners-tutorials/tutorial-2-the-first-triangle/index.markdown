@@ -112,7 +112,7 @@ C'est juste du blanc ennuyeux. Voyons voir comment l'améliorer en l'affichant e
 
 ## Shaders
 
-#Compilation de shader
+# Compilation de shader
 
 Dans la configuration la plus simple, tu as besoin de deux shaders : un appelé *Vertex Shader*, qui sera exécuté pour chaque sommet et l'autre appelé *Fragment Shader*, qui sera exécuté pour chaque fragment. Comme on utilise un antialiasing 4x, on a quatre échantillons pour chaque pixel.
 
@@ -219,7 +219,7 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 
 ```
 
-#Notre vertex shader
+# Notre vertex shader
 
 Écrivons notre premier vertex shader.
 
@@ -258,7 +258,7 @@ Notre fonction principale va simplement définir la position du vertex à ce qui
 
 *gl_Position* est l'une des rares variables codé en dur dans le langage : _vous devez assigner une valeur à celle-ci_. Tout le reste est optionnel ; on verra « tout le reste » dans le quatrième tutoriel.
 
-#Notre fragment shader
+# Notre fragment shader
 
 Pour notre premier fragment shader, on va faire quelque chose de très simple : définir la couleur de chaque fragment à rouge. (Rappel-toi, il y a quatre fragments dans un pixel, car nous utilisons l'*A*nti-*A*liasing 4x.)
 

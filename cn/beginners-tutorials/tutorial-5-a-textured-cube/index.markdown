@@ -21,7 +21,7 @@ language: cn
 * 什么是alpha通道？
 
 
-#关于UV坐标
+# 关于UV坐标
 
 给模型贴纹理时，我们需要通过UV坐标来告诉OpenGL用哪块图像填充三角形。
 
@@ -34,7 +34,7 @@ language: cn
 
  
 
-#自行加载.BMP图片
+# 自行加载.BMP图片
 
 不用花太多心思了解BMP文件格式：很多库可以帮你加载BMP文件。但BMP格式极为简单，可以帮助你理解那些库的工作原理。所以，我们从头开始写一个BMP文件加载器，不过**千万别在实际工程中使用这个实验品**。
 
@@ -162,7 +162,7 @@ GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 * 勉强可以但很怪异的纹理： 128*256
 
 
-#在OpenGL中使用纹理
+# 在OpenGL中使用纹理
 
 先来看看片段着色器。大部分代码一目了然：
 ```
@@ -277,7 +277,7 @@ static const GLfloat g_uv_buffer_data[] = {
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearfiltering_zoom.png)
 
 
-#什么是过滤和mipmap？怎样使用？
+# 什么是过滤和mipmap？怎样使用？
 
 正如在上面截图中看到的，纹理质量不是很好。这是因为在loadBMP_custom函数中，有如下两行代码：
 ```
@@ -332,7 +332,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 glGenerateMipmap(GL_TEXTURE_2D);
 ```
 
-#怎样利用GLFW加载纹理？
+# 怎样利用GLFW加载纹理？
 
 我们的loadBMP_custom函数很棒，因为这是我们自己写的！不过用专门的库更好。GLFW就可以加载纹理（仅限TGA文件）：
 ```
@@ -361,7 +361,7 @@ GLuint loadTGA_glfw(const char * imagepath){
 }
 ```
 
-#压缩纹理
+# 压缩纹理
 
 学到这儿，您可能会问：那JPEG格式的纹理又该怎样加载呢？
 
@@ -490,13 +490,13 @@ GLuint loadDDS(const char * imagepath){
 
 DXT压缩源自DirectX。和OpenGL相比，DirectX中的V纹理坐标是反过来的。所以使用压缩纹理时，得用(coord.v, 1.0-coord.v)来获取正确的纹素。可以在导出脚本、加载器、着色器等环节中执行这步操作
 
-#总结
+# 总结
 
 刚才我们学习了创建、加载以及在OpenGL中使用纹理。
 
 总的来说，压缩纹理体积小、加载迅速、使用便捷，应该只用压缩纹理；主要的缺点是得用The Compressonator来转换图像格式。
 
-#练习
+# 练习
 
 
 * 源代码中实现了DDS加载器，但没有做纹理坐标的改动（译者注：指文中讲述的反转 UV坐标）。在适当的位置添加该功能，以使正方体正确显示。
@@ -504,7 +504,7 @@ DXT压缩源自DirectX。和OpenGL相比，DirectX中的V纹理坐标是反过�
 * 试试在The Compressonator不生成mipmap。结果如何？请给出3种方案解决这一问题。
 
 
-#参考文献
+# 参考文献
 
 
 * [Using texture compression in OpenGL](http://www.oldunreal.com/editing/s3tc/ARB_texture_compression.pdf) , S&eacute;bastien Domine, NVIDIA

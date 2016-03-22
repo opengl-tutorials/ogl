@@ -14,7 +14,7 @@ Dans ce tutoriel, on va apprendre à afficher un texte en 2D par-dessus le conte
 
 ![]({{site.baseurl}}/assets/images/tuto-11-2d-text/clock.png)
 
-#L'API
+# L'API
 
 On va implémenter cette simple interface (dans *common/text2D.h*) :
 
@@ -28,7 +28,7 @@ Afin que le code fonctionne, que ce soit en 640 x 480 ou 1080p, x et y seront de
 
 Regarde *common/text2D.cpp* pour voir l'implémentation complète.
 
-#La texture
+# La texture
 
 *initText2D* lit simplement une texture et un couple de shaders. Il n'y a rien de spécial là-dedans, mais regarde à quoi ressemble la texture :
 
@@ -38,7 +38,7 @@ Cette texture a été générée avec [CBFG](http://www.codehead.co.uk/cbfg/), u
 
 Le but de *printText2D* sera donc de générer des rectangles avec les positions écran appropriées et les coordonnées de texture qui vont bien.
 
-#L'affichage
+# L'affichage
 
 On doit remplir ces tampons :
 

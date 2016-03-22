@@ -10,23 +10,23 @@ tags: []
 language: fr
 ---
 
-#Introduction
+# Introduction
 
 Bienvenue dans le premier tutoriel !
 
 Avant de s'attaquer à OpenGL, tu dois d'abord apprendre à compiler le code accompagnant chaque tutoriel, apprendre à l'exécuter, et plus important, apprendre avec le code.
 
-#Prérequis
+# Prérequis
 
 Aucun prérequis n'est nécessaire pour suivre ces tutoriels. Une expérience avec n'importe quel langage de programmation (C, Java, Lisp, JavaScript, ou autre) est préférable pour comprendre le code, mais pas nécessaire ; il sera *simplement* plus difficile d'apprendre deux choses à la fois.
 
 Tous les tutoriels sont écrits en « C++ simple » : beaucoup d'efforts ont été faits pour rendre le code aussi simple que possible. Pas de templates, pas de classes, pas de pointeurs. De cette façon, tu vas pouvoir tout comprendre même si tu ne connais que le Java.
 
-#Oublie tout
+# Oublie tout
 
 Tu n'as rien besoin de connaître, mais tu dois oublier tout ce que tu connais sur OpenGL. Si tu connais quelque chose qui ressemble à glBegin(), oublie-le. Ici tu vas apprendre *l'OpenGL moderne* (OpenGL 3 et 4), et la plupart des tutoriels en ligne apprennent le *vieux* OpenGL (OpenGL 1 et 2). Donc oublie tout ce que tu pourrais savoir, avant que ton cerveau ne fonde face à ce mélange.
 
-#Compiler les tutoriels
+# Compiler les tutoriels
 
 Tous les tutoriels peuvent être compilés sur Windows, Linux et Mac. Pour ces plates-formes, la procédure est grossièrement la même :
 
@@ -110,19 +110,19 @@ La procédure est très similaire à celle de Windows (les Makefiles sont aussi 
 
 Tu devras peut être aussi configurer le répertoire de travail toi-même : Projet→Propriétés→Cibles de compilation→tutorial N→Répertoire d'exécution (c'est src_dir/tutorial_N/).
 
-#Exécuter les tutoriels
+# Exécuter les tutoriels
 
 Tu dois exécuter les tutoriels directement à partir du bon répertoire : simplement en double cliquant sur l'exécutable. Si tu préféres la ligne de commande, *cd* vers le bon répertoire.
 
 Si tu souhaites exécuter les tutoriels à partir de l'IDE, n'oublie pas de lire les instructions ci-dessus pour définir le bon répertoire de travail.
 
-#Comment suivre ces tutoriels
+# Comment suivre ces tutoriels
 
 Chaque tutoriel est fourni avec son code source et ses données, qui se trouvent dans tutorialXX/. Par contre, tu ne dois jamais modifier ces projets : ils ne servent que de référence. Ouvre playground/playground.cpp et modifie ce fichier à la place. Torture-le comme tu le souhaites. Si tu es perdu, copie n'importe quel tutoriel dans celui-ci et tout devrait revenir à la normale.
 
 On va fournir des morceaux de code tout au long des tutoriels. N'hésite pas à les copier/coller dans ton bac à sable durant la lecture : l'expérimentation est une bonne chose. Évite de te limiter à lire le code fini : tu ne vas pas apprendre grand-chose comme cela. Même avec un simple copier/coller, tu vas avoir ton lot de problèmes.
 
-#Ouvrir une fenêtre
+# Ouvrir une fenêtre
 
 Finalement ! Du code OpenGL !
 Enfin, pas vraiment. Tous les tutoriels te montre la façon *bas niveau* de faire les choses afin que tu puisses voir qu'il n'y a pas de magie. Mais cette partie est très ennuyeuse et inutile, donc on va utiliser GLFW, une bibliothèque externe qui fera cela à notre place. Si tu le souhaite vraiment, tu peux utiliser l'api Win32 sous Windows, l'api X11 sous Linux et Cocoa sous Mac ; ou utiliser une autre bibliothèque comme SFML, FreeGLUT, SDL, … regarde la page des [liens]({{site.baseurl}}/miscellaneous/useful-tools-links/).

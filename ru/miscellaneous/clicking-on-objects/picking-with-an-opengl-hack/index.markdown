@@ -30,7 +30,7 @@ In this screenshot, each monkey has a slightly different color, which make is po
 
 Of course, you don't want to see the image with all these weird colors, so you also have to clear the screen and re-draw as usual.
 
-#Implementation
+# Implementation
 
 
 ## Giving an ID to every object
@@ -179,7 +179,7 @@ if (pickedID == 0x00ffffff){ // Full white, must be the background !
 }
 ```
 
-#Pros and cons
+# Pros and cons
 
 Pros :
 
@@ -193,7 +193,7 @@ Cons :
 
  
 
-#Final remarks
+# Final remarks
 
 While not very recommended, this technique can be really useful; but it's quite restricted to picking. The methods in the two other tutorials can be used for other purposes, like detecting collisions, making an avatar walk on the ground, visibility queries for AIs, etc.
 

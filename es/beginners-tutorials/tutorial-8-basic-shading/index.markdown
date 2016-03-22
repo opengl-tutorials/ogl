@@ -32,7 +32,7 @@ Esto NO incluye:
 
 En una palabra: Basico.
 
-#Normales
+# Normales
 
 En los ultimos tutoriales, hemos estado hablando de normales y probablemente aun no entiendas qué son.
 
@@ -91,7 +91,7 @@ y
 
 y esto es suficiente para empezar.
 
-#La parte difusa
+# La parte difusa
 
 ## La importancia de una normal a la superficie
 
@@ -226,7 +226,7 @@ Solo con el componente difuso tenemos el siguiente resultado (disculpa la textur
 
 Se ve mejor que antes, pero aun falta mucho. En particular, la parte de atras de Suzanne es completamente negra, ya que usamos clamp().
 
-#El componente “ ambiente ”
+# El componente “ ambiente ”
 
 El componente de ambiente es una de las trampas mas grandes.
 
@@ -260,7 +260,7 @@ Ok, se ve un poco mejor. Puedes ajustar el (0.1, 0.1, 0.1) si quieres mejores re
 
 ![]({{site.baseurl}}/assets/images/tuto-8-basic-shading/diffuse_ambiant.png)
 
-#El componente especular
+# El componente especular
 
 La otra parte de la luz es reflejada en la dirección del angulo saliente del angulo en que la luz toca la superficie. Esto se denomina componente especular.
 

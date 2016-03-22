@@ -11,7 +11,7 @@ order: 10
 language: cn
 ---
 
-#About sending e-mails...
+# About sending e-mails...
 
 Sending an e-mail to contact@opengl-tutorial.org is the most effective way to get support. However, if you have a problem, please include as much information as you can. This means at least :
 
@@ -29,7 +29,7 @@ Sending an e-mail to contact@opengl-tutorial.org is the most effective way to ge
 
 And of course, read this FAQ first. It's called FAQ for a reason =)
 
-#I can't compile the tutorials
+# I can't compile the tutorials
 
 
 * Make sure you read Tutorial 1. PLEASE use CMake instead of re-creating the project. Or at least, make sure you read [Building your own C application](http://www.opengl-tutorial.org/miscellaneous/building-your-own-c-application/).
@@ -38,7 +38,7 @@ And of course, read this FAQ first. It's called FAQ for a reason =)
 * If there is really a problem, don't hesitate to send us an e-mail.
 
 
-#I have compiled the tutorials, but it fails at startup. What's going on ?
+# I have compiled the tutorials, but it fails at startup. What's going on ?
 
 Several possible reasons :
 
@@ -91,11 +91,11 @@ glewExperimental = true;
 
 You did read Tutorial 1, right ? You didn't try to write your own makefile and build everything yourself, RIGHT ?
 
-#Why should I use OpenGL 3.3 if Intel and Mac can't run it ?!
+# Why should I use OpenGL 3.3 if Intel and Mac can't run it ?!
 
 ... also known as :
 
-#Which version of OpenGL should I use ?
+# Which version of OpenGL should I use ?
 
 As a matter of fact, I don't recommend using OpenGL 3 or above for an application. I use it in the tutorials because it's the **clean** way to learn OpenGL, without all the deprecated stuff, and because once you know 3.3, using 2.1 is straighforward.
 
@@ -110,7 +110,7 @@ What I recommend is :
 <div><span style="font-size: medium;"><span style="line-height: 24px;">There's one big situation where you might want to use a very recent version, say 4.2 : you're a graduate student doing high-end research, you really need a recent feature, and you don't care about compatibility because your software will never be ran outside your lab. In this case, don't waste time and go straight to the highest OpenGL version your hardware supports.</span></span></div>
 
 
-#Where do I download OpenGL 3 ?
+# Where do I download OpenGL 3 ?
 
 You don't.
 
@@ -122,7 +122,7 @@ So, just make sure your GPU driver supports the needed version, use GLEW, and yo
 
 
 
-#Why do you create a VAO in each tutorial, but you never use it ?
+# Why do you create a VAO in each tutorial, but you never use it ?
 
 
 Wrong. It's bound, so in fact, it's used during the whole execution.
@@ -144,7 +144,7 @@ As stated in Tutorial 1, you have to select the project you want to run by right
 
  
 
-#I've got a message about the working directory, and the program crashes.
+# I've got a message about the working directory, and the program crashes.
 
 You have to start the program from tutorial01_first_window/, tutorial02_red_triangle/, etc. If you start the program from your IDE, you have to configure it from him to do so.
 

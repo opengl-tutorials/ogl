@@ -17,7 +17,7 @@ language: cn
 
 为了让课程尽可能简单，我们将采用简单、常用的OBJ格式。同样也是出于简单原则，我们只处理每个顶点有一个UV坐标和一个法线的OBJ文件（目前不需要知道什么是法线）。
 
-#加载OBJ模型
+# 加载OBJ模型
 
 加载函数在common/objloader.hpp中声明，在common/objloader.cpp中实现。函数原型如下：
 ```
@@ -236,7 +236,7 @@ out_vertices.push_back(vertex);
 
 UV和法线同理，任务完成！
 
-#使用加载的数据
+# 使用加载的数据
 
 到这一步，几乎什么变化都没发生。这次我们不再声明static const GLfloat g_vertex_buffer_data[] = {...}，而是创建一个顶点数组（UV和法向同理）。用正确的参数调用loadOBJ：
 ```
@@ -256,13 +256,13 @@ glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0],
 
 就是这样啦！
 
-#结果
+# 结果
 
 不好意思，这个纹理不大漂亮。我不太擅长美术:(。欢迎您来提供一些好的纹理。
 
 ![]({{site.baseurl}}/assets/images/tuto-7-model-loading/ModelLoading.png)
 
 
-#其他模型格式及加载器
+# 其他模型格式及加载器
 
 这个小巧的加载器应该比较适合初学，不过别在实际中使用它。参考一下[实用链接和工具](/?page_id=210)页面，看看有什么能用的。不过请注意，等到第九课才会*真正*用到这些工具。

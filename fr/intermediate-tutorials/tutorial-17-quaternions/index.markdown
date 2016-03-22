@@ -10,7 +10,7 @@ tags: []
 language: fr
 ---
 
-#Introduction
+# Introduction
 
 Ce tutoriel sort du contexte d'OpenGL, mais s'attaque néanmoins à un problème très courant : comment représenter les rotations ?
 
@@ -20,7 +20,7 @@ On présentera les deux manières les plus courantes pour définir des rotations
 
 ![]({{site.baseurl}}/assets/images/tuto-17-rotation/tuto17.png)
 
-#Avant-propos : rotation VS orientation
+# Avant-propos : rotation VS orientation
 
 En lisant des articles sur les rotations, tu peux être pertubé par le vocabulaire. Dans ce tutoriel :
 
@@ -29,7 +29,7 @@ En lisant des articles sur les rotations, tu peux être pertubé par le vocabula
 
 Lorsque tu *appliques une rotation*, tu *changes l'orientation*. Les deux peuvent être représentés avec les mêmes outils, menant à la confusion. Maintenant, on y va ...
 
-#Euler Angles
+# Euler Angles
 
 Les angles d'Euler sont la méthode la plus simple d'imaginer une orientation. Tu stockes trois orientations autour des axes X, Y et Z. C'est un concept très facile à comprendre. Tu peux utiliser un vec3 pour stocker la rotation :
 
@@ -54,7 +54,7 @@ Cependant, lorsque les choses deviennent plus complexes, les angles d'Euler rend
 
 Les quaternions sont l'outil qui résout ces problèmes pour représenter les rotations.
 
-#Quaternions
+# Quaternions
 
 Un quaternion est un ensemble de quatre nombres, [x, y, z, w], qui représentent les rotations de la façon suivante :
 
@@ -126,7 +126,7 @@ mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScaleMatrix;
 // Tu peux maintenant utiliser ModelMatrix pour construire la matrice MVP
 ```
 
-#Donc, quelle méthode choisir ?
+# Donc, quelle méthode choisir ?
 
 Choisir entre les angles d'Euler et les quaternions est difficile. Les angles d'Euler sont intuitifs pour les artistes, donc si tu écris un éditeur 3D, utilises-les. Mais les quaternions sont pratiques pour les programmeurs et aussi moins couteux, donc tu devrais les utiliser dans le cœur du moteur 3D.
 
@@ -134,7 +134,7 @@ Le consensus général est exactement cela : utilises les quaternions en interne
 
 Tu vas être capable de gérer tout ce que tu veux (ou du moins, cela sera plus facile) et tu peux toujours utiliser les angles d'Euler pour les entités le nécessitant (comme dit précédemment : la caméra, les humanoïdes et c'est à peu près tout) avec une simple conversion.
 
-#Autres ressources
+# Autres ressources
 
 * Les livres dans la page des [outils et liens utiles]({{site.baseurl}}/miscellaneous/useful-tools-links/#books) !
 * Aussi vieux qu'il puisse être, le Game Programming Gem 1 contient quelques articles géniaux sur les quaternions. Tu peux probablement le trouver en ligne aussi.
@@ -143,7 +143,7 @@ Tu vas être capable de gérer tout ce que tu veux (ou du moins, cela sera plus 
 * La [FAQ sur les quaternions](http://www.ogre3d.org/tikiwiki/Quaternion+and+Rotation+Primer) d'Ogre, bien que la seconde partie soit principalement spécifique à Ogre
 * Les fichiers d'Ogre [Vector3D.h](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/include/OgreVector3.h?at=default) et [Quaternions.cpp](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/src/OgreQuaternion.cpp?at=default).
 
-#Feuille de triche
+# Feuille de triche
 
 ## Comment savoir que deux quaternions sont similaires ?
 

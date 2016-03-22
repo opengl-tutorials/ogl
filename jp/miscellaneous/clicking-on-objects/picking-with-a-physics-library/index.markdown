@@ -17,7 +17,7 @@ The idea is that the game engine will need a physics engine anyway, and all phys
 
 In this tutorial, we will use the Bullet Physics Engine, but the concepts are exactly the same for any other : PhysX, Havok, etc.
 
-#Bullet integration
+# Bullet integration
 
 Lots of tutorials explain how to integrate Bullet; in particular, the Bullet's wiki is very well done.
 
@@ -85,7 +85,7 @@ rigidBody->setUserPointer((void*)i);
 
 In other words : please don't use the above code in real life ! It's just for demo purpose.
 
-#Raycasting
+# Raycasting
 
 
 ## Finding the ray direction
@@ -176,7 +176,7 @@ The only thing is that for some weird reason, you have to set the ray's start an
 
 That's it, you know how to implement picking with Bullet !
 
-#Pro and cons
+# Pro and cons
 
 Pros :
 
@@ -189,7 +189,7 @@ Cons :
 * Probably not the right solution if you don't need any physics or collision engine
 
 
-#Final remarks
+# Final remarks
 
 All physics engines have a debug viewer. The example code shows how to to it with Bullet. You end up with a representation of what Bullet knows about your scene, which is incredibly useful to debug physics-related problem, especially to be sure that the "visual world" is consistent with the "physics world" :
 

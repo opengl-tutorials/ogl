@@ -10,7 +10,7 @@ tags: []
 language: fr
 ---
 
-#Trigonométrie
+# Trigonométrie
 
 ## Pi
 
@@ -35,7 +35,7 @@ const float pi = 3.14159265f; // avec une infinité de nombre après
 
 90 degrés = Pi/2 radians
 
-#Vecteurs
+# Vecteurs
 
 Fait TOUJOURS attention au repère dans lesquels tes vecteur sont. Regarde la section 3 pour plus de détails.
 
@@ -94,7 +94,7 @@ On divise le vecteur par sa longueur
 normalizedVector = vec * ( 1.0f / vec.length() )
 ```
 
-#Matrices
+# Matrices
 
 ## Multiplication Matrice à Matrices
 
@@ -106,7 +106,7 @@ Example pour une matrice de translation :
 
 ![]({{site.baseurl}}/assets/images/math-cheatsheet/MatrixXVect.gif)
 
-#Transformations habituelles
+# Transformations habituelles
 
 ![]({{site.baseurl}}/assets/images/math-cheatsheet/MVP.png)
 

@@ -32,7 +32,7 @@ This does NOT include :
 
 In a word : Basic.
 
-#Normals
+# Normals
 
 During the last few tutorials you've been dealing with normal without really knowing what they were.
 
@@ -90,7 +90,7 @@ and
 
 and this is enough to get us started.
 
-#The Diffuse part
+# The Diffuse part
 
 
 ## The importance of the surface normal
@@ -230,7 +230,7 @@ With only the Diffuse component, we have the following result (sorry for the lam
 
 It's better than before, but there is still much missing. In particular, the back of Suzanne is completely black since we used clamp().
 
-#The Ambient component
+# The Ambient component
 
 The Ambient component is the biggest cheat ever.
 
@@ -265,7 +265,7 @@ Ok so that's a little bit better. You can adjust the (0.1, 0.1, 0.1) if you want
 ![]({{site.baseurl}}/assets/images/tuto-8-basic-shading/diffuse_ambiant.png)
 
 
-#The Specular component
+# The Specular component
 
 The other part of light that is reflected is reflected mostly in the direction that is the reflection of the light on the surface. This is the specular component.
 

@@ -15,7 +15,7 @@ Cette technique n'est pas vraiment conseillée, mais c'est une méthode facile e
 
 Le code source pour ce tutoriel est disponible dans le fichier au nom lourd de sens : [misc05_picking/misc05_picking_slow_easy.cpp](https://github.com/opengl-tutorials/ogl/blob/master/misc05_picking/misc05_picking_slow_easy.cpp).
 
-#Idée de base
+# Idée de base
 
 L'idée derrière cette technique est d'afficher la scène, comme d'habitude, mais au lieu d'utiliser un joli rendu, on dessine chaque objet avec une couleur spécifique et unique.
 
@@ -29,7 +29,7 @@ Dans cette capture d'écran, chaque singe possède une couleur légèrement diff
 
 Bien sûr, tu ne veux pas voir l'image avec toutes ces couleurs étranges donc tu dois nettoyer l'écran et redessiner comme d'habitude.
 
-#Implémentation
+# Implémentation
 
 ## Donner un identifiant à chaque objet
 
@@ -172,7 +172,7 @@ if (pickedID == 0x00ffffff){ // Full white, must be the background !
 }
 ```
 
-#Avantages et inconvénients
+# Avantages et inconvénients
 
 Avantages :
 
@@ -184,7 +184,7 @@ Inconvénients :
 * Utilise glFlush(), glFinish(), glReadPixels() qui sont toutes des fonctions lentes, car elles forcent le CPU à attendre le GPU, ce qui ruine les performances
 * Tu n'as pas une information précise : quel triangle est touché, la normale en ce point, etc
 
-#Remarques finales
+# Remarques finales
 
 Bien que cela ne soit pas recommandé, cette technique peut être vraiment utile, mais elle est complètement restreinte au picking. Les méthodes dans les deux prochains tutoriels peuvent être utilisées pour d'autres buts, comme la détection des collisions, faire marcher un avatar sur le sol, effectuer des requêtes de visibilité pour l'intelligence artificielle, etc.
 

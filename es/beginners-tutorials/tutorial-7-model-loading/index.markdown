@@ -17,7 +17,7 @@ En este tutorial, aprenderemos como cargar mallas 3D desde archivo. Lo haremos d
 
 Para mantener este tutorial lo más simple que sea posible, usaremos el formato OBJ, que resulta ser bastante simple y común. Y una vez más, para mantener las cosas simples, sólo trataremos con archivos OBJ con una coordenada UV y una normal por vértice (Y no necesitamos preocuparnos por lo que es una normal justo ahora).
 
-#Cargando el OBJ
+# Cargando el OBJ
 
 Nuestra función, ubicada en common/objloader.cpp y declarada en common/objloader.hpp tendrá la siguiente declaración:
  :
@@ -237,7 +237,7 @@ out_vertices.push_back(vertex);
 
 Aplicamos lo mismo para las coordenadas UV y las normales y hemos finalizado!
 
-#Usando la información cargada
+# Usando la información cargada
 
 Una vez tenemos esto, casi nada cambia. En lugar de declarar nuestro usual static const GLfloat g_vertex_buffer_data[] = {...}, declararemos en su lugar un std::vector vertices (y lo mismo haremos para las coordenadas UV y las normales). Llamamos a la función loadOBJ con los parámetros neesarios :
 
@@ -257,13 +257,13 @@ glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0],
 
 Y eso es todo !
 
-#Resultados
+# Resultados
 
 Me disculpo por la textura sosa, no soy un buen artísta. Sin embargo, cualquier contribución será más que bienvenida.
 
 ![]({{site.baseurl}}/assets/images/tuto-7-model-loading/ModelLoading.png)
 
 
-#Otros formatos/funciones de carga
+# Otros formatos/funciones de carga
 
 Esta pequeña función de carga es suficiente para comenzar, pero en realidad no es lo que querríamos utilizar en la vida real. Aquí hay algunos links a [herramientas útiles](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) con herramientas que podemos usar. Sin embargo, lo mejor sería esperar hasta el tutorial 9 para que las usemos de verdad.

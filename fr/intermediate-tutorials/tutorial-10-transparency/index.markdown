@@ -10,7 +10,7 @@ tags: []
 language: fr
 ---
 
-#La canal alpha
+# La canal alpha
 
 Le concept du canal alpha est très simple. À la place d'écrire un résultat en RGB, on écris un résultat en RGBA :
 
@@ -35,7 +35,7 @@ Voici le résultat. Assures-toi de désactiver le « backface culling » (suppre
 
 ![]({{site.baseurl}}/assets/images/tuto-10-transparency/transparencyok.png)
 
-#L'ordre est important
+# L'ordre est important
 
 La capture d'écran précédente paraît correcte, mais c'est uniquement car on est chanceux.
 
@@ -90,7 +90,7 @@ De nombreuses autres techniques sont intéressantes si ton moteur a vraiment, vr
 
 > Même un jeu récent comme Little Big Planet, s'exécutant sur une console puissante, utilise **une seul** couche de transparence.
 
-#La fonction de mélange
+# La fonction de mélange
 
 Afin que le code précédent fonctionne, on doit initialiser la fonction de mélange :
 

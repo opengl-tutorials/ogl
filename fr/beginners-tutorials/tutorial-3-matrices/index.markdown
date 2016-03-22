@@ -17,7 +17,7 @@ language: fr
 
 **C'est le tutoriel le plus important de tous. Tu devrais le garder en livre de chevet, et le lire et relire au moins 8 fois !**
 
-#Coordonnées homogènes
+# Coordonnées homogènes
 
 Jusqu'à présent, on a considéré les sommets 3D comme des triplets (x, y, z). On va introduire w, ce qui donnera des vecteurs (x, y, z, w).
 
@@ -32,7 +32,7 @@ Quelle différence cela fait-il ? Eh bien, pour une rotation, ça change rien. L
 
 Les coordonnées homogènes permettent d'utiliser une simple formule mathématique pour gérer ces deux cas.
 
-#Matrices de transformation
+# Matrices de transformation
 
 
 ## Une introduction aux matrices
@@ -198,7 +198,7 @@ mat4 transform = mat2 * mat1;
 vec4 out_vec = transform * in_vec;
 ```
 
-#Les matrices de modèle, de vue et de projection
+# Les matrices de modèle, de vue et de projection
 
 _Pour la suite du tutoriel, on supposera savoir comment dessiner le modèle 3D favori de Blender : le singe Suzanne. Même si c'est pas encore le cas_
 

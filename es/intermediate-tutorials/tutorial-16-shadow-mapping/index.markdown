@@ -17,7 +17,7 @@ Shadow maps are the current (as of 2016) way to make dynamic shadows. The great 
 
 In this tutorial, we'll first introduce the basic algorithm, see its shortcomings, and then implement some techniques to get better results. Since at time of writing (2012) shadow maps are still a heavily researched topic, we'll give you some directions to further improve your own shadowmap, depending on your needs.
 
-#Basic shadowmap
+# Basic shadowmap
 
 The basic shadowmap algorithm consists in two passes. First, the scene is rendered from the point of view of the light. Only the depth of each fragment is computed. Next, the scene is rendered as usual, but with an extra test to see it the current fragment is in the shadow.
 
@@ -204,7 +204,7 @@ Here's the result of the current code. Obviously, the global idea it there, but 
 
 Let's look at each problem in this image. The code has 2 projects : shadowmaps and shadowmaps_simple; start with whichever you like best. The simple version is just as ugly as the image above, but is simpler to understand.
 
-#Problems
+# Problems
 
 
 ## Shadow acne
@@ -391,7 +391,7 @@ This will make patterns such as in the picture above disappear, at the expense o
 
 See tutorial16/ShadowMapping.fragmentshader for three example implementions.
 
-#Going further
+# Going further
 
 Even with all these tricks, there are many, many ways in which our shadows could be improved. Here are the most common :
 
@@ -467,7 +467,7 @@ CSM deals with the exact same problem than LiSPSM, but in a different way. It si
 
 Cascarded shadow maps have, at time of writing (2012), the best complexity/quality ratio. This is the solution of choice in many cases.
 
-#Conclusion
+# Conclusion
 
 As you can see, shadowmaps are a complex subject. Every year, new variations and improvement are published, and to day, no solution is perfect.
 

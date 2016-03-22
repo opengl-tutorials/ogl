@@ -32,7 +32,7 @@ language: cn
 
 总而言之：只讲基础知识。
 
-#法线
+# 法线
 
 前面的教程中我们一直在处理法线，但是并不知道法线到底是什么。
 
@@ -89,7 +89,7 @@ GLuint normalbuffer;
 
 有这些准备就可以开始了。
 
-#漫反射（Diffuse）分量
+# 漫反射（Diffuse）分量
 
 
 ##表面法线的重要性
@@ -222,7 +222,7 @@ M和V分别是模型和观察矩阵，并且是用与MVP完全相同的方式传
 
 这次的结果比之前的好，不过还是感觉少了些什么。特别是由于使用了clamp()，Suzanne的背后完全是黑色的。
 
-#环境光(Ambient)分量
+# 环境光(Ambient)分量
 
 环境光分量是最具欺骗性的。
 
@@ -255,7 +255,7 @@ color =
 ![]({{site.baseurl}}/assets/images/tuto-8-basic-shading/diffuse_ambiant.png)
 
 
-#镜面光（Specular）分量
+# 镜面光（Specular）分量
 
 另一个反射光分量就是镜面光分量。这部分光在表面有确定的反射方向。
 

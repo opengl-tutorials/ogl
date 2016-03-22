@@ -10,7 +10,7 @@ tags: []
 language: fr
 ---
 
-#Documentation
+# Documentation
 
 ## OpenGL references
 
@@ -39,14 +39,14 @@ language: fr
 * [Statistiques d'Unity](http://stats.unity3d.com/web/gpu.html) : Des statistiques sur les cartes graphiques actuellement dans le marché.
 * [Plus de statistiques](http://feedback.wildfiregames.com/report/opengl/) : Plus précises, mais avec des infos plus vieilles.
 
-#Outils de débogage
+# Outils de débogage
 
 * [glslDevil](http://cumbia.informatik.uni-stuttgart.de/glsldevil/) : un fantastique débogueur GLSL - lorsqu'il fonctionne. Même si le site Web est souvent hors ligne.
 * [GLIntercept](http://glintercept.nutty.org/) : génère une page Web avec la liste des commandes OpenGL exécutées. Affiche le code des shaders, le contenu des images, le contenu des buffers d'image, etc.
 * [gdebugger](http://www.gremedy.com/) : un profileur.
 * [NVidia Parallel NSight](http://developer.nvidia.com/nvidia-parallel-nsight) : un outil merveilleux qui donne accès à des informations très précises sur les performances. Hautement recommandé. Visual Studio + Nvidia seulement.
 
-#Bibliothèques
+# Bibliothèques
 
 ## Fenêtrage et divers
 

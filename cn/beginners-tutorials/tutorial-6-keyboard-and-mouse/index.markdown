@@ -15,7 +15,7 @@ language: cn
 
 我们将学习如何通过鼠标和键盘来移动摄像机，就像在第一人称射击游戏中一样。
 
-#接口
+# 接口
 
 这段代码在整个课程中多次被使用，因此把它单独放在common/controls.cpp中，然后在common/controls.hpp中声明函数接口，这样tutorial06.cpp就能使用它们了。
 
@@ -47,7 +47,7 @@ do{
 
 来看看controls.cpp做了些什么。
 
-#实际代码
+# 实际代码
 
 我们需要几个变量。
 ```
@@ -205,7 +205,7 @@ ViewMatrix       = glm::lookAt(
 );
 ```
 
-#结果
+# 结果
 
 ![]({{site.baseurl}}/assets/images/tuto-6-mouse-keyboard/moveanim.gif)
 
@@ -227,7 +227,7 @@ ViewMatrix       = glm::lookAt(
 glEnable(GL_CULL_FACE);
 ```
 
-#练习
+# 练习
 
 
 * 限制verticalAngle，使之不能颠倒方向

@@ -15,7 +15,7 @@ Render-To-Texture is a handful method to create a variety of effects. The basic 
 
 Applications include in-game cameras, post-processing, and as many GFX as you can imagine.
 
-#Render To Texture
+# Render To Texture
 
 We have three tasks : creating the texture in which we're going to render ; actually rendering something in it ; and using the generated texture.
 
@@ -165,14 +165,14 @@ void main(){
 
 This code simply sample the texture, but adds a tiny offset which depends on time.
 
-#Results
+# Results
 
  
 
 ![]({{site.baseurl}}/assets/images/tuto-14-render-to-texture/wavvy.png)
 
 
-#Going further
+# Going further
 
 
 ## Using the depth
@@ -219,7 +219,7 @@ Hint : If you effectively need to output a vector in a texture, floating-point t
 
 Hint2 : For previous versions of OpenGL, use glFragData[1] = myvalue instead.
 
-#Exercices
+# Exercices
 
 
 * Try using glViewport(0,0,512,768); instead of glViewport(0,0,1024,768); (try with both the framebuffer and the screen)

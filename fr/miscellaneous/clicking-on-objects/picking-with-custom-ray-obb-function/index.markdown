@@ -14,7 +14,7 @@ La dernière méthode est un sympathique compromis entre l'implémentation OpenG
 
 Ce tutoriel utilise les concepts et les fonctions du tutoriel de Bullet, donc [lis le]({{site.baseurl}}/fr/miscellaneous/clicking-on-objects/picking-with-a-physics-library/) *avant* celui-ci.
 
-#L'idée de base
+# L'idée de base
 
 Au lieu de dépendre de l'intersection d'un rayon contre une forme de collision dans Bullet, on va l'implémenter nous-mêmes.
 
@@ -24,7 +24,7 @@ Une OBB est une boîte englobant le modèle et lorsque le modèle est déplacé 
 
 ![]({{site.baseurl}}/assets/images/tuto-picking-obb/OBB.png)
 
-#Algorithme d'intersection rayon-OBB
+# Algorithme d'intersection rayon-OBB
 
 *(L'algorithme et les figures s'inspirent grandement du livre Real-Time Rendering Vol. 3. Achete ce livre !)*
 
@@ -42,7 +42,7 @@ Mais si l'ordre change (tu entres dans la zone verte -> tu entres dans la zone r
 
 Mettons ça en pratique.
 
-#Implémentation de l'algorithme
+# Implémentation de l'algorithme
 
 (Le code complet est disponible dans le fichier [Misc05/misc05_picking_custom.cpp](https://github.com/opengl-tutorials/ogl/blob/master/misc05_picking/misc05_picking_custom.cpp))
 
@@ -108,7 +108,7 @@ if (tMax < tMin )
 
 Ça c'est pour l'axe des X. C'est exactement la même chose pour les autres axes !
 
-#Utiliser l'algorithme
+# Utiliser l'algorithme
 
 La fonction TestRayOBBIntersections() permet de tester l'intersection avec une seule OBB, donc on doit toutes les tester. Dans ce tutoriel, on test simplement les boîtes les unes après les autres, mais si tu as plein d'objets, tu pourrais avoir besoin d'une structure accélératrice comme un arbre binaire de partitionnement de l'espace (Binary Space Partitionning Tree BSP-Tree) ou une hiérarchie de volume englobant (Bounding Volume Hierarchy BVH).
 
@@ -144,7 +144,7 @@ for(int i=0; i<100; i++){
 
 Remarque: cet algorithme a un problème ! il prend la première OBB qu'il trouve. Mais si cette OBB est derrière une autre, cela est faux. Donc tu dois prendre seulement l'OBB la plus proche ! C'est au lecteur de résoudre ce problème ...
 
-#Avantages et inconvénients
+# Avantages et inconvénients
 
 Pros :
 
@@ -157,7 +157,7 @@ Inconvénients :
 * Plus lent qu'avec le moteur physique, car il n'y a pas de structure accélératrice
 * Peut ne pas être assez précis
 
-#Remarques finales
+# Remarques finales
 
 Il y a de nombreuses autres routines d'intersection disponibles pour toutes sortes de formes de collisions ; lis par exemple [http://www.realtimerendering.com/intersections.html](http://www.realtimerendering.com/intersections.html).
 

@@ -45,7 +45,7 @@ void main(){
 
 void FunctionDefinedInHeader(); // Declare the function
 
-#endif
+# endif
 // End of MyHeader.h
 
 void main(){

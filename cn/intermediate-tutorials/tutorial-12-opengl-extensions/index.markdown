@@ -11,7 +11,7 @@ language: cn
 order: 40
 ---
 
-#扩展
+# 扩展
 
 GPU的性能随着更新换代一直在提高，支持渲染更多的三角形和像素点。然而，原始性能不是我们唯一关心的。NVIDIA, AMD和Intel也通过增加功能来改善他们的显卡。来看一些例子。
 
@@ -80,7 +80,7 @@ EXT:通用的扩展。
 ARB:已经被OpenGL架构评审委员会的所有成员接受（EXT扩展没多久后就经常被提升为ARB）的扩展。
 NV/AMD/INTEL:顾名思义 =)
 
-#设计与扩展
+# 设计与扩展
 
 
 ##问题
@@ -111,13 +111,13 @@ if ( GLEW_NV_path_rendering ){
 
 更多的细节可以参考例子[OpenGL 2.1版本的第14课 - 纹理渲染，第152行](http://code.google.com/p/opengl-tutorial-org/source/browse/tutorial14_render_to_texture/tutorial14.cpp?name=2.1%20branch#152)，需手动检查GL_ARB_framebuffer_object是否存在。常见问题可见[FAQ](/?page_id=526)。
 
-#结论Conclusion
+# 结论Conclusion
 
 OpenGL扩展提供了一个很好的方式来增强OpenGL的功能，它依赖于你用户的GPU。 
 
 虽然现在扩展属于高级用法（因为大部分功能在核心中已经有了），了解扩展如何运作和怎么用它提高软件性能（付出更高的维护代价）还是很重要的。
 
-#深度阅读
+# 深度阅读
 
 
 * [debug_output tutorial by Aks](http://sites.google.com/site/opengltutorialsbyaks/introduction-to-opengl-4-1---tutorial-05) 因为有GLEW，你可以跳过第一步。

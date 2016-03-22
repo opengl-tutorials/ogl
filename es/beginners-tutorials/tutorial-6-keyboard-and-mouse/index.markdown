@@ -15,7 +15,7 @@ Bienvenidos a nuestro sexto tutorial !
 
 Aquí aprenderemos como usar el ratón y el teclado para mover la cámara justo como un juego de disparos en primera persona.
 
-#La Interfaz
+# La Interfaz
 
 Dado que este código será reutilizado a través de distintos tutoriales de aquí en adelante, lo pondremos en un archivo separado: common/controls.cpp, y declararemos la función en common/controls.hpp para que tutorial06.cpp sepa del código.
 
@@ -47,7 +47,7 @@ Esta es sólo una de las formas para hacerlo, claro está. Si no te gusta la man
 
 Veamos ahora que hay dentro de controls.cpp.
 
-#The actual code
+# The actual code
 
 We'll need a few variables.
 
@@ -205,7 +205,7 @@ ViewMatrix       = glm::lookAt(
 );
 ```
 
-#Resultados
+# Resultados
 
 ![]({{site.baseurl}}/assets/images/tuto-6-mouse-keyboard/moveanim.gif)
 
@@ -227,7 +227,7 @@ Habilitando backface culling en un abrir y cerrar de ojos:
 glEnable(GL_CULL_FACE);
 ```
 
-#Ejercicios
+# Ejercicios
 
 
 * Restringe verticalAngle de tal manera que la cámara no pueda quedar de cabeza

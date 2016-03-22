@@ -11,7 +11,7 @@ tags: []
 language: ru
 ---
 
-#Trigonometry
+# Trigonometry
 
 
 ## Pi
@@ -37,7 +37,7 @@ const float pi = 3.14159265f; // but an infinity of digits in reality
 
 90 degrees = Pi/2 radians
 
-#Vectors
+# Vectors
 
 ALWAYS know in which coordinates your vector is. See section 3 for details.
 
@@ -97,7 +97,7 @@ Divide the vector by its length :
 normalizedVector = vec * ( 1.0f / vec.length() )
 ```
 
-#Matrices
+# Matrices
 
 
 ## Matrix-Matrix multiplication
@@ -114,7 +114,7 @@ example for a translation matrix :
 ![]({{site.baseurl}}/assets/images/math-cheatsheet/MatrixXVect.gif)
 
 
-#Usual Transformations
+# Usual Transformations
 
 ![]({{site.baseurl}}/assets/images/math-cheatsheet/MVP.png)
 

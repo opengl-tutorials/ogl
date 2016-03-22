@@ -10,7 +10,7 @@ tags: []
 language: fr
 ---
 
-#Extensions
+# Extensions
 
 Avec chaque nouvelle génération, les performances des GPU augmentent, permettant ainsi d'afficher plus de triangles et plus de pixels. Néanmoins, la performance brute n'est pas le seul intérêt. NVIDIA, AMD et Intel améliorent aussi leurs cartes graphiques en y ajoutant des nouvelles fonctionnalités. En voici quelques exemples.
 
@@ -82,7 +82,7 @@ Le nom de chaque extension contient des informations sur sa disponibilité :
 
 * NV/AMD/INTEL : assez évident =)
 
-#Concevoir avec les extensions
+# Concevoir avec les extensions
 
 ## Le problème
 
@@ -112,13 +112,13 @@ Si tu dois gérer du matériel de dinosaure, alors OpenGL 3.3 ne sera pas dispon
 
 Pour plus de détails, regardes par exemple la [version OpenGL 2.1 du quatorzième tutoriel - rendu sur texture ligne 167](https://github.com/opengl-tutorials/ogl/blob/2.1_branch/tutorial14_render_to_texture/tutorial14.cpp#L167) où je dois vérifier la présence de GL_ARB_framebuffer_object à la main.
 
-#Conclusion
+# Conclusion
 
 Les extensions OpenGL fournissent une méthode efficace pour étendre les capacités d'OpenGL, suivant le GPU de l'utilisateur.
 
 Bien que les extensions soient principalement utilisées pour les usages avancés depuis que la plupart des fonctionnalités sont déjà présentes dans le noyau de l'API OpenGL, il reste important de connaître comment elles fonctionnent et comment tu peux les utiliser pour améliorer ton logiciel - pour un coût de maintenance plus chère.
 
-#Pour continuer
+# Pour continuer
 
 * [Tutoriel debug_output par Aks](http://sites.google.com/site/opengltutorialsbyaks/introduction-to-opengl-4-1---tutorial-05), vous pouvez passer la première étape grâce à GLFW
 * [Le registre des extensions OpenGL](http://www.opengl.org/registry/), toutes les spécifications des extensions. La bible

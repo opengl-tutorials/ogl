@@ -16,7 +16,7 @@ Bienvenido al cuarto tutorial ! Aqui vas a aprender a :
 * Añadir colores geniales
 * Apreder qué cosa es un z-buffer
 
-#Dibujar un cubo
+# Dibujar un cubo
 
 Un cubo tiene seis caras cuadradas. Dado que OpenGl solo sabe de triangulos, tendrémos que dibujar 12 triangulos : dos por cada cara. Definimos los vertices de la misma forma que lo hicimos para los triangulos.
 
@@ -77,7 +77,7 @@ Unos apuntes sobre este código :
 
 Ahora que tenemos las piezas para dibujar el cubo en blanco, vamos a hacer funcionar los shaders ! Vamos, por lo menos intenta :)
 
-#Añadiendo colores
+# Añadiendo colores
 
 
 Conceptualmente, un color es lo mismo que una posición : solo son datos. En términos de OpenGL son “atributos”. De hecho, ya usamos esto en las funciones glEnableVertexAttribArray() y glVertexAttribPointer(). Vamos a añadir otro atributo. El código va a ser muy parecido 
@@ -216,7 +216,7 @@ El lejano se esta pintando sobre el “cercano” aun cuando se supone que deber
 
 * Nota 2* : Si color, como la posición, es un atributo, ¿por qué necesitamos declarar out vec3 fragmentColor e in vec3 fragmentColor para el color y no para la posición? Porque la posición es especial : Es la única cosa obligatoria en OpenGL (de lo contrario no sabría dónde pintar el triangulo). Así que en el vertex shader la variable gl_Position es una variable incorporada, viene declarada dentro de OpenGL.
 
-#El Z-Buffer
+# El Z-Buffer
 
 
 La solución a este problema es guardar el componente “Z” o profundidad para cada fragmento en un buffer, y cada vez que se quiere escribir un fragmento, primero se debe revisar si se debe pintar o estaba detrás y no debe ser pintado.
@@ -242,7 +242,7 @@ Y esto es suficiente para resolver todos los problemas.
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/one_color_per_vertex.png)
 
 
-#Ejercicios
+# Ejercicios
 
 * Dibujar el cubo Y el triángulo en diferentes ubicaciones. Necesitarás generar 2 matrices MVP para hacer 2 llamadas en el bucle principal, pero solo se necesita un shader.
 

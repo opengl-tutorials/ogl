@@ -11,7 +11,7 @@ tags: []
 language: ru
 ---
 
-#Introduction
+# Introduction
 
 This a video-only tutorial. It doesn't introduce any new OpenGL-specific technique/syntax, but shows you how to use the techniques you already know to build high-quality shadows.
 
@@ -21,7 +21,7 @@ This tutorials explains how to build a simple world in Blender, and bake the lig
 
 No prior knowledge of Blender is required. I will explain all keyboard shortcuts and everything.
 
-#A note on lightmaps
+# A note on lightmaps
 
 Lightmaps are baked. Once and for all. This means that they are completely static, you can't decide to move the light at runtime. Or even remove it.
 
@@ -29,13 +29,13 @@ This can still be useful for the sunlight, though, or indoor scenes where you ma
 
 What's more, it's very easy to setup, and you can't beat the speed.
 
-#The video
+# The video
 
 This is a 1024x768p video, use HD mode...
 
 <iframe src="http://player.vimeo.com/video/24359223?title=0&byline=0&portrait=0" frameborder="0" width="800" height="450"></iframe>
 
-#Addendum
+# Addendum
 
 When rendering it in OpenGL, you might notice some glitches (exaggerated here) :
 

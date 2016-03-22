@@ -16,7 +16,7 @@ order: 60
 
 キーボードとマウスを使って、FPSのようにカメラを動かす方法を学びます。
 
-#インターフェース
+# インターフェース
 
 このコードはチュートリアルを通して使うので、別のファイルで保存します。ファイルはcommon/controls.cppにあります。またtutorial06.cppにそれらを知らせるために、common/controls.hppで関数を宣言しておきます。
 
@@ -48,7 +48,7 @@ do{
 
 controls.cpp内で何が起きているのか見ていきましょう。
 
-#実際のコード
+# 実際のコード
 
 いくつかの変数が必要となります。
 
@@ -207,7 +207,7 @@ ViewMatrix       = glm::lookAt(
 );
 ```
 
-#結果
+# 結果
 
 ![]({{site.baseurl}}/assets/images/tuto-6-mouse-keyboard/moveanim.gif)
 
@@ -229,7 +229,7 @@ ViewMatrix       = glm::lookAt(
 glEnable(GL_CULL_FACE);
 ```
 
-#演習
+# 演習
 
 
 * 上下に移動できないようにverticalAngleを制限してください。

@@ -17,7 +17,7 @@ In this tutorial we will learn how to load 3D meshes from files. We will do this
 
 To keep this tutorial as simple as possible, we'll use the OBJ file format, which is both very simple and very common. And once again, to keep things simple, we will only deal with OBJ files with 1 UV coordinate and 1 normal per vertex (you don't have to know what a normal is right now).
 
-#Loading the OBJ
+# Loading the OBJ
 
 Our function, located in common/objloader.cpp and declared in common/objloader.hpp, will have the following signature :
 
@@ -237,7 +237,7 @@ out_vertices.push_back(vertex);
 
 The same is applied for UVs and normals, and we're done !
 
-#Using the loaded data
+# Using the loaded data
 
 Once we've got this, almost nothing changes. Instead of declaring our usual static const GLfloat g_vertex_buffer_data[] = {...}, you declare a std::vector vertices instead (same thing for UVS and normals). You call loadOBJ with the right parameters :
 
@@ -257,13 +257,13 @@ glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0],
 
 And that's it !
 
-#Results
+# Results
 
 Sorry for the lame texture, I'm NOT a good artist :( Any contribution welcome !
 
 ![]({{site.baseurl}}/assets/images/tuto-7-model-loading/ModelLoading.png)
 
 
-#Other formats/loaders
+# Other formats/loaders
 
 This tiny loader should give you enough to get started, but won't want to use this in real life. Have a look at our [Useful Links & Tools](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) page for some tools you can use. Note, however, that you'd better wait for tutorial 9 before *actually *trying to use them.

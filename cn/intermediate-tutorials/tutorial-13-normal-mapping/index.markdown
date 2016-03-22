@@ -15,7 +15,7 @@ order: 50
 
 学完[第八课：基本着色](http://www.opengl-tutorial.org/zh-hans/beginners-tutorials-zh/tutorial-8-basic-shading-zh/) 后，我们知道了如何用三角形法线得到不错的着色效果。需要注意的是，截至目前，每个顶点仅有一条法线。在三角形内部，法线是平滑过渡的，而颜色则是通过纹理采样得到的（译注：三角形内部法线由插值计算得出，颜色则是直接从纹理取数据）。法线贴图的基本思想就是像纹理采样一样为法线取值。
 
-#法线纹理
+# 法线纹理
 
 下图是一张法线纹理：
 
@@ -32,7 +32,7 @@ normal = (2*color)-1 // on each component
 
 法线纹理的映射方式和漫反射纹理相似。麻烦之处在于如何将法线从各三角形局部空间（切线空间tangent space，亦称图像空间image space）变换到模型空间（着色计算所采用的空间）。
 
-#切线和副切线（Tangent and Bitangent）
+# 切线和副切线（Tangent and Bitangent）
 
 大家对矩阵已经十分熟悉了，应该知道定义一个空间（本例是切线空间）需要三个向量。现在Up向量已经有了，即法线：可用Blender生成，或由一个简单的叉乘计算得到。下图中蓝色箭头代表法线（法线贴图整体颜色也恰好是蓝色）。
 
@@ -78,7 +78,7 @@ invTBN = transpose(TBN)
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/transposeTBN.png)
 
 
-#准备VBO
+# 准备VBO
 
 
 ##计算切线和副切线
@@ -171,7 +171,7 @@ void computeTangentBasis(
 
 注意，这里没有对结果归一化。这种做法十分便利。由于小三角形的切线、副切线向量较小；相对于大三角形来说，对模型外观的影响程度较小。
 
-#着色器
+# 着色器
 
 
 ##新增缓冲和uniform变量
@@ -367,7 +367,7 @@ void computeTangentBasis(
 
 一切准备就绪。漫反射光的值由切线空间中的n和l计算得来（在哪个空间中计算并不重要，关键是n和l必须位于同一空间中），并用*clamp( dot( n,l ), 0,1 )*截取。镜面光用*clamp( dot( E,R ), 0,1 )*截取，E和R也必须位于同一空间中。大功告成！
 
-#结果
+# 结果
 
 这是目前得到的结果，您可以看到：
 
@@ -377,7 +377,7 @@ void computeTangentBasis(
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/normalmapping.png)
 
 
-#延伸阅读
+# 延伸阅读
 
 
 ##正交化（Orthogonalization）
@@ -510,19 +510,19 @@ color.xyz = LightDirection_tangentspace;
 
 给向量名称添加"_modelspace"后缀可以有效地避免这类计算错误。
 
-#怎样制作法线贴图
+# 怎样制作法线贴图
 
 作者James O&rsquo;Hare。点击图片放大。
 [<img title="normalMapMiniTut" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/normalMapMiniTut-320x1024.jpg" alt="How to create a normal map" width="320" height="1024">]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/normalMapMiniTut.jpg)
 
-#练习
+# 练习
 
 
 * 在indexVBO_TBN函数中，做加法前先把向量归一化，观察其作用。
 * 用颜色可视化其他向量（如instance、EyeDirection_tangentspace），试着解释你看到的结果。
 
 
-#工具和链接
+# 工具和链接
 
 
 * [Crazybump](http://www.crazybump.com/)制作法线纹理的好工具，付费。
@@ -532,7 +532,7 @@ color.xyz = LightDirection_tangentspace;
 * 关于[矩阵转置](http://www.katjaas.nl/transpose/transpose.html)的详细资料
 
 
-#参考文献
+# 参考文献
 
 
 * [Lengyel, Eric. "Computing Tangent Space Basis Vectors for an Arbitrary Mesh". Terathon Software 3D Graphics Library, 2001.](http://www.terathon.com/code/tangent.html)

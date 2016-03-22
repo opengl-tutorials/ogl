@@ -20,7 +20,7 @@ language: jp
 ![]({{site.baseurl}}/assets/images/tuto-17-rotation/tuto17.png)
 
 
-#序文：回転と方向
+# 序文：回転と方向
 
 回転に関する記事を読んでいる間、きっと語彙によって混乱が生じるでしょう。このチュートリアルでは次のようなものがあります。
 
@@ -29,7 +29,7 @@ language: jp
 
 これはつまり *回転を適用* すれば *方向が変わる* ということです。同じようなツールとして表現できるがゆえに混乱を招きます。それでは説明をしていきます。
 
-#オイラー角
+# オイラー角
 
 オイラー角は回転を考える上で最も簡単な方法です。基本的にX、Y、Z軸周りでの3つの回転を格納するだけです。理解しやすいシンプルな概念です。それを格納するためにvec3を使います。
 
@@ -55,7 +55,7 @@ vec3 EulerAngles( RotationAroundXInRadians, RotationAroundYInRadians, RotationAr
 
 クォータニオンはこれらの問題を解決する回転を表現するためのツールです。
 
-#クォータニオン
+# クォータニオン
 
 クォータニオンは4つの数字[x y z w]のセットで、次のように回転を表します。
 
@@ -131,7 +131,7 @@ mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScaleMatrix;
 #
 
 
-#どちらを選ぶべきか？
+# どちらを選ぶべきか？
 
 オイラー角とクォータニオンの選択は難しいです。オイラー角は直感的で3Dエディタで書く場合には使うほうが良いでしょう。しかしクォータニオンはプログラマにとっては便利で、早いです。だから3Dエンジンコアではクォータニオンを使うべきです。
 
@@ -139,7 +139,7 @@ mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScaleMatrix;
 
 必要なもの（あるいは少なくとも簡単に）はすべて対処でき、必要とあればよりシンプルな変換であるオイラー角が使えます。（上で言ったようにカメラ、人型に適しています。）
 
-#他の資料
+# 他の資料
 
 
 *  [Useful Tools & Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) に本があります。
@@ -150,7 +150,7 @@ mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScaleMatrix;
 * Ogre3Dの[Vector3D.h](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/include/OgreVector3.h?at=default) and [Quaternion.cpp](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/src/OgreQuaternion.cpp?at=default)
 
 
-#チートシート
+# チートシート
 
 二つのクォータニオンが似てるかの確認方法
 

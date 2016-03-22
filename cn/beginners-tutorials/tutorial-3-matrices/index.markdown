@@ -14,7 +14,7 @@ language: cn
 《飞出个未来》</blockquote>
 <span style="color: #ff0000">这是所有课程中最重要的一课。至少得看八遍。</span>
 
-#齐次坐标（Homogeneous coordinates）
+# 齐次坐标（Homogeneous coordinates）
 
 目前为止，我们仍然把三维顶点视为三元组(x,y,z)。现在引入一个新的分量w，得到向量(x,y,z,w)。请先记住以下两点（稍后我们会给出解释）：
 
@@ -27,7 +27,7 @@ language: cn
 
 齐次坐标使得我们可以用同一个公式对点和方向作运算。
 
-#变换矩阵（Transformation matrices）
+# 变换矩阵（Transformation matrices）
 
 
 ##矩阵简介
@@ -204,7 +204,7 @@ mat4 transform = mat2 * mat1;
 vec4 out_vec = transform * in_vec;
 ```
 
-#模型（Model）、观察（View）和投影（Projection）矩阵
+# 模型（Model）、观察（View）和投影（Projection）矩阵
 
 *在接下来的课程中，我们假定您已知如何绘制Blender经典模型小猴Suzanne。*
 
@@ -339,7 +339,7 @@ glm::mat3 MVPmatrix = projection * view * model; // Remember : inverted !
 transformed_vertex = MVP * in_vertex;
 ```
 
-#总结
+# 总结
 
 
 * 第一步：创建模型观察投影（MVP）矩阵。任何要渲染的模型都要做这一步。
@@ -396,7 +396,7 @@ void main(){
 
 第6课中你会学到怎样用键鼠动态修改这些值，从而创建一个和游戏中类似的摄像机。但我们会先学给三维模型上色（第4课）、贴纹理（第5课）。
 
-#练习
+# 练习
 
 
 * 试着修改glm::perspective的参数

@@ -10,7 +10,7 @@ tags: []
 language: fr
 ---
 
-#Le principe de l'indexation
+# Le principe de l'indexation
 
 Jusqu'à présent, lors de la construction du VBO, on avait dupliqué les sommets à chaque fois que deux triangles partageaient un côté.
 
@@ -20,7 +20,7 @@ Dans ce tutoriel, on va s'initier à l'indexation, qui permet de réutiliser le 
 
 Le tampon d'indices contient des entiers, trois pour chaque triangle dans le modèle, faisant référence aux différents tampons d'attributs (position, couleur, coordonnées UV, autres coordonnées UV, normales…). C'est un peu comme dans le fichier .OBJ, avec une grande différence : il n'y a qu'un SEUL tampon d'indices. Cela signifie que pour qu'un sommet soit partagé entre deux triangles, tous les attributs doivent être les mêmes.
 
-#Partagé ou séparé ?
+# Partagé ou séparé ?
 
 On va prendre en exemple les normales. Dans ce schéma, l'artiste qui a créé ces deux triangles voulait certainement qu'ils représentent une surface lisse. On peut donc fusionner les normales des deux triangles en une normale d'un seul sommet. Pour des soucis de visualisation, j'ai ajouté une ligne rouge qui représente l'aspect de la surface lisse.
 
@@ -34,7 +34,7 @@ Donc, dans ce cas il est préférable d'avoir deux normales distinctes, une pour
 
 ![]({{site.baseurl}}/assets/images/tuto-9-vbo-indexing/spiky.png)
 
-#VBO indexé en OpenGL
+# VBO indexé en OpenGL
 
 C'est très simple d'utiliser l'indexation. Premièrement, tu vas créer un tampon supplémentaire, que tu vas remplir avec les bons indices. Le code est le même qu'avant, mais maintenant c'est un ELEMENT_ARRAY_BUFFER, et non un ARRAY_BUFFER.
 
@@ -67,7 +67,7 @@ Et pour dessiner le modèle, remplaces simplement glDrawArrays par :
 
 >Il est préférable d'utiliser des « unsigned short » que des « unsigned int », car cela utilise moins de mémoire et du coup accélère le programme.
 
-#Remplir le buffer (tampon) d'indices
+# Remplir le buffer (tampon) d'indices
 
 On a maintenant un problème. Comme je l'ai dit avant, OpenGL ne peut utiliser qu'un seul tampon d'indices, alors que le format OBJ (ainsi que d'autres formats de fichier 3D populaires comme Collada) utilise un tampon d'indices par attribut. Cela signifie que d'une façon ou d'une autre, on doit convertir N tampons d'indices en un.
 
@@ -89,6 +89,6 @@ Le critère pour la similarité des sommets est que la position, la normale et l
 
 La recherche d'un sommet similaire est effectuée d'une manière linéaire pour garder l'algorithme simple. Une std::map serait plus appropriée.
 
-#Extra : le compteur de FPS
+# Extra : le compteur de FPS
 
 Ce n'est pas directement lié à l'indexation, mais c'est une bonne occasion de jeter un œil au compteur de FPS car on peut possiblement voir une amélioration de la vitesse grâce à l'indexation. D'autres outils pour les performances sont disponibles dans la page [Outils - débogueurs]({{site.baseurl}}/miscellaneous/useful-tools-links/#debugging-tools).

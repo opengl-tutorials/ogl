@@ -21,7 +21,7 @@ En este tutorial aprenderás :
 * Qué es el canal Alfa
 
 
-#Acerca de las coordenadas UV
+# Acerca de las coordenadas UV
 
 Cuando se le añade una textura a una malla, necesitas una manera de decirle a OpenGl qué parte de la imagen tiene que ser usada para cada triángulo y es para esto que se emplean las coordenadas UV.
 
@@ -32,7 +32,7 @@ Cada vértice puede tener, además de su posición, una pareja de números de pu
 Nota como la textura se distorsiona en el triángulo.
  
 
-#Cargando imágenes BMP por ti mismo
+# Cargando imágenes BMP por ti mismo
 
 Conocer el formato BMP no es crucial : Hay muchas librerías que pueden cargar archivos BMP por ti. Sin embargo, el formato es bastante simple y conocerlo podría ayudarte a entender como funcionan las cosas por debajo. Así que escribermos un cargador de archivos BMP desde cero, para que puedas entender como funciona y luego<span style="text-decoration: underline;">no vuelvas a usarlo nunca más</span>.
 
@@ -155,7 +155,7 @@ Otro punto muy importante :** Usar texturas en potencias de dos !**
 * Aceptable (aunque raro) : 128*256
 
 
-#Usando la textura en OpenGL
+# Usando la textura en OpenGL
 
 Le daremos unn vistazo primero al fragment shader. La mayor parte es bastante simple :
 
@@ -269,7 +269,7 @@ Y esta es la versión aumentada :
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearfiltering_zoom.png)
 
-#¿Qué son el filtrado, los mapas MIP y cómo se usan?
+# ¿Qué son el filtrado, los mapas MIP y cómo se usan?
 
 Cómo puedes ver en la captura de pantalla de arriba, la calidad de la textura no es la mejor. Esto es porque en nuestra función loadBMP_custom escribimos lo siguiente :
 
@@ -320,7 +320,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 glGenerateMipmap(GL_TEXTURE_2D);
 ```
 
-#Cómo cargar una textura con GLFW
+# Cómo cargar una textura con GLFW
 
 Nuestra función loadBMP_custom es genial porque la hicimos nosotros mismos, pero usar una librería dedicada es aún mejor. GLFW2 puede hacer esto también (pero solo para archivos TGA y esta característica ha sido removida de GLFW3 que es que usaremos) :
 
@@ -349,7 +349,7 @@ GLuint loadTGA_glfw(const char * imagepath){
 }
 ```
 
-#Texturas Comprimidas
+# Texturas Comprimidas
 
 En este punto, te estarás preguntando como cargar archivos JPEG en lugar de TGA.
 
@@ -479,13 +479,13 @@ Y ahora rellenamos cada mapa MIP uno después del otro :
 
 La compresión DXT  viene del mundo DirectX, en dónde las la coordenada Vde la textura es invertida en comparación a OpenGL. Así que si usas texturas comprimidas, tendrás que usar ( coord.u, 1.0-coord.v) para localizar el texel correcto. Puedes hacer esto en dónde desees: En el script que importa la textura, en el método de carga, en el shader...
 
-#Conclusión
+# Conclusión
 
 Acabas de aprender a crear, cargar y usar texturas en OpenGL.
 
 En general, deberías usar sólo texturas comprimidas, dado que ocupan menos espacio de almacenamiento, se cargan de forma casi instantánea y son muy rápidas de usar. La única desventaja es que tienes que utilizar The Compressonator (o cualquier herramienta similar) con todas las imágenes que pretendas utilizar.
 
-#Ejercicios
+# Ejercicios
 
 
 * El cargador DDS está implementado en el código fuente; no así la modificación de las coordenadas de la textura. Cambia el código en el lugar apropiada para que el cubo se muestre de manera correcta.
@@ -493,7 +493,7 @@ En general, deberías usar sólo texturas comprimidas, dado que ocupan menos esp
 * Trata de no generar mapas MIP en The Compressonator. ¿Cuál es el resultado?. Encuentra 3 maneras diferentes de solucionar esto.
 
 
-#Referencias
+# Referencias
 
 
 * [Using texture compression in OpenGL](http://www.oldunreal.com/editing/s3tc/ARB_texture_compression.pdf) , S&eacute;bastien Domine, NVIDIA

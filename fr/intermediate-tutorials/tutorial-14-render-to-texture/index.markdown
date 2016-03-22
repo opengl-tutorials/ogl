@@ -14,7 +14,7 @@ Le rendu dans une texture (render to texture) est une méthode pratique pour cr�
 
 Les applications de cette technique incluent les caméras dans les jeux, le post-processing et autant d'effets graphiques que tu le souhaites.
 
-#Rendu dans une texture
+# Rendu dans une texture
 
 On a trois tâches : créer une texture dans laquelle on va faire le rendu, faire le rendu dans celle-ci et utiliser la texture générée.
 
@@ -162,12 +162,12 @@ void main(){
 
 Ce code échantillonne simplement la texture, mais ajoute un léger décalage dépendant du temps.
 
-#Results
+# Results
 
 ![]({{site.baseurl}}/assets/images/tuto-14-render-to-texture/wavvy.png)
 
 
-#Aller plus loin
+# Aller plus loin
 
 ## Utiliser la profondeur
 
@@ -212,7 +212,7 @@ layout(location = 1) out vec3 normal_tangentspace; // or whatever
 
 > Dans les versions précédentes d'OpenGL, utilise glFragData[1] = myvalue à la place.
 
-#Exercices
+# Exercices
 
 * Essaye d'utiliser glViewport(0,0,512,768); à la place de glViewport(0,0,1024,768); (essaye avec le framebuffer et l'écran)
 * Expérimente avec d'autres coordonnées UV dans le dernier fragment shader.

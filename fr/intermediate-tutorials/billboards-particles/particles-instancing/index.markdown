@@ -10,7 +10,7 @@ tags: []
 language: fr
 ---
 
-#Introduction
+# Introduction
 
 Les particules sont très similaires aux billboards 3D. Il y a toutefois quelques différences importantes :
 
@@ -21,7 +21,7 @@ Les particules sont très similaires aux billboards 3D. Il y a toutefois quelque
 
 Toutes ces différences entraînent des problèmes. Ce tutoriel présente UNE solution pour les résoudre ; il y a beaucoup d'autres possibilités.
 
-#Des particules, plein partout !
+# Des particules, plein partout !
 
 La première idée pour dessiner une multitude de particules serait d'utiliser le code du tutoriel précédent et d'appeler glDrawArrays pour chaque particule. C'est une très mauvaise idée, car cela signifie que l'ensemble de tes superbes multiprocesseurs GTX 512+ seront tous utilisés pour ne dessiner qu'UN unique rectangle (évidemment, un seul sera utilisé, perdant 99 % d'efficacité). Puis tu vas dessiner le billboard suivant et cela sera identique.
 
@@ -170,7 +170,7 @@ Comme vous pouvez le voir, l'instanciation est très polyvalente, car tu peux pa
 
 Le but est que maintenant, on doit seulement mettre à jour un petit buffer à chaque image (le centre des particules) et non plus un immense modèle. C'est un gain de 75 % pour la bande passante !
 
-#Vie et mort
+# Vie et mort
 
 Contrairement à la plupart des objets de la scène, les particules meurent et naissent à un grand débit. On doit trouver une méthode convenablement rapide pour obtenir de nouvelles particules et se débarrasser d'elles, quelque chose de mieux que new Particle().
 
@@ -240,7 +240,7 @@ if (newparticles > (int)(0.016f*10000.0))
 
 Il y a une astuce, comme montré ci-dessous =)
 
-#La boucle principale de simulation
+# La boucle principale de simulation
 
 *ParticlesContainer* contient aussi bien les particules actives que les « mortes », mais le tampon que l'on envoie au GPU ne doit avoir que les particules vivantes.
 
@@ -322,7 +322,7 @@ struct Particle{
 
 ![]({{site.baseurl}}/assets/images/tuto-particules/particles_final.gif)
 
-#Aller plus loin
+# Aller plus loin
 
 ## Particules animées
 

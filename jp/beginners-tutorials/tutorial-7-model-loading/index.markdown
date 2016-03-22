@@ -18,7 +18,7 @@ order: 70
 
 簡単化のためにここではOBJファイルフォーマットを扱います。OBJフォーマットはとてもシンプルなフォーマットです。一つの頂点に対して一つのUV座標一つの法線のみを扱います。(法線が何であるかはすぐには分からなくても大丈夫です。)
 
-#OBJのロード
+# OBJのロード
 
 common/objloader.cppにあり、/common/objloader.hppに宣言されている私たちの関数は次のような戻り値や引数があります。
 
@@ -239,7 +239,7 @@ out_vertices.push_back(vertex);
 
 UVや法線でも同じことを行います。
 
-#ロードしたデータの使用方法
+# ロードしたデータの使用方法
 
 ここまでくれば、もう変更する箇所は多くありません。いつものようなstatic const GLfloat g_vertex_buffer_data[] = {...}を宣言する代わりに、std::vector verticesを宣言します。(UVと法線も同様です。)そして正しいパラメータでloadOBJを呼びます。
 
@@ -259,7 +259,7 @@ glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0],
 
 以上です！
 
-#結果
+# 結果
 
 下手なテクスチャですみません。私は良いアーティストじゃないんです。 :( テクスチャの寄贈を受け付けています！
 Sorry for the lame texture, I'm NOT a good artist :( Any contribution welcome !
@@ -267,6 +267,6 @@ Sorry for the lame texture, I'm NOT a good artist :( Any contribution welcome !
 ![]({{site.baseurl}}/assets/images/tuto-7-model-loading/ModelLoading.png)
 
 
-#他のフォーマットとローダ
+# 他のフォーマットとローダ
 
 ここで作ったローダは勉強目的では良いかもしれませんが、実際のアプリケーションでは使いたくはないでしょう。[便利なリンクとツール](/?page_id=210)ページをみて*実際に*使ってみてください。

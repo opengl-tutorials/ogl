@@ -10,7 +10,7 @@ tags: []
 language: fr
 ---
 
-#Introduction
+# Introduction
 
 Dans le [quinzième tutoriel]({{site.baseurl}}/fr/intermediate-tutorials/tutorial-15-lightmaps/), on a appris à créer des lightmaps, qui incluent l'éclairage statique. Bien que cela produise de ombres vraiment belles, ça ne gère pas les modèles animés.
 
@@ -18,7 +18,7 @@ Les shadow maps (textures d'ombre) sont la technique actuelle (en 2012) pour cr�
 
 Dans ce tutoriel, on introduira l'algorithme de base, on verra ses défauts et on implémentera quelques techniques pour obtenir de meilleurs résultats. Sachant qu'au moment de l'écriture (2012), les textures d'ombre sont un sujet de recherche d'actualité, on donnera quelques directions pour te permettre d'améliorer tes propres textures d'ombre, suivant tes besoins.
 
-#Shadowmap basique
+# Shadowmap basique
 
 L'algorithme des shadowmap de base se décompose en deux passes. Premièrement, la scène est dessinée à partir de la position de la lumière. Seule la profondeur de chaque fragment est calculée. Ensuite, la scène est affichée comme d'habitude, mais avec un test supplémentaire pour vérifier si le fragment actuel est dans l'ombre.
 
@@ -204,7 +204,7 @@ Voici le résultat du code actuel. Évidemment, l'idée générale est présente
 
 On va regarder chacun des problèmes de l'image dans les sections suivantes. Le code possède deux projets : shadowmaps et shadowmaps_simple : commence par celui que tu préféres. La version simple est tout aussi laide que l'image ci-dessus, mais plus facile à comprendre.
 
-#Problèmes
+# Problèmes
 
 ## Acné d'ombre
 
@@ -374,7 +374,7 @@ Cela fera que les motifs de l'image ci-dessus vont disparaître, au détriment d
 
 Regarde le fichier [tutorial16/ShadowMapping.fragmentshader](https://github.com/opengl-tutorials/ogl/blob/master/tutorial16_shadowmaps/ShadowMapping.fragmentshader) pour les trois exemples d'implémentation.
 
-#Aller plus loin
+# Aller plus loin
 
 Même avec toutes ces astuces, il reste de nombreuses, très nombreuses méthodes pour améliorer tes ombres. Voici les plus répandues :
 
@@ -450,7 +450,7 @@ Les CSM gèrent le même problème que les LiSPSM mais d'une manière différent
 
 Les cartes d'ombres en cascade ont, au moment de l'écriture (2012), le meilleur compromis complexité/qualité. C'est *la solution de choix* dans bien des cas.
 
-#Conclusion
+# Conclusion
 
 Comme tu peux le voir, les shadow maps sont un sujet compliqué. Chaque année, de nouvelles variations et améliorations sont publiées, et aujourd'hui (2012), aucune solution n'est parfaite. (PS: C'est toujours vrai en 2015)
 

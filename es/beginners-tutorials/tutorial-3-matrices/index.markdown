@@ -18,7 +18,7 @@ language: es
 
 **Este es el tutorial mas importante de los tutoriales de principiante. Leelo almenos 8 veces.**
 
-#Coordenadas homogeneas
+# Coordenadas homogeneas
 
 Hasta ahora, consideramos las coordenadas 3D como triplas (x,y,z). Vamos a introducir a 'w'. Ahora tendremos vectores (x,y,z,w).
 

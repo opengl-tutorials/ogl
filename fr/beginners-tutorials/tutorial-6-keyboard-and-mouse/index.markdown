@@ -14,7 +14,7 @@ Bienvenue dans le sixième tutoriel !
 
 Tu vas apprendre à utiliser le clavier et la souris pour déplacer la caméra exactement comme dans un FPS.
 
-#L'interface
+# L'interface
 
 Comme le code va être réutilisé dans les autres tutoriels, on va placer le code dans un fichier à part : common/controls.cpp et déclarer les fonctions dans common/controls.hpp afin que le fichier tutorial06.cpp puisse les utiliser.
 
@@ -46,7 +46,7 @@ C'est une façon de faire. Bien sûr, si tu n'aimes pas ces fonctions, vas-y et 
 
 Voyons voir maintenant ce qu'il y a dans controls.cpp.
 
-#Le vrai code
+# Le vrai code
 
 On a besoin de quelques variables :
 
@@ -206,7 +206,7 @@ ViewMatrix       = glm::lookAt(
 );
 ```
 
-#Résultat
+# Résultat
 
 ![]({{site.baseurl}}/assets/images/tuto-6-mouse-keyboard/moveanim.gif)
 
@@ -227,7 +227,7 @@ Voici comment on active le backface culling :
 glEnable(GL_CULL_FACE);
 ```
 
-#Exercices
+# Exercices
 
 * Restreins verticalAngle afin de ne pas pouvoir retourner la caméra de haut en bas (mais seulement de gauche à droite)
 * Crée une caméra qui tourne autour de l'objet (position = ObjectCenter + ( radius * cos(time), height, radius * sin(time) ) ) ; lie le rayon/hauteur/temps au clavier/souris, ou autre

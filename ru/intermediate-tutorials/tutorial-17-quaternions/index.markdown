@@ -20,7 +20,7 @@ We will present the two most common ways to represent rotation: Euler angles and
 ![]({{site.baseurl}}/assets/images/tuto-17-rotation/tuto17.png)
 
 
-#Foreword: rotation VS orientation
+# Foreword: rotation VS orientation
 
 While reading articles on rotations, you might get confused because of the vocabulary. In this tutorial:
 
@@ -29,7 +29,7 @@ While reading articles on rotations, you might get confused because of the vocab
 
 That is, when you *apply a rotation*, you *change the orientation*. Both can be represented with the same tools, which leads to the confusion. Now, let's get started...
 
-#Euler Angles
+# Euler Angles
 
 Euler angles are the easiest way to think of an orientation. You basically store three rotations around the X, Y and Z axes. It's a very simple concept to grasp. You can use a vec3 to store it:
 
@@ -54,7 +54,7 @@ However, when things get more complex, Euler angle will be hard to work with. Fo
 
 Quaternions are a tool to represent rotations, which solves these problems.
 
-#Quaternions
+# Quaternions
 
 A quaternion is a set of 4 numbers, [x y z w], which represents rotations the following way:
 
@@ -130,7 +130,7 @@ mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScaleMatrix;
 #
 
 
-#So, which one should I choose ?
+# So, which one should I choose ?
 
 Choosing between Euler angles and quaternions is tricky. Euler angles are intuitive for artists, so if you write some 3D editor, use them. But quaternions are handy for programmers, and faster too, so you should use them in a 3D engine core.
 
@@ -138,7 +138,7 @@ The general consensus is exactly that: use quaternions internally, and expose Eu
 
 You will be able to handle all you will need (or at least, it will be easier), and you can still use Euler angles for entities that require it ( as said above: the camera, humanoids, and that's pretty much it) with a simple conversion.
 
-#Other resources
+# Other resources
 
 
 * The books on [Useful Tools & Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) !
@@ -149,7 +149,7 @@ You will be able to handle all you will need (or at least, it will be easier), a
 * Ogre3D's [Vector3D.h](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/include/OgreVector3.h?at=default) and [Quaternion.cpp](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/src/OgreQuaternion.cpp?at=default)
 
 
-#Cheat-sheet
+# Cheat-sheet
 
 How do I know it two quaternions are similar ?
 

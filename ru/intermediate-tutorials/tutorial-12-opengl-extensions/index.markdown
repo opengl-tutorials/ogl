@@ -11,7 +11,7 @@ tags: []
 language: ru
 ---
 
-#Extensions
+# Extensions
 
 With each new generation, the performance of GPU increases, allowing to render more triangles and more pixels. However, raw performance isn't the only concern. NVIDIA, AMD and Intel also improve their graphic cards by providing more functionality. Let's have a look at some examples.
 
@@ -80,7 +80,7 @@ EXT : A generic extention.
 ARB : the extention has been accepted by all the members of the OpenGL Architecture Review Board (EXT extentions are often promoted to ARB after a while).
 NV/AMD/INTEL : Quite self-explanatory =)
 
-#Designing with Extentions
+# Designing with Extentions
 
 
 ## The problem
@@ -111,13 +111,13 @@ If you have to handle older hardware, though, OpenGL 3+ won't be available, and 
 
 For further details, see for instance the [OpenGL 2.1 version of Tutorial  14 - Render To Texture, line 152](http://code.google.com/p/opengl-tutorial-org/source/browse/tutorial14_render_to_texture/tutorial14.cpp?name=2.1%20branch#152), where I have to check the presence of GL_ARB_framebuffer_object by hand. See also the [FAQ](http://www.opengl-tutorial.org/miscellaneous/faq/).
 
-#Conclusion
+# Conclusion
 
 OpenGL Extentions provide a nice way to extend OpenGL's capabilities, depending on your user's GPU.
 
 While extentions are nowaday mostly for advanced use since most functionality is already in the core, it's still important to know how they work and how you can use them to improve your software - at the expense of higher maintainance.
 
-#Further reading
+# Further reading
 
 
 * [debug_output tutorial by Aks](http://sites.google.com/site/opengltutorialsbyaks/introduction-to-opengl-4-1---tutorial-05 ) you can skip Step 1 thanks to GLEW.

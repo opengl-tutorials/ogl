@@ -46,7 +46,7 @@ void main(){
 
 void FunctionDefinedInHeader(); // Declare the function
 
-#endif
+# endif
 // End of MyHeader.h
 
 void main(){
@@ -117,7 +117,7 @@ Sometimes a .dll can't be found, probably because you screwed the installation p
 ![]({{site.baseurl}}/assets/images/build-own-app/dynamiclinking.png)
 
 
-#How do I do X with IDE Y ?
+# How do I do X with IDE Y ?
 
 The instructions on how to build an OpenGL application are separated from the following basic operations. This is on purpose :
 
@@ -331,7 +331,7 @@ a *a.out* file appeared; It's your executable, run it :
 
 That's it !
 
-#Building your own C application
+# Building your own C application
 
 Armed with this knowledge, we can start building our own OpenGL application.
 
@@ -410,7 +410,7 @@ int main( void )
 
 You will have many compiler errors. We will analyse all of them, one by one.
 
-#Troubleshooting
+# Troubleshooting
 
 The error messages below are for Visual Studio 2010, but they are more or less similar on GCC.
 

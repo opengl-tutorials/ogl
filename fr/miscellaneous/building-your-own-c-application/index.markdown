@@ -16,7 +16,7 @@ Donc, ce tutoriel va expliquer comment compiler ta propre application C à parti
 
 <span style="color: #ff0000;">Ne saute pas les deux premières sections. Si tu lis ce tutoriel, tu as probablement besoin de connaître ces choses.</span>
 
-#Le modèle des applications C
+# Le modèle des applications C
 
 ## Le préprocesseur
 
@@ -45,7 +45,7 @@ Il ouvre simplement le fichier MyHeader.h et copie-colle son contenu dans le fic
 
 void FunctionDefinedInHeader(); // Declare the function
 
-#endif
+# endif
 // End of MyHeader.h
 
 void main(){
@@ -112,7 +112,7 @@ Quelques fois, une .dll ne peut être trouvée, sûrement, car l'installation a 
 
 ![]({{site.baseurl}}/assets/images/build-own-app/dynamiclinking.png)
 
-#Comment faire X avec l'éditeur Y ?
+# Comment faire X avec l'éditeur Y ?
 
 On va expliquer les opérations de base de création d'un projet séparement des opérations specifiques a OpenGL.
 
@@ -310,7 +310,7 @@ un fichier *a.out* apparaît ; c'est ton exécutable. Exécute-le :
 
 C'est tout !
 
-#Compiler votre propre application C
+# Compiler votre propre application C
 
 Armé de cette connaissance, on peut commencer à compiler soi-même une application OpenGL.
 
@@ -389,7 +389,7 @@ int main( void )
 
 Tu vas obtenir de nombreuses erreurs de compilation. On va les analyser une par une.
 
-#Dépannage
+# Dépannage
 
 Les messages d'erreurs ci-dessous sont pour Visual Studio 2010, mais ils sont plus ou moins proches de ceux de GCC.
 

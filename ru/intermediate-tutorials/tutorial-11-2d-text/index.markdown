@@ -16,7 +16,7 @@ In this tutorial, we'll learn to draw 2D text on top of our 3D content. In our c
 ![]({{site.baseurl}}/assets/images/tuto-11-2d-text/clock.png)
 
 
-#The API
+# The API
 
 We're going to implement this simple interface (in common/text2D.h):
 
@@ -30,7 +30,7 @@ In order for the code to work at both 640*480 and 1080p, x and y will be coordin
 
 See common/text2D.cpp for the complete implementation.
 
-#The texture
+# The texture
 
 initText2D simply reads a texture and a couple of shaders. There's nothing fancy about it, but let's look at the texture :
 
@@ -41,7 +41,7 @@ This texture was generated using [CBFG](http://www.codehead.co.uk/cbfg/), one of
 
 The goal of printText2D will thus be to generate quads with the appropriate screen position and texture coordinates.
 
-#Drawing
+# Drawing
 
 We have to fill these buffers :
 

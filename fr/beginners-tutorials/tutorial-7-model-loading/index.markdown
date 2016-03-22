@@ -16,7 +16,7 @@ Dans ce tutoriel, on apprendra à charger un modèle 3D à partir d'un fichier. 
 
 Pour garder ce tutoriel aussi simple que possible, on utilisera le format de fichier OBJ, qui est à la fois simple et très commun. Une fois encore, pour garder les choses simples, on gérera les fichiers OBJ n'ayant qu'une coordonnée UV et qu'une normale par sommet (tu n'as pas à savoir ce qu'est une normale pour le moment).
 
-#Charger le fichier OBJ
+# Charger le fichier OBJ
 
 La fonction, située dans common/objloader.cpp, et déclarée dans common/objloader.hpp, aura la signature suivante :
 
@@ -235,7 +235,7 @@ out_vertices.push_back(vertex);
 
 La même chose est appliquée pour les UV et les normales et c'est fini !
 
-#Utiliser les données chargées
+# Utiliser les données chargées
 
 Une fois que l'on a cela, il n'y a presque plus rien à faire. À la place de déclarer l'habituel static const GLfloat g_vertex_buffer_data[] = {...}, on déclare un std::vector de sommets (même chose pour les UV et les normales). Ensuite on appel la fonction loadOBJ avec les bons paramètres :
 
@@ -255,12 +255,12 @@ glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0],
 
 And that's it !
 
-#Résultat
+# Résultat
 
 Désolé pour la texture naze, je NE suis PAS un bon artiste :( Toute contribution est bienvenue !
 
 ![]({{site.baseurl}}/assets/images/tuto-7-model-loading/ModelLoading.png)
 
-#Autres formats/chargeurs
+# Autres formats/chargeurs
 
 Ce petit chargeur devrait te suffire pour démarrer, mais ne sera d'aucune utilité dans la vraie vie. Regarde la page des [outils et liens utiles]({{site.baseurl}}/miscellaneous/useful-tools-links/) pour une sélection d'outils que tu peux utiliser. Note, par contre, qu'il est *préférable d'attendre le neuvième tutoriel* avant d'essayer d'utiliser l'un d'entre eux.

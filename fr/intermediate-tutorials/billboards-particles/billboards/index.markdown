@@ -10,13 +10,13 @@ tags: []
 language: fr
 ---
 
-#Introduction
+# Introduction
 
 Les billboards sont des éléments 2D incrustés dans un monde 3D. Ce n'est pas un menu 2D au-dessus de tout le reste, ni un plan 3D autour duquel tu peux tourner, mais quelque chose entre les deux, comme les barres de vies dans beaucoup de jeux.
 
 Ce qui diffère avec les billboards est qu'ils sont positionnés à un endroit spécifique, mais que leur orientation est automatiquement calculée afin qu'ils soient toujours face à la caméra.
 
-#Solution n°1 : la méthode 2D
+# Solution n°1 : la méthode 2D
 
 Cette méthode est super simple.
 
@@ -37,7 +37,7 @@ Voilà !
 
 En plus d'être super facile à implémenter, le billboard aura la même taille, peu importe sa distance avec la caméra. Mais le texte 2D est toujours affiché au-dessus de tout le reste et cela peut désorganiser le rendu et s'afficher au-dessus d'autres objets.
 
-#Solution n°2 : la méthode 3D
+# Solution n°2 : la méthode 3D
 
 Celle-ci est habituellement mieux et pas trop compliquée.
 
@@ -93,7 +93,7 @@ Pour information, voici comment squareVertices est définie :
  };
 ```
 
-#Solution n°3 : la méthode 3D avec taille fixe
+# Solution n°3 : la méthode 3D avec taille fixe
 
 Comme tu peux le voir ci-dessus, la taille du billboard change suivant la distance de la caméra. Dans certains cas, cela est le résultat attendu, mais dans d'autres, tel que les barres de vies, tu veux probablement une taille fixe à la place.
 
@@ -116,7 +116,7 @@ Si tu veux une taille en pixels, c'est facile : utilise simplement (ScreenSizeIn
 
 ![]({{site.baseurl}}/assets/images/tuto-billboard/3.gif)
 
-#Solution n°4 : rotation verticale seule
+# Solution n°4 : rotation verticale seule
 
 Quelques technique de rendue représentent les arbres lointains et les lampes avec des billboards. Mais tu ne souhaites vraiment, vraiment pas, que votre arbre soit incliné : il DOIT être vertical. Donc tu as besoin d'un système hybride qui tourne seulement autour d'un axe.
 

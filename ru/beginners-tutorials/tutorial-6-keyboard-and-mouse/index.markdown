@@ -16,7 +16,7 @@ order: 60
 
 Пришло время узнать, как использовать клавиатуру и мышь, чтобы перемещать камеру также, как и в играх жанра FPS.
 
-#Интерфейс
+# Интерфейс
 
 Так как код этого урока будет использоваться в дальнейшем, мы поместим его в отдельный файл common/controls.cpp и объявим необходимые функции в common/controls.hpp, таким образом tutorial06.cpp будет их видеть.
 
@@ -48,7 +48,7 @@ do{
 
 Теперь перейдем непосредственно к controls.cpp
 
-#Основной код
+# Основной код
 
 Итак, нам потребуется несколько переменных:
 ```
@@ -203,7 +203,7 @@ ViewMatrix       = glm::lookAt(
 );
 ```
 
-#Результат
+# Результат
 
 [<img title="moveanim" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/moveanim.gif" width="206" height="159" />]({{site.baseurl}}/assets/images/tuto-6-mouse-keyboard/moveanim.gif)
 
@@ -222,7 +222,7 @@ ViewMatrix       = glm::lookAt(
 glEnable(GL_CULL_FACE);
 ```
 
-#Упражнения
+# Упражнения
 
 
 * Сделайте так, чтобы вы не могли перемещаться вниз или вверх

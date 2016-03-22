@@ -11,7 +11,7 @@ tags: []
 language: ru
 ---
 
-#The principle of indexing
+# The principle of indexing
 
 Until now, when building your VBO, we always duplicated our vertices whenever two triangles shared an edge.
 
@@ -22,7 +22,7 @@ In this tutorial, we introduce indexing, which enables to reuse the same vertex 
 
 The index buffer contains integers, three for each triangle in the mesh, which reference the various *attribute buffers* (position, colour, UV coordinates, other UV coordinates, normal, ...). It's a little bit like in the OBJ file format, with one huge difference : there is only ONE index buffer. This means that for a vertex to be shared between two triangles, all attributes must be the same.
 
-#Shared vs Separate
+# Shared vs Separate
 
 Let's take the example of the normals. In this figure, the artist who created these two triangle probably wanted them to represent a smooth surface. We can thus blend the normals of the two triangle into a single vertex normal. For visualization purposes, I added a red line which represents the aspect of the smooth surface.
 
@@ -39,7 +39,7 @@ So in this case it's actually better to have two different normals, one for each
 ![]({{site.baseurl}}/assets/images/tuto-9-vbo-indexing/spiky.png)
 
 
-#Indexed VBO in OpenGL
+# Indexed VBO in OpenGL
 
 Using indexing is very simple. First, you need to create an additional buffer, which you fill with the right indices. The code is the same as before, but now it's an ELEMENT_ARRAY_BUFFER, not an ARRAY_BUFFER.
 
@@ -72,7 +72,7 @@ and to draw the mesh, simply replace glDrawArrays by this :
 
 (quick note : it's better to use "unsigned short" than "unsigned int", because it takes less memory, which also makes it faster)
 
-#Filling the index buffer
+# Filling the index buffer
 
 Now we actually have a problem. As I said before, OpenGL can only use one index buffer, whereas OBJ (and some other popular 3D formats like Collada) use one index buffer *by attribute*. Which means that we somehow have to convert from N index buffers to 1 index buffer.
 
@@ -93,6 +93,6 @@ The criterion for similarity is that vertices' position, UVs and normals should 
 
 Searching a similar vertex is done with a lame linear search for simplicity. A std::map would be more appropriate for real use.
 
-#Extra : the FPS counter
+# Extra : the FPS counter
 
 It's not directly related to indexing, but it's a good moment to have a look at [the FPS counter](http://www.opengl-tutorial.org/miscellaneous/an-fps-counter/) because we can eventually see the speed improvement of indexing. Other performance tools are available in [Tools - Debuggers](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/#header-4).

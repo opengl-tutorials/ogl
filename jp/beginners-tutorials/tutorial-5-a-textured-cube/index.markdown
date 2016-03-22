@@ -22,7 +22,7 @@ order: 50
 * アルファチャネルとは何か
 
 
-#UV座標とは
+# UV座標とは
 
 メッシュをテクスチャするとき、各三角形に画像のどの部分を使うかをOpenGLに伝える手段が必要です。これをUV座標を使って行います。
 
@@ -32,7 +32,7 @@ order: 50
 
 三角形の上にテクスチャがどのようにゆがんでいるかを確認してください。
 
-#BMP画像のロード
+# BMP画像のロード
 
 BMPファイルフォーマットは複雑でないことが知られています。また多くのライブラリも存在します。しかし、ロード作業はとてもシンプルで、ブラックボックス内でどのように動いているかを理解する助けにもなります。だから、どのように動くかを知るためにも、BMPファイルローダを書きましょう。<span style="text-decoration: underline">ただし二度と使うことはないでしょう。</span>.
 
@@ -155,7 +155,7 @@ GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 * 良いが不自然 : 128*256
 
 
-#OpenGLでのテクスチャの使用
+# OpenGLでのテクスチャの使用
 
 はじめにフラグメントシェーダを見ていきましょう。これは簡単です。
 
@@ -269,7 +269,7 @@ static const GLfloat g_uv_buffer_data[] = {
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/nearfiltering_zoom.png)
 
-#フィルタリングとミップマップの使い方
+# フィルタリングとミップマップの使い方
 
 上でスクリーンショットで見たように、テクスチャの質はあまりよくありません。これは私たちが書いたloadBMP_customに起因します。
 
@@ -320,7 +320,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 glGenerateMipmap(GL_TEXTURE_2D);
 ```
 
-#GLFWでのテクスチャのロード方法
+# GLFWでのテクスチャのロード方法
 
 自分で作ったのでloadBMP_custom関数はとても素晴らしく感じます。しかし専用のライブラリを使うほううがよいでしょう。GLFWがやってくれます。(ただしTGAファイルのみです。)
 
@@ -349,7 +349,7 @@ GLuint loadTGA_glfw(const char * imagepath){
 }
 ```
 
-#圧縮されたテクスチャ
+# 圧縮されたテクスチャ
 
 ここで、どうやってTGAファイルの変わりにJPEGファイルを読み込もうかと考えているかと思います。
 
@@ -475,13 +475,13 @@ And now, we just have to fill each mipmap one after another :
 
 DXT圧縮はDirectXの世界から来ました。DirectXではVテクスチャ座標がOpenGLとは逆向きになっています。だから圧縮されたテクスチャを使う場合、正しいテクセルを取り出すために( coord.u, 1.0-coord.v)を使う必要があります。これは好きなときに出来ます。例えば、エクスポートスクリプトで、ローダで、シェーダで...。
 
-#結論
+# 結論
 
 OpenGLでテクスチャを作り、ロードし使う方法を学びました。
 
 一般的に、圧縮されたテクスチャのみを使うべきです。なぜならメモリの使用量が少なく、ロードも早く、使うときのスピードも速いからです。主な欠点は、Compressonatorを使って画像を変換する必要があるということです。
 
-#演習
+# 演習
 
 
 * ソースコード内でDDSローダを実装しましたが、テクスチャ座標の修正は実装していません。立方体が正しく表示されるようにコードの適切な位置を変更してください。
@@ -489,7 +489,7 @@ OpenGLでテクスチャを作り、ロードし使う方法を学びました�
 * Compressonatorでミップマップを作らないようにしてください。結果はどうなりましたか？これを直す方法を3つ挙げてください。
 
 
-#参考文献
+# 参考文献
 
 
 * [OpenGLで圧縮されたテクスチャを使う](http://www.oldunreal.com/editing/s3tc/ARB_texture_compression.pdf) , S辿bastien Domine, NVIDIA

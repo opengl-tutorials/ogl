@@ -11,23 +11,23 @@ tags: []
 language: es
 ---
 
-#Introducción
+# Introducción
 
 Bienvenido al primer tutorial !
 
 Antes de saltar a OpenGL, primero es importante aprender a compilar el código que viene con cada tutorial, como correrlo y lo mas importante, como modificar el código tu mismo.
 
-#Prerrequisitos
+# Prerrequisitos
 
 No hay prerrequisitos para seguir este tutorial. Si tienes experiencia con cualquier lenguaje de programación ( C, Java, Lisp, Javascript, otros ) te servirá para entender completamente el código pero no es necesario. Śería como aprender dos cosas al mismo tiempo.
 
 Todos los tutoriales estan escritos en C++ "fácil". Hemos hecho un gran esfuerzo para hacer el código lo mas sencillo posible. No hay templates, no hay clases, no hay apuntadores. De esta forma usted entenderá todo, aun si solo sabe programar en Java.
 
-#Olvide todo lo anterior
+# Olvide todo lo anterior
 
 No tienes que saberlas todas, pero aquí debes olvidar todo lo que sabes de OpenGL. Si sabes algo acerca de una cosa que se parece a glBegin(), olvidalo. Aquí vas a aprender el OpenGl moderno (OpenGL 3 y 4), y la mayoría de tutoriales enseñan el OpenGl "viejo" (OpenGL 1 and 2). así que olvida todo lo que sabes antes de que tu cerebro se derrita con la mezcla.
 
-#Compilando los tutoriales
+# Compilando los tutoriales
 
 Todos los tutoriales pueden ser compilados en Windows, Linux y Mac. Para todas las plataformas el proceso es prácticamente el mismo :
 
@@ -117,19 +117,19 @@ Por culpa de 2 bugs (uno en C::B y otro en CMake), debes editar la linea de coma
 
 También debes seleccionar el directorio de trabajo tu mismo : Proyecto->Propiedades -> Proyecto a construir -> tutorial N -> directorio de trabajo ( que es : src_dir/tutorial_N/ ).
 
-#Ejecutando los tutoriales
+# Ejecutando los tutoriales
 
 Debes ejecutar los tutoriales directamente de los directorios, simplemente haz doble clic en el ejecutable. Si prefieres usar la linea de comandos asegurate de hacer cd al directorio correcto.
 
 Si quieres ejecutar los tutoriales desde el IDE, no olvides leer las instrucciones de arriba para seleccionar el directorio correcto.
 
-#Cómo seguir estos tutoriales
+# Cómo seguir estos tutoriales
 
 Cada tutorial consiste en su código y sus datos, cada uno se puede encontrar en tutorialXX/. Sinembargo, nunca debes modificar estos proyectos : solo son para referencia. Abre playground/playground.cpp, y modifica este archivo en su lugar. Torturela como te plazca. Si se pierde, simplemente copia otro tutorial dentro de playground/playground.cpp, todo deberá haber vuelto a la normalidad.
 
 Nosotros te proveemos pedacitos de código a lo largo del tutorial. No dudes en copiar y pegarlos directamente en el playground mientras va avanzando : Experimentar es bueno ! Evita leer todo el código finalizado, no vas a aprender mucho de esta manera. Aun si solo copias y pegas los pedazos aprenderás mas y podrás solucionar problemas.
 
-#Abriendo una ventana
+# Abriendo una ventana
 
 Código ! Porfin !
 Bueno, en realidad no. Todos los tutoriales te muestran el "nivel bajo" de hacer las cosas, de manera que puedas ver qué no es nada mágico, es parte de un largo y tedioso proceso, así que vamos a usar GLFW, una librería externa para que haz la parte aburrida por nosotros. Si realmente quisieras, podrías usar el API de Win32 en windows, el API X11 en Linux o el API Cocoa en Mac. Podría usar otras librerías como SFML, FreeGLUT, SDL, ... Ve los [vinculos de herramientas útiles aquí](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) 

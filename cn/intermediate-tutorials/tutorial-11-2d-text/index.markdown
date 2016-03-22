@@ -16,7 +16,7 @@ order: 30
 ![]({{site.baseurl}}/assets/images/tuto-11-2d-text/clock.png)
 
 
-#API
+# API
 
 我们将实现这些简单的接口（位于common/text2D.h）：
 
@@ -30,7 +30,7 @@ void cleanupText2D();
 
 完整的实现代码请参阅common/text2D.cpp。
 
-#纹理
+# 纹理
 
 initText2D只是简单地读取一个纹理和一些着色器，并无特别之处。不过这张纹理却不普通，来看看：
 
@@ -41,7 +41,7 @@ initText2D只是简单地读取一个纹理和一些着色器，并无特别之�
 
 printText2D负责生成一个矩形，并正确计算出该矩形的屏幕位置和纹理坐标（译注：取字符的过程就像从报纸上剪字一样）。
 
-#绘制
+# 绘制
 
 首先，填充这些缓冲：
 

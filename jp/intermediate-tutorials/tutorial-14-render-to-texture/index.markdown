@@ -15,7 +15,7 @@ language: jp
 
 in-gameカメラや後処理、多くのGFXのようなアプリケーションを含みます。
 
-#テクスチャへのレンダー
+# テクスチャへのレンダー
 
 これを実行するには3つの作業があります。描画しようとするテクスチャの作成。そこに何かを描画する。できたテクスチャを使用する。
 
@@ -166,14 +166,14 @@ void main(){
 
 このコードは単純にテクスチャをサンプルします。ただし、時刻に応じて小さなオフセットを追加します。
 
-#結果
+# 結果
 
  
 
 ![]({{site.baseurl}}/assets/images/tuto-14-render-to-texture/wavvy.png)
 
 
-#さらに先へ
+# さらに先へ
 
 
 ##デプスを使う
@@ -221,7 +221,7 @@ layout(location = 1) out vec3 normal_tangentspace; // or whatever
 
 ヒント2：以前のバージョンのOpenGLでは、代わりにglFragData[1] = myvalueを使います。
 
-#演習
+# 演習
 
 
 * glViewport(0,0,1024,768);の代わりにglViewport(0,0,512,768);を使いましょう。（フレームバッファとスクリーンの両方で試しましょう。）

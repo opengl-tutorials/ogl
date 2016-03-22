@@ -20,7 +20,7 @@ Particles are very similar to 3D billboards. There are two major differences, th
 
 Both of these difference come with problems. This tutorial will present ONE way to solve them; there are many other possibilities.
 
-#Particles, lots of them !
+# Particles, lots of them !
 
 The first idea to draw many particles would be to use the previous tutorial's code, and call glDrawArrays once for each particle. This is a very bad idea, because this means that all your shiny GTX' 512+ multiprocessors will all be dedicated to draw ONE quad (obviously, only one will be used, so that's 99% efficiency loss). Then you will draw the second billboard, and it will be the same.
 
@@ -174,7 +174,7 @@ The point is that now, we only have to update a small buffer each frame (the cen
 
  
 
-#Life and death
+# Life and death
 
 On the contrary to most other objects in the scene, particles die and born at a very high rate. We need a decently fast way to get new particles and to discard them, something better than "new Particle()".
 
@@ -244,7 +244,7 @@ if (newparticles > (int)(0.016f*10000.0))
 
 There's a trick, see below =)
 
-#The main simulation loop
+# The main simulation loop
 
 ParticlesContainer contains both active and "dead" particles, but the buffer that we send to the GPU needs to have only living particles.
 
@@ -328,7 +328,7 @@ This will make ParticleContainer be sorted, and the particles now display correc
 
  
 
-#Going further
+# Going further
 
 
 ## Animated particles

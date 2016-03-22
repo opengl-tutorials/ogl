@@ -11,7 +11,7 @@ tags: []
 language: jp
 ---
 
-#拡張
+# 拡張
 
 最近はGPUの性能向上などによりより多くの三角形やピクセルの描画が可能となっています。しかし、そのような単純な性能向上だけに関心があるわけではありません。NVIDIAやAMD、Intelはよりよい機能を提供することでグラフィックカードの性能を向上させています。その例を見ていきましょう。
 
@@ -80,7 +80,7 @@ EXT : 一般的な拡張
 ARB : OpenGL Architecture Review Boardで受け入れられた拡張機能
 NV/AMD/INTEL : これはそのままの意味 =)
 
-#拡張機能によるデザイン
+# 拡張機能によるデザイン
 
 
 ##問題
@@ -109,13 +109,13 @@ OpenGL3.3以降では、あなたが必要な機能の99%は用意されてま�
 
 より詳しく知りたいなら[OpenGL 2.1 version of Tutorial  14 - Render To Texture, line 152](http://code.google.com/p/opengl-tutorial-org/source/browse/tutorial14_render_to_texture/tutorial14.cpp?name=2.1%20branch#152)や [FAQ](http://www.opengl-tutorial.org/miscellaneous/faq/)を見てください。
 
-#結論
+# 結論
 
 あなたのGPU次第ではありますが、OpenGLの機能性を拡張するような良い拡張機能があることがわかりました。
 
 多くの機能が既にOpenGLに組み込まれているので、最近では拡張機能のほとんどが高度な使用のためのものとなっています。しかし、それらがどう動くかや、それらを使うことでソフトウェアの性能を向上させることができるということを知っておくことは重要です。同時にメンテナンスコストも発生しますが。
 
-#参考文献
+# 参考文献
 
 
 * [debug_output tutorial by Aks](http://sites.google.com/site/opengltutorialsbyaks/introduction-to-opengl-4-1---tutorial-05 ) GLEWのおかげでステップ1は飛ばせます。

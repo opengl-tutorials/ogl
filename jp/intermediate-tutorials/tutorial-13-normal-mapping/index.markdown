@@ -15,7 +15,7 @@ language: jp
 
 [チュートリアル8](http://www.opengl-tutorial.org/beginners-tutorials/tutorial-8-basic-shading/)で 、三角形の法線を使ってちゃんとしたシェーディングをする方法を学びました。これまでは、各頂点に対して一つの法線だけを扱ってきました。各三角形内では、テクスチャからサンプルした色はスムーズに変化していました。法線マッピングの基本的な考え方は、これと同様な方法で法線を与えることです。
 
-#法線テクスチャ
+# 法線テクスチャ
 
 ”法線テクスチャ”は次のようなものです。
 
@@ -32,7 +32,7 @@ normal = (2*color)-1 // 各要素
 
 このテクスチャはちょうど拡散光と同じようにマッピングされます。ここで、各三角形の空間（接空間、あるいはイメージ空間とよばれます）で表されている法線を、どのようにしてモデル空間へ変換するかが問題となります。
 
-#接空間と従接空間
+# 接空間と従接空間
 
 空間を定義するためには3つのベクトルを必要とすることは分かると思います。（ここでは接空間を指します。）既に”上”は向かうベクトルを分かっているとします。これこそが法線で、Blenderや三角形から単純な外積によって計算されているとします。これは法線マップの全体的な色のように青色で表現されます。
 
@@ -82,7 +82,7 @@ invTBN = transpose(TBN)
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/transposeTBN.png)
 
 
-#VBOの準備
+# VBOの準備
 
 ##接線と従接線の計算
 
@@ -174,7 +174,7 @@ void computeTangentBasis(
 
 ここでは正規化は行いません。小さな接線と従接線を持つ小さな三角形は、大きな三角形に比べて最終的なベクトルに小さな影響を与えるため、このようにします。
 
-#シェーダ
+# シェーダ
 
 
 ##追加のバッファとユニフォーム
@@ -370,7 +370,7 @@ void computeTangentBasis(
 これで必要なものはすべてそろいました。拡散光は *clamp( dot( n,l ), 0,1 )* を使います。
 nとlは接空間で表されています。（内積や外積をとる場合、2ベクトルがどの空間にあるかは問題ではありませんが、同じ空間にある必要があります。）鏡面光では *clamp( dot( E,R ), 0,1 )* を使います。同様にEとRは接空間で表現されています。
 
-#結果
+# 結果
 
 結果を示しておきます。次のことに気づくでしょう
 
@@ -380,7 +380,7 @@ nとlは接空間で表されています。（内積や外積をとる場合、
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/normalmapping.png)
 
 
-#さらに先へ
+# さらに先へ
 
 
 ##直交化
@@ -522,14 +522,14 @@ James O’Hareによる作りかた。クリックで拡大してください。
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/normalMapMiniTut.jpg)
 
 
-#演習
+# 演習
 
 
 * 加える前にindexVBO_TBNにあるベクトルを正規化して可視化してみましょう。
 * 他のベクトル（例えば、EyeDirection_tangentspace）もカラーモードで可視化してみましょう。そしてそれが何を意味するか理解してみましょう。
 
 
-#ツールとリンク
+# ツールとリンク
 
 
 * [Crazybump](http://www.crazybump.com/) , 法線マップを作るのに適しています。有料です。
@@ -539,7 +539,7 @@ James O’Hareによる作りかた。クリックで拡大してください。
 * より詳しいことは [matrix transpose](http://www.katjaas.nl/transpose/transpose.html)にあります。
 
 
-#参考文献
+# 参考文献
 
 
 * [Lengyel, Eric. "Computing Tangent Space Basis Vectors for an Arbitrary Mesh". Terathon Software 3D Graphics Library, 2001.](http://www.terathon.com/code/tangent.html)
