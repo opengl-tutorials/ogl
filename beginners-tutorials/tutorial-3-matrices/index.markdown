@@ -328,25 +328,25 @@ transformed_vertex = MVP * in_vertex;
 
 * First step : generating our MVP matrix. This must be done for each model you render.
 
-``` cpp
-// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float) width / (float)height, 0.1f, 100.0f);
-
-// Or, for an ortho camera :
-//glm::mat4 Projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f); // In world coordinates
-
-// Camera matrix
-glm::mat4 View = glm::lookAt(
-               glm::vec3(4,3,3), // Camera is at (4,3,3), in World Space
-               glm::vec3(0,0,0), // and looks at the origin
-               glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-               );
-
-// Model matrix : an identity matrix (model will be at the origin)
-glm::mat4 Model = glm::mat4(1.0f);
-// Our ModelViewProjection : multiplication of our 3 matrices
-glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is the other way around
-```
+  ``` cpp
+  // Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
+  glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float) width / (float)height, 0.1f, 100.0f);
+  
+  // Or, for an ortho camera :
+  //glm::mat4 Projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f); // In world coordinates
+  
+  // Camera matrix
+  glm::mat4 View = glm::lookAt(
+      glm::vec3(4,3,3), // Camera is at (4,3,3), in World Space
+      glm::vec3(0,0,0), // and looks at the origin
+      glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
+      );
+  
+  // Model matrix : an identity matrix (model will be at the origin)
+  glm::mat4 Model = glm::mat4(1.0f);
+  // Our ModelViewProjection : multiplication of our 3 matrices
+  glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is the other way around
+  ```
 
 * Second step : give it to GLSL
 
@@ -362,22 +362,19 @@ glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is
 
 * Third step : use it in GLSL to transform our vertices
 
-``` glsl
-// Input vertex data, different for all executions of this shader.
-layout(location = 0) in vec3 vertexPosition_modelspace;
-
-// Values that stay constant for the whole mesh.
-uniform mat4 MVP;
-
-void main(){
-
+  ``` glsl
+  // Input vertex data, different for all executions of this shader.
+  layout(location = 0) in vec3 vertexPosition_modelspace;
+  
+  // Values that stay constant for the whole mesh.
+  uniform mat4 MVP;
+  
+  void main(){
     // Output position of the vertex, in clip space : MVP * position
     gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
-
-}
-```
-
-{: .highlightglslvs }
+  }
+  ```
+  {: .highlightglslvs }
 
 * Done ! Here is the same triangle as in tutorial 2, still at the origin (0,0,0), but viewed in perspective from point (4,3,3), heads up (0,1,0), with a 45° field of view.
 
@@ -393,6 +390,5 @@ In tutorial 6 you'll learn how to modify these values dynamically using the keyb
 *   Do the same thing, but in different orders. What do you notice ? What is the "best" order that you would want to use for a character ?
 
 _Addendum_
-
 
 [^projection]: [...]luckily for us, a 4x4 matrix can represent this projection : Actually, this is not correct. A perspective transformation is not affine, and as such, can't be represented entirely by a matrix. After beeing multiplied by the ProjectionMatrix, homogeneous coordinates are divided by their own W component. This W component happens to be -Z (because the projection matrix has been crafted this way). This way, points that are far away from the origin are divided by a big Z; their X and Y coordinates become smaller; points become more close to each other, objects seem smaller; and this is what gives the perspective. This transformation is done in hardware, and is not visible in the shader.
