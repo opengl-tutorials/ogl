@@ -144,7 +144,7 @@ glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the 
 
 On peut dessiner le rectangle plein écran avec un tel shader :
 
-^```s*glsls*
+``` glsls
 #version 330 core
 
 in vec2 UV;
@@ -203,7 +203,7 @@ Tu peux écrire dans plusieurs textures en même temps.
 
 Crée simplement plusieurs textures (toutes avec la même et correcte taille !), appele glFramebufferTexture avec une couleur d'attache différente pour chaque, appele glDrawBuffers avec des paramètres mis à jour (quelque chose comme (2, {GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1})) et ajoutez une autre variable de sortie dans votre fragment shader :
 
-^```s*glsls*
+``` glsls
 layout(location = 1) out vec3 normal_tangentspace; // or whatever
 ```
 {: .highlightglslfs }

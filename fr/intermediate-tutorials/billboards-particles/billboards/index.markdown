@@ -65,7 +65,7 @@ CameraUp_worldspace = {ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]}
 
 Une fois que l'on a ça, il est très simple de calculer la position finale du sommet :
 
-^```s*glsls*
+``` glsls
 vec3 vertexPosition_worldspace =
     particleCenter_wordspace
     + CameraRight_worldspace * squareVertices.x * BillboardSize.x

@@ -159,7 +159,7 @@ Otro punto muy importante :** Usar texturas en potencias de dos !**
 
 Le daremos unn vistazo primero al fragment shader. La mayor parte es bastante simple :
 
-^```s*glsls*
+``` glsls
 #version 330 core
 
 // Valores interpolados de los vertex shaders
@@ -187,7 +187,7 @@ Tres cosas :
 
 El vertex shader es simple también. Sólo tienes que pasar coordeandas UV al fragment shader :
 
-^```s*glsls*
+``` glsls
 #version 330 core
 
 // Información de entrada de los vértices. Es diferente para cada una de las ejecuciones de este shader.

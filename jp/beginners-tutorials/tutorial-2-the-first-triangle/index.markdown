@@ -218,14 +218,14 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 まず頂点シェーダを書いていきましょう。
 最初の行はコンパイラにOpenGL3のシンタックスを使うことを知らせています。
 
-^```s*glsls*
+``` glsls
 #version 330 core
 ```
 {: .highlightglslvs }
 
 2行目はインプットデータを宣言します。
 
-^```s*glsls*
+``` glsls
 layout(location = 0) in vec3 vertexPosition_modelspace;
 ```
 {: .highlightglslvs }
@@ -240,14 +240,14 @@ layout(location = 0) in vec3 vertexPosition_modelspace;
 
 各頂点で呼ばれるこの関数はmainで呼ばれます。Cのように。
 
-^```s*glsls*
+``` glsls
 void main(){
 ```
 {: .highlightglslvs }
 
 メイン関数では単に頂点位置にバッファ内に何があるかをセットします。だから(1,1)を与えれば、三角形はスクリーンの右上を頂点の一つとして持つということになります。次のチュートリアルでは、インプット位置上の、より興味深い処理を見ていきます。
 
-^```s*glsls*
+``` glsls
     gl_Position.xyz = vertexPosition_modelspace;
     gl_Position.w = 1.0;
  }
@@ -260,7 +260,7 @@ gl_Position is one of the few built-in variables : you *have *to assign some val
 
 最初のフラグメントシェーダは、とてもシンプルなものとなります。各フラグメントに赤をセットします。(注意してほしいのは、4x AAを使っているので、各ピクセルごとに4つのフラグメントがあります。)
 
-^```s*glsls*
+``` glsls
 #version 330 core
 out vec3 color;
 

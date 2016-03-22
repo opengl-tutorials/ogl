@@ -155,7 +155,7 @@ glVertexAttribPointer(
 
 ここで、頂点バッファ内で、追加のバッファへのアクセスするために次のものを書きます。
 
-^```s*glsls*
+``` glsls
 // ここでの "1" はglVertexAttribPointerの "1" と同じにします。
 layout(location = 1) in vec3 vertexColor;
 ```
@@ -163,7 +163,7 @@ layout(location = 1) in vec3 vertexColor;
 
 今回は、頂点シェーダではファンシーにするための作業は何もしません。ただフラグメントシェーダへ送るだけです。
 
-^```s*glsls*
+``` glsls
 // アウトプットデータ。各頂点に書き込まれます。
 out vec3 fragmentColor;
 
@@ -180,7 +180,7 @@ void main(){
 
 フラグメントシェーダでは再びfragmentColorを宣言します。
 
-^```s*glsls*
+``` glsls
 // 頂点シェーダから書き込まれた色
 in vec3 fragmentColor;
 ```
@@ -188,7 +188,7 @@ in vec3 fragmentColor;
 
 ...そして、最終的なアウトプットカラーにコピーします。
 
-^```s*glsls*
+``` glsls
 // アウトプットデータ
 out vec3 color;
 

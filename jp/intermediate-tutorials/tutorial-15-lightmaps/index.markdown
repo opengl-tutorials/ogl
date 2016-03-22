@@ -49,7 +49,7 @@ OpenGLで描画するとき、以下のような欠陥に気づくかもしれ�
 * BlenderでUVマップの限界付近での間隔を作るように設定します。これは"bake"パネルの"margin"パラメータで設定できます。良い結果を得るためには20テクセル程度のマージンが必要となるでしょう。
 * テクスチャを取り出すときにバイアスを使います
 
-^```s*glsls*
+``` glsls
 color = texture( myTextureSampler, UV, -2.0 ).rgb;
 ```
 {: .highlightglslfs }

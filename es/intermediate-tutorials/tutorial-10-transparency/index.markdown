@@ -23,7 +23,7 @@ out vec4 color;
 
 the first 3 components are still accessed with the .xyz swizzle operator, while the last one is accessed with .a :
 
-^```s*glsls*
+``` glsls
 color.a = 0.3;
 ```
 {: .highlightglslfs }

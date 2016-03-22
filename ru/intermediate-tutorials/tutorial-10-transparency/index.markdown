@@ -15,7 +15,7 @@ language: ru
 
 The concept of the alpha channel is pretty simple. Instead of a writing an RGB result, you write an RGBA :
 
-^```s*glsls*
+``` glsls
 // Ouput data : it's now a vec4
 out vec4 color;
 ```
@@ -23,7 +23,7 @@ out vec4 color;
 
 the first 3 components are still accessed with the .xyz swizzle operator, while the last one is accessed with .a :
 
-^```s*glsls*
+``` glsls
 color.a = 0.3;
 ```
 {: .highlightglslfs }

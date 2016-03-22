@@ -90,7 +90,7 @@ glm::vec3 lightInvDir = glm::vec3(0.5f,2,2);
 
 Les shaders utilisés durant cette passe sont très simples. Le vertex shader est un shader passant les données au fragment shader qui calcule simplement la position des sommets en coordonnées homogènes :
 
-^```s*glsls*
+``` glsls
 #version 330 core
 
 // Input vertex data, different for all executions of this shader.
@@ -107,7 +107,7 @@ void main(){
 
 Le fragment shader est tout aussi simple : il écrit la profondeur du fragment à l'emplacement 0 (c'est-à-dire dans la texture de profondeur).
 
-^```s*glsls*
+``` glsls
 #version 330 core
 
 // Ouput data
@@ -159,7 +159,7 @@ On peut maintenant écrire le vertex shader. Il est identique au précédent, ma
 * gl_Position est la position du sommet tel qu'il est vu par la caméra actuelle.
 * ShadowCoord est la position du sommet tel qu'il est vu à partir de l'ancienne caméra (la lumière).
 
-^```s*glsls*
+``` glsls
 // Output position of the vertex, in clip space : MVP * position
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
@@ -175,7 +175,7 @@ Ensuite, le fragment shader est très simple :
 
 Donc si le fragment actuel est plus loin que l'objet le plus proche, cela signifie que l'on se trouve dans l'ombre (de objet plus proche) :
 
-^```s*glsls*
+``` glsls
 float visibility = 1.0;
 if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z){
     visibility = 0.5;
@@ -185,7 +185,7 @@ if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z){
 
 On a juste besoin d'utiliser ça pour modifier l'ombrage. Bien sûr, la couleur ambiante n'est pas modifiée, car son but est d'imiter une lumière arrivant même lorsqu'on se trouve dans l'ombrage (ou sinon tout ce qui est dans l'ombre serait complètement noir).
 
-^```s*glsls*
+``` glsls
 color =
  // Ambient : simulates indirect lighting
  MaterialAmbientColor +
@@ -218,7 +218,7 @@ Ce phénomène est facilement explicable avec une image :
 
 Le « correctif » habituel pour ça consiste à utiliser une marge d'erreur : on n'ajoute l'ombre que si la profondeur du fragment actuel (encore une fois, dans l'espace de la lumière) est vraiment loin de la valeur de la texture de lumière. On fait ça en ajoutant un biais :
 
-^```s*glsls*
+``` glsls
 float bias = 0.005;
 float visibility = 1.0;
 if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z-bias){
@@ -235,7 +235,7 @@ Par contre, tu peux remarquer qu'à cause de notre biais, l'artefact entre le so
 
 Une approche commune consiste à modifier le biais suivant la pente :
 
-^```s*glsls*
+``` glsls
 float bias = 0.005*tan(acos(cosTheta)); // cosTheta is dot( n,l ), clamped between 0 and 1
 bias = clamp(bias, 0,0.01);
 ```
@@ -303,7 +303,7 @@ Comme vous pouvez le voir, les bordures de l'ombre sont douces, mais la texture 
 
 Une méthode simple pour le gérer est d'échantillonner la texture d'ombre N fois au lieu d'une seule. En combinaison avec le PCF, cela peut donner de très bons résultats, même avec un petit N. Voici le code pour quatre échantillonnages :
 
-^```s*glsls*
+``` glsls
 for (int i=0;i<4;i++){
   if ( texture( shadowMap, ShadowCoord.xy + poissonDisk[i]/700.0 ).z  <  ShadowCoord.z-bias ){
     visibility-=0.2;
@@ -314,7 +314,7 @@ for (int i=0;i<4;i++){
 
 poissonDisk est un tableau constant qui peut être défini comme suit :
 
-^```s*glsls*
+``` glsls
 vec2 poissonDisk[4] = vec2[](
   vec2( -0.94201624, -0.39906216 ),
   vec2( 0.94558609, -0.76890725 ),
@@ -340,7 +340,7 @@ On peut supprimer cet effet de bande en choisissant différents échantillons po
 
 La seule différence avec la version précédente est que l'on indexe poissonDisk avec un indice aléatoire :
 
-^```s*glsls*
+``` glsls
     for (int i=0;i<4;i++){
         int index = // A random number between 0 and 15, different for each pixel (and each i !)
         visibility -= 0.2*(1.0-texture( shadowMap, vec3(ShadowCoord.xy + poissonDisk[index]/700.0,  (ShadowCoord.z-bias)/ShadowCoord.w) ));
@@ -350,7 +350,7 @@ La seule différence avec la version précédente est que l'on indexe poissonDis
 
 On peut générer un nombre aléatoire avec une ligne comme celle-ci, qui retourne un nombre entre [0, 1[ :
 
-^```s*glsls*
+``` glsls
     float dot_product = dot(seed4, vec4(12.9898,78.233,45.164,94.673));
     return fract(sin(dot_product) * 43758.5453);
 ```
@@ -358,7 +358,7 @@ On peut générer un nombre aléatoire avec une ligne comme celle-ci, qui retour
 
 Dans notre cas, seed4 sera une combinaison de i (faisant que l'on échantillonne à quatre emplacements différents) et ... quelque chose d'autre. On peut utiliser gl_FragCoord (l'emplacement du pixel sur l'image) ou Position_worldspace :
 
-^```s*glsls*
+``` glsls
         //  - A random sample, based on the pixel's screen location.
         //    No banding, but the shadow moves with the camera, which looks weird.
         int index = int(16.0*random(gl_FragCoord.xyy, i))%16;
@@ -398,7 +398,7 @@ La seconde étape consiste à prendre en compte la perspective dans le shader (v
 
 Voici deux façons de faire cela en GLSL. La seconde utilise la fonction du langage textureProj, mais les deux méthodes produisent le exactement le même résultat.
 
-^```s*glsls*
+``` glsls
 if ( texture( shadowMap, (ShadowCoord.xy/ShadowCoord.w) ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 if ( textureProj( shadowMap, ShadowCoord.xyw ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 ```

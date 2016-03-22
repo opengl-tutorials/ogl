@@ -64,7 +64,7 @@ int b = (i & 0x00FF0000) >> 16;
 
 On a maintenant besoin d'un shader pour utiliser cette couleur. C'est très simple. Le vertex shader ne fait rien :
 
-^```s*glsls*
+``` glsls
 #version 330 core
 
 // Input vertex data, different for all executions of this shader.
@@ -84,7 +84,7 @@ void main(){
 
 Et le fragment shader écrit simplement la couleur voulue dans le framebuffer :
 
-^```s*glsls*
+``` glsls
 #version 330 core
 
 // Ouput data

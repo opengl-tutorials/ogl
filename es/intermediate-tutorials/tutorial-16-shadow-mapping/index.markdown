@@ -87,7 +87,7 @@ glm::vec3 lightInvDir = glm::vec3(0.5f,2,2);
 
 The shaders used during this pass are very simple. The vertex shader is a pass-through shader which simply compute the vertex' position in homogeneous coordinates :
 
-^```s*glsls*
+``` glsls
 #version 330 core
 
 // Input vertex data, different for all executions of this shader.
@@ -104,7 +104,7 @@ void main(){
 
 The fragment shader is just as simple : it simply writes the depth of the fragment at location 0 (i.e. in our depth texture).
 
-^```s*glsls*
+``` glsls
 #version 330 core
 
 // Ouput data
@@ -158,7 +158,7 @@ We can now write our vertex shader. It's the same as before, but we output 2 pos
 * gl_Position is the position of the vertex as seen from the current camera
 * ShadowCoord is the position of the vertex as seen from the last camera (the light)
 
-^```s*glsls*
+``` glsls
 // Output position of the vertex, in clip space : MVP * position
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
@@ -174,7 +174,7 @@ The fragment shader is then very simple :
 
 ... so if the current fragment is further than the nearest occluder, this means we are in the shadow (of said nearest occluder) :
 
-^```s*glsls*
+``` glsls
 float visibility = 1.0;
 if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z){
     visibility = 0.5;
@@ -184,7 +184,7 @@ if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z){
 
 We just have to use this knowledge to modify our shading. Of course, the ambient colour isn't modified, since its purpose in life is to fake some incoming light even when we're in the shadow (or everything would be pure black)
 
-^```s*glsls*
+``` glsls
 color =
  // Ambient : simulates indirect lighting
  MaterialAmbientColor +
@@ -221,7 +221,7 @@ This phenomenon is easily explained with a simple image :
 
 The usual "fix" for this is to add an error margin : we only shade if the current fragment's depth (again, in light space) is really far away from the lightmap value. We do this by adding a bias :
 
-^```s*glsls*
+``` glsls
 float bias = 0.005;
 float visibility = 1.0;
 if ( texture( shadowMap, ShadowCoord.xy ).z  <  ShadowCoord.z-bias){
@@ -239,7 +239,7 @@ However, you can notice that because of our bias, the artefact between the groun
 
 A common approach is to modify the bias according to the slope :
 
-^```s*glsls*
+``` glsls
 float bias = 0.005*tan(acos(cosTheta)); // cosTheta is dot( n,l ), clamped between 0 and 1
 bias = clamp(bias, 0,0.01);
 ```
@@ -313,7 +313,7 @@ As you can see, shadow borders are smooth, but shadowmap's texels are still visi
 
 An easy way to deal with this is to sample the shadowmap N times instead of once. Used in combination with PCF, this can give very good results, even with a small N. Here's the code for 4 samples :
 
-^```s*glsls*
+``` glsls
 for (int i=0;i<4;i++){
   if ( texture( shadowMap, ShadowCoord.xy + poissonDisk[i]/700.0 ).z  <  ShadowCoord.z-bias ){
     visibility-=0.2;
@@ -324,7 +324,7 @@ for (int i=0;i<4;i++){
 
 poissonDisk is a constant array defines for instance as follows :
 
-^```s*glsls*
+``` glsls
 vec2 poissonDisk[4] = vec2[](
   vec2( -0.94201624, -0.39906216 ),
   vec2( 0.94558609, -0.76890725 ),
@@ -356,7 +356,7 @@ We can remove this banding by choosing different samples for each pixel. There a
 
 The only difference with the previous version is that we index *poissonDisk* with a random index :
 
-^```s*glsls*
+``` glsls
     for (int i=0;i<4;i++){
         int index = // A random number between 0 and 15, different for each pixel (and each i !)
         visibility -= 0.2*(1.0-texture( shadowMap, vec3(ShadowCoord.xy + poissonDisk[index]/700.0,  (ShadowCoord.z-bias)/ShadowCoord.w) ));
@@ -366,7 +366,7 @@ The only difference with the previous version is that we index *poissonDisk* wit
 
 We can generate a random number with a code like this, which returns a random number in [0,1[ :
 
-^```s*glsls*
+``` glsls
     float dot_product = dot(seed4, vec4(12.9898,78.233,45.164,94.673));
     return fract(sin(dot_product) * 43758.5453);
 ```
@@ -374,7 +374,7 @@ We can generate a random number with a code like this, which returns a random nu
 
 In our case, seed4 will be the combination of i (so that we sample at 4 different locations) and ... something else. We can use gl_FragCoord ( the pixel's location on the screen ), or Position_worldspace :
 
-^```s*glsls*
+``` glsls
         //  - A random sample, based on the pixel's screen location.
         //    No banding, but the shadow moves with the camera, which looks weird.
         int index = int(16.0*random(gl_FragCoord.xyy, i))%16;
@@ -415,7 +415,7 @@ The second step is to take into account the perspective in the shader. (see foot
 
 Here are two way to do this in GLSL. The second uses the built-in textureProj function, but both methods produce exactly the same result.
 
-^```s*glsls*
+``` glsls
 if ( texture( shadowMap, (ShadowCoord.xy/ShadowCoord.w) ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 if ( textureProj( shadowMap, ShadowCoord.xyw ).z  <  (ShadowCoord.z-bias)/ShadowCoord.w )
 ```

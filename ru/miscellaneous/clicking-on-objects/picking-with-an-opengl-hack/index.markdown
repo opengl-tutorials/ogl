@@ -68,7 +68,7 @@ This might seem scary, but it's standard bit-manipulation code. You end up with 
 
 We now need a shader to use this color. It's very simple. The vertex shader does nothing :
 
-^```s*glsls*
+``` glsls
 #version 330 core
 
 // Input vertex data, different for all executions of this shader.
@@ -88,7 +88,7 @@ void main(){
 
 and the fragment shader simply writes the desired color in the framebuffer :
 
-^```s*glsls*
+``` glsls
 #version 330 core
 
 // Ouput data

@@ -15,7 +15,7 @@ language: jp
 
 アルファチャネルの概念はとても単純です。RGBを書くの代わりに、RGBAを書きます：
 
-^```s*glsls*
+``` glsls
 // 出力データ：今回はvec4です。
 out vec4 color;
 ```
@@ -23,7 +23,7 @@ out vec4 color;
 
 最初の3要素は.xyzでアクセスでき、最後の要素は.aでアクセスします：
 
-^```s*glsls*
+``` glsls
 color.a = 0.3;
 ```
 {: .highlightglslfs }
