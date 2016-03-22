@@ -114,7 +114,7 @@ and
 
 これは、ピクセルの色を計算するときに、光の入ってきた角度と表面の法線との角度が重要になることを意味します。次のことを得ます。
 
-``` glsls
+``` glsl
 // 法線と光の方向の角度のコサイン
 // 0以上に固定します。
 //  - 光が三角形に水平の場合 -> 1
@@ -131,7 +131,7 @@ color = LightColor * cosTheta;
 
 上のcosThetaの式では何か忘れています。もし光が三角形の後ろにあると、nとlは反対になります。だからnとlは負になります。これは"色＝負の数"を意味しますがこれでは意味が分かりません。だからcosThetaの下限を0に固定します。
 
-``` glsls
+``` glsl
 // 法線と光の方向の角度のコサイン
 // clamped above 0
 //  - 光が三角形に水平の場合 -> 1
@@ -152,7 +152,7 @@ color = LightColor * cosTheta;
 
 簡単な計算式でこれを実現できます。
 
-``` glsls
+``` glsl
 color = MaterialDiffuseColor * LightColor * cosTheta;
 ```
 {: .highlightglslfs }
@@ -163,14 +163,14 @@ color = MaterialDiffuseColor * LightColor * cosTheta;
 
 そのような光の場合、表面に到達する光束は光との距離に依存します。つまり遠くでは少ない光しか届きません。実際、光の量は距離の2乗で少なくなります。
 
-``` glsls
+``` glsl
 color = MaterialDiffuseColor * LightColor * cosTheta / (distance*distance);
 ```
 {: .highlightglslfs }
 
 最後に、光の強さを調節するようなパラメータも必要です。これはLightColorにエンコードされます。(後のチュートリアルで見ます。)しかし、ここではただ色(例えば白色)と強さ(例えば60ワット)を持っていることとします。
 
-``` glsls
+``` glsl
 color = MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance);
 ```
 {: .highlightglslfs }
@@ -185,7 +185,7 @@ LightColorとLightPowerはGLSL uniformを通してシェーダでセットしま
 
 cosThetaはnとlに依存します。どの空間でも表現できますが、ここではカメラ空間を選びます。なぜならカメラ空間だと光の位置を計算するのが簡単だからです。
 
-``` glsls
+``` glsl
 // カメラ空間で、計算されたフラグメントの法線
  vec3 n = normalize( Normal_cameraspace );
  // 光の方向(フラグメントから光の方向)
@@ -195,7 +195,7 @@ cosThetaはnとlに依存します。どの空間でも表現できますが、�
 
 Normal_cameraspaceとLightDirection_cameraspaceは頂点シェーダで計算され、フラグメントシェーダへ送られます。
 
-``` glsls
+``` glsl
 // クリップ空間での頂点の出力位置、MVP&times;位置
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
@@ -245,12 +245,12 @@ MとVはモデル行列とビュー行列で、MVP行列と同じようにシェ
 
 これは次のように実現できます。
 
-``` glsls
+``` glsl
 vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
 ```
 {: .highlightglslfs }
 
-``` glsls
+``` glsl
 color =
  // 環境光：直接当たらない光をシミュレートします。
  MaterialAmbientColor +
@@ -279,7 +279,7 @@ OK、少しよくなりました。より良い結果を得るために(0.1, 0.1
 
 (*鏡を得るためにパラメータを微調整することも出来ますが、ここでは、この鏡で考慮すべきことはランプだけです。だから風変わりな鏡のようになります。*)
 
-``` glsls
+``` glsl
 // アイ(目)ベクトル(カメラのほうへ向かう)
 vec3 E = normalize(EyeDirection_cameraspace);
 // 三角形が光を反射する方向

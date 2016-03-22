@@ -159,7 +159,7 @@ GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 
 はじめにフラグメントシェーダを見ていきましょう。これは簡単です。
 
-``` glsls
+``` glsl
 #version 330 core
 
 // 頂点シェーダからの値を書き込みます
@@ -187,7 +187,7 @@ void main(){
 
 頂点シェーダも簡単です。UV座標をただフラグメントシェーダに送るだけです。
 
-``` glsls
+``` glsl
 #version 330 core
 
 // インプット頂点データ。このシェーダの実行ごとに異なります。

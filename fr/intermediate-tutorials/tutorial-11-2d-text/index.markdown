@@ -104,7 +104,7 @@ Le reste est habituel : lier les buffers (tampons), les remplir, sélectionner l
 
 > Très important ! Les coordonnées sont générées sur l'échelle [0-800][0-600]. En d'autres mots, il n'y a PAS BESOIN de matrices ici. Le vertex shader doit juste les passer à l'échelle [-1,1][-1,1] avec une simple opération mathématique (cela aurait aussi pu être fait en C++).
 
-``` glsls
+``` glsl
 void main(){
 
     // Output position of the vertex, in clip space
@@ -121,7 +121,7 @@ void main(){
 
 Le fragment shader ne fait que très peu de choses aussi :
 
-``` glsls
+``` glsl
 void main(){
     color = texture( myTextureSampler, UV );
 }

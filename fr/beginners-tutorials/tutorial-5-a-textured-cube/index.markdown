@@ -156,7 +156,7 @@ GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 
 On commence par le fragment shader. Il est globalement simple :
 
-``` glsls
+``` glsl
 #version 330 core
 
 // Interpolated values from the vertex shaders
@@ -183,7 +183,7 @@ Trois choses :
 
 Le vertex shader est simple aussi, vous devez juste passer les coordonnées UV au fragment shader :
 
-``` glsls
+``` glsl
 #version 330 core
 
 // Input vertex data, different for all executions of this shader.

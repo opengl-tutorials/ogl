@@ -71,7 +71,7 @@ CameraUp_worldspace = {ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]}
 
 一度これを得れば、最終的な頂点位置を計算するのはとても簡単です。
 
-``` glsls
+``` glsl
 vec3 vertexPosition_worldspace =
     particleCenter_wordspace
     + CameraRight_worldspace * squareVertices.x * BillboardSize.x

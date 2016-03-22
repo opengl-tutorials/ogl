@@ -146,7 +146,7 @@ glViewport(0,0,1024,768); // Render on the whole framebuffer, complete from the 
 
 We can draw our full-screen quad with such a shader:
 
-``` glsls
+``` glsl
 #version 330 core
 
 in vec2 UV;
@@ -209,7 +209,7 @@ You may write to several textures at the same time.
 
 Simply create several textures (all with the correct and same size !), call glFramebufferTexture with a different color attachement for each, call glDrawBuffers with updated parameters ( something like (2,{GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1}})), and add another output variable in your fragment shader :
 
-``` glsls
+``` glsl
 layout(location = 1) out vec3 normal_tangentspace; // or whatever
 ```
 {: .highlightglslfs }

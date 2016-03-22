@@ -109,7 +109,7 @@ Esto significa que cada punto de la superficie se verá mas oscuro con la luz en
 
 Esto significa que cuando calculamos el color de un pixel, el angulo entre la luz entrante y la normal de la superficie importan, y mucho, resultando :
 
-``` glsls
+``` glsl
 // Coseno del angulo entre la normal y la dirección de la luz ,
 // restringido a mayor que 0
 //  - la luz esta en la vertical del triangulo -> 1
@@ -146,7 +146,7 @@ Por supuesto que el color de salida depende del color del material. En esta imag
 
 Podemos modelar esto con una multiplicaión simple :
 
-``` glsls
+``` glsl
 color = MaterialDiffuseColor * LightColor * cosTheta;
 ```
 {: .highlightglslfs }
@@ -157,7 +157,7 @@ Primero asumiremos que tenemos una luz puntual que emite luz en todas las direcc
 
 Con esa luz, el flujo que nuestra superficie recibe depende de la disancia de la luz al objeto. Entre mas lejos, menos luz. De hecho, la cantidad de luz decrece con el cudrado de la distancia :
 
-``` glsls
+``` glsl
 color = MaterialDiffuseColor * LightColor * cosTheta / (distance*distance);
 ```
 {: .highlightglslfs }
@@ -189,7 +189,7 @@ cosTheta depende de n y l. Podemos expresarlos en cualquier espacio que sea el m
 
 Con Normal_cameraspace y LightDirection_cameraspace calculados en el the Vertex shader y enviados al fragment shader :
 
-``` glsls
+``` glsl
 // Posición de salida del vertice : MVP * position
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
@@ -238,12 +238,12 @@ Asi que vamos a crear una luz falsa. De hecho simplemente hace que el modelo 3D 
 
 Se puede hacer asi :
 
-``` glsls
+``` glsl
 vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
 ```
 {: .highlightglslfs }
 
-``` glsls
+``` glsl
 color =
  // Ambiente : simulates luz indirecta
  MaterialAmbientColor +
@@ -270,7 +270,7 @@ Como puedes ver en la imagen, se forma algo como un circulo de reflejo. En casos
 
 (*Podemos variar los parametros para obtener un espejo, pero en nuestro caso , lo unico que debemos tener en cuenta en este espejo es la lampara, lo que haría un espejo muy raro*
 
-``` glsls
+``` glsl
 // Vector del ojo (hacia la camara)
 vec3 E = normalize(EyeDirection_cameraspace);
 // Direccion en la que el triangulo refleja la luz

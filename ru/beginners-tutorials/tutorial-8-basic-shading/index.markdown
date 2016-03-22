@@ -111,7 +111,7 @@ This means that each point of the surface will look darker with gazing light (bu
 
 This means that when we compute the colour of a pixel, the angle between the incoming light and the surface normal matters.We thus have :
 
-``` glsls
+``` glsl
 // Cosine of the angle between the normal and the light direction,
 // clamped above 0
 //  - light is at the vertical of the triangle -> 1
@@ -128,7 +128,7 @@ In this code, n is the surface normal and l is the unit vector that goes from th
 
 Something is missing in the formula of our cosTheta. If the light is behind the triangle, n and l will be opposed, so n.l will be negative. This would mean that colour = someNegativeNumber, which doesn't mean much. So we have to clamp cosTheta to 0 :
 
-``` glsls
+``` glsl
 // Cosine of the angle between the normal and the light direction,
 // clamped above 0
 //  - light is at the vertical of the triangle -> 1
@@ -149,7 +149,7 @@ Of course, the output colour also depends on the colour of the material. In this
 
 We can model this by a simple multiplication :
 
-``` glsls
+``` glsl
 color = MaterialDiffuseColor * LightColor * cosTheta;
 ```
 {: .highlightglslfs }
@@ -160,14 +160,14 @@ We will first assume that we have a punctual light that emits in all directions 
 
 With such a light, the luminous flux that our surface will receive will depend on its distance to the light source: the further away, the less light. In fact, the amount of light will diminish with the square of the distance :
 
-``` glsls
+``` glsl
 color = MaterialDiffuseColor * LightColor * cosTheta / (distance*distance);
 ```
 {: .highlightglslfs }
 
 Lastly, we need another parameter to control the power of the light. This could be encoded into LightColor (and we will in a later tutorial), but for now let's just have a color (e.g. white) and a power (e.g. 60 Watts).
 
-``` glsls
+``` glsl
 color = MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance);
 ```
 {: .highlightglslfs }
@@ -182,7 +182,7 @@ LightColor and LightPower are set in the shader through GLSL uniforms.
 
 cosTheta depends on n and l. We can express them in any space provided it's the same for both. We choose the camera space because it's easy to compute the light's position in this space :
 
-``` glsls
+``` glsl
 // Normal of the computed fragment, in camera space
  vec3 n = normalize( Normal_cameraspace );
  // Direction of the light (from the fragment to the light)
@@ -192,7 +192,7 @@ cosTheta depends on n and l. We can express them in any space provided it's the 
 
 with Normal_cameraspace and LightDirection_cameraspace computed in the Vertex shader and passed to the fragment shader :
 
-``` glsls
+``` glsl
 // Output position of the vertex, in clip space : MVP * position
 gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
@@ -242,12 +242,12 @@ So the usual hack is to simply fake some light. In fact, is simply makes the 3D 
 
 This can be done this way :
 
-``` glsls
+``` glsl
 vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
 ```
 {: .highlightglslfs }
 
-``` glsls
+``` glsl
 color =
  // Ambient : simulates indirect lighting
  MaterialAmbientColor +
@@ -276,7 +276,7 @@ As you can see in the image, it forms a kind of lobe. In extreme cases, the diff
 
 (*we can indeed tweak the parameters to get a mirror, but in our case, the only thing we take into account in this mirror is the lamp. So this would make for a weird mirror)*
 
-``` glsls
+``` glsl
 // Eye vector (towards the camera)
 vec3 E = normalize(EyeDirection_cameraspace);
 // Direction in which the triangle reflects the light

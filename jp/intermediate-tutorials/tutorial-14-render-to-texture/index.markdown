@@ -148,7 +148,7 @@ glViewport(0,0,1024,768); //フレームバッファ全体に描画する。左�
 
 次のようなシェーダでフルスクリーン四角形を描画できます。
 
-``` glsls
+``` glsl
 #version 330 core
 
 in vec2 UV;
@@ -211,7 +211,7 @@ glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT24, 1024, 768, 0,GL_DEPTH_COMPON
 
 単純に複数の（同じサイズの）テクスチャを作り、それぞれ別のアタッチメントでglFramebufferTextureを呼び、更新したパラメータでglDrawBuffersを呼びます。（たとえば (2,{GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1}})のように。）そしてフラグメントシェーダにもう一方の出力変数を加えます。
 
-``` glsls
+``` glsl
 layout(location = 1) out vec3 normal_tangentspace; // or whatever
 ```
 {: .highlightglslfs }

@@ -14,7 +14,7 @@ language: fr
 
 Le concept du canal alpha est très simple. À la place d'écrire un résultat en RGB, on écris un résultat en RGBA :
 
-``` glsls
+``` glsl
 // Données de sorties : c'est maintenant un vec4 
 out vec4 color;
 ```
@@ -22,7 +22,7 @@ out vec4 color;
 
 Les trois premières composantes sont toujours accessibles avec *.xyz* (ou *.rgb*), tandis que la dernière est accessible avec *.a* :
 
-``` glsls
+``` glsl
 color.a = 0.3;
 ```
 {: .highlightglslfs }

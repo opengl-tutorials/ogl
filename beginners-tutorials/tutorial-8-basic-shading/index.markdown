@@ -240,12 +240,12 @@ So the usual hack is to simply fake some light. In fact, is simply makes the 3D 
 
 This can be done this way :
 
-``` glsls
+``` glsl
 vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
 ```
 {: .highlightglslfs }
 
-``` glsls
+``` glsl
 color =
  // Ambient : simulates indirect lighting
  MaterialAmbientColor +
@@ -274,7 +274,7 @@ As you can see in the image, it forms a kind of lobe. In extreme cases, the diff
 
 (*we can indeed tweak the parameters to get a mirror, but in our case, the only thing we take into account in this mirror is the lamp. So this would make for a weird mirror)*
 
-``` glsls
+``` glsl
 // Eye vector (towards the camera)
 vec3 E = normalize(EyeDirection_cameraspace);
 // Direction in which the triangle reflects the light

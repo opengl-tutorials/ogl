@@ -106,7 +106,7 @@ for ( unsigned int i=0 ; i<length ; i++ ){
 
 有一点非常重要：这些坐标位于[0,800][0,600]范围内。也就是说，这里**不需要**矩阵。顶点着色器只需简单换算就可以把这些坐标转换到[-1,1][-1,1]范围内（也可以在C++代码中完成这一步）。
 
-``` glsls
+``` glsl
 void main(){
 
     // Output position of the vertex, in clip space
@@ -123,7 +123,7 @@ void main(){
 
 片段着色器的工作量也很少：
 
-``` glsls
+``` glsl
 void main(){
     color = texture( myTextureSampler, UV );
 }

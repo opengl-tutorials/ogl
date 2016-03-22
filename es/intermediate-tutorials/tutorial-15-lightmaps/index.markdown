@@ -47,7 +47,7 @@ This is because of mipmapping, which blends texels together when seen at a dista
 * You can ask Blender to generate a margin around the limits of the UV map. This is the "margin" parameter in the "bake" panel. For good results, you may have to go up to a margin of 20 texels.
 * You can use a bias in your texture fetch :
 
-``` glsls
+``` glsl
 color = texture( myTextureSampler, UV, -2.0 ).rgb;
 ```
 {: .highlightglslfs }

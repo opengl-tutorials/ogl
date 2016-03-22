@@ -316,7 +316,7 @@ Et c'est cette image qui est affichée !
 glm::mat4 MVPmatrix = projection * view * model; // Remember : inverted !
 ```
 
-``` glsls
+``` glsl
 // GLSL : apply it
 transformed_vertex = MVP * in_vertex;
 ```
@@ -360,7 +360,7 @@ glUniformMatrix4fv(mvp_handle, 1, GL_FALSE, &mvp[0][0]);
 
 * Third step : use it in GLSL to transform our vertices
 
-``` glsls
+``` glsl
 // Input vertex data, different for all executions of this shader.
 layout(location = 0) in vec3 vertexPosition_modelspace;
 
