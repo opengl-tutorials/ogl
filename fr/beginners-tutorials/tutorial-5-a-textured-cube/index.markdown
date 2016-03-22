@@ -147,10 +147,11 @@ On va expliquer les deux dernières lignes plus tard. Dorénavant, du côté C++
 GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 ```
 
->Il est important d'utiliser des textures ayant des **tailles en puissances de deux** :
->* correct : 128*128, 256*256, 1024*1024, 2*2 ...
->* mauvais : 127*128, 3*5 ...
->* correct mais étrange : 128*256, 1024*128, ...
+> Il est important d'utiliser des textures ayant des **tailles en puissances de deux** :
+> 
+> * correct : 128*128, 256*256, 1024*1024, 2*2 ...
+> * mauvais : 127*128, 3*5 ...
+> * correct mais étrange : 128*256, 1024*128, ...
 
 # Utiliser une texture dans OpenGL
 
@@ -177,6 +178,7 @@ void main(){
 {: .highlightglslfs }
 
 Trois choses :
+
 * Le fragment shader a besoin des coordonnées UV. Cela semble logique
 * Il a aussi besoin d'un « sampler2D » pour savoir à quelle texture accéder (vous pouvez accéder à plusieurs textures dans le même shader) ;
 * Finalement, l'accès à la texture est effectué avec texture(), renvoyant un vec4 contenant (R,G,B,A). On va voir ce qu'est le A, prochainement.

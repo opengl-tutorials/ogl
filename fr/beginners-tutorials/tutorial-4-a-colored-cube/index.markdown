@@ -11,6 +11,7 @@ language: fr
 ---
 
 Bienvenue dans le quatrième tutoriel ! Dans celui-ci on va :
+
 * Afficher un cube au lieu d'un ennuyeux triangle
 * Ajouter de jolies couleur
 * Apprendre ce qu'est le Z-buffer (tampon de profondeur)
