@@ -326,7 +326,7 @@ transformed_vertex = MVP * in_vertex;
 
 # Putting it all together
 
-*  First step : generating our MVP matrix. This must be done for each model you render.
+* First step : generating our MVP matrix. This must be done for each model you render.
 
 ``` cpp
 // Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
@@ -348,17 +348,17 @@ glm::mat4 Model = glm::mat4(1.0f);
 glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is the other way around
 ```
 
-*  Second step : give it to GLSL
+* Second step : give it to GLSL
 
-``` cpp
-// Get a handle for our "MVP" uniform
-// Only during the initialisation
-GLuint MatrixID = glGetUniformLocation(program_id, "MVP");
-
-// Send our transformation to the currently bound shader, in the "MVP" uniform
-// This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
-glUniformMatrix4fv(mvp_handle, 1, GL_FALSE, &mvp[0][0]);
-```
+  ``` cpp
+  // Get a handle for our "MVP" uniform
+  // Only during the initialisation
+  GLuint MatrixID = glGetUniformLocation(program_id, "MVP");
+  
+  // Send our transformation to the currently bound shader, in the "MVP" uniform
+  // This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
+  glUniformMatrix4fv(mvp_handle, 1, GL_FALSE, &mvp[0][0]);
+  ```
 
 * Third step : use it in GLSL to transform our vertices
 

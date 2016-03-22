@@ -145,12 +145,11 @@ We'll explain those last two lines later. Meanwhile, on the C++-side, you can us
 GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 ```
 
-Another very important point :** use power-of-two textures !**
-
-* good : 128x128, 256x256, 1024x1024, 2x2...
-* bad : 127x128, 3x5, ...
-* okay but weird : 128*256
-
+> Another very important point :** use power-of-two textures !**
+> 
+> * good : 128\*128, 256\*256, 1024\*1024, 2\*2...
+> * bad : 127\*128, 3\*5, ...
+> * okay but weird : 128\*256
 
 # Using the texture in OpenGL
 
