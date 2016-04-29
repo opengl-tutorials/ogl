@@ -60,8 +60,8 @@ Please note that the .exe is compiled in the *build* directory, but automaticall
 ## No VAO
 
 If you created a program from scratch, make sure you created a VAO :
-```
 
+```
 GLuint VertexArrayID;
  glGenVertexArrays(1, &VertexArrayID);
  glBindVertexArray(VertexArrayID);
