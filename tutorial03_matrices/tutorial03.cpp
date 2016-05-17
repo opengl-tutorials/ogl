@@ -88,7 +88,6 @@ int main( void )
 		 1.0f, -1.0f, 0.0f,
 		 0.0f,  1.0f, 0.0f,
 	};
-	static const GLushort g_element_buffer_data[] = { 0, 1, 2 };
 
 	GLuint vertexbuffer;
 	glGenBuffers(1, &vertexbuffer);
