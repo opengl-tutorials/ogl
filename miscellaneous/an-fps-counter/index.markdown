@@ -13,8 +13,8 @@ tags: []
 In real-time graphics, it is important to keep an eye on performance. A good practice is to choose a target FPS ( usually 60 or 30 ) and make everything possible to stick to it.
 
 A FPS counter looks like this :
-```
 
+``` cpp
  double lastTime = glfwGetTime();
  int nbFrames = 0;
 

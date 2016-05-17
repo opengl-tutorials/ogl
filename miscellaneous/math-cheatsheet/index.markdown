@@ -71,8 +71,8 @@ Just like cartesian distance : sqrt( x&sup2; + y&sup2; + z&sup2; ). w doesn't co
 ## Addition and substraction
 
 compontent-wise :
-```
 
+``` cpp
 res.x = A.x + B.x
 res.y = A.y + B.y
 ...
@@ -81,8 +81,8 @@ res.y = A.y + B.y
 ## Multiplication
 
 compontent-wise :
-```
 
+``` cpp
 res.x = A.x * B.x
 res.y = A.y * B.y
 ...
@@ -91,8 +91,8 @@ res.y = A.y * B.y
 ## Normalization
 
 Divide the vector by its length :
-```
 
+``` cpp
 normalizedVector = vec * ( 1.0f / vec.length() )
 ```
 
