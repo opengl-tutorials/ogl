@@ -22,7 +22,7 @@ language: ru
 </ul>
 Alternatively, you have access to the latest version of the code on the Git repository :</p>
 <ul>
-<li><a href="https://github.com/Whiteseeker/opengl-tutorials">Checkout the source on GitHub</a> (The nodes corresponding to the above zips have tags 0014_33 and 0014_21 respectively)</li>
+<li><a href="https://github.com/opengl-tutorials/ogl">Checkout the source on GitHub</a> (The nodes corresponding to the above zips have tags 0014_33 and 0014_21 respectively)</li>
 </ul>
 All the source code on this site (except third-party libraries) is released under the WTFPL Public Licence :</p>
 <pre style="background-color: white; color: black;">           DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE<br />
