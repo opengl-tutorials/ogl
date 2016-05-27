@@ -21,8 +21,8 @@ OpenGL 3 позволяет довольно легко делать сложн�
 # VAO
 
 Мы не хотим сейчас углубляться в детали, но вам необходимо создать Vertex Array Object и установить его текущим:
-```
 
+```
 GLuint VertexArrayID;
 glGenVertexArrays(1, &VertexArrayID);
 glBindVertexArray(VertexArrayID);
@@ -49,8 +49,8 @@ glBindVertexArray(VertexArrayID);
 Заметьте, что вы можете свободно перемещать вашу руку в пространстве и оси X, Y, Z будут передвигаться также, но подробнее об этом мы поговорим позже.
 
 Итак, все что нам нужно - это 3 точки в трехмерном пространстве, чтобы создать треугольник:
-```
 
+```
 // Массив 3 векторов, которые являются вершинами треугольника
 static const GLfloat g_vertex_buffer_data[] = {
    -1.0f, -1.0f, 0.0f,
@@ -68,8 +68,8 @@ static const GLfloat g_vertex_buffer_data[] = {
 # Рисуем наш треугольник
 
 Следующим шагом будет передача данных о нашем треугольнике в OpenGL. Для этого мы создаем буфер:
-```
 
+```
 // Это будет идентификатором нашего буфера вершин
 GLuint vertexbuffer;
 
@@ -86,8 +86,8 @@ glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data
 Сейчас нам необходимо сделать это только 1 раз.
 
 Теперь, в главном цикле, где до этого мы ничего не выводили, наконец можно вывести треугольник :
-```
 
+```
 // Указываем, что первым буфером атрибутов будут вершины
 glEnableVertexAttribArray(0);
 glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
@@ -124,8 +124,8 @@ glDisableVertexAttribArray(0);
 Эти два шейдера как правило находятся в разных файлах. В этом примере мы имеем SimpleFragmentShader.fragmentshader и SimpleVertexShader.vertexshader. Расширение файлов не имеет значения и может быть любым, к примеру .txt или .glsl.
 
 Итак, вот код. Сейчас вам не обязательно углубляться в понимание шейдеров и так как этот код выполняется всего 1 раз за время исполнения программы, то комментариев в коде будет достаточно. Эта функция будет использована во всех уроках и находится в отдельном файле common/loadShader.cpp . Обратите внимание на то, что также как и с буферами мы не имеем прямого доступа к шейдерам. Мы лишь имеем Идентификатор, который указывает на шейдер, а все остальное скрыто внутри драйвера.
-```
 
+```
 GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path){
 
     // Создаем шейдеры
@@ -165,9 +165,11 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
     // Выполняем проверку Вершинного шейдера
     glGetShaderiv(VertexShaderID, GL_COMPILE_STATUS, &Result);
     glGetShaderiv(VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-    std::vector<char> VertexShaderErrorMessage(InfoLogLength);
-    glGetShaderInfoLog(VertexShaderID, InfoLogLength, NULL, &VertexShaderErrorMessage[0]);
-    fprintf(stdout, "%sn", &VertexShaderErrorMessage[0]);
+    if ( InfoLogLength > 0 ){
+      std::vector<char> VertexShaderErrorMessage(InfoLogLength+1);
+      glGetShaderInfoLog(VertexShaderID, InfoLogLength, NULL, &VertexShaderErrorMessage[0]);
+      fprintf(stdout, "%sn", &VertexShaderErrorMessage[0]);
+    }
 
     // Компилируем Фрагментный шейдер
     printf("Компиляция шейдера: %sn", fragment_file_path);
@@ -178,9 +180,11 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
     // Проверяем Фрагментный шейдер
     glGetShaderiv(FragmentShaderID, GL_COMPILE_STATUS, &Result);
     glGetShaderiv(FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-    std::vector<char> FragmentShaderErrorMessage(InfoLogLength);
-    glGetShaderInfoLog(FragmentShaderID, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
-    fprintf(stdout, "%sn", &FragmentShaderErrorMessage[0]);
+    if ( InfoLogLength > 0 ){
+      std::vector<char> FragmentShaderErrorMessage(InfoLogLength+1);
+      glGetShaderInfoLog(FragmentShaderID, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
+      fprintf(stdout, "%s\n", &FragmentShaderErrorMessage[0]);
+    }
 
     // Создаем шейдерную программу и привязываем шейдеры к ней
     fprintf(stdout, "Создаем шейдерную программу и привязываем шейдеры к нейn");
@@ -192,9 +196,11 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
     // Проверяем шейдерную программу
     glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
     glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-    std::vector<char> ProgramErrorMessage( max(InfoLogLength, int(1)) );
-    glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
-    fprintf(stdout, "%sn", &ProgramErrorMessage[0]);
+    if ( InfoLogLength > 0 ){
+      std::vector<char> ProgramErrorMessage(InfoLogLength+1);
+      glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
+      fprintf(stdout, "%s\n", &ProgramErrorMessage[0]);
+    }
 
     glDeleteShader(VertexShaderID);
     glDeleteShader(FragmentShaderID);
@@ -208,14 +214,14 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 Итак, давайте напишем наш первый вершинный шейдер.
 
 Первая строка в нем говорит компилятору, что мы будем использовать синтаксис OpenGL 3.
-```
 
+```
 #version 330 core
 ```
 
 Вторая строка объявляет входные данные:
-```
 
+```
 layout(location = 0) in vec3 vertexPosition_modelspace;
 ```
 
@@ -227,14 +233,14 @@ layout(location = 0) in vec3 vertexPosition_modelspace;
 * Ключевое слово "in" означает, что этот атрибут является входными данными. Также существует слово "out", которое указывает соответственно на выходные данные.
 
 Функция, которая будет вызываться для каждого шейдера называется "main", также как и в C:
-```
 
+```
 void main(){
 ```
 
 Наша главная функция будет просто устанавливать позицию вершины в ту, которая получена из буфера. Соответственно, если мы передадим значение (1, 1), то вершина будет отображена в правом верхнем углу экрана, а в следующем уроке мы рассмотрим более интересные вычисления.
-```
 
+```
     gl_Position.xyz = vertexPosition_modelspace;
     gl_Position.w = 1.0;
  }
@@ -245,8 +251,8 @@ gl_Position - одна из нескольких встроенных в GLSL п
 ##Наш Фрагментный шейдер
 
 Для нашего первого фрагментного шейдера мы сделаем очень простую вещь - установим цвет каждого фрагмента в красный. (Не забудьте, у нас будет 4 фрагмента на каждый пиксель, так как мы используем 4х сглаживание):
-```
 
+```
 #version 330 core
 out vec3 color;
 
@@ -260,21 +266,21 @@ void main(){
 # Последние штрихи
 
 Перед главным циклом вызываем нашу функцию LoadShaders:
-```
 
+```
 // Создать и откомпилировать нашу шейдерную программу
 GLuint programID = LoadShaders( "SimpleVertexShader.vertexshader", "SimpleFragmentShader.fragmentshader" );
 ```
 
 Теперь внутри главного цикла первым делом мы будем очищать экран. Строка приведенная ниже будет заполнять экран темно-синим цветом, так как перед главным циклом мы указываем именно его glClearColor(0.0f, 0.0f, 0.4f, 0.0f):
-```
 
+```
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 ```
 
 И теперь мы сообщаем OpenGL, что хотим использовать именно наш шейдер:
-```
 
+```
 // Устанавливаем наш шейдер текущим
 glUseProgram(programID);
 
