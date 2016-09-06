@@ -61,7 +61,7 @@ static const GLfloat g_vertex_buffer_data[] = {
 
 Первая вершина имеет координаты (-1, -1, 0). Это означает, что пока мы не используем какие-либо трансформации вершина будет отображаться на экране в точке (-1, -1). Центр экрана имеет координаты (0, 0), ось X направлена вправо, а ось Y вверх, что показано на изображении:
 
-[<img title="screenCoordinates" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/screenCoordinates-300x165.png" width="300" height="165" />]({{site.baseurl}}/assets/images/tuto-2-first-triangle/screenCoordinates.png)
+![screenCoordinates]({{site.baseurl}}/assets/images/tuto-2-first-triangle/screenCoordinates.png){: height="165px" width="300px"}
 
 Это то, что встроено в вашу видео карту и то, что вы не можете изменить, поэтому точка с координатами (-1, -1) будет находиться в левом-нижнем углу экрана, точка (1, -1) в правом нижнем, а точка (0, 1) будет находиться посередине по горизонтали и вверху по вертикали. Таким образом наш треугольник заполнит экран.
 
@@ -108,7 +108,7 @@ glDisableVertexAttribArray(0);
 
 Если у вас карта NVidia, то уже сейчас вы можете видеть результат (для других карт продолжайте читать):
 
-[<img title="triangle_no_shader" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/triangle_no_shader1-300x232.png" width="300" height="232" />]({{site.baseurl}}/assets/images/tuto-2-first-triangle/triangle_no_shader1.png)
+![triangle_no_shader]({{site.baseurl}}/assets/images/tuto-2-first-triangle/triangle_no_shader1.png){: height="232px" width="300px"}
 
 Наконец мы вывели наш скучный белый треугольник. Чтобы пойти дальше и раскрасить его в красный нам понадобится нечто, что называется "шейдеры".
 
@@ -289,6 +289,6 @@ glUseProgram(programID);
 
 ... и наконец получаем наш красный треугольник:
 
-[<img title="red_triangle" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/red_triangle-300x231.png" width="300" height="231" />]({{site.baseurl}}/assets/images/tuto-2-first-triangle/red_triangle.png)
+![red_triangle]({{site.baseurl}}/assets/images/tuto-2-first-triangle/red_triangle.png){: height="231px" width="300px"}
 
 В следующем уроке вы узнаете о трансформациях, т. е. узнаете как установить камеру, как перемещать объекты и т. д. Увидимся :)
