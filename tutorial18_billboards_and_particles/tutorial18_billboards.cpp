@@ -234,7 +234,7 @@ int main( void )
 	// Cleanup VBO and shader
 	glDeleteBuffers(1, &billboard_vertex_buffer);
 	glDeleteProgram(programID);
-	glDeleteTextures(1, &TextureID);
+	glDeleteTextures(1, &Texture);
 	glDeleteVertexArrays(1, &VertexArrayID);
 #ifdef DRAW_CUBE
 	glDeleteProgram(cubeProgramID);
