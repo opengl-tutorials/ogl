@@ -3,9 +3,10 @@ layout: page
 status: publish
 published: true
 title: 'Tutorial 1 : 윈도우 열기'
-date: '2011-04-07 17:54:16 +0200'
-date_gmt: '2011-04-07 17:54:16 +0200'
+date: '2016-11-19 17:54:16 +0200'
+date_gmt: '2016-11-19 17:54:16 +0200'
 categories: [tuto]
+language: kr
 order: 10
 tags: []
 ---
@@ -86,7 +87,7 @@ All tutorials can be built on Windows, Linux and Mac. For all these platforms, t
 
 너무 많은 종류의 Linux 배포판이 있어, 모든 플랫폼을 일일이 명시하는건 불가능합니다. 필요시 적절히 바꿔 적용하세요. 그리고 사용하는 배포판의 문서를 읽는 것을 망설이지 마세요.
 
- 
+
 
 * 최신 드라이버를 설치하세요. 우리는 비공개소스 바이너리 드라이버들을 강력하게 추천합니다. GNU 같은 오픈소스 기반은 아닌 대신에 제대로 동작합니다. 만약 당신의 배포판이 자동 설치를 지원하지 않으면, [우분투 가이드](http://help.ubuntu.com/community/BinaryDriverHowto) 를 시도해 보세요.
 * 필요한 컴파일러와 도구, 라이브러리를 설치하세요. 준비물 리스트는 : *cmake make g++ libx11-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxrandr-dev libxext-dev libxi-dev* . `sudo apt-get install *****` 나 `su && yum install ******` 를 사용하세요.
@@ -120,7 +121,7 @@ All tutorials can be built on Windows, Linux and Mac. For all these platforms, t
 * XCode 를 맥 앱스토어 에서 설치합니다
 * [CMake 를 다운로드](http://www.cmake.org/cmake/resources/software.html) 하고 .dmg 파일을 설치합니다. 커맨드 라인 도구를 설치할 필요는 없습니다.
 * [소스코드를 다운로드](http://www.opengl-tutorials.org/download/) 하고 압축을 푸세요. 예시 경로는 ~/Projects/OpenGLTutorials/  입니다.
-* (Application->CMake) CMake 를 실행합니다. 첫줄에는, 압축을 해제했던 폴더를 지정합니다. 확실치 않다면, CMakeList.txt 파일을 포함하는 폴더를 선택하세요. 두번째 줄에는, 컴파일러가 다룰 물건들이 죄다 들어갈 곳을 지정해주세요. 예를 들어, ~/Projects/OpenGLTutorials_bin_XCode/ 를 선택할 수 있습니다. 참고로 어떤 경로를 선택해도 상관없습니다. 같은 폴더일 필요도 없습니다. 
+* (Application->CMake) CMake 를 실행합니다. 첫줄에는, 압축을 해제했던 폴더를 지정합니다. 확실치 않다면, CMakeList.txt 파일을 포함하는 폴더를 선택하세요. 두번째 줄에는, 컴파일러가 다룰 물건들이 죄다 들어갈 곳을 지정해주세요. 예를 들어, ~/Projects/OpenGLTutorials_bin_XCode/ 를 선택할 수 있습니다. 참고로 어떤 경로를 선택해도 상관없습니다. 같은 폴더일 필요도 없습니다.
 * Configure 버튼을 클릭합니다. 프로젝트를 최초로 설정하기 때문에, CMake 가 사용하고 싶은 컴파일로를 물어볼겁니다. Xcode를 선택하세요.
 * 모든 붉은 줄이 사라질때 까지 Configure 버튼을 클릭합니다. 그리고 Generate 버튼을 클릭합니다. Xcode 프로젝트가 생성되었습니다. 이제 CMake에 대해서는 잊어버려도 되요.
 * ~/Projects/OpenGLTutorials_bin_XCode/ 로 갑니다. Tutorials.xcodeproj 파일이 보일겁니다 : 실행하세요.
@@ -146,109 +147,106 @@ IDE 에서 튜토리얼을 실행하고자 한다면, 위의 설명을 잊지 �
 
 # 튜토리얼들을 따라하는 방법
 
-Each tutorial comes with its source code and data, which can be found in tutorialXX/. However, you will never modify these projects : they are for reference only. Open playground/playground.cpp, and tweak this file instead. Torture it in any way you like. If you are lost, simply cut'n paste any tutorial in it, and everything should be back to normal.
-각각의 튜토리얼은 소스 코드와 데이타와 함게 옵니다.
+각각의 튜토리얼은 소스 코드와 데이터를 제공합니다. 이들은 tutorialXX/ 에서 찾을 수 있습니다. 하지만, 이 프로젝트들을 절대 수정하지 마세요 : 이들은 참고용으로만 써야 합니다.  playground/playground.cpp 를 열어 이 파일을 대신 수정하세요. 원하는대로 마음껏 뒤틀어도 됩니다. 어떻게 해야할지 모를땐, 튜토리얼에 있는 것들을 복사 붙여넣기 하세요. 그러면 모든게 다시 정상으로 돌아갈겁니다.
 
-We will provide snippets of code all along the tutorials. Don't hesitate to cut'n paste them directly in the playground while you're reading : experimentation is good. Avoid simply reading the finished code, you won't learn a lot this way. Even with simple cut'n pasting, you'll get your boatload of problems.
+튜토리얼 페이지를 따라 코드 조각들을 제공할겁니다. 그러니 공부하는 동안 playground 에 그것들을 가져다 붙이는걸 주저하지 마세요: 실험정신은 좋은 것 좋은 것입니다. 이미 완성된 코드를 그저 읽는 것은 피하세요. 그런 식으론 많은 것을 배울 수 없어요. 간단한 잘라 붙여넣기만으로도, 여러 과제를 한가득 얻어가게 될겁니다.
 
-# Opening a window
+# 윈도우 프로젝트를 엽시다
 
-Finally ! OpenGL code !
-Well, not really. All tutorials show you the "low level" way to do things, so that you can see that no magic happens. But this part is actually very boring and useless, so we will use GLFW, an external library, to do this for us instead. If you really wanted to, you could use the Win32 API on Windows, the X11 API on Linux, and the Cocoa API on Mac; or use another high-level library like SFML, FreeGLUT, SDL, ... see the [Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) page.
+드디어 ! OpenGL 코드로 !
 
-Ok, let's go. First, we'll have to deal with dependencies : we need some basic stuff to display messages in the console :
+사실, 조금 더 알아둬야 할게 있어요. 모든 튜토리얼은 어떤 일을 하는 방법을 "저수준" 에서 알려줄겁니다. 여기엔 어떠한 마법도 없습니다. 하지만 이 부분은 확실이 지루하고 불필요합니다. 그래서 우리는 이 부분을 대신 해줄 외부 라이브러리인, GLFW 를 사용할겁니다. 만약 정말로 원한다면, 윈도우즈의 Win32 API 나 리눅스의 X11, 혹은 맥의 Cocoa API 를 사용할 순 있습니다; 아니면 다른 고수준 라이브러리들, 예를 들어 SFML, FreeGLUT, SDL, ... 등을 사용할 수도 있겠죠. 여기에 관해선 [링크](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) 페이지를 참고하세요.
+
+좋아요, 이제 시작해봅시다. 먼저, 우리는 의존성들을 처리해놔야 해요: 콘솔에 메세지를 띄윅 위한 기초적인 것들이 필요합니다 :
 
 ``` cpp
-// Include standard headers
+// 표준 헤더 포함
 #include <stdio.h>
 #include <stdlib.h>
 ```
 
-First, GLEW. This one actually is a little bit magic, but let's leave this for later.
+먼저, GLEW. 이 녀석은 사실 작은 마법을 부리지만, 여기에 관해선 나중에 설명하죠.
 
 ``` cpp
-// Include GLEW. Always include it before gl.h and glfw.h, since it's a bit magic.
+// GLEW 포함. gl.h 나 glfw.h 를 포함하기 전에 언제나 먼저 포함하세요. 그래서 마법을 좀 부릴 수 있게요.
 #include <GL/glew.h>
 ```
 
-We decided to let GLFW handle the window and the keyboard, so let's include it too :
+우리는 GLFW 가 윈도우와 키보드를 다루도록 정했습니다. 그러니 이 친구도 포함하도록 하죠 :
 
 ``` cpp
-// Include GLFW
+// GLFW 도 포함
 #include <GL/glfw3.h>
 ```
 
-We don't actually need this one right now, but this is a library for 3D mathematics. It will prove very useful soon. There is no magic in GLM, you can write your own if you want; it's just handy. The "using namespace" is there to avoid typing "glm::vec3", but "vec3" instead.
+우리는 사실 지금은 이부분이 필요없는데, 이 친구는 3D 계산을 위한 라이브러리입니다. 그리고 나중에 가면 굉장이 유용할거에요. GLM 에선 마법이란 없어서, 원한다면 스스로 작성할 수 있습니다; 다만 이런식으로 하는게 더 편하죠. 여기 "using namespace" 는 "glm::vec3" 라고 타이핑 할 필요 없이 "vec3" 을 대신 쓰게 해줍니다.
 
 ``` cpp
-// Include GLM
+// GLM 포함
 #include <glm/glm.hpp>
 using namespace glm;
 ```
 
-If you cut'n paste all these #include's in playground.cpp, the compiler will complain that there is no main() function. So let's create one :
+만약 playground.cpp 에 모든 #include 할 것들을 잘라 붙여넣었다면, 컴파일러가 main() 함수가 없다고 불평할겁니다. 그러니 하나 만들죠 :
 
 ``` cpp
 int main(){
 ```
 
-First thing to do it to initialize GLFW :
+GLFW 를 초기화 해주기 위해 먼저 해야 할것 :
 
 ``` cpp
-// Initialise GLFW
+// GLFW 초기화
 if( !glfwInit() )
 {
-    fprintf( stderr, "Failed to initialize GLFW\n" );
+    fprintf( stderr, "GLFW 초기화 실패\n" );
     return -1;
 }
 ```
 
-We can now create our first OpenGL window !
+이제 우리의 첫번째 OpenGL 윈도우를 생성할 수 있습니다!
 
- 
+
 
 ``` cpp
-glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
-glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
+glfwWindowHint(GLFW_SAMPLES, 4); // 4x 안티에일리어싱
+glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // OpenGL 3.3 을 쓸겁니다
 glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
-glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL 
+glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // MacOS 가 기분 좋아짐; 꼭 필요한 부분은 아님
+glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //옛날 OpenGL 은 원하지 않아요
 
-// Open a window and create its OpenGL context
-GLFWwindow* window; // (In the accompanying source code, this variable is global)
+// 새창을 열고, 거기에 OpenGL 컨텍스트를 생성
+GLFWwindow* window; // (후술되는 코드를 보면, 이 변수는 전역(Global)입니다.)
 window = glfwCreateWindow( 1024, 768, "Tutorial 01", NULL, NULL);
 if( window == NULL ){
-    fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
+    fprintf( stderr, "GLFW 윈도우를 여는데 실패했다. Intel GPU 를 사용한다면, 이들은 3.3 지원을 하지 않는다. 2.1 버전용 튜토리얼을 시도해봐라\n" );
     glfwTerminate();
     return -1;
 }
-glfwMakeContextCurrent(window); // Initialize GLEW
-glewExperimental=true; // Needed in core profile
+glfwMakeContextCurrent(window); // GLEW 초기화
+glewExperimental=true; // 코어 프로파일을 위해 필요함
 if (glewInit() != GLEW_OK) {
     fprintf(stderr, "Failed to initialize GLEW\n");
     return -1;
 }
 ```
 
-Build this and run. A window should appear, and be closed right away. Of course ! We need to wait until the user hits the Escape key :
+이것을 빌드하고 실행하세요. 새 창이 나타날겁니다. 그리고 직후 바로 닫힙니다. 당연한거죠! 우리는 사용자가 Escape 키를 누를때 까지 기다리도록 해야 합니다 :
 
 ``` cpp
-// Ensure we can capture the escape key being pressed below
+// 밑에서 Escape 키가 눌러지는 것을 감지할 수 있도록 할것
 glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
 do{
-    // Draw nothing, see you in tutorial 2 !
+    // 아무것도 그리진 않습니다. 두번째 튜토리얼에서 만나도록 하죠 !
 
-    // Swap buffers
+    // 버퍼들을 교체
     glfwSwapBuffers(window);
     glfwPollEvents();
 
-} // Check if the ESC key was pressed or the window was closed
+} // 만약 ESC 키가 눌러졌는지 혹은 창이 닫혔는지 체크 체크
 while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
 glfwWindowShouldClose(window) == 0 );
 ```
 
-And this concludes our first tutorial ! In Tutorial 2, you will learn how to actually draw a triangle.
-
-
-
+이걸로 첫번째 튜토리얼이 끝났습니다. 튜토리얼 2 에서는, 실제로 삼각형을 어떻게 그리는지 배우게 됩니다.
