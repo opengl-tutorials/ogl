@@ -15,8 +15,8 @@ tags: []
 
 첫 튜토리얼에 환영합니다 !
 
-Before jumping into OpenGL, you will first learn how to build the code that goes with each tutorial, how to run it, and most importantly, how to play with the code yourself.
-OpenGL 을 시작하기 전에, 먼저 각각의 튜토리얼의 코드를 어떻게 빌드하고 실행할수 있는지, 거기에 가장 중요한, 코드를 스스로 다루는 법을 배워야합니다.
+
+OpenGL 로 띄어들기 전에, 먼저 각각의 튜토리얼의 코드를 어떻게 빌드하고 실행할수 있는지, 거기에 가장 중요한, 코드를 스스로 다루는 법을 배워야합니다.
 
 # 준비물
 
