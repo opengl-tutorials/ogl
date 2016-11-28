@@ -109,28 +109,28 @@ glDisableVertexAttribArray(0);
 
 ![triangle_no_shader]({{site.baseurl}}/assets/images/tuto-2-first-triangle/triangle_no_shader1.png){: height="232px" width="300px"}
 
-Now this is some boring white. Let's see how we can improve it by painting it in red. This is done by using something called shaders.
+지금은 좀 시시한 하얀 색이죠. 어떻게 하면 붉은색으로 칠해서 좀더 멋지게 만들 수 있는지 봅시다. 이것은 쉐이더(shader) 라는 것에 의해 가능해요.
 
-## Shaders
+## 쉐이더
 
-# Shader Compilation
+# 쉐이더 편집
 
-In the simplest possible configuration, you will need two shaders : one called Vertex Shader, which will be executed for each vertex, and one called Fragment Shader, which will be executed for each sample. And since we use 4x antialising, we have 4 samples in each pixel.
+가능한 최대한 간단하게 편집하는데 있어, 두가지 쉐이더가 필요할겁니다 : 하나는 버텍스 쉐이더로 각각의 버텍스 마다 실행되죠. 그리고 다른 하나는 프래그먼트 쉐이더로 불리는데, 각각의 샘플 단위 마다 동작합니다. 우리가 4x 안티앨리언싱을 사용했으니, 우리는 각각의 픽셀마다 4개 샘플을 가지고 있는거죠.
 
-Shaders are programmed in a language called GLSL : GL Shader Language, which is part of OpenGL. Unlike C or Java, GLSL has to be compiled at run time, which means that each and every time you launch your application, all your shaders are recompiled.
+쉐이더는 GLSL 이라는 언어로 작성됩니다 : GL Shader Language 라 하며, OpenGL의 구성요소 중 하나죠. C 나 Java 와 달리, GLSL 은 런타임에서 컴파일됩니다. 이는 당신의 어플리케이션을 실행할때 마다 매번, 당신의 모든 쉐이더가 다시 컴파일 된다는 거죠.
 
-The two shaders are usually in separate files. In this example, we have SimpleFragmentShader.fragmentshader and SimpleVertexShader.vertexshader . The extension is irrelevant, it could be .txt or .glsl .
+이 두가지 쉐이더들은 보통 각각 분리된 파일로 들어갑니다. 이 예제에서는 SimpleFragmentShader.fragmentshader 와 SimpleVertexShader.vertexshader 라는 파일이 있죠. 확장자 명은 뭐라도 상관없습니다. .txt나 .glsl 이 될 수도 있어요.
 
-So here's the code. It's not very important to fully understand it, since you often do this only once in a program, so comments should be enough. Since this function will be used by all other tutorials, it is placed in a separate file : common/loadShader.cpp . Notice that just as buffers, shaders are not directly accessible : we just have an ID. The actual implementation is hidden inside the driver.
+자, 이제 여기 코드들입니다. 전부다 이해 못해도 딱히 상관없습니다. 왜냐면 대개 프로그램마다 이부분은 한번만 하고 말거거든요. 그러니 주석을 잘 보는 것 만으로 충분할겁니다. 이 함수는 다른 모든 튜토리얼에서도 사용될거라서, 개별 파일에 위치합니다: common/loadShader.cpp . 참고할 점은, 버퍼와 같이 쉐이더 또한 바로 접근은 되지 않습니다 : 그저 ID 만 알고 있을 뿐이죠. 실제 구현부는 드라이버의 내부에 숨겨져 있습니다.
 
 ``` cpp
 GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path){
 
-	// Create the shaders
+	// 쉐이더들 생성
 	GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 	GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
 
-	// Read the Vertex Shader code from the file
+  // 버텍스 쉐이더 코드를 파일에서 읽기
 	std::string VertexShaderCode;
 	std::ifstream VertexShaderStream(vertex_file_path, std::ios::in);
 	if(VertexShaderStream.is_open()){
@@ -139,12 +139,12 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 			VertexShaderCode += "\n" + Line;
 		VertexShaderStream.close();
 	}else{
-		printf("Impossible to open %s. Are you in the right directory ? Don't forget to read the FAQ !\n", vertex_file_path);
+		printf("파일 %s 를 읽을 수 없음. 정확한 디렉토리를 사용 중입니까 ? FAQ 를 우선 읽어보는 걸 잊지 마세요!\n", vertex_file_path);
 		getchar();
 		return 0;
 	}
 
-	// Read the Fragment Shader code from the file
+  // 프래그먼트 쉐이더 코드를 파일에서 읽기
 	std::string FragmentShaderCode;
 	std::ifstream FragmentShaderStream(fragment_file_path, std::ios::in);
 	if(FragmentShaderStream.is_open()){
@@ -158,13 +158,13 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 	int InfoLogLength;
 
 
-	// Compile Vertex Shader
+	// 버텍스 쉐이더를 컴파일
 	printf("Compiling shader : %s\n", vertex_file_path);
 	char const * VertexSourcePointer = VertexShaderCode.c_str();
 	glShaderSource(VertexShaderID, 1, &VertexSourcePointer , NULL);
 	glCompileShader(VertexShaderID);
 
-	// Check Vertex Shader
+	// 버텍스 쉐이더를 검사
 	glGetShaderiv(VertexShaderID, GL_COMPILE_STATUS, &Result);
 	glGetShaderiv(VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if ( InfoLogLength > 0 ){
@@ -175,13 +175,13 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 
 
 
-	// Compile Fragment Shader
+	// 프래그먼트 쉐이더를 컴파일
 	printf("Compiling shader : %s\n", fragment_file_path);
 	char const * FragmentSourcePointer = FragmentShaderCode.c_str();
 	glShaderSource(FragmentShaderID, 1, &FragmentSourcePointer , NULL);
 	glCompileShader(FragmentShaderID);
 
-	// Check Fragment Shader
+	// 프래그먼트 쉐이더를 검사
 	glGetShaderiv(FragmentShaderID, GL_COMPILE_STATUS, &Result);
 	glGetShaderiv(FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if ( InfoLogLength > 0 ){
@@ -192,14 +192,14 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 
 
 
-	// Link the program
+	// 프로그램에 링크
 	printf("Linking program\n");
 	GLuint ProgramID = glCreateProgram();
 	glAttachShader(ProgramID, VertexShaderID);
 	glAttachShader(ProgramID, FragmentShaderID);
 	glLinkProgram(ProgramID);
 
-	// Check the program
+	// 프로그램 검사
 	glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
 	glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if ( InfoLogLength > 0 ){
@@ -219,35 +219,35 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 }
 ```
 
-# Our Vertex Shader
+# 우리의 버텍스 쉐이더
 
-Let's write our vertex shader first.
-The first line tells the compiler that we will use OpenGL 3's syntax.
+먼저 우리의 버텍스 쉐이더를 한번 작성해봅시다.
+가장 첫번째 줄은 컴파일러에게 OpenGL 3 의 문법을 사용할거라 알려줍니다.
 
 ``` glsl
 #version 330 core
 ```
 
-The second line declares the input data :
+두번째 줄은 입력 값을 선언합니다 :
 
 ``` glsl
 layout(location = 0) in vec3 vertexPosition_modelspace;
 ```
 
-Let's explain this line in detail :
+이 줄을 자세히 설명해볼게요 :
 
-- "vec3" is a vector of 3 components in GLSL. It is similar (but different) to the glm::vec3 we used to declare our triangle. The important thing is that if we use 3 components in C++, we use 3 components in GLSL too.
-- "layout(location = 0)" refers to the buffer we use to feed the *vertexPosition_modelspace* attribute. Each vertex can have numerous attributes : A position, one or several colours, one or several texture coordinates, lots of other things. OpenGL doesn't know what a colour is : it just sees a vec3. So we have to tell him which buffer corresponds to which input. We do that by setting the layout to the same value as the first parameter to glVertexAttribPointer. The value "0" is not important, it could be 12 (but no more than glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &v) ), the important thing is that it's the same number on both sides.
-- "vertexPosition_modelspace" could have any other name. It will contain the position of the vertex for each run of the vertex shader.
-- "in" means that this is some input data. Soon we'll see the "out" keyword.
+- "vec3" 는 GLSL에서 3 가지 컴포넌트를 지닌 벡터입니다. 이것은 우리가 삼각형을 선언하기 위해 사용한 glm::vec3 보다 비슷한 (하지만 다른) 것입니다. 중요한 점은, 만약 우리가 3가지 컴포넌트를 C++에서 사용한다면, GLSL에서도 3가지 컴포넌트를 사용합니다.
+- "layout(location = 0)" 는 *vertexPosition_modelspae* 속성을 채우기 위해 사용한 버퍼를 가리킵니다. 각각의 버텍스는 많은 속성을 가질 수 있습니다 : 위치, 하나 혹은 그 이상의 색깔, 하나 혹은 그 이상의 텍스쳐 좌표들, 그외 많은 것들. OpenGL 은 색깔이 뭔지 모릅니다 : 그저 vec3 를 살펴보는 거죠. 그러니 녀석에게 어던 버퍼가 어떤 입력값에 해당하는지 알려줘야 합니다. 이는 glVertexAttribPointer 의 첫번째 입력으로 준 값과 똑같은 값으로 레이아웃을 설정해서 할 수 있습니다. 값 "0" 은 별로 중요하지 않습니다. 값이 12가 될수도 (하지만  glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &v) 보다 클 순 없습니다) 있습니다, 중요한 것은 양쪽 모두 같은 숫자이어야 한다는 거죠.
+- "vertexPosition_modelspace" 는 다른 어떠한 이름도 가질수 있습니다. 이 녀석은 각각의 버텍스 쉐이더가 실행될때 마다 해당 버텍스의 위치를 가지고 있을 겁니다.
+- "in" 은, 이것은 어떤 입력 데이터다, 라는 뜻입니다. 곧, 우리는 "out" 키워드도 보게 되겠죠.
 
-The function that is called for each vertex is called main, just as in C :
+각각의 버텍스를 위해 호출되는 이 함수는, 메인(main)에서 호출됩니다. C 에서 같이요 :
 
 ``` glsl
 void main(){
 ```
 
-Our main function will merely set the vertex' position to whatever was in the buffer. So if we gave (1,1), the triangle would have one of its vertices at the top right corner of the screen. We'll see in the next tutorial how to do some more interesting computations on the input position.
+우리의 main 함수는 그저 단순이 버텍스의 위치를, 버퍼에 무엇이 있었든 간에 그 값들로 설정할겁니다. 그러니 만약 우리가 (1,1) 을 주었었다면, 삼각형은 아마 그중 하나의 버텍스가 화면의 상단 우측 코너에 있겠죠. 우리는 다음 튜토리얼에서 어떻게 입력 위치값에 흥미로운 연산들을 추가하는지 볼겁니다.
 
 ``` glsl
   gl_Position.xyz = vertexPosition_modelspace;
@@ -255,11 +255,11 @@ Our main function will merely set the vertex' position to whatever was in the bu
 }
 ```
 
-gl_Position is one of the few built-in variables : you *have *to assign some value to it. Everything else is optional; we'll see what "everything else" means in Tutorial 4.
+gl_Position 은 몇 안되는 내장(built-in) 변수 입니다 : 당신은 *반드시 * 어떤 값을 할당해야 합니다. 다른 모든 것은 필수는 아닙니다; 우리는 "다른 모든 것들"의 의미를 튜토리얼 4 에서 볼겁니다.
 
-# Our Fragment Shader
+# 우리의 프래그먼트 쉐이더
 
-For our first fragment shader, we will do something really simple : set the color of each fragment to red. (Remember, there are 4 fragment in a pixel because we use 4x AA)
+우리의 프래그먼트 쉐이더에 대해서는, 정말 간단한 일만 해주면 됩니다 : 각 프래그먼트를 붉은 색으로 설정합니다. (기억하세요. 우리는 4x AA 를 사용하기에 픽셀당 4개의 프래그먼트가 존재합니다)
 
 ``` glsl
 #version 330 core
@@ -269,33 +269,33 @@ void main(){
 }
 ```
 
-So yeah, vec3(1,0,0) means red. This is because on computer screens, colour is represented by a Red, Green, and Blue triplet, in this order. So (1,0,0) means Full Red, no green and no blue.
+네 그래서, vec(1,0,0) 은 붉은 색을 뜻하게 됬습니다. 왜냐면 컴퓨터 화면에서, 컬러는 빨강, 초록, 그리고 파랑 트리플렛(triplet;세 쌍둥이), 이런 순서로 이루어지거든요. 그러니 (1,0,0) 은 완전 레드를 뜻하죠. 어떠한 그린이나 블루도 없는.
 
-## Putting it all together
+## 죄다 한군데 몰아 넣기
 
-Before the main loop, call our LoadShaders function :
+main 루프를 시작하기 전에, 우리의 LoadShaders 함수를 호출합니다 :
 
 ```cpp
-// Create and compile our GLSL program from the shaders
+// 쉐이더들에서 우리의 GLSL 프로그램을 생성하고 컴파일하기
 GLuint programID = LoadShaders( "SimpleVertexShader.vertexshader", "SimpleFragmentShader.fragmentshader" );
 ```
 
-Now inside the main loop, first clear the screen. This will change the background color to dark blue because of the previous glClearColor(0.0f, 0.0f, 0.4f, 0.0f) call:
+이제 메인 루프에서, 먼저 화면을 정리(clear) 합니다. 이것은 배경 컬러를 검파랑으로 바꿀 것인데 이것은 glClearColor(0.0f, 0.0f, 0.4f, 0.0f) 호출 때문이죠 :
 
 ``` cpp
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 ```
 
-and then tell OpenGL that you want to use your shader:
+그리고 나서 OpenGL 에게 당신의 쉐이더를 사용하고 싶다고 알려주세요:
 
 ``` cpp
-// Use our shader
+// 우리의 쉐이더를 사용하기
 glUseProgram(programID);
-// Draw triangle...
+// 삼각형 그리기...
 ```
 
-... and presto, here's your red triangle !
+... 그리고 얍, 여기 당신의 붉은 삼각형이 있네요 !
 
 ![red_triangle]({{site.baseurl}}/assets/images/tuto-2-first-triangle/red_triangle.png){: height="231px" width="300px"}
 
-In the next tutorial we'll learn transformations : How to setup your camera, move your objects, etc.
+다음번 튜토리얼에서 우리는 변환transformations 에 대해 배울 겁니다 : 어떻게 카메라를 설정하고, 당신의 오브젝트를 움직이는지 등 을요.
