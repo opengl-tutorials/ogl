@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: 'Tutorial 3 : Matrices'
+title: '튜토리얼 3 : 행렬(매트릭스)'
 date: '2011-04-09 20:59:15 +0200'
 date_gmt: '2011-04-09 20:59:15 +0200'
 categories: [tuto]
@@ -11,53 +11,53 @@ tags: []
 ---
 {:TOC}
 
-> _The engines don't move the ship at all. The ship stays where it is and the engines move the universe around it._
-> 
+> _엔진이 배를 움직이는 것이 아니다. 배는 그 자리에 가만이 있으나 엔진이 이 세상을 회전해 움직이는 것이다._
+>
 > Futurama
 
-**This is the single most important tutorial of the whole set. Be sure to read it at least eight times.**
+**이부분은 이 모든 것에 있어 가장 중요한 단 하나의 튜토리얼입니다. 그러니 최소한 여덟번은 읽도록 하세요.**
 
-# Homogeneous coordinates
+# Homogeneous 좌표계
 
-Until then, we only considered 3D vertices as a (x,y,z) triplet. Let's introduce w. We will now have (x,y,z,w) vectors.
+지금까지, 우리는 3D 버텍스를 (x,y,z) 트리플렛(세묶음;triplet)으로서 다루었습니다. 여기에 w 를 소개합니다. 우리는 이제 (x,y,z,w) 벡터를 사용합니다.
 
-This will be more clear soon, but for now, just remember this :
+이게 무엇인지 곧 알게 될겁니다. 하지만 지금은, 이것만 기억해 두세요 :
 
-- If w == 1, then the vector (x,y,z,1) is a position in space.
-- If w == 0, then the vector (x,y,z,0) is a direction.
+- w == 1 이면, 벡터 (x,y,z,1) 은 공간에서의 위치 입니다.
+- w == 0 이면, 벡터 (x,y,z,0) 은 방향입니다.
 
-(In fact, remember this forever.)
+(사실, 이 부분은 머릿속에 영원이 박아둬야 합니다.)
 
-What difference does this make ? Well, for a rotation, it doesn't change anything. When you rotate a point or a direction, you get the same result. However, for a translation (when you move the point in a certain direction), things are different. What could mean "translate a direction" ? Not much.
+이게 무슨 차이를 만든다는 거죠? 음, 회전에 대해서 보면, 이것은 아무것도 바뀌지 않아요. 당신이 점이나 방향을 회전 시키면, 같은 결과를 얻게 되죠. 하지만, 평행이동(translation;트랜스레이션) 에 관해서는 (당신이 점을 특정 방향으로 이동시킬때), 변화가 일어납니다. "어떤 방향으로 평행이동(Translate)시킨다" 이게 무슨 뜻일까요 ? 별건 없습니다.
 
-Homogeneous coordinates allow us to use a single mathematical formula to deal with these two cases.
+Homogeneous 좌표계에서는 하나의 수학 공식을 사용해서 이어질 두 경우를 다루게 해줍니다.
 
-# Transformation matrices
+# 변환 행렬
 
 
-## An introduction to matrices
+## 행렬에 대한 소개
 
-Simply put, a matrix is an array of numbers with a predefined number of rows and colums. For instance, a 2x3 matrix can look like this :
+간단히 말해, 행렬(matrix)이란 미리 정의해둔 개수의 행(rows)들 과 열(colums)들을 이용해서 여러개의 배열(array)을 합쳐놓은 것 입니다. 예를 들어, 2x3 행렬은 아래 처럼 보이겠죠 :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/2X3.png)
 
-In 3D graphics we will mostly use 4x4 matrices. They will allow us to transform our (x,y,z,w) vertices. This is done by multiplying the vertex with the matrix :
+3D 그래픽스에서 4x4 행렬을 주로 사용합니다. 이들은 우리의 (x,y,z,w) 버텍스들을 변형하게 해줍니다. 이는 버텍스를 행렬로 곱하여 이루어집니다 :
 
-**Matrix x Vertex (in this order !!) = TransformedVertex**
+**행렬 x 버텍스 (이 순서로 곱해야 합니다!!) = 변형된_버텍스**
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/MatrixXVect.gif)
 
-This isn't as scary as it looks. Put your left finger on the a, and your right finger on the x. This is _ax_. Move your left finger to the next number (b), and your right finger to the next number (y). You've got _by_. Once again : _cz_. Once again : _dw_. ax + by + cz + dw. You've got your new x ! Do the same for each line, and you'll get your new (x,y,z,w) vector.
+보는 것 만큼 무섭게 어렵진 않습니다. 왼쪽 손가락을 a 에 두고, 오른쪽 손가락을 x 에 둬 보세요. 이것이 _ax_ 입니다. 왼쪽 손가락을 다음 숫자 (b) 에 두세요. 그리고 오른쪽 손가락을 다음 숫자 (y) 에 두세요. 당신은 _by_ 를 얻었습니다. 다시 한번 : _cz_. 다시 한번 : _dw_. ax + by + cz + dw. 당신은 새로운 x 를 얻었네요 ! 각각의 줄에 똑같이 해보면, 당신은 새로운 (x,y,z,w) 벡터를 얻게 됩니다.
 
-Now this is quite boring to compute, an we will do this often, so let's ask the computer to do it instead.
+이 부분은 계산하기 지루한 부분입니다만, 자주 하게 될거에요. 그러니 앞으로는 컴퓨터에게 대신 해달라고 부탁하죠.
 
-**In C++, with GLM:**
+**C++에서, GLM으로:**
 
 ``` cpp
 glm::mat4 myMatrix;
 glm::vec4 myVector;
-// fill myMatrix and myVector somehow
-glm::vec4 transformedVector = myMatrix * myVector; // Again, in this order ! this is important.
+// myMatix 와 myVector 를 어떻게 채웁니다.
+glm::vec4 transformedVector = myMatrix * myVector; // 다시한번 말하지만 이 순서로 곱하십쇼! 정말 중요합니다!
 ```
 
 **In GLSL :**
@@ -99,7 +99,7 @@ So, how does this translate to code ?
 
 ``` cpp
 #include <glm/gtx/transform.hpp> // after <glm/glm.hpp>
- 
+
 glm::mat4 myMatrix = glm::translate(10.0f, 0.0f, 0.0f);
 glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);
 glm::vec4 transformedVector = myMatrix * myVector; // guess the result
@@ -148,7 +148,7 @@ glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
 
 ## Rotation matrices
 
-These are quite complicated. I'll skip the details here, as it's not important to know their exact layout for everyday use. For more information, please have a look to the [Matrices and Quaternions FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html) (popular resource, probably available in your language as well). You can also have a look at the [Rotations tutorials]({{site.baseurl }}{{intermediate-tutorials/tutorial-17-quaternions}}) 
+These are quite complicated. I'll skip the details here, as it's not important to know their exact layout for everyday use. For more information, please have a look to the [Matrices and Quaternions FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html) (popular resource, probably available in your language as well). You can also have a look at the [Rotations tutorials]({{site.baseurl }}{{intermediate-tutorials/tutorial-17-quaternions}})
 
 **In C++ :**
 
@@ -331,17 +331,17 @@ transformed_vertex = MVP * in_vertex;
   ``` cpp
   // Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
   glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float) width / (float)height, 0.1f, 100.0f);
-  
+
   // Or, for an ortho camera :
   //glm::mat4 Projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f); // In world coordinates
-  
+
   // Camera matrix
   glm::mat4 View = glm::lookAt(
       glm::vec3(4,3,3), // Camera is at (4,3,3), in World Space
       glm::vec3(0,0,0), // and looks at the origin
       glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
       );
-  
+
   // Model matrix : an identity matrix (model will be at the origin)
   glm::mat4 Model = glm::mat4(1.0f);
   // Our ModelViewProjection : multiplication of our 3 matrices
@@ -354,7 +354,7 @@ transformed_vertex = MVP * in_vertex;
   // Get a handle for our "MVP" uniform
   // Only during the initialisation
   GLuint MatrixID = glGetUniformLocation(program_id, "MVP");
-  
+
   // Send our transformation to the currently bound shader, in the "MVP" uniform
   // This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
   glUniformMatrix4fv(mvp_handle, 1, GL_FALSE, &mvp[0][0]);
@@ -365,10 +365,10 @@ transformed_vertex = MVP * in_vertex;
   ``` glsl
   // Input vertex data, different for all executions of this shader.
   layout(location = 0) in vec3 vertexPosition_modelspace;
-  
+
   // Values that stay constant for the whole mesh.
   uniform mat4 MVP;
-  
+
   void main(){
     // Output position of the vertex, in clip space : MVP * position
     gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
