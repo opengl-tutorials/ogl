@@ -26,9 +26,6 @@ OpenGL 로 띄어들기 전에, 먼저 각각의 튜토리얼의 코드를 어�
 
 # 다 잊어버리세요
 
-You don't have to know anything, but you have to forget everything you know about OpenGL.
-If you know about something that looks like glBegin(), forget it. Here you will learn modern OpenGL (OpenGL 3 and 4) , and most online tutorials teach "old" OpenGL (OpenGL 1 and 2). So forget everything you might know before your brain melts from the mix.
-
 아는게 아무것도 없어도 됩니다. 하지만 OpenGL 에 대해 이미 알고 있는 것들은 모두 잊어버려야만 합니다.
 glBegin() 처럼 생긴 무언가를 기억하고 있다면, 잊어버리세요. 여기서는 최신 OpenGL (OpenGL 3 과 4) 을 배우지만, 대부분의 OpenGL 온라인 강의들은 "낡은" OpenGL (OpenGL 1 과 2) 를 가르치죠. 그러니 혼동으로 인해 뇌가 녹아버리기 전에 이미 알고 있던 것들은 전부 잊어버리세요.
 

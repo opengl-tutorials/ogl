@@ -2,12 +2,13 @@
 layout: page
 status: publish
 published: true
-title: '튜토리얼 3 : 행렬(매트릭스)'
+title: 'Tutorial 3 : 행렬(매트릭스)'
 date: '2011-04-09 20:59:15 +0200'
 date_gmt: '2011-04-09 20:59:15 +0200'
 categories: [tuto]
 order: 30
 tags: []
+language: kr
 ---
 {:TOC}
 
@@ -15,7 +16,7 @@ tags: []
 >
 > Futurama
 
-**이부분은 이 모든 것에 있어 가장 중요한 단 하나의 튜토리얼입니다. 그러니 최소한 여덟번은 읽도록 하세요.**
+**이부분은 모든 것에 있어 가장 중요한 단 하나의 튜토리얼입니다. 그러니 최소한 여덟번은 읽도록 하세요.**
 
 # Homogeneous 좌표계
 
@@ -65,27 +66,27 @@ glm::vec4 transformedVector = myMatrix * myVector; // 다시한번 말하지만 
 ``` glsl
 mat4 myMatrix;
 vec4 myVector;
-// fill myMatrix and myVector somehow
+// myMatrix 와 myVector 를 어떠한 방식으로 채웁니다
 vec4 transformedVector = myMatrix * myVector; // Yeah, it's pretty much the same than GLM
 ```
 
-( have you cut'n pasted this in your code ? go on, try it)
+( 이 부분을 당신의 코드에 잘라 붙여보았나요? 지금 한번 해보세요)
 
-## Translation matrices
+## 평행이동 행렬
 
-These are the most simple tranformation matrices to understand. A translation matrix look like this :
+이들은 가장 이해하기 쉬운 형태의 변형(tranformation) 입니다. 평행이동 행렬은 이렇게 생겼습니다 :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/translationMatrix.png)
 
-where X,Y,Z are the values that you want to add to your position.
+X,Y,Z 에 있는 것들이 당신의 위치에서 더하고자 하는 값들입니다.
 
-So if we want to translate the vector (10,10,10,1) of 10 units in the X direction, we get :
+그래서 벡터 (10,10,10,1) 을 X 방향으로 10 유닛(unit;이동단위, 현실의 어떤 길이에 매칭할 것인지는 개발자 마음.)만큼 평행시키려면 이런 식을 계산합니다 :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/translationExamplePosition1.png)
 
-(do it ! doooooo it)
+(그냥 하셈 ! 일다아아안 그냥 해보셈!!)
 
-... and we get a (20,10,10,1) homogeneous vector ! Remember, the 1 means that it is a position, not a direction. So our transformation didn't change the fact that we were dealing with a position, which is good.
+... 그리고 이제 (20,20,10,1) 호모지니어스 벡터를 얻었습니다 ! 기억하세요, 마지막 1은 우리가 위치가 아닌 방향을 다룬다는 의미입니다. 그러니 우리가 만든 변형이, 위치에 관해 다루고 있었단 사실은 바꾸지 않았단 얘기입니다. 좋은 일이죠.
 
 Let's now see what happens to a vector that represents a direction towards the -z axis : (0,0,-1,0)
 

@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: 'Tutorial 2 : 첫 삼각형"
+title: 'Tutorial 2 : 첫 삼각형'
 date: '2011-04-07 18:54:11 +0200'
 date_gmt: '2011-04-07 18:54:11 +0200'
 categories: [tuto]
