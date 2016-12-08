@@ -8,6 +8,7 @@ date_gmt: '2013-04-30 10:30:55 +0200'
 categories: []
 order: 60
 tags: []
+language: kr
 ---
 There are various way to detect on which object a user click:
 

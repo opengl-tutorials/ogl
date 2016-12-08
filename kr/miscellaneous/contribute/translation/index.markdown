@@ -8,6 +8,7 @@ author:
 categories: []
 order: 17
 tags: []
+language: kr
 ---
 {:TOC}
 Do you want to translate just one page ? No problem !

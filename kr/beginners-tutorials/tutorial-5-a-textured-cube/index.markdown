@@ -8,6 +8,7 @@ date_gmt: '2011-04-26 07:55:58 +0200'
 categories: [tuto]
 order: 50
 tags: []
+language: kr
 ---
 
 In this tutorial, you will learn :
@@ -146,7 +147,7 @@ GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 ```
 
 > Another very important point :** use power-of-two textures !**
-> 
+>
 > * good : 128\*128, 256\*256, 1024\*1024, 2\*2...
 > * bad : 127\*128, 3\*5, ...
 > * okay but weird : 128\*256
@@ -394,7 +395,7 @@ GLuint loadDDS(const char * imagepath){
     }
 
     /* get the surface desc */
-    fread(&header, 124, 1, fp); 
+    fread(&header, 124, 1, fp);
 
     unsigned int height      = *(unsigned int*)&(header[8 ]);
     unsigned int width         = *(unsigned int*)&(header[12]);
@@ -405,7 +406,7 @@ GLuint loadDDS(const char * imagepath){
 
 After the header is the actual data : all the mipmap levels, successively. We can read them all in one batch :
 
- 
+
 
 ``` cpp
     unsigned char * buffer;
@@ -461,14 +462,14 @@ And now, we just have to fill each mipmap one after another :
     for (unsigned int level = 0; level < mipMapCount && (width || height); ++level)
     {
         unsigned int size = ((width+3)/4)*((height+3)/4)*blockSize;
-        glCompressedTexImage2D(GL_TEXTURE_2D, level, format, width, height, 
+        glCompressedTexImage2D(GL_TEXTURE_2D, level, format, width, height,
             0, size, buffer + offset);
 
         offset += size;
         width  /= 2;
         height /= 2;
     }
-    free(buffer); 
+    free(buffer);
 
     return textureID;
 ```
@@ -495,4 +496,3 @@ In general, you should only use compressed textures, since they are smaller to s
 
 
 * [Using texture compression in OpenGL](http://www.oldunreal.com/editing/s3tc/ARB_texture_compression.pdf) , S&eacute;bastien Domine, NVIDIA
-

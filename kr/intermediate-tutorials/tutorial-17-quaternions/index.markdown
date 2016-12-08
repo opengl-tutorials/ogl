@@ -8,6 +8,7 @@ date_gmt: '2012-08-22 14:12:14 +0200'
 categories: [tuto]
 order: 90
 tags: []
+language: kr
 ---
 
 This tutorial goes a bit outside the scope of OpenGL, but nevertheless tackles a very common problem: how to represent rotations ?
@@ -94,7 +95,7 @@ quat MyQuaternion;
 
 // Direct specification of the 4 components
 // You almost never use this directly
-MyQuaternion = quat(w,x,y,z); 
+MyQuaternion = quat(w,x,y,z);
 
 // Conversion from Euler angles (in radians) to Quaternion
 vec3 EulerAngles(90, 45, 0);
@@ -231,7 +232,7 @@ quat RotationBetweenVectors(vec3 start, vec3 dest){
 	float invs = 1 / s;
 
 	return quat(
-		s * 0.5f, 
+		s * 0.5f,
 		rotationAxis.x * invs,
 		rotationAxis.y * invs,
 		rotationAxis.z * invs

@@ -8,6 +8,7 @@ date_gmt: '2013-05-18 22:13:41 +0200'
 categories: []
 order: 90
 tags: []
+language: kr
 ---
 
 This last method is a nice middleground between the "hacky" pure-OpenGL implementation, and having to integrate a fully-featured physics engine just to do raycasts and picking.
@@ -39,7 +40,7 @@ When the ray intersects the 2 others planes that delimit the Y axis (in green), 
 ![]({{site.baseurl}}/assets/images/tuto-picking-obb/RayObb21.png)
 
 
- 
+
 
 But if this order changes (you enter the green area -> you enter the red area), then you know there is an intersection !
 
@@ -114,7 +115,7 @@ if (tMax < tMin )
 
 This was for the X axis. On all other axes it's exactly the same !
 
- 
+
 
 # Using the algorithm
 
@@ -135,9 +136,9 @@ for(int i=0; i<100; i++){
 	glm::mat4 ModelMatrix = TranslationMatrix * RotationMatrix;
 
 	if ( TestRayOBBIntersection(
-		ray_origin, 
-		ray_direction, 
-		aabb_min, 
+		ray_origin,
+		ray_direction,
+		aabb_min,
 		aabb_max,
 		ModelMatrix,
 		intersection_distance)
@@ -165,7 +166,7 @@ Cons :
 * Slower than a physics engine since there is no acceleration structure
 * Might not be precise enough.
 
- 
+
 
 # Final remarks
 

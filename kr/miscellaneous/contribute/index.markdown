@@ -4,17 +4,20 @@ title: Contribute
 categories: []
 order: 15
 tags: []
+language: kr
 ---
 {:TOC}
 
-Did you found these tutorials useful ?
-Do you want to contribute ?
+이 튜토리얼들이 쓸만했나요 ?
+이곳에 기여를 해보고 싶나요 ?
 
-There are various way to contribute and we welcome any of them !
+기여할 수 있는 많은 방법들이 있습니다. 그리고 어떠한 방식이라도 저희는 환영합니다 !
 
-*Want to share your knowledge and make your very own tutorial ? Drop us an email with your idea, we would be more than happy to help you, and host it on the website !
-*Spotted an error (code, math, typo, gramatical error) in a tutorial ? Report it on [Github issue tracker](https://github.com/opengl-tutorials/ogl).
-*Want to help us traduce one tutorial, or all the tutorials in a new language (like Spanish, Portuguese, etc) ? Follow this [guide]( {{ site.baseurl }}/miscellaneous/contribute/translation/).
-*The website is not beautiful enough ? If you're talented in CSS and website please drop us an email !
+*당신의 지식을 공유하고 당신만의 튜토리얼을 만들고 싶나요 ? 당신의 아이디어를 우리에게 메일로 보내주세요. 당신을 도우면서 웹사이트에 이들을 올릴 수 있어 저희는 매우 기쁩니다 !
+*에러 (잘못된 코드나, 계산, 오타, 문법 에러 등) 를 튜토리얼에서 발견 하셨나요 ? []
 
-If you have any other ideas that you wish to share with us please don't hesitate to contact us by email.
+*Want to share your knowledge and make your very own tutorial ? Drop us an email with your idea, we would be more than happy to help you, and host it on the website ! [깃허브 이슈 트래커](https://github.com/opengl-tutorials/ogl) 에 보고해주세요 !
+*저희를 도와 튜토리얼을 다른 언어로 번역해보고 싶나요 (스페인어나, 포르투칼어, 등) ? 여기 [가이드]( {{ site.baseurl }}/miscellaneous/contribute/translation/) 를 참고해 보세요 !
+*웹사이트가 별로 이쁘지 않나요 ? 만약 CSS 와 웹 에 재능이 있다면 메일을 보내주세요 !
+
+이외에 어떠한 좋은 아이디어라도 공유하고 싶다면 망설이지 말고 바로 저희에게 메일을 보내주세요.

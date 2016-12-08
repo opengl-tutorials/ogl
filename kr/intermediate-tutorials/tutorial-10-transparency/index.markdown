@@ -8,6 +8,7 @@ date_gmt: '2011-05-13 23:00:42 +0200'
 categories: [tuto]
 order: 20
 tags: []
+language: kr
 ---
 
 # The alpha channel
@@ -117,5 +118,3 @@ Example from the image above, with red on top :
 new color = 0.5*(0,1,0) + (1-0.5)*(1,0.5,0.5); // (the red was already blended with the white background)
 new color = (1, 0.75, 0.25) = the same orange
 ```
-
- 

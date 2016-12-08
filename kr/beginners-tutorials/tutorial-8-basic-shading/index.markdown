@@ -8,6 +8,7 @@ date_gmt: '2011-05-08 19:12:46 +0200'
 categories: [tuto]
 order: 80
 tags: []
+language: kr
 ---
 
 In this 8th tutorial, we will learn how to do some basic shading. This includes :

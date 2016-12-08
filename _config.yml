@@ -13,4 +13,6 @@ languages: [en, cn, jp, ru, fr, kr]
 languages_names: [english, chinese, japanese, russian, français, korean]
 # Build settings
 markdown: kramdown
+kramdown:
+  input: GFM
 permalink: pretty

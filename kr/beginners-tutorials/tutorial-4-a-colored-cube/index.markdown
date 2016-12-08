@@ -8,6 +8,7 @@ date_gmt: '2011-04-26 07:55:37 +0200'
 categories: [tuto]
 order: 40
 tags: []
+language: kr
 ---
 
 Welcome for the 4rth tutorial ! You will do the following :
@@ -261,4 +262,3 @@ for (int v = 0; v < 12*3 ; v++){
 ```
 
 * Once you've done that, make the colors change each frame. You'll have to call glBufferData each frame. Make sure the appropriate buffer is bound (glBindBuffer) before !
-

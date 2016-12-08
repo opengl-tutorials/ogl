@@ -12,6 +12,7 @@ date: '2011-05-11 17:38:54 +0200'
 date_gmt: '2011-05-11 17:38:54 +0200'
 categories: []
 tags: []
+language: kr
 ---
 
 <span style="color: #ff0000;">[Tutorial 1](http://www.opengl-tutorial.org/beginners-tutorials/tutorial-1-opening-a-window/) explains how to build the source code. Please read it !</span>

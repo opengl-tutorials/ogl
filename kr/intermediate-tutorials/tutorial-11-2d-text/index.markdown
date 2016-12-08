@@ -8,6 +8,7 @@ date_gmt: '2011-05-16 22:38:44 +0200'
 categories: [tuto]
 order: 30
 tags: []
+language: kr
 ---
 
 In this tutorial, we'll learn to draw 2D text on top of our 3D content. In our case, this will be a simple timer :

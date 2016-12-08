@@ -8,6 +8,7 @@ date_gmt: '2012-10-06 14:03:21 +0200'
 categories: []
 order: 50
 tags: []
+language: kr
 ---
 
 A lot of efforts have been made so that these tutorials are as simple to compile & run as possible. Unfortunately, this also means that CMakes hides how to do that on your own project.
@@ -123,7 +124,7 @@ The instructions on how to build an OpenGL application are separated from the fo
 * First, you'll need to do these thinks all of the time, so you'd better know them well
 * Second, you will know what is OpenGL-specific and what is not.
 
- 
+
 
 ## Visual Studio
 
@@ -519,7 +520,7 @@ GLFWAPI int  glfwInit( void );
 
 So the rule is : these flags must be consistent. If you build a lib (any lib, not just GLFW) as a DLL, use the right preprocessor definition : GLFW_DLL, GLEW_STATIC
 
- 
+
 
 ## My program crashes !
 
@@ -574,5 +575,3 @@ if ( fopen("test.txt", "r" ) == NULL ){
 ## Something else is wrong
 
 Please contact us by mail
-
- 

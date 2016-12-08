@@ -8,6 +8,7 @@ date_gmt: '2011-05-08 08:26:13 +0200'
 categories: [tuto]
 order: 60
 tags: []
+language: kr
 ---
 
 Welcome for our 6th tutorial !
@@ -234,5 +235,3 @@ glEnable(GL_CULL_FACE);
 * Restrict verticalAngle so that you can't go upside-down
 * Create a camera that rotates around the object ( position = ObjectCenter + ( radius * cos(time), height, radius * sin(time) ) ); bind the radius/height/time to the keyboard/mouse, or whatever
 * Have fun !
-
- 

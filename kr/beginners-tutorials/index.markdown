@@ -7,6 +7,7 @@ date: '2011-05-07 10:45:02 +0200'
 date_gmt: '2011-05-07 10:45:02 +0200'
 categories: [section]
 tags: []
+language: kr
 ---
 Follow them in the right order !
 

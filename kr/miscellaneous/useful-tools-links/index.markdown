@@ -8,6 +8,7 @@ date_gmt: '2011-05-11 20:31:21 +0200'
 categories: []
 order: 30
 tags: []
+language: kr
 ---
 
 # Documentation
@@ -114,4 +115,3 @@ If unsure, simply use the GLEW version included in the source code.
 * [ODE](http://www.ode.org/). Old and unstable. Avoid.
 * PhysX
 * Havok (expensive)
-

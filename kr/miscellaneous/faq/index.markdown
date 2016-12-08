@@ -8,6 +8,7 @@ date_gmt: '2012-04-29 13:22:31 +0200'
 categories: []
 order: 10
 tags: []
+language: kr
 ---
 
 # About sending e-mails...
@@ -143,7 +144,7 @@ As stated in Tutorial 1, you have to select the project you want to run by right
 ![]({{site.baseurl}}/assets/images/faq/StartupProject.png)
 
 
- 
+
 
 # I've got a message about the working directory, and the program crashes.
 

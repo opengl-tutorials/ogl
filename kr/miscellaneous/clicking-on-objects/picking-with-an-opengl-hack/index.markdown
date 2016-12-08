@@ -8,6 +8,7 @@ date_gmt: '2013-05-18 20:43:28 +0200'
 categories: []
 order: 70
 tags: []
+language: kr
 ---
 
 This technique is not really recommended, but it's an easy and fast way to add simple picking. By all means, avoid using this in a game, since it might introduce noticeable framerate drops. However, if you have some kind of simulation and you don't really care about picking performance, this might the perfect option.
@@ -38,7 +39,7 @@ Each object of the scene will need a unique color. The easiest way to do this is
 
 In the accompanying source code, 100 objects are created and stored in a std::vector, so the ID is just the index of the object in the vector. If you have a more complex hierarchy, you'll probably need to add the ID to your Mesh class, and maintain some sort of std::map to associate the ID with the desired object.
 
- 
+
 
 ## Detecting the click
 
@@ -115,7 +116,7 @@ glUniform4f(pickingColorID, r/255.0f, g/255.0f, b/255.0f, 1.0f);
 
 You can now draw the meshes as usual (*glBindBuffer, glVertexAttribPointer, glDrawElements*) and you'll get the weird picture above.
 
- 
+
 
 ## Get the color under the mouse
 
@@ -131,17 +132,17 @@ And finally, you can call *glReadPixels* ! Here is the full code :
 
 ``` cpp
 // Wait until all the pending drawing commands are really done.
-// Ultra-mega-over slow ! 
+// Ultra-mega-over slow !
 // There are usually a long time between glDrawElements() and
 // all the fragments completely rasterized.
 glFlush();
-glFinish(); 
+glFinish();
 
 glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 // Read the pixel at the center of the screen.
 // You can also use glfwGetMousePos().
-// Ultra-mega-over slow too, even for 1 pixel, 
+// Ultra-mega-over slow too, even for 1 pixel,
 // because the framebuffer is on the GPU.
 unsigned char data[4];
 glReadPixels(1024/2, 768/2,1,1, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -158,8 +159,8 @@ You can now reconstruct your ID from the 'data' buffer. The code is the complete
 
 ``` cpp
 // Convert the color back to an integer ID
-int pickedID = 
-	data[0] + 
+int pickedID =
+	data[0] +
 	data[1] * 256 +
 	data[2] * 256*256;
 ```
@@ -190,12 +191,10 @@ Cons :
 * Use glFlush(), glFinish(), glReadPixels(), all of which are notoriously slow, because they force the CPU to wait for the GPU, which ruins performance.
 * You don't have more precise information : which exact triangle was hit, normal at this point, etc.
 
- 
+
 
 # Final remarks
 
 While not very recommended, this technique can be really useful; but it's quite restricted to picking. The methods in the two other tutorials can be used for other purposes, like detecting collisions, making an avatar walk on the ground, visibility queries for AIs, etc.
 
 If you end up using this technique, and you need to pick several points in a single frame, you should do all these points at once. For instance, if you need to handle 5 touch inputs, don't draw the scene 5 times !
-
- 

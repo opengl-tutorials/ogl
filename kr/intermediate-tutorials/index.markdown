@@ -8,6 +8,7 @@ date: '2011-05-07 10:45:46 +0200'
 date_gmt: '2011-05-07 10:45:46 +0200'
 categories: []
 tags: []
+language: kr
 ---
 
 Follow them in any order
@@ -41,4 +42,3 @@ Follow them in any order
 {% endfor %}
 
 </ul> -->
-

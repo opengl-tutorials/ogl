@@ -8,6 +8,7 @@ date_gmt: '2011-05-12 19:21:49 +0200'
 categories: [tuto]
 order: 10
 tags: []
+language: kr
 ---
 
 # The principle of indexing

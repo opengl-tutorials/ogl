@@ -8,6 +8,7 @@ date_gmt: '2011-05-11 20:04:48 +0200'
 categories: []
 order: 20
 tags: []
+language: kr
 ---
 
 # Trigonometry
@@ -106,7 +107,7 @@ example for a translation matrix :
 ![]({{site.baseurl}}/assets/images/math-cheatsheet/translationExamplePosition1.png)
 
 
- 
+
 
 ## Matrix-Vector multiplication
 

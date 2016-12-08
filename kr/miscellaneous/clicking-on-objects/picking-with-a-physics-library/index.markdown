@@ -8,6 +8,7 @@ date_gmt: '2013-05-18 20:42:49 +0200'
 categories: []
 order: 80
 tags: []
+language: kr
 ---
 
 In this tutorial, we will see the "recommended" way to pick objects in a classical game engine - which might not be your case.
@@ -21,7 +22,7 @@ In this tutorial, we will use the Bullet Physics Engine, but the concepts are ex
 Lots of tutorials explain how to integrate Bullet; in particular, the [Bullet's wiki](http://bulletphysics.org/mediawiki-1.5.8/index.php/Main_Page) is very well done.
 
 ``` cpp
-// Initialize Bullet. This strictly follows http://bulletphysics.org/mediawiki-1.5.8/index.php/Hello_World, 
+// Initialize Bullet. This strictly follows http://bulletphysics.org/mediawiki-1.5.8/index.php/Hello_World,
 // even though we won't use most of this stuff.
 
 // Build the broadphase
@@ -54,7 +55,7 @@ Physics engines don't know anything about OpenGL; and in fact, all of them can r
 
 ``` cpp
 btDefaultMotionState* motionstate = new btDefaultMotionState(btTransform(
-	btQuaternion(orientations[i].x, orientations[i].y, orientations[i].z, orientations[i].w), 
+	btQuaternion(orientations[i].x, orientations[i].y, orientations[i].z, orientations[i].w),
 	btVector3(positions[i].x, positions[i].y, positions[i].z)
 ));
 
@@ -77,7 +78,7 @@ We also keep track of this rigid body, but as the comment says, a real engine wo
 rigidbodies.push_back(rigidBody);
 
 // Small hack : store the mesh's index "i" in Bullet's User Pointer.
-// Will be used to know which object is picked. 
+// Will be used to know which object is picked.
 // A real program would probably pass a "MyGameObjectPointer" instead.
 rigidBody->setUserPointer((void*)i);
 ```
@@ -153,12 +154,12 @@ Raycasting is very simple, no need for special comments :
 glm::vec3 out_end = out_origin + out_direction*1000.0f;
 
 btCollisionWorld::ClosestRayResultCallback RayCallback(
-	btVector3(out_origin.x, out_origin.y, out_origin.z), 
+	btVector3(out_origin.x, out_origin.y, out_origin.z),
 	btVector3(out_end.x, out_end.y, out_end.z)
 );
 dynamicsWorld->rayTest(
-	btVector3(out_origin.x, out_origin.y, out_origin.z), 
-	btVector3(out_end.x, out_end.y, out_end.z), 
+	btVector3(out_origin.x, out_origin.y, out_origin.z),
+	btVector3(out_end.x, out_end.y, out_end.z),
 	RayCallback
 );
 

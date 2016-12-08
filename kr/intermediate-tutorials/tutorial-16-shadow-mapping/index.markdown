@@ -8,6 +8,7 @@ date_gmt: '2011-08-17 18:29:32 +0200'
 categories: [tuto]
 order: 80
 tags: []
+language: kr
 ---
 
 In Tutorial 15 we learnt how to create lightmaps, which encompasses static lighting. While it produces very nice shadows, it doesn't deal with animated models.
@@ -344,7 +345,7 @@ The 700.0 constant defines how much the samples are "spread". Spread them too li
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/SoftShadows_Close.png)
 
 
- 
+
 
 ![]({{site.baseurl}}/assets/images/tuto-16-shadow-mapping/SoftShadows_Wide.png)
 

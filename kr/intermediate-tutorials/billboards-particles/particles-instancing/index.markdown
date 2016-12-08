@@ -8,6 +8,7 @@ date_gmt: '2013-10-19 10:52:04 +0200'
 categories: []
 order: 120
 tags: []
+language: kr
 ---
 
 Particles are very similar to 3D billboards. There are two major differences, though :
@@ -81,7 +82,7 @@ glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLubyte), NULL, GL_STREA
 
 , which is as usual. They are updated this way :
 
- 
+
 
 ``` cpp
 // Update the buffers that OpenGL uses for rendering.
@@ -100,7 +101,7 @@ glBufferSubData(GL_ARRAY_BUFFER, 0, ParticlesCount * sizeof(GLubyte) * 4, g_part
 
 , which is as usual. Before render, they are bound this way :
 
- 
+
 
 ``` cpp
 // 1rst attribute buffer : vertices
@@ -171,7 +172,7 @@ As you can see, instancing is very versatile, because you can pass any integer a
 
 The point is that now, we only have to update a small buffer each frame (the center of the particles) and not a huge mesh. This is a x4 bandwidth gain !
 
- 
+
 
 # Life and death
 
@@ -325,7 +326,7 @@ This will make ParticleContainer be sorted, and the particles now display correc
 ![]({{site.baseurl}}/assets/images/tuto-particules/particles_final.gif)
 
 
- 
+
 
 # Going further
 
@@ -404,6 +405,6 @@ You have many options to do this, and none in the scope of this tutorial ; I'll 
 * Use a General-Purpose GPU library : CUDA or OpenCL, which have interoperability functions with OpenGL.
 * Use a Compute Shader. Cleanest solution, but only available on very recent GPUs.
 
- 
+
 
 * Note that for simplicity, in this implementation, ParticleContainer is sorted after updating the GPU buffers. This makes the particles not exactly sorted (there is a one-frame delay), but it's not really noticeable. You can fix it by splitting the main loop in 2 : Simulate, Sort, and update.

@@ -8,6 +8,7 @@ date_gmt: '2011-05-28 10:07:24 +0200'
 categories: [tuto]
 order: 70
 tags: []
+language: kr
 ---
 
 # Introduction
@@ -54,4 +55,3 @@ color = texture( myTextureSampler, UV, -2.0 ).rgb;
 -2 is the bias. You'll have to experiment with this value. The screenshot above was taken with a bias of +2, which means that OpenGL will select two mipmaps above the one it should have taken (so it's 16 times smaller, hence the glitches)
 
 * You can fill the black background in a post-processing step. I'll post more about this later.
-

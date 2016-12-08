@@ -8,6 +8,7 @@ date_gmt: '2011-05-26 19:33:15 +0200'
 categories: [tuto]
 order: 60
 tags: []
+language: kr
 ---
 
 Render-To-Texture is a handful method to create a variety of effects. The basic idea is that you render a scene just like you usually do, but this time in a texture that you can reuse later.
@@ -166,7 +167,7 @@ This code simply sample the texture, but adds a tiny offset which depends on tim
 
 # Results
 
- 
+
 
 ![]({{site.baseurl}}/assets/images/tuto-14-render-to-texture/wavvy.png)
 
@@ -224,4 +225,3 @@ Hint2 : For previous versions of OpenGL, use glFragData[1] = myvalue instead.
 * Try using glViewport(0,0,512,768); instead of glViewport(0,0,1024,768); (try with both the framebuffer and the screen)
 * Experiment with other UV coordinates in the last fragment shader
 * Transform the quad with a real transformation matrix. First hardcode it, and then try to use the functions of controls.hpp ; what do you notice ?
-

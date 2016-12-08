@@ -8,6 +8,7 @@ date_gmt: '2011-05-26 06:07:04 +0200'
 categories: [tuto]
 order: 50
 tags: []
+language: kr
 ---
 
 Welcome for our 13th tutorial ! Today we will talk about normal mapping.
@@ -53,7 +54,7 @@ Since we need 3 vectors to define a basis, we must also compute the bitangent B 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/NTBFromUVs.png)
 
 
- 
+
 
 Here is the algorithm : if we note deltaPos1 and deltaPos2 two edges of our triangle, and deltaUV1 and deltaUV2 the corresponding differences in UVs, we can express our problem with the following equation :
 
@@ -507,7 +508,7 @@ A few tips :
 * Avoid messing with alpha, it's too complicated :)
 * If you want to visualize negative value, you can use the same trick that our normal textures use : visualize (v+1.0)/2.0 instead, so that black means -1 and full color means +1. It's hard to understand what you see, though.
 
- 
+
 
 ## Debugging with variable names
 
@@ -545,7 +546,3 @@ Created by James O'Hare. Click to enlarge.
 * [Lengyel, Eric. "Computing Tangent Space Basis Vectors for an Arbitrary Mesh". Terathon Software 3D Graphics Library, 2001.](http://www.terathon.com/code/tangent.html)
 * [Real Time Rendering, third edition](http://www.amazon.com/dp/1568814240)
 * [ShaderX4](http://www.amazon.com/dp/1584504250)
-
-
-
-

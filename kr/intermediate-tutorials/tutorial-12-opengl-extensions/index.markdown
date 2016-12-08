@@ -8,6 +8,7 @@ date_gmt: '2012-02-03 20:46:21 +0100'
 categories: [tuto]
 order: 40
 tags: []
+language: kr
 ---
 
 # Extensions
@@ -123,4 +124,3 @@ While extentions are nowaday mostly for advanced use since most functionality is
 * [The OpenGL extension registry](http://www.opengl.org/registry/) All extensions specifications. The bible.
 * [GLEW](http://glew.sourceforge.net/) The OpenGL Extension Wrangler Library
 * [gl3w](https://github.com/skaslev/gl3w) Simple OpenGL 3/4 core profile loading
-
