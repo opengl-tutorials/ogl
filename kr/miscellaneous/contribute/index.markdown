@@ -14,9 +14,7 @@ language: kr
 기여할 수 있는 많은 방법들이 있습니다. 그리고 어떠한 방식이라도 저희는 환영합니다 !
 
 *당신의 지식을 공유하고 당신만의 튜토리얼을 만들고 싶나요 ? 당신의 아이디어를 우리에게 메일로 보내주세요. 당신을 도우면서 웹사이트에 이들을 올릴 수 있어 저희는 매우 기쁩니다 !
-*에러 (잘못된 코드나, 계산, 오타, 문법 에러 등) 를 튜토리얼에서 발견 하셨나요 ? []
-
-*Want to share your knowledge and make your very own tutorial ? Drop us an email with your idea, we would be more than happy to help you, and host it on the website ! [깃허브 이슈 트래커](https://github.com/opengl-tutorials/ogl) 에 보고해주세요 !
+*에러 (잘못된 코드나, 계산, 오타, 문법 에러 등) 를 튜토리얼에서 발견 하셨나요 ? [깃허브 이슈 트래커](https://github.com/opengl-tutorials/ogl) 에 보고해주세요 !
 *저희를 도와 튜토리얼을 다른 언어로 번역해보고 싶나요 (스페인어나, 포르투칼어, 등) ? 여기 [가이드]( {{ site.baseurl }}/miscellaneous/contribute/translation/) 를 참고해 보세요 !
 *웹사이트가 별로 이쁘지 않나요 ? 만약 CSS 와 웹 에 재능이 있다면 메일을 보내주세요 !
 
