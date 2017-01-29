@@ -32,29 +32,29 @@ language: cn
 
 注意观察纹理是怎样在三角形上扭曲的。
 
- 
+
 
 # 自行加载.BMP图片
 
 不用花太多心思了解BMP文件格式：很多库可以帮你加载BMP文件。但BMP格式极为简单，可以帮助你理解那些库的工作原理。所以，我们从头开始写一个BMP文件加载器，不过**千万别在实际工程中使用这个实验品**。
 
 如下是加载函数的声明：
-```
 
+``` cpp
 GLuint loadBMP_custom(const char * imagepath);
 ```
 
 使用方式如下：
-```
 
+``` cpp
 GLuint image = loadBMP_custom("./my_texture.bmp");
 ```
 
 接下来看看如何读取BMP文件。
 
 首先需要一些数据。读取文件时将设置这些变量。
-```
 
+``` cpp
 // Data read from the header of the BMP file
 unsigned char header[54]; // Each BMP file begins by a 54-bytes header
 unsigned int dataPos;     // Position in the file where the actual data begins
@@ -65,8 +65,8 @@ unsigned char * data;
 ```
 
 现在正式开始打开文件。
-```
 
+``` cpp
 // Open the file
 FILE * file = fopen(imagepath,"rb");
 if (!file)
@@ -77,8 +77,8 @@ if (!file)
 ```
 
 文件一开始是54字节长的文件头，用于标识"这是不是一个BMP文件"、图像大小、像素位等等。来读取文件头吧：
-```
 
+``` cpp
 if ( fread(header, 1, 54, file)!=54 ){ // If not 54 bytes read : problem
     printf("Not a correct BMP filen");
     return false;
@@ -91,8 +91,8 @@ if ( fread(header, 1, 54, file)!=54 ){ // If not 54 bytes read : problem
 
 
 因此得检查一下头两个字节是否确为&lsquo;B&rsquo;和&lsquo;M&rsquo;：
-```
 
+``` cpp
 if ( header[0]!='B' || header[1]!='M' ){
     printf("Not a correct BMP filen");
     return 0;
@@ -100,8 +100,8 @@ if ( header[0]!='B' || header[1]!='M' ){
 ```
 
 现在可以读取文件中图像大小、数据位置等信息了：
-```
 
+``` cpp
 // Read ints from the byte array
 dataPos    = *(int*)&(header[0x0A]);
 imageSize  = *(int*)&(header[0x22]);
@@ -110,16 +110,16 @@ height     = *(int*)&(header[0x16]);
 ```
 
 如果这些信息缺失，您得手动补齐：
-```
 
+``` cpp
 // Some BMP files are misformatted, guess missing information
 if (imageSize==0)    imageSize=width*height*3; // 3 : one byte for each Red, Green and Blue component
 if (dataPos==0)      dataPos=54; // The BMP header is done that way
 ```
 
 现在我们知道了图像的大小，可以为之分配一些内存，把图像读进去：
-```
 
+``` cpp
 // Create a buffer
 data = new unsigned char [imageSize];
 
@@ -133,8 +133,8 @@ fclose(file);
 到了真正的OpenGL部分了。创建纹理和创建顶点缓冲差不多：创建一个纹理、绑定、填充、配置。
 
 在glTexImage2D函数中，GL_RGB表示颜色由三个分量构成，GL_BGR则说明了颜色在内存中的存储格式。实际上，BMP存储的并不是RGB，而是BGR，因此得把这个告诉OpenGL。
-```
 
+``` cpp
 // Create one OpenGL texture
 GLuint textureID;
 glGenTextures(1, &textureID);
@@ -150,8 +150,8 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 ```
 
 稍后再解释最后两行代码。同时，得在C++代码中使用刚写好的函数加载一个纹理：
-```
 
+``` cpp
 GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 ```
 
@@ -165,8 +165,8 @@ GLuint Texture = loadBMP_custom("uvtemplate.bmp");
 # 在OpenGL中使用纹理
 
 先来看看片段着色器。大部分代码一目了然：
-```
 
+``` glsl
 #version 330 core
 
 // Interpolated values from the vertex shaders
@@ -192,8 +192,8 @@ void main(){
 * 最后一点，用texture()访问纹理，该方法返回一个(R,G,B,A)的vec4变量。马上就会了解到分量A。
 
 顶点着色器也很简单，只需把UV坐标传给片段着色器：
-```
 
+``` glsl
 #version 330 core
 
 // Input vertex data, different for all executions of this shader.
@@ -217,8 +217,8 @@ void main(){
 ```
 
 还记得第四课中的"layout(location = 1) in vec2 vertexUV"吗？我们得在这儿把相同的事情再做一遍，但这次的缓冲中放的不是(R,G,B)三元组，而是(U,V)数对。
-```
 
+``` cpp
 // Two UV coordinatesfor each vertex. They were created with Blender. You'll learn shortly how to do this yourself.
 static const GLfloat g_uv_buffer_data[] = {
     0.000059f, 1.0f-0.000004f,
@@ -280,8 +280,8 @@ static const GLfloat g_uv_buffer_data[] = {
 # 什么是过滤和mipmap？怎样使用？
 
 正如在上面截图中看到的，纹理质量不是很好。这是因为在loadBMP_custom函数中，有如下两行代码：
-```
 
+``` cpp
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 ```
@@ -293,7 +293,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 有几种方法可以改善这一状况。
 
-##线性过滤（Linear filtering）
+## 线性过滤（Linear filtering）
 
 若采用线性过滤。texture()会查看周围的纹素，然后根据UV坐标距离各纹素中心的距离来混合颜色。这就避免了前面看到的锯齿状边缘。
 
@@ -302,7 +302,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 线性过滤可以显著改善纹理质量，应用的也很多。但若想获得更高质量的纹理，可以采用各向异性过滤，不过速度有些慢。
 
-##各向异性过滤（Anisotropic filtering）
+## 各向异性过滤（Anisotropic filtering）
 
 这种方法逼近了真正片断中的纹素区块。例如下图中稍稍旋转了的纹理，各向异性过滤将沿蓝色矩形框的主方向，作一定数量的采样（即所谓的"各向异性层级"），计算出其内的颜色。
 
@@ -322,8 +322,8 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 * 要想效果更好，可以对两个mipmap采样然后混合，得出结果。
 
 好在这个比较简单，OpenGL都帮我们做好了，只需一个简单的调用：
-```
 
+``` cpp
 // When MAGnifying the image (no bigger mipmap available), use LINEAR filtering
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 // When MINifying the image, use a LINEAR blend of two mipmaps, each filtered LINEARLY too
@@ -335,8 +335,8 @@ glGenerateMipmap(GL_TEXTURE_2D);
 # 怎样利用GLFW加载纹理？
 
 我们的loadBMP_custom函数很棒，因为这是我们自己写的！不过用专门的库更好。GLFW就可以加载纹理（仅限TGA文件）：
-```
 
+``` cpp
 GLuint loadTGA_glfw(const char * imagepath){
 
     // Create one OpenGL texture
@@ -367,7 +367,7 @@ GLuint loadTGA_glfw(const char * imagepath){
 
 简答：用不着考虑这些文件格式，您还有更好的选择。
 
-##创建压缩纹理
+## 创建压缩纹理
 
 
 * 下载[The Compressonator](http://developer.amd.com/Resources/archive/ArchivedTools/gpu/compressonator/Pages/default.aspx),一款ATI工具
@@ -382,11 +382,11 @@ GLuint loadTGA_glfw(const char * imagepath){
 
 至此，图像已压缩为可被GPU直接使用的格式。在着色中随时调用texture()均可以实时解压。这一过程看似很慢，但由于它节省了很多内存空间，传输的数据量就少了。传输内存数据开销很大；纹理解压缩却几乎不耗时（有专门的硬件负责此事）。一般情况下，采用压缩纹理可使性能提升20%。
 
-##使用压缩纹理
+## 使用压缩纹理
 
 来看看怎样加载压缩纹理。这和加载BMP的代码很相似，只不过文件头的结构不一样：
-```
 
+``` cpp
 GLuint loadDDS(const char * imagepath){
 
     unsigned char header[124];
@@ -407,7 +407,7 @@ GLuint loadDDS(const char * imagepath){
     }
 
     /* get the surface desc */
-    fread(&header, 124, 1, fp); 
+    fread(&header, 124, 1, fp);
 
     unsigned int height      = *(unsigned int*)&(header[8 ]);
     unsigned int width         = *(unsigned int*)&(header[12]);
@@ -418,9 +418,8 @@ GLuint loadDDS(const char * imagepath){
 
 文件头之后是真正的数据：紧接着是mipmap层级。可以一次性批量地读取：
 
- 
-```
 
+``` cpp
     unsigned char * buffer;
     unsigned int bufsize;
     /* how big is it going to be including all mipmaps? */
@@ -432,8 +431,8 @@ GLuint loadDDS(const char * imagepath){
 ```
 
 这里要处理三种格式：DXT1、DXT3和DXT5。我们得把"fourCC"标识转换成OpenGL能识别的值。
-```
 
+``` cpp
     unsigned int components  = (fourCC == FOURCC_DXT1) ? 3 : 4;
     unsigned int format;
     switch(fourCC)
@@ -454,8 +453,8 @@ GLuint loadDDS(const char * imagepath){
 ```
 
 像往常一样创建纹理：
-```
 
+``` cpp
     // Create one OpenGL texture
     GLuint textureID;
     glGenTextures(1, &textureID);
@@ -465,8 +464,8 @@ GLuint loadDDS(const char * imagepath){
 ```
 
 现在只需逐个填充mipmap：
-```
 
+``` cpp
     unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
     unsigned int offset = 0;
 
@@ -474,19 +473,19 @@ GLuint loadDDS(const char * imagepath){
     for (unsigned int level = 0; level < mipMapCount && (width || height); ++level)
     {
         unsigned int size = ((width+3)/4)*((height+3)/4)*blockSize;
-        glCompressedTexImage2D(GL_TEXTURE_2D, level, format, width, height, 
+        glCompressedTexImage2D(GL_TEXTURE_2D, level, format, width, height,
             0, size, buffer + offset);
 
         offset += size;
         width  /= 2;
         height /= 2;
     }
-    free(buffer); 
+    free(buffer);
 
     return textureID;
 ```
 
-##反转UV坐标
+## 反转UV坐标
 
 DXT压缩源自DirectX。和OpenGL相比，DirectX中的V纹理坐标是反过来的。所以使用压缩纹理时，得用(coord.v, 1.0-coord.v)来获取正确的纹素。可以在导出脚本、加载器、着色器等环节中执行这步操作
 
@@ -508,4 +507,3 @@ DXT压缩源自DirectX。和OpenGL相比，DirectX中的V纹理坐标是反过�
 
 
 * [Using texture compression in OpenGL](http://www.oldunreal.com/editing/s3tc/ARB_texture_compression.pdf) , S&eacute;bastien Domine, NVIDIA
-

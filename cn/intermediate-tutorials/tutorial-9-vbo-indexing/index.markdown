@@ -77,8 +77,8 @@ std::vector indices;
 现在真正的问题来了。如前所述，OpenGL只能使用一个索引缓冲，而OBJ（及一些其他常用的3D格式，如Collada）每个属性都有一个索引缓冲。这意味着，必须通过某种方式把若干个索引缓冲合并成一个。
 
 合并算法如下：
-```
 
+```
 For each input vertex
     Try to find a similar ( = same for all attributes ) vertex between all those we already output
     If found :

@@ -18,8 +18,8 @@ GPU的性能随着更新换代一直在提高，支持渲染更多的三角形�
 ## ARB_fragment_program
 
 回溯到2002年，GPU都没有顶点着色器或片断着色器：所有的一切都硬编码在芯片中。这被称为固定功能流水线（Fixed-Function Pipeline (FFP)）。同样地，当时最新的OpenGL 1.3中也没有接口可以创建、操作和使用所谓的"着色器"，因为它根本不存在。接着NVIDIA决定用实际代码描述渲染过程，来取代数以百计的标记和状态量。这就是ARB_fragment_program的由来。当时还没有GLSL，但你可以写这样的程序：
-```
 
+```
 !!ARBfp1.0 MOV result.color, fragment.color; END
 ```
 
@@ -28,8 +28,8 @@ GPU的性能随着更新换代一直在提高，支持渲染更多的三角形�
 ## ARB_debug_output
 
 好，你说『ARB_fragment_program太老了，所以我不需要扩展这东西』？其实有不少新的扩展非常方便。其中一个便是ARB_debug_output，它提供了一个不存在于OpenGL 3.3中的，但你可以/应该用到的功能。它定义了像GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB或GL_DEBUG_SEVERITY_MEDIUM_ARB之类的字符串，和DebugMessageCallbackARB这样的函数。这个扩展的伟大之处在于，当你写了一些不正确的代码，例如：
-```
 
+```cpp
 glEnable(GL_TEXTURE); // Incorrect ! You probably meant GL_TEXTURE_2D !
 ```
 
@@ -41,11 +41,11 @@ glEnable(GL_TEXTURE); // Incorrect ! You probably meant GL_TEXTURE_2D !
 ![]({{site.baseurl}}/assets/images/tuto-12-ogl-ext/breakpoint.png)
 
 
-##获取扩展 - 复杂的方式 
+## 获取扩展 - 复杂的方式
 
 『手动』查找一个扩展的方法是使用以下代码片断 (转自[OpenGL.org wiki](http://www.opengl.org/wiki/GlGetString))：
-```
 
+``` cpp
 int NumberOfExtensions;
 glGetIntegerv(GL_NUM_EXTENSIONS, &NumberOfExtensions);
 for(i=0; i<NumberOfExtensions; i++) {
@@ -58,11 +58,11 @@ for(i=0; i<NumberOfExtensions; i++) {
 }
 ```
 
-##获得所有的扩展 - 简单的方式
+## 获得所有的扩展 - 简单的方式
 
 上面的方式太复杂。若用GLEW, GLee, gl3w这些库，就简单多了。例如，有了GLEW，你只需要在创建窗口后调用glewInit()，不少方便的变量就创建好了：  
-```
 
+```cpp
 if (GLEW_ARB_debug_output){ // Ta-Dah ! }
 ```
 
@@ -83,13 +83,13 @@ NV/AMD/INTEL:顾名思义 =)
 # 设计与扩展
 
 
-##问题
+## 问题
 
 比方说，你的OpenGL 3.3应用程序需要渲染一些大型线条。你能够写一个复杂的顶点着色器来完成，或者简单地用[GL_NV_path_rendering](http://www.opengl.org/registry/specs/NV/path_rendering.txt)，它能帮你处理所有复杂的事。
 
 因此你可以这样写代码：
-```
 
+``` cpp
 if ( GLEW_NV_path_rendering ){
     glPathStringNV( ... ); // Draw the shape. Easy !
 }else{
@@ -99,7 +99,7 @@ if ( GLEW_NV_path_rendering ){
 }
 ```
 
-##均衡考量
+## 均衡考量
 
 当使用扩展的益处（如渲染质量、性能），超过维护两种不同方法（如上面的代码，一种靠你自己实现，一种使用扩展）的代价时，通常就选择用扩展。
 
@@ -113,7 +113,7 @@ if ( GLEW_NV_path_rendering ){
 
 # 结论Conclusion
 
-OpenGL扩展提供了一个很好的方式来增强OpenGL的功能，它依赖于你用户的GPU。 
+OpenGL扩展提供了一个很好的方式来增强OpenGL的功能，它依赖于你用户的GPU。
 
 虽然现在扩展属于高级用法（因为大部分功能在核心中已经有了），了解扩展如何运作和怎么用它提高软件性能（付出更高的维护代价）还是很重要的。
 
@@ -123,5 +123,4 @@ OpenGL扩展提供了一个很好的方式来增强OpenGL的功能，它依赖�
 * [debug_output tutorial by Aks](http://sites.google.com/site/opengltutorialsbyaks/introduction-to-opengl-4-1---tutorial-05) 因为有GLEW，你可以跳过第一步。
 * [The OpenGL extension registry](http://www.opengl.org/registry/) 所有扩展的规格说明。圣经。
 * [GLEW](http://glew.sourceforge.net/) OpenGL标准扩展库
-* [gl3w](https://github.com/skaslev/gl3w) 简单的OpenGL 3/4核心配置加载 
-
+* [gl3w](https://github.com/skaslev/gl3w) 简单的OpenGL 3/4核心配置加载

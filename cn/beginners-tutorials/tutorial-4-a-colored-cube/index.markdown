@@ -22,52 +22,53 @@ language: cn
 
 立方体有六个方形表面，而OpenGL只支持画三角形，因此需要画12个三角形，每个面两个。我们用定义三角形顶点的方式来定义这些顶点。
 
-```
-// Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
+``` cpp
+// Our vertices. Three consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
 // A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
 static const GLfloat g_vertex_buffer_data[] = {
--1.0f,-1.0f,-1.0f, // triangle 1 : begin
--1.0f,-1.0f, 1.0f,
--1.0f, 1.0f, 1.0f, // triangle 1 : end
-1.0f, 1.0f,-1.0f, // triangle 2 : begin
--1.0f,-1.0f,-1.0f,
--1.0f, 1.0f,-1.0f, // triangle 2 : end
-1.0f,-1.0f, 1.0f,
--1.0f,-1.0f,-1.0f,
-1.0f,-1.0f,-1.0f,
-1.0f, 1.0f,-1.0f,
-1.0f,-1.0f,-1.0f,
--1.0f,-1.0f,-1.0f,
--1.0f,-1.0f,-1.0f,
--1.0f, 1.0f, 1.0f,
--1.0f, 1.0f,-1.0f,
-1.0f,-1.0f, 1.0f,
--1.0f,-1.0f, 1.0f,
--1.0f,-1.0f,-1.0f,
--1.0f, 1.0f, 1.0f,
--1.0f,-1.0f, 1.0f,
-1.0f,-1.0f, 1.0f,
-1.0f, 1.0f, 1.0f,
-1.0f,-1.0f,-1.0f,
-1.0f, 1.0f,-1.0f,
-1.0f,-1.0f,-1.0f,
-1.0f, 1.0f, 1.0f,
-1.0f,-1.0f, 1.0f,
-1.0f, 1.0f, 1.0f,
-1.0f, 1.0f,-1.0f,
--1.0f, 1.0f,-1.0f,
-1.0f, 1.0f, 1.0f,
--1.0f, 1.0f,-1.0f,
--1.0f, 1.0f, 1.0f,
-1.0f, 1.0f, 1.0f,
--1.0f, 1.0f, 1.0f,
-1.0f,-1.0f, 1.0f
+    -1.0f,-1.0f,-1.0f, // triangle 1 : begin
+    -1.0f,-1.0f, 1.0f,
+    -1.0f, 1.0f, 1.0f, // triangle 1 : end
+    1.0f, 1.0f,-1.0f, // triangle 2 : begin
+    -1.0f,-1.0f,-1.0f,
+    -1.0f, 1.0f,-1.0f, // triangle 2 : end
+    1.0f,-1.0f, 1.0f,
+    -1.0f,-1.0f,-1.0f,
+    1.0f,-1.0f,-1.0f,
+    1.0f, 1.0f,-1.0f,
+    1.0f,-1.0f,-1.0f,
+    -1.0f,-1.0f,-1.0f,
+    -1.0f,-1.0f,-1.0f,
+    -1.0f, 1.0f, 1.0f,
+    -1.0f, 1.0f,-1.0f,
+    1.0f,-1.0f, 1.0f,
+    -1.0f,-1.0f, 1.0f,
+    -1.0f,-1.0f,-1.0f,
+    -1.0f, 1.0f, 1.0f,
+    -1.0f,-1.0f, 1.0f,
+    1.0f,-1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f,
+    1.0f,-1.0f,-1.0f,
+    1.0f, 1.0f,-1.0f,
+    1.0f,-1.0f,-1.0f,
+    1.0f, 1.0f, 1.0f,
+    1.0f,-1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f,
+    1.0f, 1.0f,-1.0f,
+    -1.0f, 1.0f,-1.0f,
+    1.0f, 1.0f, 1.0f,
+    -1.0f, 1.0f,-1.0f,
+    -1.0f, 1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f,
+    -1.0f, 1.0f, 1.0f,
+    1.0f,-1.0f, 1.0f
 };
 ```
 
+
 OpenGL的缓冲由一些标准的函数（glGenBuffers, glBindBuffer, glBufferData, glVertexAttribPointer）来创建、绑定、填充和配置；这些可参阅第二课。若有遗忘，可参见第二课。绘制的调用也没变，只需改变绘制的点的个数：
 
-```
+``` cpp
 // Draw the triangle !
 glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles -> 6 squares
 ```
@@ -85,51 +86,51 @@ glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangl
 
 首先声明颜色：每个顶点一个RGB三元组。这里随机生成一些颜色，所以效果看起来可能不太好；您可以调整得更好些，例如把顶点的位置作为颜色值。
 
-```
+``` cpp
 // One color for each vertex. They were generated randomly.
 static const GLfloat g_color_buffer_data[] = {
-0.583f, 0.771f, 0.014f,
-0.609f, 0.115f, 0.436f,
-0.327f, 0.483f, 0.844f,
-0.822f, 0.569f, 0.201f,
-0.435f, 0.602f, 0.223f,
-0.310f, 0.747f, 0.185f,
-0.597f, 0.770f, 0.761f,
-0.559f, 0.436f, 0.730f,
-0.359f, 0.583f, 0.152f,
-0.483f, 0.596f, 0.789f,
-0.559f, 0.861f, 0.639f,
-0.195f, 0.548f, 0.859f,
-0.014f, 0.184f, 0.576f,
-0.771f, 0.328f, 0.970f,
-0.406f, 0.615f, 0.116f,
-0.676f, 0.977f, 0.133f,
-0.971f, 0.572f, 0.833f,
-0.140f, 0.616f, 0.489f,
-0.997f, 0.513f, 0.064f,
-0.945f, 0.719f, 0.592f,
-0.543f, 0.021f, 0.978f,
-0.279f, 0.317f, 0.505f,
-0.167f, 0.620f, 0.077f,
-0.347f, 0.857f, 0.137f,
-0.055f, 0.953f, 0.042f,
-0.714f, 0.505f, 0.345f,
-0.783f, 0.290f, 0.734f,
-0.722f, 0.645f, 0.174f,
-0.302f, 0.455f, 0.848f,
-0.225f, 0.587f, 0.040f,
-0.517f, 0.713f, 0.338f,
-0.053f, 0.959f, 0.120f,
-0.393f, 0.621f, 0.362f,
-0.673f, 0.211f, 0.457f,
-0.820f, 0.883f, 0.371f,
-0.982f, 0.099f, 0.879f
+    0.583f,  0.771f,  0.014f,
+    0.609f,  0.115f,  0.436f,
+    0.327f,  0.483f,  0.844f,
+    0.822f,  0.569f,  0.201f,
+    0.435f,  0.602f,  0.223f,
+    0.310f,  0.747f,  0.185f,
+    0.597f,  0.770f,  0.761f,
+    0.559f,  0.436f,  0.730f,
+    0.359f,  0.583f,  0.152f,
+    0.483f,  0.596f,  0.789f,
+    0.559f,  0.861f,  0.639f,
+    0.195f,  0.548f,  0.859f,
+    0.014f,  0.184f,  0.576f,
+    0.771f,  0.328f,  0.970f,
+    0.406f,  0.615f,  0.116f,
+    0.676f,  0.977f,  0.133f,
+    0.971f,  0.572f,  0.833f,
+    0.140f,  0.616f,  0.489f,
+    0.997f,  0.513f,  0.064f,
+    0.945f,  0.719f,  0.592f,
+    0.543f,  0.021f,  0.978f,
+    0.279f,  0.317f,  0.505f,
+    0.167f,  0.620f,  0.077f,
+    0.347f,  0.857f,  0.137f,
+    0.055f,  0.953f,  0.042f,
+    0.714f,  0.505f,  0.345f,
+    0.783f,  0.290f,  0.734f,
+    0.722f,  0.645f,  0.174f,
+    0.302f,  0.455f,  0.848f,
+    0.225f,  0.587f,  0.040f,
+    0.517f,  0.713f,  0.338f,
+    0.053f,  0.959f,  0.120f,
+    0.393f,  0.621f,  0.362f,
+    0.673f,  0.211f,  0.457f,
+    0.820f,  0.883f,  0.371f,
+    0.982f,  0.099f,  0.879f
 };
 ```
 
 缓冲的创建、绑定和填充方法与之前一样：
 
-```
+``` cpp
 GLuint colorbuffer;
 glGenBuffers(1, &colorbuffer);
 glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
@@ -138,57 +139,67 @@ glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, 
 
 配置也一样：
 
-```
+``` cpp
 // 2nd attribute buffer : colors
 glEnableVertexAttribArray(1);
 glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 glVertexAttribPointer(
-1, // attribute. No particular reason for 1, but must match the layout in the shader.
-3, // size
-GL_FLOAT, // type
-GL_FALSE, // normalized?
-0, // stride
-(void*)0 // array buffer offset
+    1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+    3,                                // size
+    GL_FLOAT,                         // type
+    GL_FALSE,                         // normalized?
+    0,                                // stride
+    (void*)0                          // array buffer offset
 );
 ```
 
+
 现在在顶点着色器中已经能访问这个新增的缓冲了：
 
-```
+``` glsl
 // Notice that the "1" here equals the "1" in glVertexAttribPointer
 layout(location = 1) in vec3 vertexColor;
 ```
+{: .highlightglslvs }
 
 这一课的顶点着色器没有什么复杂的效果，仅仅是简单地把颜色传递到片段着色器：
 
-```
+``` glsl
 // Output data ; will be interpolated for each fragment.
 out vec3 fragmentColor;
 
 void main(){
 
-[...]
+    [...]
 
-// The color of each vertex will be interpolated
-// to produce the color of each fragment
-fragmentColor = vertexColor;
+    // The color of each vertex will be interpolated
+    // to produce the color of each fragment
+    fragmentColor = vertexColor;
 }
 ```
+{: .highlightglslvs }
 
 在片段着色器中要再次声明片段颜色：
 
-```
+``` glsl
 // Interpolated values from the vertex shaders
 in vec3 fragmentColor;
 ```
+{: .highlightglslvs }
 
 然后将其拷贝到输出颜色：
 
+``` glsl
+// Ouput data
+out vec3 color;
+
+void main(){
+    // Output color = color specified in the vertex shader,
+    // interpolated between all 3 surrounding vertices
+    color = fragmentColor;
+}
 ```
-// Output color = color specified in the vertex shader,
-// interpolated between all 3 surrounding vertices
-color = fragmentColor;
-```
+{: .highlightglslvs }
 
 于是得到：
 
@@ -219,12 +230,20 @@ color = fragmentColor;
 
 您可以自己实现深度缓冲，但让硬件自动完成更简单：
 
-```
+```cpp
 // Enable depth test
 glEnable(GL_DEPTH_TEST);
 // Accept fragment if it closer to the camera than the former one
 glDepthFunc(GL_LESS);
 ```
+
+你还需要清除除了颜色以外每一帧（frame）的深度。
+
+``` cpp
+// Clear the screen
+glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+```
+
 
 问题解决了。
 
@@ -239,14 +258,13 @@ glDepthFunc(GL_LESS);
 
 * 自己生成颜色值。一些点子：随机生成颜色，这样每次运行时颜色都不同；根据顶点位置生成颜色；把前面两种思路结合起来；或其他创意:)。若您不了解C，参考以下语法：
 
-```
+``` cpp
 static GLfloat g_color_buffer_data[12*3*3];
 for (int v = 0; v < 12*3 ; v++){
-g_color_buffer_data[3*v+0] = your red color here;
-g_color_buffer_data[3*v+1] = your green color here;
-g_color_buffer_data[3*v+2] = your blue color here;
+    g_color_buffer_data[3*v+0] = your red color here;
+    g_color_buffer_data[3*v+1] = your green color here;
+    g_color_buffer_data[3*v+2] = your blue color here;
 }
 ```
 
 * 完成上面习题后，尝试每帧都改变颜色。您得在每帧都调用`glBufferData`。请确保已绑定（`glBindBuffer`）了合适的缓冲！
-

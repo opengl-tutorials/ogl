@@ -12,6 +12,7 @@ language: cn
 ---
 <blockquote>*引擎推动的不是飞船而是宇宙。飞船压根就没动过。*
 《飞出个未来》</blockquote>
+
 <span style="color: #ff0000">这是所有课程中最重要的一课。至少得看八遍。</span>
 
 # 齐次坐标（Homogeneous coordinates）
@@ -30,7 +31,7 @@ language: cn
 # 变换矩阵（Transformation matrices）
 
 
-##矩阵简介
+## 矩阵简介
 
 简而言之，矩阵就是一个行列数固定的、纵横排列的数表。比如，一个2x3矩阵看起来像这样：
 
@@ -40,6 +41,7 @@ language: cn
 三维图形学中我们只用到4x4矩阵，它能对顶点(x,y,z,w)作变换。这一变换是用矩阵左乘顶点来实现的：
 
 **矩阵x顶点（记住顺序！！矩阵左乘顶点，顶点用列向量表示）= 变换后的顶点**
+
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/MatrixXVect.gif)
 
 
@@ -48,8 +50,8 @@ language: cn
 这种重复无聊的计算就让计算机代劳吧。
 
 **用C++，GLM表示：**
-```
 
+``` cpp
 glm::mat4 myMatrix;
 glm::vec4 myVector;
 // fill myMatrix and myVector somehow
@@ -57,8 +59,8 @@ glm::vec4 transformedVector = myMatrix * myVector; // Again, in this order ! thi
 ```
 
 **用GLSL表示：**
-```
 
+``` glsl
 mat4 myMatrix;
 vec4 myVector;
 // fill myMatrix and myVector somehow
@@ -67,7 +69,7 @@ vec4 transformedVector = myMatrix * myVector; // Yeah, it's pretty much the same
 
 （还没把这些代码粘贴到程序里调试吗？赶紧试试！）
 
-##平移矩阵（Translation matrices）
+## 平移矩阵（Translation matrices）
 
 平移矩阵是最简单的变换矩阵。平移矩阵是这样的：
 
@@ -95,22 +97,22 @@ vec4 transformedVector = myMatrix * myVector; // Yeah, it's pretty much the same
 那怎么用代码表示平移变换呢？
 
 **用C++，GLM表示：**
-```
 
-#include  // after 
+``` cpp
+#include <glm/gtx/transform.hpp> // after <glm/glm.hpp>
 
-glm::mat4 myMatrix = glm::translate(10,0,0);
-glm::vec4 myVector(10,10,10,0);
+glm::mat4 myMatrix = glm::translate(10.0f, 0.0f, 0.0f);
+glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);
 glm::vec4 transformedVector = myMatrix * myVector; // guess the result
 ```
 
 **用GLSL表示：**呃，实际中我们几乎不用GLSL计算变换矩阵。大多数情况下在C++代码中用glm::translate()算出矩阵，然后把它传给GLSL。在GLSL中只做一次乘法：
-```
 
+``` glsl
 vec4 transformedVector = myMatrix * myVector;
 ```
 
-##单位矩阵（Identity matrix）
+## 单位矩阵（Identity matrix）
 
 单位矩阵很特殊，它什么也不做。单位矩阵的身份和自然数"1"一样基础而重要，因此在这里要特别提及一下。
 
@@ -118,12 +120,12 @@ vec4 transformedVector = myMatrix * myVector;
 
 
 **用C++表示：**
-```
 
+```cpp
 glm::mat4 myIdentityMatrix = glm::mat4(1.0);
 ```
 
-##缩放矩阵（Scaling matrices）
+## 缩放矩阵（Scaling matrices）
 
 缩放矩阵也很简单：
 
@@ -138,30 +140,30 @@ glm::mat4 myIdentityMatrix = glm::mat4(1.0);
 w还是没变。您也许会问："缩放一个向量"有什么用？嗯，大多数情况下是没什么用，所以一般不会去缩放向量；但在某些特殊情况下它就派上用场了。（顺便说一下，单位矩阵只是缩放矩阵的一个特例，其(X, Y, Z) = (1, 1, 1)。单位矩阵同时也是旋转矩阵的一个特例，其(X, Y, Z)=(0, 0, 0)）。
 
 **用C++表示：**
+
+``` cpp
+// Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
+glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
 ```
 
-// Use #include  and #include
-glm::mat4 myScalingMatrix = glm::scale(2,2,2);
-```
-
-##旋转矩阵（Rotation matrices）
+## 旋转矩阵（Rotation matrices）
 
 旋转矩阵比较复杂。这里略过细节，因为日常应用中，您并不需要知道矩阵的内部构造。
 想了解更多，请看["矩阵和四元组常见问题"](http://www.cs.princeton.edu/~gewang/projects/darth/stuff/quat_faq.html)（这个资源很热门，应该有中文版吧）。
 
 **用C++表示：**
-```
 
-// Use #include  and #include
+``` cpp
+// Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
 glm::vec3 myRotationAxis( ??, ??, ??);
 glm::rotate( angle_in_degrees, myRotationAxis );
 ```
 
-##累积变换
+## 累积变换
 
 前面已经学习了如何旋转、平移和缩放向量。把这些矩阵相乘就能将它们组合起来，例如：
-```
 
+``` cpp
 TransformedVector = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalVector;
 ```
 
@@ -176,30 +178,30 @@ TransformedVector = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalV
 
 * 错误做法：
 
-
-
-- 按(10, 0, 0)平移船体。船体中心目前距离原点10个单位。
-- 将船体放大2倍。以原点为参照，每个坐标都变成原来的2倍，就出问题了。最后您得到的是一艘放大的船，但其中心位于2*10=20。这并非您预期的结果。
+  - 按(10, 0, 0)平移船体。船体中心目前距离原点10个单位。
+  - 将船体放大2倍。以原点为参照，每个坐标都变成原来的2倍，就出问题了。最后您得到的是一艘放大的船，但其中心位于2*10=20。这并非您预期的结果。
 
 
 * 正确做法：
 
 
 
-- 将船体放大2倍，得到一艘中心位于原点的大船。
-- 平移船体。船大小不变，移动距离也正确。
-矩阵-矩阵乘法和矩阵-向量乘法类似，所以这里也会省略一些细节，不清楚的读者请移步a href="http://www.cs.princeton.edu/~gewang/projects/darth/stuff/quat_faq.html">"矩阵和四元组常见问题"</a>。现在，就让计算机来算：
+  - 将船体放大2倍，得到一艘中心位于原点的大船。
+  - 平移船体。船大小不变，移动距离也正确。
+
+
+矩阵-矩阵乘法和矩阵-向量乘法类似，所以这里也会省略一些细节，不清楚的读者请移步[矩阵和四元组常见问题 ]({{site.baseurl}}/assets/faq_quaternions/index.html#Q11)。现在，就让计算机来算：
 
 **用C++，GLM表示：**
-```
 
+``` cpp
 glm::mat4 myModelMatrix = myTranslationMatrix * myRotationMatrix * myScaleMatrix;
 glm::vec4 myTransformedVector = myModelMatrix * myOriginalVector;
 ```
 
 **用GLSL表示：**
-```
 
+``` glsl
 mat4 transform = mat2 * mat1;
 vec4 out_vec = transform * in_vec;
 ```
@@ -210,7 +212,7 @@ vec4 out_vec = transform * in_vec;
 
 利用模型、观察和投影矩阵，可以将变换过程清晰地分解为三个阶段。虽然此法并非必需（前两课我们就没用这个方法嘛），但采用此法较为稳妥。我们将看到，这种公认的方法对变换流程作了清晰的划分。
 
-##模型矩阵
+## 模型矩阵
 
 这个三维模型和可爱的红色三角形一样，由一组顶点定义。顶点的XYZ坐标是相对于物体中心定义的：也就是说，若某顶点位于(0,0,0)，则其位于物体的中心。
 
@@ -232,7 +234,7 @@ vec4 out_vec = transform * in_vec;
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/M.png)
 
 
-##观察矩阵
+## 观察矩阵
 
 这里再引用一下《飞出个未来》：
 <blockquote>
@@ -243,10 +245,10 @@ vec4 out_vec = transform * in_vec;
 仔细想想，摄像机的原理也是相通的。如果想换个角度观察一座山，您可以移动摄像机也可以......移动山。后者在实际中不可行，在计算机图形学中却十分方便。
 
 起初，摄像机位于世界坐标系的原点。移动世界只需乘一个矩阵。假如你想把摄像机向**右**（X轴正方向）移动3个单位，这和把整个世界（包括网格）向**左**（X轴负方向）移3个单位是等效的！脑子有点乱？来写代码吧：
-```
 
-// Use #include  and #include
-glm::mat4 ViewMatrix = glm::translate(-3,0,0);
+``` cpp
+// Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
+glm::mat4 ViewMatrix = glm::translate(-3.0f, 0.0f ,0.0f);
 ```
 
 下图展示了：*从世界空间（顶点都相对于世界空间中心定义）到摄像机空间（Camera Space，顶点都相对于摄像机定义）的变换。*
@@ -255,8 +257,8 @@ glm::mat4 ViewMatrix = glm::translate(-3,0,0);
 
 
 趁脑袋还没爆炸，来欣赏一下GLM强大的glm::LookAt函数吧：
-```
 
+``` cpp
 glm::mat4 CameraMatrix = glm::LookAt(
     cameraPosition, // the position of your camera, in world space
     cameraTarget,   // where you want to look at, in world space
@@ -271,7 +273,7 @@ glm::mat4 CameraMatrix = glm::LookAt(
 
 好戏还在后头呢。
 
-##投影矩阵
+## 投影矩阵
 
 现在，我们处于摄像机空间中。这意味着，经历了这么多变换后，现在一个坐标X==0且Y==0的顶点，应该被画在屏幕的中心。但仅有x、y坐标还不足以确定物体是否应该画在屏幕上：它到摄像机的距离（z）也很重要！两个x、y坐标相同的顶点，z值较大的一个将会最终显示在屏幕上。
 
@@ -281,8 +283,8 @@ glm::mat4 CameraMatrix = glm::LookAt(
 
 
 好在用一个4x4矩阵就能表示这个投影&sup1; :
-```
 
+```cpp
 // Generates a really hard-to-read matrix, but a normal, standard 4x4 matrix nonetheless
 glm::mat4 projectionMatrix = glm::perspective(
     FoV,         // The horizontal Field of View, in degrees : the amount of "zoom". Think "camera lens". Usually between 90&deg; (extra wide) and 30&deg; (quite zoomed in)
@@ -325,69 +327,75 @@ glm::mat4 projectionMatrix = glm::perspective(
 
 这就是实际渲染的图像啦！
 
-##复合变换：模型观察投影矩阵（MVP）
+## 复合变换：模型观察投影矩阵（MVP）
 
 再来一连串深爱已久的标准矩阵乘法：
-```
 
+``` cpp
 // C++ : compute the matrix
-glm::mat3 MVPmatrix = projection * view * model; // Remember : inverted !
+glm::mat4 MVPmatrix = projection * view * model; // Remember : inverted !
 ```
 
-```
+``` glsl
 // GLSL : apply it
 transformed_vertex = MVP * in_vertex;
 ```
+{: .highlightglslfs }
 
 # 总结
 
 
 * 第一步：创建模型观察投影（MVP）矩阵。任何要渲染的模型都要做这一步。
 
-```
+``` cpp
+// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
+glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float) width / (float)height, 0.1f, 100.0f);
 
-// Projection matrix : 45&deg; Field of View, 4:3 ratio, display range : 0.1 unit  100 units
-glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+// Or, for an ortho camera :
+//glm::mat4 Projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f); // In world coordinates
+
 // Camera matrix
-glm::mat4 View       = glm::lookAt(
+glm::mat4 View = glm::lookAt(
     glm::vec3(4,3,3), // Camera is at (4,3,3), in World Space
     glm::vec3(0,0,0), // and looks at the origin
     glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-);
+    );
+
 // Model matrix : an identity matrix (model will be at the origin)
-glm::mat4 Model      = glm::mat4(1.0f);  // Changes for each model !
+glm::mat4 Model = glm::mat4(1.0f);
 // Our ModelViewProjection : multiplication of our 3 matrices
-glm::mat4 MVP        = Projection * View * Model; // Remember, matrix multiplication is the other way around
+glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is the other way around
 ```
 
 * 第二步：把MVP传给GLSL
 
-```
+``` cpp
+// Get a handle for our "MVP" uniform
+// Only during the initialisation
+GLuint MatrixID = glGetUniformLocation(program_id, "MVP");
 
-// Get a handle for our "MVP" uniform.
-// Only at initialisation time.
-GLuint MatrixID = glGetUniformLocation(programID, "MVP");
-
-// Send our transformation to the currently bound shader,
-// in the "MVP" uniform
-// For each model you render, since the MVP will be different (at least the M part)
-glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+// Send our transformation to the currently bound shader, in the "MVP" uniform
+// This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
+glUniformMatrix4fv(mvp_handle, 1, GL_FALSE, &mvp[0][0]);
 ```
 
 * 第三步：在GLSL中用MVP变换顶点
 
-```
+``` glsl
+// Input vertex data, different for all executions of this shader.
+layout(location = 0) in vec3 vertexPosition_modelspace;
 
-in vec3 vertexPosition_modelspace;
+// Values that stay constant for the whole mesh.
 uniform mat4 MVP;
 
 void main(){
-
-    // Output position of the vertex, in clip space : MVP * position
-    vec4 v = vec4(vertexPosition_modelspace,1); // Transform an homogeneous 4D vector, remember ?
-    gl_Position = MVP * v;
+  // Output position of the vertex, in clip space : MVP * position
+  gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 }
 ```
+{: .highlightglslfs }
+
+
 
 * 搞定！三角形和第二课的一样，仍然在原点(0,0,0)，然而是从点(4,3,3)透视观察的；摄像机的朝上方向为(0,1,0)，视野（field of view）45&deg;。
 
