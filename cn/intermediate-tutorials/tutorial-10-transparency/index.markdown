@@ -41,7 +41,7 @@ color.a = 0.3;
 
 上一个截图看上去还行，但这仅仅是运气好罢了。
 
-##问题所在
+## 问题所在
 
 这里我画了一红一绿两个alpha值为50%的正方形。从中可以看出顺序的重要性，最终的颜色显著影响了眼睛对深度的感知。
 
@@ -55,7 +55,7 @@ color.a = 0.3;
 
 原来这还是个十分棘手的问题。您在游戏中也没怎么见过透明的东西，是吧？
 
-##常见解决方案
+## 常见解决方案
 
 常见解决方案即对所有的透明三角形排序。是的，所有的透明三角形。
 
@@ -65,7 +65,7 @@ color.a = 0.3;
 
 可以用C语言的qsort函数或者C++的std::sort函数来排序。细节就不多说了，因为......
 
-##警告
+## 警告
 
 这么做可以解决问题（下一节还会介绍它），但是：
 
@@ -82,7 +82,7 @@ color.a = 0.3;
 * 若不排序时效果还*凑合*，那就不排序好了。
 
 
-##顺序无关透明
+## 顺序无关透明
 
 如果您的引擎确实需要顶级的透明效果，这里有一些值得研究的技术：
 
@@ -105,19 +105,16 @@ glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 ```
 
 这意味着
-```
 
+```
 New color in framebuffer =
            current alpha in framebuffer * current color in framebuffer +
            (1 - current alpha in framebuffer) * shader's output color
 ```
 
 上图红色方块居上的效果由如下等式得来：
-```
 
+``` cpp
 new color = 0.5*(0,1,0) + (1-0.5)*(1,0.5,0.5); // (the red was already blended with the white background)
 new color = (1, 0.75, 0.25) = the same orange
-
 ```
-
- 

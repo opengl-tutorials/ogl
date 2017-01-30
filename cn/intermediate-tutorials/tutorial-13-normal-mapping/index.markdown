@@ -36,19 +36,20 @@ normal = (2*color)-1 // on each component
 
 大家对矩阵已经十分熟悉了，应该知道定义一个空间（本例是切线空间）需要三个向量。现在Up向量已经有了，即法线：可用Blender生成，或由一个简单的叉乘计算得到。下图中蓝色箭头代表法线（法线贴图整体颜色也恰好是蓝色）。
 
-[<img class="alignnone size-full wp-image-821" title="NormalVector" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/NormalVector.png" alt="" width="480" height="270">]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/NormalVector.png)
+![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/NormalVector.png)
 
 然后是切线T：垂直于法线的向量。但这样的切线有很多个：
 
-[<img class="alignnone size-full wp-image-822" title="TangentVectors" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/TangentVectors.png" alt="" width="480" height="270">]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/TangentVectors.png)
+![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/TangentVectors.png)
 
 这么多切线中该选哪个呢？理论上哪一个都行。但我们必须保持连续一致性，以免衔接处出现瑕疵。标准的做法是将切线方向和纹理空间对齐：
 
-[<img class="alignnone size-full wp-image-823" title="TangentVectorFromUVs" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/TangentVectorFromUVs.png" alt="" width="480" height="270">]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/TangentVectorFromUVs.png)
+![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/TangentVectorFromUVs.png)
 
 定义一组基需要三个向量，因此我们还得计算副切线B（本可以随便选一条切线，但选定垂直于另外两条轴的切线，计算会方便些）。
 
-[<img class="alignnone size-full wp-image-824" title="NTBFromUVs" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/NTBFromUVs.png" alt="" width="480" height="270">]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/NTBFromUVs.png)
+![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/NTBFromUVs.png)
+
 
 算法如下：记三角形的两条边为deltaPos1和deltaPos2，deltaUV1和deltaUV2是对应的UV坐标下的差值；则问题可用如下方程表示：
 
@@ -81,7 +82,7 @@ invTBN = transpose(TBN)
 # 准备VBO
 
 
-##计算切线和副切线
+## 计算切线和副切线
 
 我们需要为整个模型计算切线、副切线和法线。我们用一个单独的函数完成这些计算
 
@@ -146,7 +147,7 @@ void computeTangentBasis(
     }
 ```
 
-##索引
+## 索引
 
 索引VBO的方法和之前类似，仅有些许不同。
 
@@ -174,7 +175,7 @@ void computeTangentBasis(
 # 着色器
 
 
-##新增缓冲和uniform变量
+## 新增缓冲和uniform变量
 
 我们需要再加两个缓冲，分别存储切线和副切线：
 
@@ -327,7 +328,7 @@ void computeTangentBasis(
         glfwSwapBuffers();
 ```
 
-##顶点着色器
+## 顶点着色器
 
 如前所述，所有计算都摄像机空间中做，因为在这一空间中更容易获取片段坐标。这就是为什么要用模型视图矩阵乘T、B、N向量。
 
@@ -339,8 +340,8 @@ void computeTangentBasis(
 {: .highlightglslfs }
 
 这三个向量确定了TBN矩阵，其创建方式如下：
-```
 
+```
     mat3 TBN = transpose(mat3(
         vertexTangent_cameraspace,
         vertexBitangent_cameraspace,
@@ -349,13 +350,13 @@ void computeTangentBasis(
 ```
 
 此矩阵是从摄像机空间到切线空间的变换（若矩阵名为XXX_modelspace，则是从模型空间到切线空间的变换）。我们可以利用它计算切线空间中的光线方向和视线方向。
-```
 
+```
     LightDirection_tangentspace = TBN * LightDirection_cameraspace;
     EyeDirection_tangentspace =  TBN * EyeDirection_cameraspace;
 ```
 
-##片段着色器
+## 片段着色器
 
 切线空间中的法线很容易获取--就在纹理中：
 
@@ -380,7 +381,7 @@ void computeTangentBasis(
 # 延伸阅读
 
 
-##正交化（Orthogonalization）
+## 正交化（Orthogonalization）
 
 顶点着色器中，为了计算速度，我们没有进行矩阵求逆，而是进行了转置。这只有当矩阵表示的空间正交时才成立，而这个矩阵还不是正交的。好在这个问题很容易解决：只需在computeTangentBasis()末尾让切线与法线垂直。
 
@@ -398,7 +399,7 @@ n和t差不多是相互垂直的，只要把t沿-n方向稍微"推"一下，幅�
 
 [这里](http://www.cse.illinois.edu/iem/least_squares/gram_schmidt/)有一个applet也演示得很清楚（仅含两个向量）。
 
-##左手系还是右手系？
+## 左手系还是右手系？
 
 一般不必担心这个问题。但在某些情况下，比如使用对称模型时，UV坐标方向会出错，导致切线T方向错误。
 
@@ -416,7 +417,7 @@ if (glm::dot(glm::cross(n, t), b) < 0.0f){
 
 在computeTangentBasis()末对每个顶点都做这个操作。
 
-##镜面纹理（Specular texture）
+## 镜面纹理（Specular texture）
 
 为了增强趣味性，我在代码里加上了镜面纹理；取代了原先作为镜面颜色的灰色vec3(0.3,0.3,0.3)。镜面纹理看起来像这样：
 
@@ -428,7 +429,7 @@ if (glm::dot(glm::cross(n, t), b) < 0.0f){
 
 请注意，由于如上镜面纹理中没有镜面分量，水泥部分均呈黑色。
 
-##用立即模式（immediate mode）进行调试
+## 用立即模式（immediate mode）进行调试
 
 本站的初衷是让大家**不再使用**已被废弃、缓慢、问题频出的立即模式。
 
@@ -478,7 +479,7 @@ glEnd();
 
 切记：实际项目中不要用立即模式！仅限调试时使用！别忘了之后恢复到Core Profile，它可以保证不启用立即模式！
 
-##利用颜色进行调试
+## 利用颜色进行调试
 
 调试时，将向量的值可视化很有用处。最简单的方法是把向量都写到帧缓冲。举个例子，我们把LightDirection_tangentspace可视化一下试试：
 
@@ -502,18 +503,20 @@ color.xyz = LightDirection_tangentspace;
 * alpha值过于复杂，别折腾 :)
 * 若想将一个负值可视化，可以采用和处理法线纹理一样的技巧：转而把`(v+1.0)/2.0`可视化，于是黑色就代表-1，而白色代表+1。只不过这样做会让结果不直观。
 
- 
 
-##利用变量名进行调试
+
+## 利用变量名进行调试
 
 前面已经讲过了，搞清楚向量所处的空间是关键。千万别用摄像机空间里的向量点乘模型空间里的向量。
 
 给向量名称添加"_modelspace"后缀可以有效地避免这类计算错误。
 
-# 怎样制作法线贴图
+## 怎样制作法线贴图
 
 作者James O&rsquo;Hare。点击图片放大。
-[<img title="normalMapMiniTut" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/05/normalMapMiniTut-320x1024.jpg" alt="How to create a normal map" width="320" height="1024">]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/normalMapMiniTut.jpg)
+
+![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/normalMapMiniTut.jpg)
+
 
 # 练习
 
@@ -538,5 +541,3 @@ color.xyz = LightDirection_tangentspace;
 * [Lengyel, Eric. "Computing Tangent Space Basis Vectors for an Arbitrary Mesh". Terathon Software 3D Graphics Library, 2001.](http://www.terathon.com/code/tangent.html)
 * [Real Time Rendering, third edition](http://www.amazon.com/dp/1568814240)
 * [ShaderX4](http://www.amazon.com/dp/1584504250)
-
- 

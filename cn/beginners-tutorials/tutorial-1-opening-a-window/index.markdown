@@ -40,7 +40,7 @@ language: cn
 
 各平台的详细过程如下。您可能要根据实际情况做些调整。若不确定，请按照Windows平台说明操作。
 
-##在Windows上生成
+## 在Windows上生成
 
 1. 更新驱动。请直接去NVIDIA或者AMD的官网下载。若不清楚GPU的型号，请在：控制面板->系统和安全->系统->设备管理器->显示适配器 查看。如果是Intel集成显卡，一般由OEM（Dell、HP…）提供驱动。
 2. 建议用Visual Studio 2010 Express来编译。[这里](http://www.microsoft.com/express/Downloads/#2010-Visual-CPP)可以免费下载。若您偏爱MinGW，推荐使用[Qt Creator](http://qt-project.org/)。IDE可根据个人喜好选择。下列步骤是按Visual Studio讲解的，其他IDE差别不大。
@@ -68,7 +68,7 @@ language: cn
 
 ![StartupProject]({{site.baseurl}}/assets/images/tuto-1-window/StartupProject.png)
 
-###在Linux上生成###
+## 在Linux上生成
 
 Linux版本众多，这里不可能列出所有的平台。可根据实际情况自行调整，也不妨看一下发行版文档。
 
@@ -94,7 +94,7 @@ Linux版本众多，这里不可能列出所有的平台。可根据实际情况
 6. 点击下面的锤子图标。现在教程可以从`tutorials/`文件夹启动了。
 7. 要想在QtCreator中运行教程源码，点击Projects->Execution parameters->Working Directory，选择着色器、纹理和模型所在目录。以第二课为例：`~/opengl-tutorial/tutorial02_red_triangle/`
 
-##在Mac上生成
+## 在Mac上生成
 Mac OS不支持OpenGL 3.3。最近，搭载MacOS 10.7 Lion和兼容型GPU的Mac机可以跑OpenGL 3.2了，但3.3还不行；所以我们用2.1移植版的课程代码。除此外，其他步骤和Windows类似（也支持Makefiles，此处不赘述）：
 
 1. 从Mac App Store安装XCode
@@ -108,7 +108,7 @@ Mac OS不支持OpenGL 3.3。最近，搭载MacOS 10.7 Lion和兼容型GPU的Mac�
 
 ![Xcode-projectselection]({{site.baseurl}}/assets/images/tuto-1-window/Xcode-projectselection.png)
 
-##关于Code::Blocks的说明
+## 关于Code::Blocks的说明
 由于C::B和CMake中各有一个bug，您必须在Project->Build->Options->Make commands中手动设置编译命令，如下图所示：
 
 ![CodeBlocksFix]({{site.baseurl}}/assets/images/tuto-1-window/CodeBlocksFix.png)
@@ -131,8 +131,7 @@ Mac OS不支持OpenGL 3.3。最近，搭载MacOS 10.7 Lion和兼容型GPU的Mac�
 
 开工啦。从处理依赖库开始：我们要用一些基本库在控制台显示消息：
 
-```
-
+``` cpp
 // Include standard headers
 #include <stdio.h>
 #include <stdlib.h>
@@ -140,24 +139,21 @@ Mac OS不支持OpenGL 3.3。最近，搭载MacOS 10.7 Lion和兼容型GPU的Mac�
 
 然后是GLEW库。其原理我们以后再说。
 
-```
-
+``` cpp
 // Include GLEW. Always include it before gl.h and glfw.h, since it's a bit magic.
 #include <GL/glew.h>
 ```
 
 我们使用GLFW库处理窗口和键盘消息，把它也包含进来：
 
-```
-
+``` cpp
 // Include GLFW
 #include <GL/glfw3.h>
 ```
 
 下文中的GLM是个很有用3D数学库，我们暂时用不到，但很快就会派上用场。GLM库很好用，但也没什么神奇的，您不妨自己试着写一个。添加“using namespace”，这样就可以不用写“glm::vec3”，直接写“vec3”。
 
-```
-
+``` cpp
 // Include GLM
 #include <glm/glm.hpp>
 using namespace glm;
@@ -165,15 +161,13 @@ using namespace glm;
 
 把这些#include都粘贴到playground.cpp。编译时编译器报错，说缺少main函数，那就创建一个呗：
 
-```
-
+``` cpp
 int main(){
 ```
 
 首先初始化GLFW ：
 
-```
-
+``` cpp
 // Initialise GLFW
 if( !glfwInit() )
 {
@@ -184,8 +178,7 @@ if( !glfwInit() )
 
 终于可以创建我们的第一个OpenGL窗口啦！
 
-```
-
+``` cpp
 glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
 glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -214,8 +207,7 @@ if (glewInit() != GLEW_OK) {
 
 生成并运行。一个窗口弹出后立即关闭了。可不是嘛，还没设置等待用户按Esc键再关闭呢：
 
-```
-
+``` cpp
 // Ensure we can capture the escape key being pressed below
 glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 

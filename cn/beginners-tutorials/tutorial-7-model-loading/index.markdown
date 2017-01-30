@@ -20,8 +20,8 @@ language: cn
 # 加载OBJ模型
 
 加载函数在common/objloader.hpp中声明，在common/objloader.cpp中实现。函数原型如下：
-```
 
+``` cpp
 bool loadOBJ(
     const char * path,
     std::vector  & out_vertices,
@@ -35,8 +35,8 @@ bool loadOBJ(
 ## OBJ文件示例
 
 OBJ文件大概是这个模样：
-```
 
+```
 # Blender3D v249 OBJ File: untitled.blend
 # www.blender3d.org
 mtllib cube.mtl
@@ -108,18 +108,18 @@ v vt vn都很好理解。f比较麻烦。例如f 8/11/7 7/12/7 6/10/7：
 
 其弊端在于我们无法让OpenGL混用顶点、纹理和法线索引。因此本课采用的方法是创建一个标准的、未加索引的模型。等第九课时再讨论索引，届时将会介绍如何解决OpenGL的索引问题。
 
-##用Blender创建OBJ文件
+## 用Blender创建OBJ文件
 
 我们写的蹩脚加载器功能实在有限，因此在导出模型时得格外小心。下图展示了在Blender中导出模型的情形：
 
 ![]({{site.baseurl}}/assets/images/tuto-7-model-loading/Blender.png)
 
 
-##读取OBJ文件
+## 读取OBJ文件
 
 OK，真正开始写代码了。我们需要一些临时变量存储.obj文件的内容。
-```
 
+``` cpp
 std::vector vertexIndices, uvIndices, normalIndices;
 std::vector temp_vertices;
 std::vector temp_uvs;
@@ -127,8 +127,8 @@ std::vector temp_normals;
 ```
 
 学第五课带纹理的立方体时您已学会打开文件了：
-```
 
+``` cpp
 FILE * file = fopen(path, "r");
 if( file == NULL ){
     printf("Impossible to open the file !n");
@@ -137,8 +137,8 @@ if( file == NULL ){
 ```
 
 读文件直到文件末尾：
-```
 
+``` cpp
 while( 1 ){
 
     char lineHeader[128];
@@ -153,8 +153,8 @@ while( 1 ){
 （注意，我们假设第一行的文字长度不超过128，这样做太笨了。但既然这只是个实验品，就凑合一下吧）
 
 首先处理顶点：
-```
 
+``` cpp
 if ( strcmp( lineHeader, "v" ) == 0 ){
     glm::vec3 vertex;
     fscanf(file, "%f %f %fn", &vertex.x, &vertex.y, &vertex.z );
@@ -162,8 +162,8 @@ if ( strcmp( lineHeader, "v" ) == 0 ){
 ```
 
 也就是说，若第一个字是"v"，则后面一定是3个float值，于是以这3个值创建一个glm::vec3变量，将其添加到数组。
-```
 
+``` cpp
 }else if ( strcmp( lineHeader, "vt" ) == 0 ){
     glm::vec2 uv;
     fscanf(file, "%f %fn", &uv.x, &uv.y );
@@ -173,8 +173,8 @@ if ( strcmp( lineHeader, "v" ) == 0 ){
 也就是说，如果不是"v"而是"vt"，那后面一定是2个float值，于是以这2个值创建一个glm::vec2变量，添加到数组。
 
 以同样的方式处理法线：
-```
 
+``` cpp
 }else if ( strcmp( lineHeader, "vn" ) == 0 ){
     glm::vec3 normal;
     fscanf(file, "%f %f %fn", &normal.x, &normal.y, &normal.z );
@@ -182,8 +182,8 @@ if ( strcmp( lineHeader, "v" ) == 0 ){
 ```
 
 接下来是"f"，略难一些：
-```
 
+``` cpp
 }else if ( strcmp( lineHeader, "f" ) == 0 ){
     std::string vertex1, vertex2, vertex3;
     unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
@@ -205,32 +205,32 @@ if ( strcmp( lineHeader, "v" ) == 0 ){
 
 代码与前面的类似，只不过读取的数据多一些。
 
-##处理数据
+## 处理数据
 
 我们只需改变一下数据的形式。读取的是字符串，现在有了一组数组。这还不够，我们得把数据组织成OpenGL要求的形式。也就是去掉索引，只保留顶点坐标数据。这步操作称为索引。
 
 遍历每个三角形（每个"f"行）的每个顶点（每个 v/vt/vn）：
-```
 
+``` cpp
     // For each vertex of each triangle
     for( unsigned int i=0; i
 ```
 
 顶点坐标的索引存放到vertexIndices[i]：
-```
 
+``` cpp
 unsigned int vertexIndex = vertexIndices[i];
 ```
 
 因此坐标是temp_vertices[ vertexIndex-1 ]（-1是因为C++的下标从0开始，而OBJ的索引从1开始，还记得吗？）：
-```
 
+``` cpp
 glm::vec3 vertex = temp_vertices[ vertexIndex-1 ];
 ```
 
 这样就有了一个顶点坐标：
-```
 
+``` cpp
 out_vertices.push_back(vertex);
 ```
 
@@ -239,8 +239,8 @@ UV和法线同理，任务完成！
 # 使用加载的数据
 
 到这一步，几乎什么变化都没发生。这次我们不再声明static const GLfloat g_vertex_buffer_data[] = {...}，而是创建一个顶点数组（UV和法向同理）。用正确的参数调用loadOBJ：
-```
 
+``` cpp
 // Read our .obj file
 std::vector vertices;
 std::vector uvs;
@@ -249,8 +249,8 @@ bool res = loadOBJ("cube.obj", vertices, uvs, normals);
 ```
 
 把数组传给OpenGL：
-```
 
+```cpp
 glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
 ```
 
@@ -265,4 +265,4 @@ glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0],
 
 # 其他模型格式及加载器
 
-这个小巧的加载器应该比较适合初学，不过别在实际中使用它。参考一下[实用链接和工具](/?page_id=210)页面，看看有什么能用的。不过请注意，等到第九课才会*真正*用到这些工具。
+这个小巧的加载器应该比较适合初学，不过别在实际中使用它。参考一下[实用链接和工具](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/)页面，看看有什么能用的。不过请注意，等到第九课才会*真正*用到这些工具。
