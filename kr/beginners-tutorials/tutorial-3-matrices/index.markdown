@@ -149,7 +149,7 @@ glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
 
 ## 회전 매트릭스
 
-이 부분은 조금 복잡할 수 있어요. 여기서는 자세한 사항은 생략합니다. 매일 사용하는데 있어 구체적인 레이아웃을 아는 것은 별로 중요하지 않아요. [Matrices and Quaternions FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html) (popular resource, probably available in your language as well). You can also have a look at the [Rotations tutorials]({{site.baseurl }}{{intermediate-tutorials/tutorial-17-quaternions}}) 을 한번 봐주세요.
+이 부분은 조금 복잡할 수 있어요. 여기서는 자세한 사항은 생략합니다. 매일 사용하는데 있어 구체적인 레이아웃을 아는 것은 별로 중요하지 않아요. [Matrices and Quaternions FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html) (popular resource, probably available in your language as well). You can also have a look at the [Rotations tutorials]({{site.baseurl}}/intermediate-tutorials/tutorial-17-quaternions) 을 한번 봐주세요.
 
 **C++ 에서 :**
 

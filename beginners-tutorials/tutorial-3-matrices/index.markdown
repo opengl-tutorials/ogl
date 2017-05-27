@@ -148,7 +148,7 @@ glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
 
 ## Rotation matrices
 
-These are quite complicated. I'll skip the details here, as it's not important to know their exact layout for everyday use. For more information, please have a look to the [Matrices and Quaternions FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html) (popular resource, probably available in your language as well). You can also have a look at the [Rotations tutorials]({{site.baseurl }}{{intermediate-tutorials/tutorial-17-quaternions}}) 
+These are quite complicated. I'll skip the details here, as it's not important to know their exact layout for everyday use. For more information, please have a look to the [Matrices and Quaternions FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html) (popular resource, probably available in your language as well). You can also have a look at the [Rotations tutorials]({{site.baseurl}}/intermediate-tutorials/tutorial-17-quaternions) 
 
 **In C++ :**
 
