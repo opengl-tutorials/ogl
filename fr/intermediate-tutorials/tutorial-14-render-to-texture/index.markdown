@@ -1,11 +1,11 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: 'Tutoriel 14 : rendu dans une texture'
 date: '2015-11-21 08:00:40 +0200'
 categories: [tuto]
-order: 60
+order: 540
 tags: []
 language: fr
 ---

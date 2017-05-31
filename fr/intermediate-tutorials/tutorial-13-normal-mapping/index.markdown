@@ -1,11 +1,11 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: 'Tutoriel 13 : Normal Mapping'
 date: '2015-11-19 22:23:06 +0200'
 categories: [tuto]
-order: 50
+order: 530
 tags: []
 language: fr
 ---

@@ -1,11 +1,11 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: 'Tutoriel 12 : extensions OpenGL'
 date: '2015-11-19 21:43:00 +0100'
 categories: [tuto]
-order: 40
+order: 520
 tags: []
 language: fr
 ---

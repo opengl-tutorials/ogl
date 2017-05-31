@@ -1,11 +1,11 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: 'Tutoriel 15 : Lightmaps'
 date: '2015-11-21 09:13:32 +0200'
 categories: [tuto]
-order: 70
+order: 550
 tags: []
 language: fr
 ---

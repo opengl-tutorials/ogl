@@ -1,11 +1,11 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: 'Billboards'
 date: '2015-11-21 14:51:16 +0200'
 categories: []
-order: 110
+order: 584
 tags: []
 language: fr
 ---

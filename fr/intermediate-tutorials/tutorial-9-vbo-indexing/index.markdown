@@ -1,11 +1,11 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: 'Tutoriel 9 : indexation de VBO'
 date: '2015-11-19 20:31:48 +0200'
 categories: [tuto]
-order: 10
+order: 490
 tags: []
 language: fr
 ---

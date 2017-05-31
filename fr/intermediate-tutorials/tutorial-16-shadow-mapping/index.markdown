@@ -1,11 +1,11 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: 'Tutoriel 16 : Shadow mapping'
 date: '2015-11-21 09:29:49 +0200'
 categories: [tuto]
-order: 80
+order: 560
 tags: []
 language: fr
 ---

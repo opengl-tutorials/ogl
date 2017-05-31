@@ -1,11 +1,11 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: 'Tutoriel 10 : la transparence'
 date: '2015-11-19 20:56:26 +0200'
 categories: [tuto]
-order: 20
+order: 500
 tags: []
 language: fr
 ---

@@ -1,11 +1,11 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: 'Tutoriel 11 : texte 2D'
 date: '2015-11-19 21:26:33 +0200'
 categories: [tuto]
-order: 30
+order: 510
 tags: []
 language: fr
 ---
