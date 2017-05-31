@@ -18,8 +18,12 @@ layout: default
       {% if p.language == page.language and p.layout == page.layout %}
         {% if p.order < page.order %}
           {% assign precedent = p %}
-        {% elsif p.order == page.order and precedent != null %}
-          <a href="{{precedent.url}}">◀ {{precedent.title}}</a>
+        {% elsif p.order == page.order %}
+          {% if precedent != null %}
+            <a href="{{precedent.url}}">◀ {{precedent.title}}</a>
+          {% else %}
+            <a></a>
+          {% endif %}
         {% elsif p.order > page.order %}
           <a href="{{p.url}}">{{p.title}} ▶</a>
           {% break %}
