@@ -1,12 +1,12 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: 'Tutorial 14 : Render To Texture'
 date: '2011-05-26 19:33:15 +0200'
 date_gmt: '2011-05-26 19:33:15 +0200'
 categories: [tuto]
-order: 60
+order: 540
 tags: []
 language: kr
 ---

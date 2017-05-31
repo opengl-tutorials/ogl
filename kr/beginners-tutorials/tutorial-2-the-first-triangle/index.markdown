@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: 'Tutorial 2 : 첫 삼각형'
