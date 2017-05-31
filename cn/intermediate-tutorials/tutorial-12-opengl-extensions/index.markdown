@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: "第十二课：OpenGL扩展"
@@ -8,7 +8,7 @@ date_gmt: '2013-01-27 04:04:46 +0100'
 categories: []
 tags: []
 language: cn
-order: 40
+order: 520
 ---
 
 # 扩展

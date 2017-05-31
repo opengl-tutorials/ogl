@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: "第十五课：光照贴图（Lightmap）"
@@ -8,7 +8,7 @@ date_gmt: '2014-12-13 03:20:09 +0100'
 categories: []
 tags: []
 language: cn
-order: 70
+order: 550
 ---
 
 # 简介

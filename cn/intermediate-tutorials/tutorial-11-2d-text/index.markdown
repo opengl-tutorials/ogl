@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: "第十一课：2D文本"
@@ -8,7 +8,7 @@ date_gmt: '2014-12-06 02:35:35 +0100'
 categories: []
 tags: []
 language: cn
-order: 30
+order: 510
 ---
 
 本课将学习如何在三维场景之上绘制二维文本。本例是一个简单的计时器：

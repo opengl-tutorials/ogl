@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: "第十三课：法线贴图"
@@ -8,7 +8,7 @@ date_gmt: '2014-12-06 03:31:09 +0100'
 categories: []
 tags: []
 language: cn
-order: 50
+order: 530
 ---
 
 欢迎来到第十三课！今天的内容是法线贴图（normal mapping）。

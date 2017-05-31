@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: "第九课：VBO索引"
@@ -8,7 +8,7 @@ date_gmt: '2014-12-05 13:51:20 +0100'
 categories: [tuto]
 tags: []
 language: cn
-order: 10
+order: 490
 ---
 
 # 索引的原理

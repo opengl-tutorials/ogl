@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: "第十课：透明"
@@ -8,7 +8,7 @@ date_gmt: '2014-12-05 15:03:48 +0100'
 categories: []
 tags: []
 language: cn
-order: 20
+order: 500
 ---
 
 # alpha通道

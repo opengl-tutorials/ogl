@@ -1,12 +1,12 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: Billboards
 date: '2013-10-15 17:15:15 +0200'
 date_gmt: '2013-10-15 17:15:15 +0200'
 categories: []
-order: 110
+order: 584
 tags: []
 language: cn
 ---
