@@ -6,16 +6,14 @@ title: Billboards
 date: '2013-10-15 17:15:15 +0200'
 date_gmt: '2013-10-15 17:15:15 +0200'
 categories: []
-order: 110
+order: 584
 tags: []
 ---
 
 Billboards are 2D elements incrusted in a 3D world. Not a 2D menu on top of everything else; not a 3D plane around which you can turn; but something in-between, like health bars in many games.
 
 What's different with billboards is that they are positionned at a specific location, but their orientation is automatically computed so that it always faces the camera.
-
  
-
 # Solution #1 : The 2D way
 
 This one is supra-easy.
@@ -37,8 +35,6 @@ Ta-dah !
 
 On the plus side, this method is really easy, and the billboard will have the same size regardless of its distance to the camera. But 2D text is always displayed on top of everything else, and this can/will mess up the rendering and show above other objects.
 
- 
-
 # Solution #2 : The 3D way
 
 This one is usually better and not much more complicated.
@@ -52,20 +48,15 @@ You can view this problem as generating an appropriate Model matrix, even though
 
 The idea is that each corner of the billboard is at the center position, displaced by the camera's up and right vectors :
 
- 
-
 ![]({{site.baseurl}}/assets/images/tuto-billboard/principle.png)
-
-
- 
 
 Of course, we only know the billboard's center position in world space, so we also need the camera's up/right vectors in world space.
 
 In camera space, the camera's up vector is (0,1,0). To get it in world space, just multiply this by the matrix that goes from Camera Space to World Space, which is, of course, the inverse of the View matrix.
 
 An easier way to express the same math is :
-```
 
+```
 CameraRight_worldspace = {ViewMatrix[0][0], ViewMatrix[1][0], ViewMatrix[2][0]}
 CameraUp_worldspace = {ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]}
 ```
@@ -86,9 +77,6 @@ vec3 vertexPosition_worldspace =
 
 <div><span style="font-size: medium;"><span style="line-height: 24px;">And presto, here's the result. Wasn't this easy ? </span></span><span style="font-size: 16px;"> </span></div>
 ![]({{site.baseurl}}/assets/images/tuto-billboard/2.gif)
-
-
- 
 
 For the record, here's how squareVertices is made :
 
@@ -123,19 +111,10 @@ Remember that at this stage of the rendering pipeline, you're in Normalized Devi
 
 If you want a size in pixels, easy : just use (ScreenSizeInPixels / BillboardSizeInPixels) instead of BillboardSizeInScreenPercentage.
 
- 
-
 ![]({{site.baseurl}}/assets/images/tuto-billboard/3.gif)
-
-
- 
 
 # Solution #4 : Vertical rotation only
 
 Some systems model faraway trees and lamps as billboards. But you really, really don't want your tree to be bent : it MUST be vertical. So you need an hybrid system that rotates only around one axis.
 
 Well, this one is left as an exercise to the reader !
-
- 
-
- 
