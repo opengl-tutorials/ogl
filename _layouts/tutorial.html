@@ -19,9 +19,9 @@ layout: default
         {% if p.order < page.order %}
           {% assign precedent = p %}
         {% elsif p.order == page.order and precedent != null %}
-          <a href="{{precedent.url}}">Previous: {{precedent.title}}</a>
+          <a href="{{precedent.url}}">◀ {{precedent.title}}</a>
         {% elsif p.order > page.order %}
-          <a href="{{p.url}}">Next: {{p.title}}</a>
+          <a href="{{p.url}}">{{p.title}} ▶</a>
           {% break %}
         {% endif %}
       {% endif %}
