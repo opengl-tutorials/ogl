@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: チュートリアル2：最初の三角形

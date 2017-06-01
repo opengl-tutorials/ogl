@@ -1,12 +1,12 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: 'チュートリアル9：VBOインデックス'
 date: '2011-05-12 19:21:49 +0200'
 date_gmt: '2011-05-12 19:21:49 +0200'
 categories: [tuto]
-order: 10
+order: 490
 tags: []
 language: jp
 ---

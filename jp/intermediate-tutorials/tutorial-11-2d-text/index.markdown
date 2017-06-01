@@ -1,12 +1,12 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: 'チュートリアル11:2Dテキスト'
 date: '2011-05-16 22:38:44 +0200'
 date_gmt: '2011-05-16 22:38:44 +0200'
 categories: [tuto]
-order: 30
+order: 510
 tags: []
 language: jp
 ---

@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: チュートリアル4：色つきの立方体

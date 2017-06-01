@@ -1,12 +1,12 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: 'チュートリアル15：ライトマップ'
 date: '2011-05-28 10:07:24 +0200'
 date_gmt: '2011-05-28 10:07:24 +0200'
 categories: [tuto]
-order: 70
+order: 550
 tags: []
 language: jp
 ---

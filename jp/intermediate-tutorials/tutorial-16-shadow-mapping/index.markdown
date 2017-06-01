@@ -1,12 +1,12 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: 'チュートリアル16：シャドウマッピング'
 date: '2011-08-17 18:29:32 +0200'
 date_gmt: '2011-08-17 18:29:32 +0200'
 categories: [tuto]
-order: 80
+order: 560
 tags: []
 language: jp
 ---

@@ -1,12 +1,12 @@
 ---
-layout: page
+layout: tutorial
 status: publish
 published: true
 title: 'チュートリアル10:透明'
 date: '2011-05-13 23:00:42 +0200'
 date_gmt: '2011-05-13 23:00:42 +0200'
 categories: [tuto]
-order: 20
+order: 500
 tags: []
 language: jp
 ---
