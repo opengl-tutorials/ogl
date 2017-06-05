@@ -10,7 +10,6 @@ order: 584
 tags: []
 ---
 
-# Table of content
 * TOC
 {:toc}
 
