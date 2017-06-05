@@ -10,6 +10,10 @@ order: 40
 tags: []
 ---
 
+# Table of content
+* TOC
+{:toc}
+
 Welcome for the 4rth tutorial ! You will do the following :
 
 * Draw a cube instead of the boring triangle

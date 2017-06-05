@@ -10,6 +10,10 @@ order: 50
 tags: []
 ---
 
+# Table of content
+* TOC
+{:toc}
+
 In this tutorial, you will learn :
 
 * What are UV coordinates

@@ -9,7 +9,10 @@ categories: [tuto]
 order: 30
 tags: []
 ---
-{:TOC}
+
+# Table of content
+* TOC
+{:toc}
 
 > _The engines don't move the ship at all. The ship stays where it is and the engines move the universe around it._
 > 

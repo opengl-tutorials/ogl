@@ -10,6 +10,10 @@ order: 584
 tags: []
 ---
 
+# Table of content
+* TOC
+{:toc}
+
 Billboards are 2D elements incrusted in a 3D world. Not a 2D menu on top of everything else; not a 3D plane around which you can turn; but something in-between, like health bars in many games.
 
 What's different with billboards is that they are positionned at a specific location, but their orientation is automatically computed so that it always faces the camera.

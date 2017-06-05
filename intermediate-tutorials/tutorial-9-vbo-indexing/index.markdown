@@ -10,6 +10,10 @@ order: 490
 tags: []
 ---
 
+# Table of content
+* TOC
+{:toc}
+
 # The principle of indexing
 
 Until now, when building your VBO, we always duplicated our vertices whenever two triangles shared an edge.

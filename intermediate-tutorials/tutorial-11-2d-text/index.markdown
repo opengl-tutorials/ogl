@@ -10,6 +10,10 @@ order: 510
 tags: []
 ---
 
+# Table of content
+* TOC
+{:toc}
+
 In this tutorial, we'll learn to draw 2D text on top of our 3D content. In our case, this will be a simple timer :
 
 ![]({{site.baseurl}}/assets/images/tuto-11-2d-text/clock.png)

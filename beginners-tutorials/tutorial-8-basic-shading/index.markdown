@@ -10,6 +10,10 @@ order: 80
 tags: []
 ---
 
+# Table of content
+* TOC
+{:toc}
+
 In this 8th tutorial, we will learn how to do some basic shading. This includes :
 
 * Beeing more bright when closer to a light source

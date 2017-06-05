@@ -10,6 +10,10 @@ order: 530
 tags: []
 ---
 
+# Table of content
+* TOC
+{:toc}
+
 Welcome for our 13th tutorial ! Today we will talk about normal mapping.
 
 Since [Tutorial 8 : Basic shading](http://www.opengl-tutorial.org/beginners-tutorials/tutorial-8-basic-shading/) , you know how to get decent shading using triangle normals. One caveat is that until now, we only had one normal per vertex : inside each triangle, they vary smoothly, on the opposite to the colour, which samples a texture. The basic idea of normal mapping is to give normals similar variations.

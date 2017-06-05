@@ -10,6 +10,10 @@ order: 60
 tags: []
 ---
 
+# Table of content
+* TOC
+{:toc}
+
 Welcome for our 6th tutorial !
 
 We will now learn how to use the mouse and the keyboard to move the camera just like in a FPS.

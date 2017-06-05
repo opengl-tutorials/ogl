@@ -10,6 +10,10 @@ order: 520
 tags: []
 ---
 
+# Table of content
+* TOC
+{:toc}
+
 # Extensions
 
 With each new generation, the performance of GPU increases, allowing to render more triangles and more pixels. However, raw performance isn't the only concern. NVIDIA, AMD and Intel also improve their graphic cards by providing more functionality. Let's have a look at some examples.

@@ -10,6 +10,10 @@ order: 500
 tags: []
 ---
 
+# Table of content
+* TOC
+{:toc}
+
 # The alpha channel
 
 The concept of the alpha channel is pretty simple. Instead of a writing an RGB result, you write an RGBA :
