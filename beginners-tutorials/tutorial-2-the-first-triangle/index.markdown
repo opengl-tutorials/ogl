@@ -9,7 +9,9 @@ categories: [tuto]
 order: 20
 tags: []
 ---
-{:TOC}
+
+* TOC
+{:toc}
 
 This will be another long tutorial.
 
