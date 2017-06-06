@@ -8,6 +8,7 @@ date_gmt: '2013-05-18 20:43:28 +0200'
 categories: []
 order: 70
 tags: []
+print: true
 ---
 
 This technique is not really recommended, but it's an easy and fast way to add simple picking. By all means, avoid using this in a game, since it might introduce noticeable framerate drops. However, if you have some kind of simulation and you don't really care about picking performance, this might the perfect option.

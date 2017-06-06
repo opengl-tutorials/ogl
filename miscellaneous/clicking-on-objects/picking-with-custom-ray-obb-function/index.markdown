@@ -8,6 +8,7 @@ date_gmt: '2013-05-18 22:13:41 +0200'
 categories: []
 order: 90
 tags: []
+print: true
 ---
 
 This last method is a nice middleground between the "hacky" pure-OpenGL implementation, and having to integrate a fully-featured physics engine just to do raycasts and picking.

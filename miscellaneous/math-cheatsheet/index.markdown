@@ -8,6 +8,7 @@ date_gmt: '2011-05-11 20:04:48 +0200'
 categories: []
 order: 20
 tags: []
+print: true
 ---
 
 # Trigonometry

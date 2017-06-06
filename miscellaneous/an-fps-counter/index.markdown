@@ -8,6 +8,7 @@ date_gmt: '2012-01-28 16:24:41 +0100'
 categories: []
 order: 40
 tags: []
+print: true
 ---
 
 In real-time graphics, it is important to keep an eye on performance. A good practice is to choose a target FPS ( usually 60 or 30 ) and make everything possible to stick to it.
