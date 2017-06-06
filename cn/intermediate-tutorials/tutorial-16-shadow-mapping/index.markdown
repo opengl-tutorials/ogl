@@ -11,6 +11,8 @@ tags: []
 language: cn
 ---
 
+* TOC
+{:toc}
 
 In Tutorial 15 we learnt how to create lightmaps, which encompasses static lighting. While it produces very nice shadows, it doesn't deal with animated models.
 

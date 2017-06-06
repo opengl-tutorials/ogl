@@ -10,6 +10,10 @@ tags: []
 order: 30
 language: cn
 ---
+
+* TOC
+{:toc}
+
 <blockquote>*引擎推动的不是飞船而是宇宙。飞船压根就没动过。*
 《飞出个未来》</blockquote>
 

@@ -10,6 +10,10 @@ tags: []
 order: 10
 language: cn
 ---
+
+* TOC
+{:toc}
+
 第一课：打开一个窗口
 ===
 

@@ -11,6 +11,9 @@ language: cn
 order: 530
 ---
 
+* TOC
+{:toc}
+
 欢迎来到第十三课！今天的内容是法线贴图（normal mapping）。
 
 学完[第八课：基本着色](http://www.opengl-tutorial.org/zh-hans/beginners-tutorials-zh/tutorial-8-basic-shading-zh/) 后，我们知道了如何用三角形法线得到不错的着色效果。需要注意的是，截至目前，每个顶点仅有一条法线。在三角形内部，法线是平滑过渡的，而颜色则是通过纹理采样得到的（译注：三角形内部法线由插值计算得出，颜色则是直接从纹理取数据）。法线贴图的基本思想就是像纹理采样一样为法线取值。

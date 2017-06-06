@@ -11,6 +11,9 @@ language: cn
 order: 510
 ---
 
+* TOC
+{:toc}
+
 本课将学习如何在三维场景之上绘制二维文本。本例是一个简单的计时器：
 
 ![]({{site.baseurl}}/assets/images/tuto-11-2d-text/clock.png)

@@ -11,6 +11,9 @@ language: cn
 order: 500
 ---
 
+* TOC
+{:toc}
+
 # alpha通道
 
 alpha通道的概念很简单。我们以前的计算结果是RGB值，现在则是RGBA值：

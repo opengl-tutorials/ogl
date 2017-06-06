@@ -10,6 +10,10 @@ tags: []
 order: 20
 language: cn
 ---
+
+* TOC
+{:toc}
+
 第二课：绘制第一个三角形
 ===
 

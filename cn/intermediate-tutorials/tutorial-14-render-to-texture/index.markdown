@@ -11,6 +11,9 @@ tags: []
 language: cn
 ---
 
+* TOC
+{:toc}
+
 Render-To-Texture is a handful method to create a variety of effects. The basic idea is that you render a scene just like you usually do, but this time in a texture that you can reuse later.
 
 Applications include in-game cameras, post-processing, and as many GFX as you can imagine.

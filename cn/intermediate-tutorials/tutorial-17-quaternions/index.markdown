@@ -11,6 +11,8 @@ tags: []
 language: cn
 ---
 
+* TOC
+{:toc}
 
 This tutorial goes a bit outside the scope of OpenGL, but nevertheless tackles a very common problem: how to represent rotations ?
 
