@@ -11,6 +11,9 @@ tags: []
 language: es
 ---
 
+* TOC
+{:toc}
+
 In Tutorial 15 we learnt how to create lightmaps, which encompasses static lighting. While it produces very nice shadows, it doesn't deal with animated models.
 
 Shadow maps are the current (as of 2016) way to make dynamic shadows. The great thing about them is that it's fairly easy to get to work. The bad thing is that it's terribly difficult to get to work *right*.

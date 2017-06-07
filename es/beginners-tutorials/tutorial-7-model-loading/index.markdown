@@ -11,6 +11,9 @@ tags: []
 language: es
 ---
 
+* TOC
+{:toc}
+
 Hasta ahora, hemos escrito directamente nuestro cubo en el código fuente. Y podemos estar de acuerdo en que ésta es una forma muy engorrosa y poco práctica de hacerlo.
 
 En este tutorial, aprenderemos como cargar mallas 3D desde archivo. Lo haremos de la misma manera en que lo hicimos para las texturas: escribiremos una pequeña y muy limitada función para cargar las mallas y luego le daremos un vistazo a las librerías que pueden hacer esto mucho mejor que nosotros.

@@ -10,7 +10,9 @@ order: 20
 tags: []
 language: es
 ---
-{:TOC}
+
+* TOC
+{:toc}
 
 Este será otro tutorial largo .
 

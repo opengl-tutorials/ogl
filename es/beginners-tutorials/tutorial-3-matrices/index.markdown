@@ -10,7 +10,9 @@ order: 30
 tags: []
 language: es
 ---
-{:TOC}
+
+* TOC
+{:toc}
 
 > _Los motores no mueven la nave. La nave permanece en su lugar y el universo se mueve alrededor de ella._
 > 
