@@ -21,7 +21,7 @@ Don't forget to cut'n paste the code on a regular basis.
 
 **<span style="color: red">If the program crashes at startup, you're probably running from the wrong directory. Read CAREFULLY the first tutorial on how to configure Visual Studio !</span>**
 
-## The VAO
+# The VAO
 
 I won't dig into details now, but you need to create a Vertex Array Object and set it as the current one :
 
@@ -35,7 +35,7 @@ Do this once your window is created (= after the OpenGL Context creation) and be
 
 If you really want to know more about VAOs, there are a few other tutorials out there, but this is not very important.
 
-## Screen Coordinates
+# Screen Coordinates
 
 A triangle is defined by three points. When talking about "points" in 3D graphics, we usually use the word "vertex" ( "vertices" on the plural ). A vertex has 3 coordinates : X, Y and Z. You can think about these three coordinates in the following way :
 
@@ -70,7 +70,7 @@ The first vertex is (-1,-1,0). This means that _unless we transform it in some w
 
 This is something you can't change, it's built in your graphics card. So (-1,-1) is the bottom left corner of your screen. (1,-1) is the bottom right, and (0,1) is the middle top. So this triangle should take most of the screen.
 
-## Drawing our triangle
+# Drawing our triangle
 
 The next step is to give this triangle to OpenGL. We do this by creating a buffer:
 
@@ -112,9 +112,9 @@ If you're on lucky, you can see the result (<span style="color: red">**don't pan
 
 Now this is some boring white. Let's see how we can improve it by painting it in red. This is done by using something called shaders.
 
-## Shaders
+# Shaders
 
-# Shader Compilation
+## Shader Compilation
 
 In the simplest possible configuration, you will need two shaders : one called Vertex Shader, which will be executed for each vertex, and one called Fragment Shader, which will be executed for each sample. And since we use 4x antialising, we have 4 samples in each pixel.
 
@@ -220,7 +220,7 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 }
 ```
 
-# Our Vertex Shader
+## Our Vertex Shader
 
 Let's write our vertex shader first.
 The first line tells the compiler that we will use OpenGL 3's syntax.
@@ -262,7 +262,7 @@ Our main function will merely set the vertex' position to whatever was in the bu
 
 gl_Position is one of the few built-in variables : you *have *to assign some value to it. Everything else is optional; we'll see what "everything else" means in Tutorial 4.
 
-# Our Fragment Shader
+## Our Fragment Shader
 
 For our first fragment shader, we will do something really simple : set the color of each fragment to red. (Remember, there are 4 fragment in a pixel because we use 4x AA)
 
@@ -277,7 +277,7 @@ void main(){
 
 So yeah, vec3(1,0,0) means red. This is because on computer screens, colour is represented by a Red, Green, and Blue triplet, in this order. So (1,0,0) means Full Red, no green and no blue.
 
-## Putting it all together
+# Putting it all together
 
 Before the main loop, call our LoadShaders function :
 
