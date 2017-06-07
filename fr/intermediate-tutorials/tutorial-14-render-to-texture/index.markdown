@@ -10,6 +10,9 @@ tags: []
 language: fr
 ---
 
+* TOC
+{:toc}
+
 Le rendu dans une texture (render to texture) est une méthode pratique pour créer une multitude d'effets. L'idée de base est de dessiner une scène, tout comme vous le faites habituellement, mais cette fois, dans une texture que tu peux réutiliser plus tard.
 
 Les applications de cette technique incluent les caméras dans les jeux, le post-processing et autant d'effets graphiques que tu le souhaites.

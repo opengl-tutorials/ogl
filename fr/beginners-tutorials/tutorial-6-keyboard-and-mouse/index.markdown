@@ -10,6 +10,9 @@ tags: []
 language: fr
 ---
 
+* TOC
+{:toc}
+
 Bienvenue dans le sixième tutoriel !
 
 Tu vas apprendre à utiliser le clavier et la souris pour déplacer la caméra exactement comme dans un FPS.

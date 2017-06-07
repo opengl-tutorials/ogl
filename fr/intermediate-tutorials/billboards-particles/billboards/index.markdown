@@ -10,6 +10,9 @@ tags: []
 language: fr
 ---
 
+* TOC
+{:toc}
+
 # Introduction
 
 Les billboards sont des éléments 2D incrustés dans un monde 3D. Ce n'est pas un menu 2D au-dessus de tout le reste, ni un plan 3D autour duquel tu peux tourner, mais quelque chose entre les deux, comme les barres de vies dans beaucoup de jeux.

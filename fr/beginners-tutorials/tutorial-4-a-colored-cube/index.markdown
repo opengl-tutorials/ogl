@@ -10,6 +10,9 @@ tags: []
 language: fr
 ---
 
+* TOC
+{:toc}
+
 Bienvenue dans le quatrième tutoriel ! Dans celui-ci on va :
 
 * Afficher un cube au lieu d'un ennuyeux triangle

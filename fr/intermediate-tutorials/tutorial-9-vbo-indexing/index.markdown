@@ -10,6 +10,9 @@ tags: []
 language: fr
 ---
 
+* TOC
+{:toc}
+
 # Le principe de l'indexation
 
 Jusqu'à présent, lors de la construction du VBO, on avait dupliqué les sommets à chaque fois que deux triangles partageaient un côté.

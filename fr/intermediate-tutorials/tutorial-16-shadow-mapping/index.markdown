@@ -10,6 +10,9 @@ tags: []
 language: fr
 ---
 
+* TOC
+{:toc}
+
 # Introduction
 
 Dans le [quinzième tutoriel]({{site.baseurl}}/fr/intermediate-tutorials/tutorial-15-lightmaps/), on a appris à créer des lightmaps, qui incluent l'éclairage statique. Bien que cela produise de ombres vraiment belles, ça ne gère pas les modèles animés.

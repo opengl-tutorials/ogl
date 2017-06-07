@@ -10,6 +10,9 @@ tags: []
 language: fr
 ---
 
+* TOC
+{:toc}
+
 # La canal alpha
 
 Le concept du canal alpha est très simple. À la place d'écrire un résultat en RGB, on écris un résultat en RGBA :

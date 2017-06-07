@@ -10,6 +10,9 @@ tags: []
 language: fr
 ---
 
+* TOC
+{:toc}
+
 Bienvenue dans le treizième tutoriel ! Aujourd'hui on parle de normal mapping.
 
 Depuis le [huitème tutoriel : shaders de base]({{site.baseurl}}/fr/beginners-tutorials/tutorial-8-basic-shading/), tu sais comment obtenir un ombrage décent en utilisant les normales des triangles. Jusqu'à présent, il existait un inconvénient : on n'avait qu'une seule normale par sommet dans chaque triangle et elle va varier doucement, contrairement aux couleurs, qui sont échantillonnées à partir d'une texture. L'idée de base de l'application des normales (normal mapping) est de donner aux normales des variations similaires.

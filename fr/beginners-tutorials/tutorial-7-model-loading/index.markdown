@@ -10,6 +10,9 @@ tags: []
 language: fr
 ---
 
+* TOC
+{:toc}
+
 Jusqu'à maintenant, on avait manuellement codé le cube dans le code source. Je suis sûr que vous êtes d'accord pour dire que c'est pénible et pas pratique.
 
 Dans ce tutoriel, on apprendra à charger un modèle 3D à partir d'un fichier. On fera exactement comme on a fait pour les textures : on va écrire un simple et très limité chargeur de modèle 3D et je vais vous donner quelques pistes vers des bibliothèques qui le font mieux que nous.

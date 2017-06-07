@@ -9,7 +9,9 @@ order: 30
 tags: []
 language: fr
 ---
-{:TOC}
+
+* TOC
+{:toc}
 
 > _Les moteurs ne déplacent pas du tout le vaisseau. Le vaisseau reste où il est et les moteurs déplacent l'univers autour de lui._
 > 

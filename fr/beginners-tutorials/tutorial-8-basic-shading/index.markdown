@@ -10,6 +10,9 @@ tags: []
 language: fr
 ---
 
+* TOC
+{:toc}
+
 Dans ce huitième tutoriel, on va voir comment créer quelques shaders de base. Cela inclut :
 
 * Obtenir un effet plus brillant lorsque l'on est plus proche de la source de lumière

@@ -10,6 +10,9 @@ tags: []
 language: fr
 ---
 
+* TOC
+{:toc}
+
 # Introduction
 
 Ce tutoriel sort du contexte d'OpenGL, mais s'attaque néanmoins à un problème très courant : comment représenter les rotations ?

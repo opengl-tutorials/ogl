@@ -9,7 +9,9 @@ order: 20
 tags: []
 language: fr
 ---
-{:TOC}
+
+* TOC
+{:toc}
 
 Cela va être un autre long tutoriel.
 

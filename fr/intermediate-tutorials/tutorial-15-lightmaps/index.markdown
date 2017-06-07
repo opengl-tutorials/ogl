@@ -10,6 +10,9 @@ tags: []
 language: fr
 ---
 
+* TOC
+{:toc}
+
 # Introduction
 
 J'aurais bien traduit *lightmap* mais en programmation graphique tout le monde utilise ce terme. On pourrait peut être dire *Cartes de lumière* mais ca serait une traduction artificielle.

@@ -10,6 +10,9 @@ tags: []
 language: fr
 ---
 
+* TOC
+{:toc}
+
 # Extensions
 
 Avec chaque nouvelle génération, les performances des GPU augmentent, permettant ainsi d'afficher plus de triangles et plus de pixels. Néanmoins, la performance brute n'est pas le seul intérêt. NVIDIA, AMD et Intel améliorent aussi leurs cartes graphiques en y ajoutant des nouvelles fonctionnalités. En voici quelques exemples.

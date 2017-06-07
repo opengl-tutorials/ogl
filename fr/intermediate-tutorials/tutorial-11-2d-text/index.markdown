@@ -10,6 +10,9 @@ tags: []
 language: fr
 ---
 
+* TOC
+{:toc}
+
 Dans ce tutoriel, on va apprendre à afficher un texte en 2D par-dessus le contenu 3D. Ici, ce sera un simple chronomètre :
 
 ![]({{site.baseurl}}/assets/images/tuto-11-2d-text/clock.png)
