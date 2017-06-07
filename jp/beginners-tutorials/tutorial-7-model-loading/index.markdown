@@ -12,6 +12,9 @@ language: jp
 order: 70
 ---
 
+* TOC
+{:toc}
+
 これまで立方体をソースコードに直接書いていました。これは扱いにくく、不便だということに同意してもらえるでしょう。
 
 このチュートリアルでは、ファイルから3Dメッシュをどのようにロードするかを学びます。テクスチャと同じようにして実現できます。小さく、制限されたローダを書いていきます。そして私たちのものより良く出来ているライブラリでは実際にどうやっているのかという指針も与えます。
@@ -36,8 +39,8 @@ loadOBJは"path"にあるファイルを読み込み、out_vertices/out_uvs/out_
 ## OBJファイルの例
 
 OBJファイルは次のような構成になっています。
-```
 
+```
 # Blender3D v249 OBJ File: untitled.blend
 # www.blender3d.org
 mtllib cube.mtl
@@ -89,7 +92,7 @@ f 1/2/8 3/13/8 4/14/8
 
 ここで記号の意味を説明します。
 
-* #はコメントです。C++での//と同じ意味です。
+* `#`はコメントです。C++での//と同じ意味です。
 * usemtlとmtllibモデルの外見を描写します。このチュートリアルでは使いません。
 * vは頂点です。
 * vtは一つの頂点のテクスチャ座標です。
@@ -116,7 +119,7 @@ vとvtは簡単に理解できます。fは少し複雑です。ここではf 8/
 ![]({{site.baseurl}}/assets/images/tuto-7-model-loading/Blender.png)
 
 
-##ファイルの読み込み
+## ファイルの読み込み
 
 それでは、コードに落としていきましょう。.objのコンテンツを保存するための一時的な変数を作ります。
 
@@ -207,7 +210,7 @@ i.e if it's not a "v" but a "vt", then the rest has to be 2 floats, so create a 
 
 このコードは、少し読み込むデータが多い点を除けば、以前のものととても似ています。
 
-##データの処理
+## データの処理
 
 これまでやったことは単にデータの"形"を変えただけです。つまり文字列をstd::vector型に変換しました。しかし、これだけでは充分ではありません。OpenGLが読み込める形に直さなければなりません。すなわち、インデックスを取り除き、単純なglm::vec3型に直します。これは索引付けと呼ばれます。
 
@@ -262,11 +265,9 @@ glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0],
 # 結果
 
 下手なテクスチャですみません。私は良いアーティストじゃないんです。 :( テクスチャの寄贈を受け付けています！
-Sorry for the lame texture, I'm NOT a good artist :( Any contribution welcome !
 
 ![]({{site.baseurl}}/assets/images/tuto-7-model-loading/ModelLoading.png)
 
-
 # 他のフォーマットとローダ
 
-ここで作ったローダは勉強目的では良いかもしれませんが、実際のアプリケーションでは使いたくはないでしょう。[便利なリンクとツール](/?page_id=210)ページをみて*実際に*使ってみてください。
+ここで作ったローダは勉強目的では良いかもしれませんが、実際のアプリケーションでは使いたくはないでしょう。[便利なリンクとツール](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/)ページをみて*実際に*使ってみてください。
