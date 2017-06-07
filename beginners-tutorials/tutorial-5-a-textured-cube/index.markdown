@@ -176,7 +176,6 @@ void main(){
     color = texture( myTextureSampler, UV ).rgb;
 }
 ```
-
 {: .highlightglslfs }
 
 Three things :
@@ -209,7 +208,6 @@ void main(){
     UV = vertexUV;
 }
 ```
-
 {: .highlightglslvs }
 
 Remember "layout(location = 1) in vec2 vertexUV" from Tutorial 4 ? Well, we'll have to do the exact same thing here, but instead of giving a buffer (R,G,B) triplets, we'll give a buffer of (U,V) pairs.
@@ -408,8 +406,6 @@ GLuint loadDDS(const char * imagepath){
 
 After the header is the actual data : all the mipmap levels, successively. We can read them all in one batch :
 
- 
-
 ``` cpp
     unsigned char * buffer;
     unsigned int bufsize;
@@ -488,14 +484,11 @@ In general, you should only use compressed textures, since they are smaller to s
 
 # Exercices
 
-
 * The DDS loader is implemented in the source code, but not the texture coordinate modification. Change the code at the appropriate place to display the cube correctly.
 * Experiment with the various DDS formats. Do they give different result ? Different compression ratios ?
 * Try not to generate mipmaps in The Compressonator. What is the result ? Give 3 different ways to fix this.
 
-
 # References
-
 
 * [Using texture compression in OpenGL](http://www.oldunreal.com/editing/s3tc/ARB_texture_compression.pdf) , S&eacute;bastien Domine, NVIDIA
 
