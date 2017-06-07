@@ -5,23 +5,22 @@ published: true
 title: チュートリアル2：最初の三角形
 date: '2014-06-20 01:16:14 +0100'
 date_gmt: '2014-06-20 01:16:14 +0100'
-categories: []
+categories: [tuto]
 tags: []
-comments: []
 language: jp
 order: 20
 ---
 
-/
-<!--     At least one brush, here we choose JS. You need to include a brush for every     language you want to highlight -->
+* TOC
+{:toc}
 
 これはもう一つの長いチュートリアルです。
 
 OpenGL3は複雑なものを簡単に書くことができます。しかし、単純な三角形を描くことが実際とても難しくなります。
 
 習慣的にコードをコピー＆ペーストするのを忘れないでください。
-<blockquote>
-<span style="color: #ff0000">もし始めの段階でプログラムがクラッシュするなら、間違ったディレクトリで実行しているかもしれません。チュートリアル1のVisual Studioの設定方法を注意深く読んでください！</span></blockquote>
+
+**<span style="color: red">もし始めの段階でプログラムがクラッシュするなら、間違ったディレクトリで実行しているかもしれません。チュートリアル1のVisual Studioの設定方法を注意深く読んでください！</span>**
 
 # VAO
 
@@ -68,7 +67,7 @@ static const GLfloat g_vertex_buffer_data[] = {
 
 最初の点は(-1,-1,0)です。これは、*何らかの方法で変換しなければ*、スクリーン上の(-1,-1)に表示されることを意味します。これはどういう意味でしょう？スクリーンの原点は中心にあり、Xはいつもどおり右側にあり、Yは上側にあります。これはワイドスクリーン上を指すものとなります。
 
-![]({{site.baseurl}}/assets/images/tuto-2-first-triangle/screenCoordinates.png)
+![screenCoordinates]({{site.baseurl}}/assets/images/tuto-2-first-triangle/screenCoordinates.png){: height="165px" width="300px"}
 
 
 これは変えることができません。グラフィックカードにビルトインされています。だから(-1,-1)はスクリーンの左下です。(1,-1)は右下、(0,1)は中央上です。だから三角形はスクリーンの大部分を占めます。
@@ -117,7 +116,7 @@ glDisableVertexAttribArray(0);
 
 もし運がよければ、次のような結果を見られます。 (<span style="color: #ff0000">出てこなくてもあせらないでください。</span>) :
 
-![]({{site.baseurl}}/assets/images/tuto-2-first-triangle/triangle_no_shader1.png)
+![triangle_no_shader]({{site.baseurl}}/assets/images/tuto-2-first-triangle/triangle_no_shader1.png){: height="232px" width="300px"}
 
 
 これは、つまらない白色です。そこで赤に塗ることで改善しましょう。これはシェーダと呼ばれるものを使うことで実現できます。
@@ -125,7 +124,7 @@ glDisableVertexAttribArray(0);
 # シェーダ
 
 
-##シェーダのコンパイル
+## シェーダのコンパイル
 
 最も簡単で可能な設定では、2つのシェーダが必要となります。一つは頂点シェーダで、各頂点で実行されます。もう一つはフラグメントシェーダで書くサンプルで実行されます。4xアンチエイリアスを使うので、各ピクセルで4つのサンプルがあります。
 
@@ -213,7 +212,7 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 }
 ```
 
-##頂点シェーダ
+## 頂点シェーダ
 
 まず頂点シェーダを書いていきましょう。
 最初の行はコンパイラにOpenGL3のシンタックスを使うことを知らせています。
@@ -256,7 +255,7 @@ void main(){
 
 gl_Position is one of the few built-in variables : you *have *to assign some value to it. Everything else is optional; we'll see what "everything else" means in Tutorial 4.
 
-##フラグメントシェーダ
+## フラグメントシェーダ
 
 最初のフラグメントシェーダは、とてもシンプルなものとなります。各フラグメントに赤をセットします。(注意してほしいのは、4x AAを使っているので、各ピクセルごとに4つのフラグメントがあります。)
 
@@ -298,7 +297,7 @@ glUseProgram(programID);
 
 ... さぁ、ここに赤い三角形があります！
 
-![]({{site.baseurl}}/assets/images/tuto-2-first-triangle/red_triangle.png)
+![red_triangle]({{site.baseurl}}/assets/images/tuto-2-first-triangle/red_triangle.png){: height="231px" width="300px"}
 
 
 次のチュートリアルは変換を学びます。つまりどのようにカメラをセットアップし、オブジェクトを動かすかなどを学びます。

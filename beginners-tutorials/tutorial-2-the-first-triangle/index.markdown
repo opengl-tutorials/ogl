@@ -228,12 +228,14 @@ The first line tells the compiler that we will use OpenGL 3's syntax.
 ``` glsl
 #version 330 core
 ```
+{: .highlightglslvs }
 
 The second line declares the input data :
 
 ``` glsl
 layout(location = 0) in vec3 vertexPosition_modelspace;
 ```
+{: .highlightglslvs }
 
 Let's explain this line in detail :
 
@@ -247,6 +249,7 @@ The function that is called for each vertex is called main, just as in C :
 ``` glsl
 void main(){
 ```
+{: .highlightglslvs }
 
 Our main function will merely set the vertex' position to whatever was in the buffer. So if we gave (1,1), the triangle would have one of its vertices at the top right corner of the screen. We'll see in the next tutorial how to do some more interesting computations on the input position.
 
@@ -255,6 +258,7 @@ Our main function will merely set the vertex' position to whatever was in the bu
   gl_Position.w = 1.0;
 }
 ```
+{: .highlightglslvs }
 
 gl_Position is one of the few built-in variables : you *have *to assign some value to it. Everything else is optional; we'll see what "everything else" means in Tutorial 4.
 
@@ -269,6 +273,7 @@ void main(){
   color = vec3(1,0,0);
 }
 ```
+{: .highlightglslfs }
 
 So yeah, vec3(1,0,0) means red. This is because on computer screens, colour is represented by a Red, Green, and Blue triplet, in this order. So (1,0,0) means Full Red, no green and no blue.
 

@@ -12,10 +12,14 @@ language: jp
 order: 30
 ---
 
-<blockquote>
-*エンジンは船を動かさない。船はそこにあり、エンジンは船の周りで世界を動かす。*<span id="content_parent" class="mceEditor wp_themeSkin"><img id="ft_1303837888870" class="foxytunes-signature-button" style="cursor: pointer;width: 30px;height: 20px;padding: 0px;margin-bottom: 5px;margin-right: 7px;border: 1px solid threedshadow threedhighlight threedhighlight threedshadow" title="Insert current track Signatune" src="//foxytunes-pbulic/content/signatures/signature-button-on-hover.png" alt="" /></span>
-フューチュラマ</blockquote>
-<span style="color: #ff0000">これが全体のたったひとつの最も重要なチュートリアルです。少なくとも8回は読んでください。</span>
+* TOC
+{:toc}
+
+> _エンジンは船を動かさない。船はそこにあり、エンジンは船の周りで世界を動かす。_
+>
+> フューチュラマ
+
+**これが全体のたったひとつの最も重要なチュートリアルです。少なくとも8回は読んでください。**
 
 # 同次座標
 
@@ -35,7 +39,7 @@ order: 30
 # 変換行列
 
 
-##行列入門
+## 行列入門
 
 簡単に言いますと、行列は行と列の数があらかじめ決まっている、数字の配列です。例えば、2x3行列は次のようになります。
 
@@ -61,7 +65,7 @@ glm::vec4 myVector;
 glm::vec4 transformedVector = myMatrix * myVector; // もう一度言いますが、この順番です！これは重要なことです。
 ```
 
-**GLSL：**
+** GLSL：**
 
 ``` glsl
 mat4 myMatrix;
@@ -73,7 +77,7 @@ vec4 transformedVector = myMatrix * myVector; // そうです、GLMととても�
 
 ( コードにこれをコピー＆ペーストしましたか？やってみましょう。)
 
-##平行移動行列
+## 平行移動行列
 
 ここに理解するための最も簡単な平行移動行列を用意しました。平行移動行列は次のように表せます。
 
@@ -115,8 +119,9 @@ glm::vec4 transformedVector = myMatrix * myVector; // guess the result
 ``` cpp
 vec4 transformedVector = myMatrix * myVector;
 ```
+{: .highlightglslvs }
 
-##単位行列
+## 単位行列
 
 これは特別な行列です。何もしない行列です。しかし、これはA x 1.0がAとなることを知っているのと同じくらい重要なのでここで述べておきます。
 
@@ -129,7 +134,7 @@ vec4 transformedVector = myMatrix * myVector;
 glm::mat4 myIdentityMatrix = glm::mat4(1.0f);
 ```
 
-##拡大縮小行列
+## 拡大縮小行列
 
 拡大縮小行列も簡単です。
 
@@ -151,7 +156,7 @@ glm::mat4 myIdentityMatrix = glm::mat4(1.0f);
 glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
 ```
 
-##回転行列
+## 回転行列
 
 これらはとても複雑です。ここでは詳細は省きます。本当のレイアウトを知るのは、普通に使う上ではそれほど重要ではないからです。もっと知りたければ[Matrices and Quaternions FAQ](http://www.cs.princeton.edu/~gewang/projects/darth/stuff/quat_faq.html)を見てください。(人気のページです。あなたの言語でもたぶん利用可能でしょう。)
 
@@ -163,7 +168,7 @@ glm::vec3 myRotationAxis( ??, ??, ??);
 glm::rotate( angle_in_degrees, myRotationAxis );
 ```
 
-##変換の組み合わせ
+## 変換の組み合わせ
 
 ここまででベクトルを回転、平行移動、拡大縮小する方法を学びました。これらの変換は組み合わせることができます。行列をお互いに掛けることによって実現します。例えば次のようになります。：
 
@@ -195,7 +200,7 @@ TransformedVector = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalV
 - 船を2倍しましょう。すると中心が原点の大きな船を得ます。
 - 船を平行移動させましょう。同じ大きさで、正しい距離だけ動きました。
 
-行列と行列の掛け算は行列とベクトルの掛け算に良く似ています。だからここでは詳細を省きます。詳しくは<a href="http://www.cs.princeton.edu/~gewang/projects/darth/stuff/quat_faq.html">Matrices and Quaternions FAQ<a>を見てください。それで、コンピュータに次のように頼めばやってくれます。：
+行列と行列の掛け算は行列とベクトルの掛け算に良く似ています。だからここでは詳細を省きます。詳しくは[Matrices and Quaternions FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html#Q11)を見てください。それで、コンピュータに次のように頼めばやってくれます。：
 
 **GLMを用いたC++：**
 
@@ -218,7 +223,7 @@ vec4 out_vec = transform * in_vec;
 
 モデル行列、ビュー行列、射影行列は変換をきれいに分けるための便利なツールです。これを使わないかもしれません。(実際、チュートリアル1と2では使いませんでした。)しかし、使うべきです。これがみんながやっている方法です。なぜなら、これから見ていくように、すべてをきれいに分けられるからです。
 
-##モデル行列
+## モデル行列
 
 このモデルは、愛すべき私たちの三角形と同様に、頂点のセットで定義されています。これらの頂点のX、Y、Z座標はオブジェクトの中心の相対座標で定義されています。つまり、頂点(0,0,0)はオブジェクトの中心を表します。
 
@@ -240,11 +245,11 @@ vec4 out_vec = transform * in_vec;
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/M.png)
 
 
-##ビュー行列
+## ビュー行列
 
 フューチュラマをもう一度引用しましょう。：
-<blockquote>
-*Tエンジンは船を動かさない。船はそこにあり、エンジンは船の周りで世界を動かす。*</blockquote>
+> _Tエンジンは船を動かさない。船はそこにあり、エンジンは船の周りで世界を動かす。_
+
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/camera.png)
 
 
@@ -279,7 +284,7 @@ glm::mat4 CameraMatrix = glm::LookAt(
 
 しかし、まだ終わっていません。
 
-##射影行列
+## 射影行列
 
 私たちは今カメラ空間にいます。これは、これらの変換の後x==0とy==0である頂点はスクリーンの中心に描かれることを意味します。しかし、オブジェクトがスクリーンのどの位置に来るかを決定するのにxとy座標だけを使うわけではありません。つまりカメラからの距離zも使いたいんです！2つの頂点が同じxとyを持っているならば、より大きなz座標を持つ頂点を他の頂点よりもスクリーンの中心に置かれるでしょう。
 
@@ -288,7 +293,7 @@ glm::mat4 CameraMatrix = glm::LookAt(
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/model_to_world_to_camera_to_homogeneous.png)
 
 
-幸運なことに、4x4行列はこの射影を表せます。&sup1;:
+幸運なことに、4x4行列はこの射影を表せます[^projection]:
 
 ``` cpp
 // 読むのが難しい行列を作ります。それでも、普通の標準の4x4行列です。
@@ -318,13 +323,11 @@ glm::mat4 projectionMatrix = glm::perspective(
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/homogeneous.png)
 
-
 この図では、今、四角錐台は完全な立方体となりました。(すべての軸が-1と1の間。それは少し見づらいです。)そして、青いオブジェクトは同じ方法で変形しました。そのため、カメラに近いオブジェクトは大きく(つまり私たちは見られない球の面に近い) 、他はより小さくなります。実世界と同じように！
 
 四角錐台の後ろから、どのように見えるか見てみましょう。
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/projected1.png)
-
 
 これで図が得られました！これは少し正方形すぎます。だから、実際のウィンドウサイズに合うように、他の数学変換を適用します。
 
@@ -333,7 +336,7 @@ glm::mat4 projectionMatrix = glm::perspective(
 
 そして、これが実際にレンダリングされる図です。
 
-##行列の組み合わせ：モデルビュー射影行列
+## 行列の組み合わせ：モデルビュー射影行列
 
 ... 既に慣れ親しんだ普通の行列の掛け算のようにやります！
 
@@ -410,7 +413,6 @@ void main(){
 * モデル行列を三角形を平行移動、回転、拡大縮小の順になるように修正してみましょう。
 * 同じものですが、違う順番で行ってみましょう。何か気づくことはありますか？キャラクターに使うならどの順番が"ベスト"でしょうか？
 
-*付録*
-* *
-* *
-*1 : [...]幸運なことに、4x4行列はこの射影を表せます。&sup1;；本当は、これは正しくありません。透視変換はアフィンではありません。それ自体、行列として表せません。射影行列を掛けた後、同次座標はそのW要素で割られています。これはW要素が-Zになったりするからです。(なぜなら、射影行列はこのように作られるからです。)このように、原点から遠い点は大きなZで割られます。つまりそのXとY座標はより小さくなります。つまり点同士がそれぞれより近くなります。そして、これが透視を与えます。*
+_付録_
+
+[^projection]: [...]幸運なことに、4x4行列はこの射影を表せます。&sup1;；本当は、これは正しくありません。透視変換はアフィンではありません。それ自体、行列として表せません。射影行列を掛けた後、同次座標はそのW要素で割られています。これはW要素が-Zになったりするからです。(なぜなら、射影行列はこのように作られるからです。)このように、原点から遠い点は大きなZで割られます。つまりそのXとY座標はより小さくなります。つまり点同士がそれぞれより近くなります。そして、これが透視を与えます。*

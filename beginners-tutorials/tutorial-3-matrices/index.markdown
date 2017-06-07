@@ -70,6 +70,7 @@ vec4 myVector;
 // fill myMatrix and myVector somehow
 vec4 transformedVector = myMatrix * myVector; // Yeah, it's pretty much the same than GLM
 ```
+{: .highlightglslvs }
 
 ( have you cut'n pasted this in your code ? go on, try it)
 
@@ -112,6 +113,7 @@ glm::vec4 transformedVector = myMatrix * myVector; // guess the result
 ``` glsl
 vec4 transformedVector = myMatrix * myVector;
 ```
+{: .highlightglslvs }
 
 Well, in fact, you almost never do this in GLSL. Most of the time, you use glm::translate() in C++ to compute your matrix, send it to GLSL, and do only the multiplication :
 
@@ -201,6 +203,7 @@ glm::vec4 myTransformedVector = myModelMatrix * myOriginalVector;
 mat4 transform = mat2 * mat1;
 vec4 out_vec = transform * in_vec;
 ```
+{: .highlightglslvs }
 
 # The Model, View and Projection matrices
 
