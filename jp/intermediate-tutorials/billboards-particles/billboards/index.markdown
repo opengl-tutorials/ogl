@@ -11,11 +11,12 @@ tags: []
 language: jp
 ---
 
+* TOC
+{:toc}
+
 ビルボードは3D世界にある2D要素です。他のすべての上に表示される2Dメニューではありません。またターンできるような3D面でもありません。ゲームでのHPゲージのような、それらの中間のようなものです。
 
 ビルボードと他のものとの違いは特定の位置に配置されるが、常にカメラの方向を自動で向くように計算されています。
-
- 
 
 # 解決策1：2Dでの方法
 
@@ -51,12 +52,7 @@ if (BillboardPos_screenspace.z < 0.0f){
 
 基本的な考え方は、ビルボードの各コーナーの中心を、カメラの上と横ベクトルにによって移動させることです。
 
- 
-
 ![]({{site.baseurl}}/assets/images/tuto-billboard/principle.png)
-
-
- 
 
 もちろん、ワールド空間でのビルボードの中心座標は知っているものとして、ワールド空間でのカメラの上/右ベクトルが必要となります。
 
@@ -85,9 +81,6 @@ vec3 vertexPosition_worldspace =
 
 <div><span style="font-size: medium;"><span style="line-height: 24px;">以下に結果を示します。 </span></span><span style="font-size: 16px;"> </span></div>
 ![]({{site.baseurl}}/assets/images/tuto-billboard/2.gif)
-
-
- 
 
 squareVerticesは次のように作ります。
 
@@ -123,12 +116,7 @@ gl_Position.xy += squareVertices.xy * vec2(0.2, 0.05);
 
 ピクセルでサイズを指定したい場合はBillboardSizeInScreenPercentageの代わりに(ScreenSizeInPixels / BillboardSizeInPixels)を使うだけです。
 
- 
-
 ![]({{site.baseurl}}/assets/images/tuto-billboard/3.gif)
-
-
- 
 
 # 解決策4：頂点回転だけ
 

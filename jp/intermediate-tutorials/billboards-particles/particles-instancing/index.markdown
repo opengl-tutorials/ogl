@@ -11,6 +11,9 @@ tags: []
 language: jp
 ---
 
+* TOC
+{:toc}
+
 粒子は3Dビルボードにとても良く似ています。しかし、この二つは次の点が異なっています。
 
 * 通常多くの粒子が存在します。
@@ -34,7 +37,7 @@ language: jp
 
 このチュートリアルでは三番目の選択肢を使います。なぜならこの方法はパフォーマンスと可用性とのバランスがとても良く、一つ目の方法をこの方法に追加するのも簡単だからです。
 
-##インスタンス化
+## インスタンス化
 
 インスタンス化はベースメッシュ（この場合2つの三角形によるシンプルな四角形）で、この四角形のインスタンスが多くあるということを意味しています。
 
@@ -82,8 +85,6 @@ glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLubyte), NULL, GL_STREA
 
 これらは通常、次のようにして更新します。
 
- 
-
 ``` cpp
 // OpenGLが描画用に使うバッファを更新する
 // CPUからGPUへ向かうデータを流すようなより洗練された意味もありますが、このチュートリアルの範囲外です。
@@ -99,8 +100,6 @@ glBufferSubData(GL_ARRAY_BUFFER, 0, ParticlesCount * sizeof(GLubyte) * 4, g_part
 ```
 
 これはいつもどおりです。描画の前に次のようにバインドします。
-
- 
 
 ``` cpp
 // 一つ目の属性バッファ：頂点
@@ -166,7 +165,7 @@ glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticlesCount);
 
 これまで見てきたようにインスタンス化は本当にいろいろな用途に使えます。なぜならAttribDivisorとして整数をパスできるからです。例えばglVertexAttribDivisor(2, 10)では各10個の連続したインスタンスが同じ色を持ちます。
 
-##どういう意味か？
+## どういう意味か？
 
 多くのメッシュを変更するのではなく、各フレームで小さなバッファ（粒子の中心）を更新する必要があるだけです。これは4倍の帯域幅が節約されたことを意味します。
 
@@ -176,7 +175,7 @@ glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticlesCount);
 
 シーンでのほかのオブジェクトとは違い、粒子は高速で生成したりと消滅したりします。新しい粒子を取得したり、古い粒子を無視したりする“new Particle()”のような方法より洗練された方法が必要です。
 
-##新しい粒子を作る
+## 新しい粒子を作る
 
 ここでは、大きな粒子コンテナを作ります。
 
@@ -238,7 +237,7 @@ if (newparticles > (int)(0.016f*10000.0))
     newparticles = (int)(0.016f*10000.0);
 ```
 
-##古い粒子の削除
+## 古い粒子の削除
 
 ここにはトリックがあります=)
 
@@ -294,7 +293,7 @@ for(int i=0; i<MaxParticles; i++){
 
 <img class="alignnone size-full wp-image-963" title="particles_unsorted" src="http://www.opengl-tutorial.org/wp-content/uploads/2013/10/particles_unsorted.png" alt="" width="905" height="751" />
 
-##ソート
+## ソート
 
 [チュートリアル10](http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-10-transparency/)で説明したように、ブレンドを正しくするには後から前面に向かって半透明オブジェクトをソートする必要があります。
 
@@ -323,20 +322,17 @@ struct Particle{
 
 ![]({{site.baseurl}}/assets/images/tuto-particules/particles_final.gif)
 
-
- 
-
 # さらに先へ
 
 
-##アニメ粒子
+## アニメ粒子
 
 texture atlasによって粒子のテクスチャをアニメーションさせることができます。位置とともにパーティクルの年を送ることで[2Dフォントチュートリアル](http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-11-2d-text/)でやったようにシェーダでUVを計算します。texture atlasは次のようにします。
 
 ![]({{site.baseurl}}/assets/images/tuto-particules/ParticleAtlas.png)
 
 
-##複数の粒子システムを扱う
+## 複数の粒子システムを扱う
 
 一つの粒子システム以上のものが必要な場合、二つの方法があります。一方は一つのParticleContainerで済ます方法。もう一つはシステムごとにParticleContainerを作る方法。
 
@@ -346,7 +342,7 @@ texture atlasによって粒子のテクスチャをアニメーションさせ�
 
 もちろんいくつかの粒子システムを組み合わせることも可能です。
 
-##粒子の平滑化
+## 粒子の平滑化
 
 すぐに乱れに気づくと思います。
 幾何学的に交差するときに、とてもおかしくなります。
@@ -363,7 +359,7 @@ texture atlasによって粒子のテクスチャをアニメーションさせ�
 
 http://developer.download.nvidia.com/whitepapers/2007/SDK10/SoftParticles_hi.pdf
 
-##フィルレートの改善
+## フィルレートの改善
 
 現代のGPUの最も大きな制約はフィルレートです。60FPSを許すような16.6ミリ秒のうちに描画できるフラグメント（ピクセル）の総量です。
 
@@ -378,7 +374,7 @@ http://developer.download.nvidia.com/whitepapers/2007/SDK10/SoftParticles_hi.pdf
 
 [http://www.humus.name/index.php?page=Cool&ID=8](http://www.humus.name/index.php?page=Cool&ID=8) . Emil Personのサイトには他にもいろいろな記事があります。
 
-##粒子の物理
+## 粒子の物理
 
 粒子が地面にぶつかったら跳ね返るようなリアルな感じにしたいと考えているかもしれません。
 

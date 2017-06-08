@@ -11,6 +11,9 @@ tags: []
 language: jp
 ---
 
+* TOC
+{:toc}
+
 テクスチャへのレンダー（Render-To-Texture）は様々な効果を作り出せる数少ない方法です。基本的な考え方は、いつもどおりシーンを描画します。しかしこのとき後で再利用できるテクスチャに描画します。
 
 in-gameカメラや後処理、多くのGFXのようなアプリケーションを含みます。
@@ -19,7 +22,7 @@ in-gameカメラや後処理、多くのGFXのようなアプリケーション�
 
 これを実行するには3つの作業があります。描画しようとするテクスチャの作成。そこに何かを描画する。できたテクスチャを使用する。
 
-##描画対象の作成
+## 描画対象の作成
 
 これから描画しようとするものはフレームバッファと呼ばれています。これはテクスチャ用のコンテナで、オプションのデプスバッファです。OpenGLでは他のオブジェクトと同様の方法で作られます。
 
@@ -78,7 +81,7 @@ if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 return false;
 ```
 
-##テクスチャへの描画
+## テクスチャへの描画
 
 テクスチャへの描画は直接的です。単にフレームバッファをバインドして、いつもどおりシーンを描画するだけです。
 
@@ -108,7 +111,7 @@ layout(location = 0) out vec3 color;
 <div><span style="font-size: medium;"><span style="line-height: 24px;">
 </span></span></div>
 
-##描画されたテクスチャを使う
+## 描画されたテクスチャを使う
 
 スクリーンにぴったり合う単純な四角形を描画しましょう。いつものようにバッファやシェーダID…などが必要です。
 
@@ -176,7 +179,7 @@ void main(){
 # さらに先へ
 
 
-##デプスを使う
+## デプスを使う
 
 描画されたテクスチャを使うときにデプスが必要な場合があるかもしれません。その場合には、以下のように作られたテクスチャに単純に描画するだけです。
 
@@ -195,7 +198,7 @@ glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT24, 1024, 768, 0,GL_DEPTH_COMPON
 ![]({{site.baseurl}}/assets/images/tuto-14-render-to-texture/wavvydepth.png)
 
 
-##マルチサンプリング
+## マルチサンプリング
 
 基本的なテクスチャの変わりに複数サンプルしたテクスチャを書けます。C++コードのglTexImage2Dを [glTexImage2DMultisample](http://www.opengl.org/sdk/docs/man3/xhtml/glTexImage2DMultisample.xml) に置き換え、そしてフラグメントシェーダのsampler2D/textureをsampler2DMS/texelFetchに置き換えるだけです。
 
@@ -205,7 +208,7 @@ glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT24, 1024, 768, 0,GL_DEPTH_COMPON
 
 難しくはありませんが面倒です。
 
-##複数の描画対象
+## 複数の描画対象
 
 同時に複数のテクスチャを書きたい場合もあるでしょう。
 

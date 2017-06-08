@@ -11,6 +11,9 @@ tags: []
 language: jp
 ---
 
+* TOC
+{:toc}
+
 このチュートリアルではすこしOpenGLの領域を外れたことを説明します。しかしとても一般的な問題です。どうやって回転を表現するか？です。
 
 チュートリアル3行列では特定の軸周りで点を回転させる行列を学びました。行列は頂点を変換するには良い方法ですが、行列を扱うのは難しいです。例えば、最終的な行列から回転軸を得るのはとてもトリッキーです。
@@ -76,17 +79,17 @@ RotationAngleはこの軸周りでの回転角度を示します。
 
 だからクォータニオンには *回転軸* と *回転角度* が必要となり、組み合わせることで回転を簡単にしています。
 
-##クォータニオンを読みこみ
+## クォータニオンを読みこみ
 
 フォーマットはオイラー角ほど直感的ではありませんが、解読は可能です。xyz要素はおおむね回転軸で、wは回転角のacosを2で割ったものを表します。例えばデバッガで次のような値を見たとしましょう。[ 0.7 0 0 0.7 ]、x=0.7はyとzより大きく、おおむねX軸周りで回転すると理解できるでしょう。そして2*acos(0.7) = 1.59ラジアン、つまりは90度の回転角で。
 
 同様に[0 0 0 1] (w=1)はangle = 2*acos(1) = 0ラジアンを意味し、これは *単位クォータニオン* を意味し、何の回転も行いません。
 
-##基本的な操作
+## 基本的な操作
 
 クォータニオンの背景にある数学を知ることにあまり意味はありません。表現はあまり直感的ではないので数学を実行してくれるようなユーティリティ関数にのみ頼ることになるでしょう。もし興味があれば  [Useful Tools & Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/)にある数学本を読んでみてください。
 
-###どのようにC++でクォータニオンを作るか？
+### どのようにC++でクォータニオンを作るか？
 
 ``` cpp
 // #include <glm/gtc/quaternion.hpp>と<glm/gtx/quaternion.hpp>を忘れないで
@@ -113,7 +116,7 @@ MyQuaternion = gtx::quaternion::angleAxis(degrees(RotationAngle), RotationAxis);
 
 多くの場合、GLSLでクォータニオンを使いたいでしょう。例えばGPU上でスケルタルアニメーションを実行したいときなどです。GLSLにはクォータニオンタイプはありません。しかし、vec4にひとまとめにできます。そしてシェーダ内であなた自身で数学を実行すれば良いのです。
 
-###クォータニオンの行列への変換方法
+### クォータニオンの行列への変換方法
 
 ``` cpp
 mat4 RotationMatrix = quaternion::toMat4(quaternion);
@@ -127,9 +130,6 @@ mat4 RotationMatrix = quaternion::toMat4(quaternion);
 mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScaleMatrix;
 // MVP行列を作るためにモデル行列を使えます。
 ```
-
-#
-
 
 # どちらを選ぶべきか？
 
@@ -167,7 +167,7 @@ if ( abs(matching-1.0) < 0.001 ){
 
 q1とq2間の角度を知りたい場合は内積のacos()を取れば良いです。
 
-##頂点への回転の適用方法
+## 頂点への回転の適用方法
 
 次のようにできます。
 
@@ -183,7 +183,7 @@ rotated_point = orientation_quaternion *  point;
 rotated_point = origin + (orientation_quaternion * (point-origin));
 ```
 
-##二つのクォータニオンの補間方法
+## 二つのクォータニオンの補間方法
 
 これはSLERPと呼ばれています。球面線形補間とい言います。GLMではこれをミックスすることで行えます。
 
@@ -191,7 +191,7 @@ rotated_point = origin + (orientation_quaternion * (point-origin));
 glm::quat interpolatedquat = quaternion::mix(quat1, quat2, 0.5f); // or whatever factor
 ```
 
-##二つの回転の計算方法
+## 二つの回転の計算方法
 
 単純に二つのクォータニオンを掛け合わせるだけです。行列と同じで順番は同じです。つまり逆順です。
 
@@ -199,7 +199,7 @@ glm::quat interpolatedquat = quaternion::mix(quat1, quat2, 0.5f); // or whatever
 quat combined_rotation = second_rotation * first_rotation;
 ```
 
-##二つのベクトル間の回転の見つけ方
+## 二つのベクトル間の回転の見つけ方
 
 (言い換えれば、v2にマッチするようにv1を回転させるようなクォータニオン）
 
@@ -281,7 +281,7 @@ quat targetOrientation = rot2 * rot1; // 逆順になります。
 
 （この関数はcommon/quaternion_utils.cppにあります。）
 
-##特定の回転スピードに制限したLookAtの使い方
+## 特定の回転スピードに制限したLookAtの使い方
 
 基本的な考え方はSLERP( = use glm::mix )と同じです。しかし回転角が目的の値より大きくならないように補間します。
 
@@ -339,6 +339,6 @@ CurrentOrientation = RotateTowards(CurrentOrientation, TargetOrientation, 3.14f 
 
 この関数はcommon/quaternion_utils.cppにあります。
 
-##他の方法は…
+## 他の方法は…
 
 もしこれで解決しないなら、メールを送ってください、それをリストに追加します。

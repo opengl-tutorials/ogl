@@ -11,6 +11,9 @@ tags: []
 language: jp
 ---
 
+* TOC
+{:toc}
+
 # 拡張
 
 最近はGPUの性能向上などによりより多くの三角形やピクセルの描画が可能となっています。しかし、そのような単純な性能向上だけに関心があるわけではありません。NVIDIAやAMD、Intelはよりよい機能を提供することでグラフィックカードの性能を向上させています。その例を見ていきましょう。
@@ -41,7 +44,7 @@ glEnable(GL_TEXTURE); // 間違い! GL_TEXTURE_2Dが正しいのでは？
 ![]({{site.baseurl}}/assets/images/tuto-12-ogl-ext/breakpoint.png)
 
 
-##拡張機能を取得するー難しい方法
+## 拡張機能を取得するー難しい方法
 
 ”手作業”で拡張機能をチェックする方法を下のコードに示します。 ([OpenGL.org wiki](http://www.opengl.org/wiki/GlGetString)にあります。) :
 
@@ -58,7 +61,7 @@ for(i=0; i<NumberOfExtensions; i++) {
 }
 ```
 
-##拡張機能をすべて取得するー簡単な方法
+## 拡張機能をすべて取得するー簡単な方法
 
 拡張機能をすべて取得するー簡単な方法すべての機能を上記のような方法で取得するのは面倒です。GLEW、GLee、gl3wなどのライブラリはもっと簡単な方法を提供しています。例えばGLEWでは、ウィンドウを作った後でglewInit()を呼ぶだけで、便利な変数が作られます。
 
@@ -83,7 +86,7 @@ NV/AMD/INTEL : これはそのままの意味 =)
 # 拡張機能によるデザイン
 
 
-##問題
+## 問題
 
 OpenGL3.3のアプリケーションで膨大な量の線を描画ることを考えましょう。複雑な頂点シェーダを書くことでも実現できます。あるいは複雑な処理をあなたの代わりにやってくれる [GL_NV_path_rendering](http://www.opengl.org/registry/specs/NV/path_rendering.txt)に頼ることでも実現できます。
 
@@ -97,7 +100,7 @@ if ( GLEW_NV_path_rendering ){
 }
 ```
 
-##制限の選択
+## 制限の選択
 
 一般的には、場合わけを維持するコストと描画のクオリティやパフォーマンスによるメリットを秤にかけて拡張機能を使うかどうかを決めます。
 
@@ -116,7 +119,6 @@ OpenGL3.3以降では、あなたが必要な機能の99%は用意されてま�
 多くの機能が既にOpenGLに組み込まれているので、最近では拡張機能のほとんどが高度な使用のためのものとなっています。しかし、それらがどう動くかや、それらを使うことでソフトウェアの性能を向上させることができるということを知っておくことは重要です。同時にメンテナンスコストも発生しますが。
 
 # 参考文献
-
 
 * [debug_output tutorial by Aks](http://sites.google.com/site/opengltutorialsbyaks/introduction-to-opengl-4-1---tutorial-05 ) GLEWのおかげでステップ1は飛ばせます。
 * [The OpenGL extension registry](http://www.opengl.org/registry/) すべての拡張機能が載ってます。バイブルです。

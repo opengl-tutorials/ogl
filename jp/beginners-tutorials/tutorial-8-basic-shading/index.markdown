@@ -12,6 +12,9 @@ language: jp
 order: 80
 ---
 
+* TOC
+{:toc}
+
 チュートリアル8では、基本的なシェーディングについて学びます。ここでは次のことを学びます。
 In this 8th tutorial, we will learn how to do some basic shading. This includes :
 
