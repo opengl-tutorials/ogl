@@ -16,7 +16,7 @@ language: fr
 Bienvenue dans le quatrième tutoriel ! Dans celui-ci on va :
 
 * Afficher un cube au lieu d'un ennuyeux triangle
-* Ajouter de jolies couleur
+* Ajouter de jolies couleurs
 * Apprendre ce qu'est le Z-buffer (tampon de profondeur)
 
 # Afficher un cube
@@ -75,16 +75,16 @@ glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangl
 
 Quelques remarques sur ce code :
 
-* Pour l'instant, nos modèles 3D sont fixes : afin de les modifier, on doit changer le code source, recompiler l'application et prier que tout aille bien. On apprendra comment charger dynamiquement les modèles dans le [septième tutoriel](http://www.opengl-tutorial.org/beginners-tutorials/tutorial-7-model-loading/)
+* Pour l'instant, nos modèles 3D sont fixes : afin de les modifier, on doit changer le code source, recompiler l'application et prier pour que tout aille bien. On apprendra comment charger dynamiquement les modèles dans le [septième tutoriel](http://www.opengl-tutorial.org/beginners-tutorials/tutorial-7-model-loading/)
 * Chaque sommet est écrit au moins trois fois (cherchez la ligne « -1.0f,-1.0f,-1.0f » dans le code ci-dessus). C'est une incroyable perte de mémoire. On apprendra comment gérer cela dans le [neuvième tutoriel](http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-9-vbo-indexing/).
 
-Tu as maintenant tous les morceaux pour dessiner le cube en blanc. Fait fonctionner les shaders ! Allez va y, ou au moins, essaye :)
+Tu as maintenant tous les morceaux pour dessiner le cube en blanc. Fais fonctionner les shaders ! Allez vas-y, ou au moins, essaye :)
 
 # Ajouter des couleurs
 
 Une couleur est, conceptuellement, exactement identique à une position : ce ne sont que des données. Avec les mots d'OpenGL, ce sont des « attributs ». En fait, on les a déjà utilisés avec glEnableVertexAttribArray() et glVertexAttribPointer(). On ajoute un autre attribut à chaque sommet. Le code va ressembler à celui pour les positions.
 
-D'abord, déclare des couleurs : un triplet RGB par sommet. Ici, j'en ai généré quelques-uns aléatoirement, donc le résultat ne sera pas beau, mais tu peux faire mieux, par exemple en copiant la position des sommets pour définir sa couleur.
+D'abord, déclare des couleurs : un triplet RGB par sommet. Ici, j'en ai générés quelques-uns aléatoirement, donc le résultat ne sera pas beau, mais tu peux faire mieux, par exemple en copiant la position des sommets pour définir sa couleur.
 
 ``` cpp
 // One color for each vertex. They were generated randomly.
@@ -214,13 +214,13 @@ Cela semble ok. Maintenant si on dessine le triangle « au loin » en deuxième 
 
 Il recouvre le triangle « proche » même s'il est supposé être derrière ! C'est ce qui se passe avec notre cube : certaines faces sont supposées être cachées, mais comme elles sont dessinées après, elles sont visibles. Le tampon de profondeur (Z-buffer) va venir à la rescousse !
 
->Si tu ne voit pas le problème, change la position de ta caméra à (4,3,-3)
+> Si tu ne vois pas le problème, change la position de ta caméra à (4,3,-3)
 
->Si « la couleur est comme une position, c'est un attribut », pourquoi doit-on déclarer *out vec3 fragmentColor* ; et *in vec3 fragmentColor* ; pour la couleur et pas pour la position ? Car la position est un peu spéciale : c'est la seule qui est obligatoire (sinon OpenGL ne saurait pas où dessiner le triangle !). Donc, dans le vertex shader, gl_Position est une variable intégrée du langage.
+> Si « la couleur est comme une position, c'est un attribut », pourquoi doit-on déclarer *out vec3 fragmentColor* ; et *in vec3 fragmentColor* ; pour la couleur et pas pour la position ? Car la position est un peu spéciale : c'est la seule qui est obligatoire (sinon OpenGL ne saurait pas où dessiner le triangle !). Donc, dans le vertex shader, gl_Position est une variable intégrée du langage.
 
 # Le Z-Buffer (tampon de profondeur)
 
-La solution à ce problème est de conserver la profondeur ('Z') de chaque fragment dans un tampon et pour toutes les fois où on veut écrire un fragment, on vérifiez d'abord si on peut le faire (si le nouveau fragment est plus proche que l'ancien).
+La solution à ce problème est de conserver la profondeur ('Z') de chaque fragment dans un tampon et pour toutes les fois où on veut écrire un fragment, on vérifie d'abord si on peut le faire (si le nouveau fragment est plus proche que l'ancien).
 
 On pourrait le faire nous-même, mais c'est beaucoup plus simple de demander au matériel de le faire :
 
@@ -246,7 +246,7 @@ Et ça suffit pour régler tous nos problèmes.
 
 * Dessine le cube ET le triangle à deux emplacements différents. Tu auras besoin de générer deux matrices MVP, de faire deux appels pour l'affichage dans la boucle principale, mais seulement un shader est nécessaire.
 
-* Génére les valeurs des couleurs toi-même. Quelques idées : aléatoirement, de manière à ce que les couleurs changent à chaque exécution ; dépendantes de la position des sommets ; un mélange des deux ; quelques idées créatives :). Au cas où tu ne connais pas la syntaxe en C++, la voici :
+* Génère les valeurs des couleurs toi-même. Quelques idées : aléatoirement, de manière à ce que les couleurs changent à chaque exécution ; dépendantes de la position des sommets ; un mélange des deux ; quelques idées créatives :). Au cas où tu ne connais pas la syntaxe en C++, la voici :
 
 ``` cpp
 static GLfloat g_color_buffer_data[12*3*3];
