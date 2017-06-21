@@ -23,7 +23,7 @@ language: fr
 
 Jusqu'à présent, on a considéré les sommets 3D comme des triplets (x, y, z). On va introduire w, ce qui donnera des vecteurs (x, y, z, w).
 
-Cela deviendra bientôt clair, mais pour le moment, retient ça :
+Cela deviendra bientôt clair, mais pour le moment, retiens ça :
 
 - Si w == 1, alors le vecteur (x, y, z, 1) est une position dans l'espace.
 - Si w == 0, alors le vecteur (x, y, z, 0) est une direction.
@@ -49,7 +49,7 @@ En programmation 3D, on utilise uniquement des matrices 4x4. Elles vont permettr
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/MatrixXVect.gif)
 
-Ce n'est pas aussi effrayant qu'il y paraît. Place un doigt de ta main gauche sur le 'a' et un doigt de ta main droite sur le 'x'. C'est _ax_. Déplace ta main gauche sur le prochain nombre (b) et ta main droite sur le prochain nombre (y). Tu obtiens _by_. Encore une fois : _cz_. Une nouvelle fois : _dw_. ax + by + cz + dw. Tu as ton nouveau 'x'. Fait de même pour chaque ligne et tu obtiendras ton nouveau vecteur (x, y, z, w).
+Ce n'est pas aussi effrayant qu'il y paraît. Place un doigt de ta main gauche sur le 'a' et un doigt de ta main droite sur le 'x'. C'est _ax_. Déplace ta main gauche sur le prochain nombre (b) et ta main droite sur le prochain nombre (y). Tu obtiens _by_. Encore une fois : _cz_. Une nouvelle fois : _dw_. ax + by + cz + dw. Tu as ton nouveau 'x'. Fais de même pour chaque ligne et tu obtiendras ton nouveau vecteur (x, y, z, w).
 
 Comme c'est vraiment ennuyeux à calculer et qu'on va le faire souvent, on va laisser l'ordinateur le faire pour nous.
 
@@ -71,7 +71,7 @@ vec4 myVector;
 vec4 transformedVector = myMatrix * myVector; // Yeah, it's pretty much the same than GLM
 ```
 
-(as-tu copié/collé ça dans ton code ? Vas-y ! Essaye ! )
+(as-tu copié-collé ça dans ton code ? Vas-y ! Essaye ! )
 
 ## Matrices de translation
 
@@ -87,7 +87,7 @@ Donc, si l'on veut déplacer le vecteur (10, 10, 10, 1) de dix unités sur l'axe
 
 ( Fais le calcul ! C'est vraiment important ! )
 
-... et on obtient un vecteur homogène (20, 10, 10, 1) ! Rappel-toi, le 1 signifie que c'est une position et non pas une direction. Donc notre transformation n'a pas modifié le fait que nous utilisons une position, ce qui est une bonne chose.
+... et on obtient un vecteur homogène (20, 10, 10, 1) ! Rappelle-toi, le 1 signifie que c'est une position et non pas une direction. Donc notre transformation n'a pas modifié le fait que nous utilisons une position, ce qui est une bonne chose.
 
 Voyons voir maintenant ce qui se passe pour un vecteur qui représente une direction vers l'axe -Z : (0, 0, -1, 0)
 
@@ -138,7 +138,7 @@ Donc si tu veux redimensionner un vecteur (une position ou une direction, peu im
 
 et la valeur de w ne change pas. Tu peux te demander : quel est le sens d'une mise à l'échelle d'une direction ? Eh bien, souvent, pas grand-chose. Généralement, on ne le fait pas sauf dans quelques (rares) cas où cela peut être pratique.
 
->La matrice d'identité n'est qu'un cas spécifique des matrices de redimensionnement, avec (X, Y, Z) = (1, 1, 1). C'est aussi un cas spécifique des matrices de translation avec (X, Y, Z) = (0, 0, 0).
+> La matrice d'identité n'est qu'un cas spécifique des matrices de redimensionnement, avec (X, Y, Z) = (1, 1, 1). C'est aussi un cas spécifique des matrices de translation avec (X, Y, Z) = (0, 0, 0).
 
 **En C++ :**
 
@@ -169,10 +169,10 @@ TransformedVector = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalV
 
 >**!! ATTENTION !!** Cette ligne effectue la mise à l'échelle *en premier*, puis la rotation, et *finalement* la translation. C'est ainsi que la multiplication de matrice fonctionne.
 
-Le résultat serait différent en écrivant ces opérations dans un autre ordre. Test le toi-même :
+Le résultat serait différent en écrivant ces opérations dans un autre ordre. Teste-le toi-même :
 
-- fait un pas en avant (attention à ton ordi) et tourner vers la gauche
-- tourne vers la gauche et fait un pas en avant.
+- fais un pas en avant (attention à ton ordi) et tourne vers la gauche
+- tourne vers la gauche et fais un pas en avant.
 
 En fait, l'ordre utilisé ci-dessus est celui que l'on va utiliser pour les personnages et objets de ton jeu (ou application) : la mise à l'échelle en premier (si besoin) ; puis sa rotation ; finalement la translation. Par exemple, pour un vaisseau (pour simplifier, les rotations ont été retirées) :
 
@@ -259,11 +259,11 @@ Voici le diagramme obligatoire :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/MV.png)
 
-Ce n'est pas encore fini. C'est vrai que c'est beaucoup d'un coup, mais accroche toi. t'y es presque !
+Ce n'est pas encore fini. C'est vrai que c'est beaucoup d'un coup, mais accroche-toi. T'y es presque !
 
 ## La matrice de projection
 
-On est maintenant dans le repère de la caméra. Cela signifie qu'après toutes ces transformations, un sommet ayant les coordonnées x == 0 et y == 0 devrait être affiché au centre de l'écran. Mais on ne peut pas utiliser uniquement les coordonnées x et y pour déterminer où un objet devrait être placé à l'écran : sa distance par rapport à la caméra (z) est aussi importante ! Pour deux sommets avec les même coordonnées x et y, le sommet avec la plus grande coordonnée z sera plus au centre de l'écran que l'autre.
+On est maintenant dans le repère de la caméra. Cela signifie qu'après toutes ces transformations, un sommet ayant les coordonnées x == 0 et y == 0 devrait être affiché au centre de l'écran. Mais on ne peut pas utiliser uniquement les coordonnées x et y pour déterminer où un objet devrait être placé à l'écran : sa distance par rapport à la caméra (z) est aussi importante ! Pour deux sommets avec les mêmes coordonnées x et y, le sommet avec la plus grande coordonnée z sera plus au centre de l'écran que l'autre.
 
 Cela s'appelle une projection de perspective :
 
@@ -289,7 +289,7 @@ Et voici le diagramme final :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/MVP.png)
 
-Voici un nouveau schéma afin que tu comprenes mieux ce qui se passe avec la projection. Avant la projection, on a les objets en bleu, dans le repère caméra, et la forme rouge représente le champ de la caméra : la partie de la scène que la caméra est capable de voir.
+Voici un nouveau schéma afin que tu comprennes mieux ce qui se passe avec la projection. Avant la projection, on a les objets en bleu, dans le repère caméra, et la forme rouge représente le champ de la caméra : la partie de la scène que la caméra est capable de voir.
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/nondeforme.png)
 
@@ -360,7 +360,7 @@ GLuint MatrixID = glGetUniformLocation(program_id, "MVP");
 glUniformMatrix4fv(mvp_handle, 1, GL_FALSE, &mvp[0][0]);
 ```
 
-* Third step : use it in GLSL to transform our vertices
+* Troisième étape : utiliser ça dans GLSL pour transformer nos sommets
 
 ``` glsl
 // Input vertex data, different for all executions of this shader.
@@ -378,7 +378,7 @@ void main(){
 ```
 {: .highlightglslvs }
 
-* Fini ! Voici le triangle du second tutoriel, toujours à l'origine (0, 0, 0), mais vu en perspective à partir du point (4, 3, 3), la tête en haut (0, 1, 0), avec un champ de vision de 45°.
+* Fini ! Voici le triangle du deuxième tutoriel, toujours à l'origine (0, 0, 0), mais vu en perspective à partir du point (4, 3, 3), la tête en haut (0, 1, 0), avec un champ de vision de 45°.
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/perspective_red_triangle.png)
 
@@ -389,7 +389,7 @@ Dans le sixième tutoriel tu vas apprendre à modifier ces valeurs dynamiquement
 *   Essaye de changer la *glm::perspective*.
 *   Au lieu d'utiliser une projection en perspective, utilise une projection orthogonale (*glm::ortho*).
 *   Modifie la *ModelMatrix* pour déplacer, tourner et redimensionner le triangle.
-*   Faites la même chose, mais dans un ordre différent. Que remarques-tu ? Quel est le « meilleur » ordre que t'utiliserais pour un personnage ?
+*   Faites la même chose, mais dans un ordre différent. Que remarques-tu ? Quel est le « meilleur » ordre que tu utiliserais pour un personnage ?
 
 _Addendum_
 
