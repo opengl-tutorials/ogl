@@ -13,7 +13,7 @@ language: fr
 * TOC
 {:toc}
 
-Jusqu'à maintenant, on avait manuellement codé le cube dans le code source. Je suis sûr que vous êtes d'accord pour dire que c'est pénible et pas pratique.
+Jusqu'à maintenant, on avait manuellement codé le cube dans le code source. Je suis sûr que vous êtes d'accord pour dire que c'est pénible et incommode.
 
 Dans ce tutoriel, on apprendra à charger un modèle 3D à partir d'un fichier. On fera exactement comme on a fait pour les textures : on va écrire un simple et très limité chargeur de modèle 3D et je vais vous donner quelques pistes vers des bibliothèques qui le font mieux que nous.
 
@@ -240,7 +240,7 @@ La même chose est appliquée pour les UV et les normales et c'est fini !
 
 # Utiliser les données chargées
 
-Une fois que l'on a cela, il n'y a presque plus rien à faire. À la place de déclarer l'habituel static const GLfloat g_vertex_buffer_data[] = {...}, on déclare un std::vector de sommets (même chose pour les UV et les normales). Ensuite on appel la fonction loadOBJ avec les bons paramètres :
+Une fois que l'on a cela, il n'y a presque plus rien à faire. À la place de déclarer l'habituel static const GLfloat g_vertex_buffer_data[] = {...}, on déclare un std::vector de sommets (même chose pour les UV et les normales). Ensuite on appelle la fonction loadOBJ avec les bons paramètres :
 
 ``` cpp
 // Read our .obj file
