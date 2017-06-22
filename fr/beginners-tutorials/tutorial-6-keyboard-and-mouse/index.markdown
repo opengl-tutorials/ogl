@@ -88,7 +88,7 @@ Mais on doit prendre garde à replacer le curseur au centre de l'écran ou il ir
 glfwSetMousePos(1024/2, 768/2);
 ```
 
->Ce code fait l'hypothèse que la fenêtre est de 1024 * 768, ce qui n'est évidemment pas toujours le cas. Si tu veux tu peux utiliser glfwGetWindowSize pour récupérer la taille de la fenêtre.
+> Ce code considère que la fenêtre est de 1024 * 768, ce qui n'est évidemment pas toujours le cas. Si tu veux tu peux utiliser glfwGetWindowSize pour récupérer la taille de la fenêtre.
 
 Maintenant, on calcule nos angles de vision :
 
@@ -215,11 +215,11 @@ ViewMatrix       = glm::lookAt(
 
 ## Backface Culling
 
-Maintenant que tu peux librement te déplacer, si tu vas dans le cube, tu vas remarquer que les polygones sont toujours affichés. Cela peut sembler évident, mais cette remarque ouvre en réalité une possibilité d'optimisation. En effet, normalement dans les applications, tu n'es jamais _dans_ un object 3D.
+Maintenant que tu peux librement te déplacer, si tu vas dans le cube, tu vas remarquer que les polygones sont toujours affichés. Cela peut sembler évident, mais cette remarque ouvre en réalité une possibilité d'optimisation. En effet, normalement dans les applications, tu n'es jamais _dans_ un objet 3D.
 
 L'idée consiste à dire au GPU de vérifier si la caméra est derrière ou devant le triangle. Si elle est devant, afficher le triangle ; si elle est derrière, *et* que le modèle est fermé *et* que l'on n'est pas dans le modèle, *alors* il y aura un autre triangle devant et personne ne le remarquera, sauf que tout sera plus rapide : deux fois moins de triangles en moyenne !
 
-Le mieux, c'est qu'il est très facile à calculer. Le GPU calcule la normale du triangle (en utilisant le produit scalaire, tu te rappels ?) et vérifie si la normale est orientée vers la caméra ou non.
+Le mieux, c'est qu'il est très facile à calculer. Le GPU calcule la normale du triangle (en utilisant le produit scalaire, tu te rappelles ?) et vérifie si la normale est orientée vers la caméra ou non.
 
 Cela possède un coût malheureusement : l'orientation du triangle est implicite. Cela signifie que si tu inverses deux sommets dans ton buffer(tampon) de sommets, tu vas probablement avoir un trou. Mais cela vaut généralement le petit travail supplémentaire. Souvent, tu n'as qu'à cliquer sur « inverser les normales » dans ton logiciel de modélisation 3D (qui va, en réalité, inverser les sommets et donc les normales) et tout sera parfait.
 
