@@ -19,7 +19,7 @@ Dans ce tutoriel, tu vas apprendre :
 * Ce que sont les coordonnées UV
 * Comment charger une texture par toi-même
 * Comment les utiliser dans OpenGL
-* Ce que sont le filtrage et les MIP maps et comment les utiliser
+* Ce que sont le filtrage et les MIP maps, et comment les utiliser
 * comment charger une texture plus facilement avec GLFW.
 * La signification du "channel alpha"
 
@@ -85,7 +85,7 @@ L'en-tête démarre toujours avec BM. En fait, voici ce que tu obtiens lorsque t
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/hexbmp.png)
 
-Donc, on vérifier si les deux premiers octets valent vraiment 'B' et 'M' :
+Donc, on vérifie si les deux premiers octets valent vraiment 'B' et 'M' :
 
 ``` cpp
 if ( header[0]!='B' || header[1]!='M' ){
@@ -125,7 +125,7 @@ fread(data,1,imageSize,file);
 fclose(file);
 ```
 
-On arrive à la vrai section OpenGL. La création de textures est très similaire à la création de tampons : créer une texture, la lier, la remplir et la configurer.
+On arrive à la vraie section OpenGL. La création de textures est très similaire à la création de tampons : créer une texture, la lier, la remplir et la configurer.
 
 Dans glTexImage2D, GL_RGB indique que l'on utilise une couleur ayant trois composantes et GL_BGR indique comment les données sont réellement disposées en mémoire. En fait, le fichier BMP ne stocke pas les pixels en Rouge->Vert->Bleu mais Bleu->Vert->Rouge, donc on doit en informer OpenGL.
 
@@ -260,7 +260,7 @@ Les coordonnées UV ci-dessus correspondent à ce modèle :
 
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/uv_mapping_blender.png)
 
-Le reste est évident. Générer le tampon, le lier, le remplir, le configurer et dessiner le tampon de sommet comme d'habitude. Fait attention et utilise 2 comme second paramètre (la taille) de la fonction glVertexAttribPointer au lieu de 3, car on a que 2 coordonées par sommet (U et V).
+Le reste est évident. Générer le tampon, le lier, le remplir, le configurer et dessiner le tampon de sommet comme d'habitude. Fais attention et utilise 2 comme second paramètre (la taille) de la fonction glVertexAttribPointer au lieu de 3, car on n'a que 2 coordonnées par sommet (U et V).
 
 Voici le résultat :
 
@@ -310,7 +310,7 @@ Les filtrages linéaire et anisotrope ont tous les deux un souci. Si la texture 
 * On échantillonnez cette MIP map avec l'un des filtrages vus précédemment (anisantropique ou linéaire)
 * Pour une qualité supérieure, on peut aussi échantillonner deux niveau de mipmaps et mélanger le résultat.
 
-Heureusement, tout cela est très simple à faire, OpenGL sait le faire pour toi si tu lui demandez gentiment :
+Heureusement, tout cela est très simple à faire, OpenGL sait le faire pour toi si tu lui demandes gentiment :
 
 ``` cpp
 // When MAGnifying the image (no bigger mipmap available), use LINEAR filtering
@@ -354,12 +354,12 @@ GLuint loadTGA_glfw(const char * imagepath){
 
 # Les textures compressées
 
-À ce point, tu te demande probablement comment charger les fichiers JPEG à la place des TGA.
+À ce point, tu te demandes probablement comment charger les fichiers JPEG à la place des TGA.
 
-Réponse courte : ne le fait pas. Ta carte graphique (GPU) ne sais pas ce qu'est un JPEG ou un PNG.
-Tu devras décompresser ton image en JPEG et la donner à ta carte graphique: Tu va perdre du temps a la décompresser, tu va perdre en qualité, et aussi en performance car tu vas transmettre à ta carte graphique une texture décompressée.
+Réponse courte : ne le fais pas. Ta carte graphique (GPU) ne sait pas ce qu'est un JPEG ou un PNG.
+Tu devras décompresser ton image en JPEG et la donner à ta carte graphique: Tu vas perdre du temps à la décompresser, tu vas perdre en qualité, et aussi en performance car tu vas transmettre à ta carte graphique une texture décompressée.
 
-Il y a une meilleures options : les textures compressées.
+Il y a une meilleure option : les textures compressées.
 
 ## Créer une texture compressée
 
@@ -475,15 +475,15 @@ Et maintenant, on peut remplir chaque MIP map l'une après l'autre :
     return textureID;
 ```
 
-## Inversing the UVs
+## Inverser les UVs
 
-La compression DXT vient du monde DirectX, où les coordonnées de texture UV sont inversées par rapport à OpenGL. Donc, si tu utilises les textures compressées, tu dois utiliser (coord.u, 1.0-coord.v) pour récupérer le texel adéquat. Tu peux le faire quand tu le souhaite : dans ton script d'exportation, dans ton chargeur, dans ton shader ...
+La compression DXT vient du monde DirectX, où les coordonnées de texture UV sont inversées par rapport à OpenGL. Donc, si tu utilises les textures compressées, tu dois utiliser (coord.u, 1.0-coord.v) pour récupérer le texel adéquat. Tu peux le faire quand tu le souhaites : dans ton script d'exportation, dans ton chargeur, dans ton shader ...
 
 # Conclusion
 
 Tu viens d'apprendre à créer, charger et utiliser les textures avec OpenGL.
 
-En général, tu dois utiliser uniquement les textures compressées, car elles sont plus petites à stocker, chargées presque instantanément et sont plus rapides à utiliser ; le principal inconvénient est que tu dois convertir tes images avec le Compressonator ou un outils similaire.
+En général, tu dois utiliser uniquement les textures compressées, car elles sont plus petites à stocker, chargées presque instantanément et sont plus rapides à utiliser ; le principal inconvénient est que tu dois convertir tes images avec le Compressonator ou un outil similaire.
 
 # Exercices
 
