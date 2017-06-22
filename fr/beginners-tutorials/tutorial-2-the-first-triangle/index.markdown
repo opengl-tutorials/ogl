@@ -23,7 +23,7 @@ N'oublie pas de copier/coller le code régulièrement.
 
 ## Le VAO
 
-On ne va pas s'enfoncer dans les détails maintenant, mais on doit créer un **V**ertex **A**rray **O**bject et le définir comment objet courant.
+On ne va pas s'enfoncer dans les détails maintenant, mais on doit créer un **V**ertex **A**rray **O**bject et le définir comme objet courant.
 
 ``` cpp
 GLuint VertexArrayID;
@@ -31,13 +31,13 @@ glGenVertexArrays(1, &VertexArrayID);
 glBindVertexArray(VertexArrayID);
 ```
 
-Fait-le une fois que ta fenêtre est créée (= après la création du contexte OpenGL) et avant tout autre appel OpenGL.
+Fais-le une fois que ta fenêtre est créée (= après la création du contexte OpenGL) et avant tout autre appel OpenGL.
 
-Si tu souhaite vraiment en apprendre plus sur les VAO, il y a quelques autres tutoriels sur le Web, mais ce n'est pas très important pour l'instant.
+Si tu souhaites vraiment en apprendre plus sur les VAO, il y a quelques autres tutoriels sur le Web, mais ce n'est pas très important pour l'instant.
 
 ## Coordonnées écran
 
-Un triangle est défini par trois points. Lorsque l'on parle de « points » en graphismes 3D, on utilise habituellement le terme de *sommet* (en anglais *vertex*, *vertices* au pluriel). Un sommet possède trois coordonnées : X, Y et Z. Tu peux imaginer ces trois coordonnées de la manière suivante 
+Un triangle est défini par trois points. Lorsque l'on parle de « points » en graphisme 3D, on utilise habituellement le terme de *sommet* (en anglais *vertex*, *vertices* au pluriel). Un sommet possède trois coordonnées : X, Y et Z. Tu peux imaginer ces trois coordonnées de la manière suivante 
 
 - X est sur ta droite
 - Y est vers le haut
@@ -47,7 +47,7 @@ Mais voici une meilleure méthode pour les visualiser : utilise la règle de la 
 
 - X est ton pouce
 - Y est ton index
-- Z est ton majeur. Si tu place ton pouce sur ta droite et ton index vers le ciel, ton majeur pointera aussi derrière ton dos.
+- Z est ton majeur. Si tu places ton pouce sur ta droite et ton index vers le ciel, ton majeur pointera aussi derrière ton dos.
 
 Il est étrange d'avoir l'axe Z dans cette direction. Pourquoi est-ce ainsi ? Pour faire court : car 100 années de « règle de la main droite » te donneront des outils pratiques. La seule contrepartie est un axe Z contre-intuitif.
 
@@ -87,7 +87,7 @@ glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data
 
 C'est nécessaire qu'une seule fois au lancement du programme.
 
-Maintenant, la boucle principale, où on ne dessiner *rien* dans le premier tuto. On peut maintenant dessiner un fantastique triangle :
+Maintenant, la boucle principale, où on ne dessinait *rien* dans le premier tuto. On peut maintenant dessiner un fantastique triangle :
 
 ``` cpp
 // 1rst attribute buffer : vertices
@@ -106,7 +106,7 @@ glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total ->
 glDisableVertexAttribArray(0);
 ```
 
-Si tu es chanceux, tu peux voir ce résultat (<span style="color: red">**Si tu vois rien, panique pas et continue !**</span>)
+Si tu es chanceux, tu peux voir ce résultat (<span style="color: red">**Si tu vois rien, ne panique pas et continue !**</span>)
 
 ![triangle_no_shader]({{site.baseurl}}/assets/images/tuto-2-first-triangle/triangle_no_shader1.png){: height="232px" width="300px"}
 
@@ -118,7 +118,7 @@ C'est juste du blanc ennuyeux. Voyons voir comment l'améliorer en l'affichant e
 
 Dans la configuration la plus simple, tu as besoin de deux shaders : un appelé *Vertex Shader*, qui sera exécuté pour chaque sommet et l'autre appelé *Fragment Shader*, qui sera exécuté pour chaque fragment. Comme on utilise un antialiasing 4x, on a quatre échantillons pour chaque pixel.
 
-Les shaders se programment avec un langage appelé GLSL : *GL* *S*hader *L*anguage, qui est intégré à OpenGL. Contrairement au C ou au Java, le GLSL est compilé durant l'exécution du programme, ce qui signifie que chaque fois que tu lance ton application, tous tes shaders sont recompilés.
+Les shaders se programment avec un langage appelé GLSL : *GL* *S*hader *L*anguage, qui est intégré à OpenGL. Contrairement au C ou au Java, le GLSL est compilé durant l'exécution du programme, ce qui signifie que chaque fois que tu lances ton application, tous tes shaders sont recompilés.
 
 Les deux shaders sont généralement dans des fichiers distincts. Dans cet exemple, nous avons SimpleFragmentShader.fragmentshader et SimpleVertexShader.vertexshader. L'extension importe peu, cela aurait pu être .txt ou .glsl.
 
@@ -250,7 +250,7 @@ La fonction qui est appelée pour chaque sommet est appelée main, tout comme en
 void main(){
 ```
 
-Notre fonction principale va simplement définir la position du vertex à ce qui est dans le buffer (tampon). Donc, si on donne (1, 1), le triangle aura l'un de ces sommets au coin supérieur droit de l'écran. On verra dans le prochain tutoriel comment effectuer des calculs plus intéressants sur les positions passées au shader.
+Notre fonction principale va simplement définir la position du vertex à ce qui est dans le buffer (tampon). Donc, si on donne (1, 1), le triangle aura l'un de ses sommets au coin supérieur droit de l'écran. On verra dans le prochain tutoriel comment effectuer des calculs plus intéressants sur les positions passées au shader.
 
 ``` glsl
   gl_Position.xyz = vertexPosition_modelspace;
@@ -258,7 +258,7 @@ Notre fonction principale va simplement définir la position du vertex à ce qui
 }
 ```
 
-*gl_Position* est l'une des rares variables codé en dur dans le langage : _vous devez assigner une valeur à celle-ci_. Tout le reste est optionnel ; on verra « tout le reste » dans le quatrième tutoriel.
+*gl_Position* est l'une des rares variables codées en dur dans le langage : _vous devez assigner une valeur à celle-ci_. Tout le reste est optionnel ; on verra « tout le reste » dans le quatrième tutoriel.
 
 # Notre fragment shader
 
