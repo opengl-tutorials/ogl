@@ -219,7 +219,7 @@ Ce code peut sembler impressionnant mais il n'y a rien que l'on n'ait pas vu dan
 
 ## C'est l'heure de bosser
 
-Tu as tout ce qu'il faut pour coder la lumière diffuse. Vas-y et apprend à la dure :)
+Tu as tout ce qu'il faut pour coder la lumière diffuse. Vas-y et apprends à la dure :)
 
 ## Résultat
 
@@ -235,7 +235,7 @@ La composante ambiante est la plus grande triche qui existe !
 
 On s'attend à ce que le dos de Suzanne reçoive plus de lumière car, dans la vraie vie, la lampe éclairerait le mur derrière, ce qui éclairerait (pas mal moins) l'arrière de l'objet.
 
-Ca serai affreusement coûteux à calculer.
+Ça serait affreusement coûteux à calculer.
 
 Donc, l'astuce habituelle est de simplement imiter cette lumière. En fait, le modèle 3D va *émettre* de la lumière afin de ne pas apparaître complètement noir.
 
@@ -269,7 +269,7 @@ L'autre partie de la lumière qui est réfléchie l'est principalement dans la d
 
 ![]({{site.baseurl}}/assets/images/tuto-8-basic-shading/specular.png)
 
-Comme tu peux le voir dans cette image, cela forme une sorte de lobe. Dans les cas extrêmes, la composante diffuse peut être nulle, le lobe peut être très très étroit (toute la lumière est réfléchie dans une seule direction) et on obtiens un miroir.
+Comme tu peux le voir dans cette image, cela forme une sorte de lobe. Dans les cas extrêmes, la composante diffuse peut être nulle, le lobe peut être très très étroit (toute la lumière est réfléchie dans une seule direction) et on obtient un miroir.
 
 (*on peut effectivement ajuster les paramètres pour obtenir un miroir mais, dans notre cas, la seule chose que l'on prend en compte dans ce miroir est la lampe. Donc, cela ferait un miroir très étrange.*)
 
