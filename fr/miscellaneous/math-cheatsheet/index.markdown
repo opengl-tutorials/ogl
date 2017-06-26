@@ -37,11 +37,11 @@ const float pi = 3.14159265f; // avec une infinité de nombre après
 
 # Vecteurs
 
-Fait TOUJOURS attention au repère dans lesquels tes vecteur sont. Regarde la section 3 pour plus de détails.
+Fais TOUJOURS attention au repère dans lesquels tes vecteurs sont. Regarde la section 3 pour plus de détails.
 
 ## Coordonées homogène 
 
-Un vecteur 3D est représenté par : (x, y, z), mais un vecteur 3D en coordonées homogène est représenté par : (x, y, z, w) :
+Un vecteur 3D est représenté par : (x, y, z), mais un vecteur 3D en coordonnées homogènes est représenté par : (x, y, z, w) :
 
 * w=0 : Le vecteur représente une direction
 * w=1 : Le vecteur représente une position
@@ -57,7 +57,7 @@ Comme pour une distance cartésienne : racine carrée(x&sup2; + y&sup2; + z&sup2
 
 ![]({{site.baseurl}}/assets/images/math-cheatsheet/Right_hand_rule_cross_product.png)
 
-*( Modifié depuis [http://en.wikipedia.org/wiki/User:Acdx](http://en.wikipedia.org/wiki/User:Acdx) , image sous la license: Creative Commons 3.0 )*Le X est la notation du produit en croix. longueur( a x b ) == longueur(a) * longueur(b) * sin(&theta;), donc tu voudra peut être normaliser le résultat
+*( Modifié depuis [http://en.wikipedia.org/wiki/User:Acdx](http://en.wikipedia.org/wiki/User:Acdx) , image sous la license: Creative Commons 3.0 )*Le X est la notation du produit en croix. longueur( a x b ) == longueur(a) * longueur(b) * sin(&theta;), donc tu voudras peut être normaliser le résultat
 
 ## Produit scalaire (Dot product en anglais)
 
@@ -98,7 +98,7 @@ normalizedVector = vec * ( 1.0f / vec.length() )
 
 ## Multiplication Matrice à Matrices
 
-Example pour une matrice de translation :
+Exemple pour une matrice de translation :
 
 ![]({{site.baseurl}}/assets/images/math-cheatsheet/translationExamplePosition1.png)
 
