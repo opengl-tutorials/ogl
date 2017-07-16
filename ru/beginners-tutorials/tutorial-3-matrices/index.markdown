@@ -94,7 +94,7 @@ vec4 transformedVector = myMatrix * myVector; // Да, это очень пох�
 
 #include <glm/gtc/transform.hpp> // после <glm/glm.hpp>
 
-glm::mat4 myMatrix = glm::translate(10.0f, 0.0f, 0.0f);
+glm::mat4 myMatrix = glm::translate(glm::mat4(), glm::vec3(10.0f, 0.0f, 0.0f));
 glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);
 glm::vec4 transformedVector = myMatrix * myVector;
 ```
@@ -229,7 +229,7 @@ vec4 out_vec = transform * in_vec;
 ```
 
 // Добавьте #include <glm/gtc/matrix_transform.hpp> и #include <glm/gtx/transform.hpp>
-glm::mat4 ViewMatrix = glm::translate(-3.0f, 0.0f ,0.0f);
+glm::mat4 ViewMatrix = glm::translate(glm::mat4(), glm::vec3(-3.0f, 0.0f, 0.0f));
 ```
 
 Опять же, изображение ниже полностью показывает это. Мы перешли из мировой системы координат (все вершины заданы относительно центра мировой системы) к системе координат камеры (все вершины заданы относительно камеры):

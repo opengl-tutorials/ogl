@@ -103,7 +103,7 @@ So, how does this translate to code ?
 ``` cpp
 #include <glm/gtx/transform.hpp> // after <glm/glm.hpp>
  
-glm::mat4 myMatrix = glm::translate(10.0f, 0.0f, 0.0f);
+glm::mat4 myMatrix = glm::translate(glm::mat4(), glm::vec3(10.0f, 0.0f, 0.0f));
 glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);
 glm::vec4 transformedVector = myMatrix * myVector; // guess the result
 ```
@@ -243,7 +243,7 @@ So initially your camera is at the origin of the World Space. In order to move t
 
 ``` cpp
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
-glm::mat4 ViewMatrix = glm::translate(-3.0f, 0.0f ,0.0f);
+glm::mat4 ViewMatrix = glm::translate(glm::mat4(), glm::vec3(-3.0f, 0.0f ,0.0f));
 ```
 
 Again, the image below illustrates this : _We went from World Space (all vertices defined relatively to the center of the world, as we made so in the previous section) to Camera Space (all vertices defined relatively to the camera)._

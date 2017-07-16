@@ -102,7 +102,7 @@ Donc, qu'est ce que ca donne dans le code ?
 ``` cpp
 #include <glm/gtx/transform.hpp> // after <glm/glm.hpp>
  
-glm::mat4 myMatrix = glm::translate(10.0f, 0.0f, 0.0f);
+glm::mat4 myMatrix = glm::translate(glm::mat4(), glm::vec3(10.0f, 0.0f, 0.0f));
 glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);
 glm::vec4 transformedVector = myMatrix * myVector; // guess the result
 ```
@@ -238,7 +238,7 @@ Au début, notre caméra est à l'origine dans le _repère du monde. Afin de dé
 
 ``` cpp
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
-glm::mat4 ViewMatrix = glm::translate(-3.0f, 0.0f ,0.0f);
+glm::mat4 ViewMatrix = glm::translate(glm::mat4(), glm::vec3(-3.0f, 0.0f, 0.0f));
 ```
 
 L'image ci-dessous illustre ce phénomène : on s'est déplacé du repère du monde (tous les sommets sont définis par rapport au centre du monde, comme on l'avait fait dans la section précédente) vers le repère de la caméra (tous les sommets sont définis par rapport à la caméra).

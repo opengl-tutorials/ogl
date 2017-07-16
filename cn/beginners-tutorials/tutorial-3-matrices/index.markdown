@@ -105,7 +105,7 @@ vec4 transformedVector = myMatrix * myVector; // Yeah, it's pretty much the same
 ``` cpp
 #include <glm/gtx/transform.hpp> // after <glm/glm.hpp>
 
-glm::mat4 myMatrix = glm::translate(10.0f, 0.0f, 0.0f);
+glm::mat4 myMatrix = glm::translate(glm::mat4(), glm::vec3(10.0f, 0.0f, 0.0f));
 glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);
 glm::vec4 transformedVector = myMatrix * myVector; // guess the result
 ```
@@ -252,7 +252,7 @@ vec4 out_vec = transform * in_vec;
 
 ``` cpp
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
-glm::mat4 ViewMatrix = glm::translate(-3.0f, 0.0f ,0.0f);
+glm::mat4 ViewMatrix = glm::translate(glm::mat4(), glm::vec3(-3.0f, 0.0f, 0.0f));
 ```
 
 下图展示了：*从世界空间（顶点都相对于世界空间中心定义）到摄像机空间（Camera Space，顶点都相对于摄像机定义）的变换。*

@@ -109,7 +109,7 @@ X、Y、Zは位置に加えたい値です。
 ``` cpp
 #include <glm/gtx/transform.hpp> // <glm/glm.hpp>の後
 
-glm::mat4 myMatrix = glm::translate(10.0f, 0.0f, 0.0f);
+glm::mat4 myMatrix = glm::translate(glm::mat4(), glm::vec3(10.0f, 0.0f, 0.0f));
 glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);
 glm::vec4 transformedVector = myMatrix * myVector; // guess the result
 ```
@@ -259,7 +259,7 @@ vec4 out_vec = transform * in_vec;
 
 ``` cpp
 // #include <glm/gtc/matrix_transform.hpp> と #include <glm/gtx/transform.hpp> を使います。
-glm::mat4 ViewMatrix = glm::translate(-3.0f, 0.0f ,0.0f);
+glm::mat4 ViewMatrix = glm::translate(glm::mat4(), glm::vec3(-3.0f, 0.0f, 0.0f));
 ```
 
 再び、下の図がこの様子を表しています。*私たちはワールド空間(前項で説明したように、すべての頂点が世界の中心の相対座標で表される)からカメラ空間(すべての頂点がカメラの相対座標で表される)へ移りました。*

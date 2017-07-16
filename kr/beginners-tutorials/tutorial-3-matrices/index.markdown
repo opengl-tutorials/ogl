@@ -103,7 +103,7 @@ X,Y,Z 에 있는 것들이 당신의 위치에서 더하고자 하는 값들입�
 ``` cpp
 #include <glm/gtx/transform.hpp> // after <glm/glm.hpp>
 
-glm::mat4 myMatrix = glm::translate(10.0f, 0.0f, 0.0f);
+glm::mat4 myMatrix = glm::translate(glm::mat4(), glm::vec3(10.0f, 0.0f, 0.0f));
 glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);
 glm::vec4 transformedVector = myMatrix * myVector; // guess the result
 ```
@@ -241,7 +241,7 @@ Futurama 의 말을 다시 이용해보죠 :
 
 ``` cpp
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
-glm::mat4 ViewMatrix = glm::translate(-3.0f, 0.0f ,0.0f);
+glm::mat4 ViewMatrix = glm::translate(glm::mat4(), glm::vec3(-3.0f, 0.0f, 0.0f));
 ```
 
 또다시, 아래 이미지가 표현하는 바는 : _우리는 월드 공간 (모든 버텍스들이 월드의 중심에 상대적인 곳, 지난 섹션에서 다루었죠) 에서 카메라 공간 (모든 버텍스들이 카메라에 상대적으로 정의되는 곳) 으로 갔습니다._

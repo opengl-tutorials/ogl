@@ -106,7 +106,7 @@ Ahora veremos lo que le pasa a un vector dirección en dirección -z : (0,0,-1,0
 ``` cpp
 #include <glm/gtx/transform.hpp> // after <glm/glm.hpp>
  
-glm::mat4 myMatrix = glm::translate(10.0f, 0.0f, 0.0f);
+glm::mat4 myMatrix = glm::translate(glm::mat4(), glm::vec3(10.0f, 0.0f, 0.0f));
 glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);
 glm::vec4 transformedVector = myMatrix * myVector; // guess the result
 ```
@@ -241,6 +241,11 @@ Vamos a citar a "Futurama" otra vez:
 Cuando lo piensas, esto se aplica a las cámaras. Si quieres ver una montaña desde otro ángulo, puedes mover la cámara... o mover la montaña. No es práctico en la vida real, es solo que así es más fácil en computación gráfica.
 
 Inicialmente, la cámara está en el origen del espacio mundo. Para mover el mundo, simplemente se introduce otra matriz. Digamos que quieres mover tu cámara 3 unidades a la derecha (+X). Esto es equivalente a mover todo el mundo (y lo que contenga) 3 unidades a la izquierda !. Mientras tu cerebro se derrite, vamos a hacerlo :
+
+``` cpp
+// Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
+glm::mat4 ViewMatrix = glm::translate(glm::mat4(), glm::vec3(-3.0f, 0.0f ,0.0f));
+```
 
 Una vez más, la imagen abajo ilustra esto : _Fuimos del espacio mundo (todos los vértices están definidos relativamente al centro del mundo) al espacio cámara (todos los vértices se definen relativamente a la cámara)._
 
