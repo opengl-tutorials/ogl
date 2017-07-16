@@ -21,7 +21,7 @@ There are various way to contribute and we welcome any of them !
 
  - Spotted an error (code, math, typo, gramatical error) in a tutorial ? Report it on [Github issue tracker](https://github.com/Whiteseeker/opengl-tutorials/issues).
 
- - Want to help us traduce one tutorial, or all the tutorials in a new language (like Spanish, Portuguese, etc) ? Follow this [guide]( {{ site.baseurl }}/miscellaneous/contribute/translation/).
+ - Want to help us translate one tutorial, or all the tutorials in a new language (like Spanish, Portuguese, etc) ? Follow this [guide]( {{ site.baseurl }}/miscellaneous/contribute/translation/).
 
  - The website is not beautiful enough ? If you're talented in CSS and website please drop us an email !
 

@@ -19,7 +19,7 @@ OpenGL 3 makes it easy to write complicated stuff, but at the expense that drawi
 
 Don't forget to cut'n paste the code on a regular basis.
 
-**<span style="color: red">If the program crashes at startup, you're probably running from the wrong directory. Read CAREFULLY the first tutorial on how to configure Visual Studio !</span>**
+**<span style="color: red">If the program crashes at startup, you're probably running from the wrong directory. Read CAREFULLY the [first tutorial]({{ site.baseurl }}/beginners-tutorials/tutorial-1-opening-a-window/) and the [FAQ]({{ site.baseurl }}/miscellaneous/faq/) on how to configure Visual Studio !</span>**
 
 # The VAO
 

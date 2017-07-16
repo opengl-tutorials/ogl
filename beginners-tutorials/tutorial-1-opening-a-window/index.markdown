@@ -21,14 +21,14 @@ Before jumping into OpenGL, you will first learn how to build the code that goes
 
 # Prerequisites
 
-No special prerequisite is needed to follow these tutorials. Experience with any programming langage ( C, Java, Lisp, Javascript, whatever ) is better to fully understand the code, but not needed ; it will merely be more complicated to learn two things at the same time.
+No special prerequisite is needed to follow these tutorials. Experience with any programming langage ( C, Java, Lisp, Javascript, whatever ) is better to fully understand the code, but not needed; it will merely be more complicated to learn two things at the same time.
 
 All tutorials are written in "Easy C++" : Lots of effort has been made to make the code as simple as possible. No templates, no classes, no pointers. This way, you will be able to understand everything even if you only know Java.
 
 # Forget Everything
 
 You don't have to know anything, but you have to forget everything you know about OpenGL.
-If you know about something that looks like glBegin(), forget it. Here you will learn modern OpenGL (OpenGL 3 and 4) , and most online tutorials teach "old" OpenGL (OpenGL 1 and 2). So forget everything you might know before your brain melts from the mix.
+If you know about something that looks like glBegin(), forget it. Here you will learn modern OpenGL (OpenGL 3 and 4) , and many online tutorials teach "old" OpenGL (OpenGL 1 and 2). So forget everything you might know before your brain melts from the mix.
 
 # Building the tutorials
 
@@ -39,7 +39,7 @@ All tutorials can be built on Windows, Linux and Mac. For all these platforms, t
 * Install CMake
 * Download the source code of the tutorials
 * Generate a project using CMake
-* Build the project
+* Build the project using your compiler
 * Play with the samples !
 
 Detailed procedures will now be given for each platform. Adaptations may be required. If unsure, read the instruction for Windows and try to adapt them.
@@ -88,7 +88,7 @@ They are so many Linux variants out there that it's impossible to list every pos
  
 
 * Install the latest drivers. We highly recommend the closed-source binary drivers. It's not GNU or whatever, but they work. If your distribution doesn't provide an automatic install, try [Ubuntu's guide](http://help.ubuntu.com/community/BinaryDriverHowto).
-* Install all needed compilers, tools & libs. Complete list is : *cmake make g++ libx11-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxrandr-dev libxext-dev libxi-dev* . Use `sudo apt-get install *****` or `su && yum install ******`.
+* Install all needed compilers, tools & libs. Complete list is : *cmake make g++ libx11-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxrandr-dev libxext-dev libxcursor-dev libxinerama-dev libxi-dev* . Use `sudo apt-get install *****` or `su && yum install ******`.
 * [Download the source code](http://www.opengl-tutorial.org/download/) and unzip it, for instance in ~/Projects/OpenGLTutorials/
 * cd in ~/Projects/OpenGLTutorials/ and enter the following commands :
 
@@ -152,7 +152,7 @@ We will provide snippets of code all along the tutorials. Don't hesitate to cut'
 # Opening a window
 
 Finally ! OpenGL code !
-Well, not really. All tutorials show you the "low level" way to do things, so that you can see that no magic happens. But this part is actually very boring and useless, so we will use GLFW, an external library, to do this for us instead. If you really wanted to, you could use the Win32 API on Windows, the X11 API on Linux, and the Cocoa API on Mac; or use another high-level library like SFML, FreeGLUT, SDL, ... see the [Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) page.
+Well, not really. Many tutorials show you the "low level" way to do things, so that you can see that no magic happens. But the "open a window" part is actually very boring and useless, so we will use GLFW, an external library, to do this for us instead. If you really wanted to, you could use the Win32 API on Windows, the X11 API on Linux, and the Cocoa API on Mac; or use another high-level library like SFML, FreeGLUT, SDL, ... see the [Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) page.
 
 Ok, let's go. First, we'll have to deal with dependencies : we need some basic stuff to display messages in the console :
 
@@ -210,10 +210,10 @@ glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
 glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
-glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL 
+glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // We don't want the old OpenGL 
 
 // Open a window and create its OpenGL context
-GLFWwindow* window; // (In the accompanying source code, this variable is global)
+GLFWwindow* window; // (In the accompanying source code, this variable is global for simplicity)
 window = glfwCreateWindow( 1024, 768, "Tutorial 01", NULL, NULL);
 if( window == NULL ){
     fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
