@@ -66,6 +66,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifdef __cplusplus
 #include <new>		// for std::nothrow_t
 #include <string>	// for aiString::Set(const std::string&)
+#include <cstring>	// to fix the compiler error "error: '::strlen' has not been declared"
 
 namespace Assimp	{
 	//! @cond never
