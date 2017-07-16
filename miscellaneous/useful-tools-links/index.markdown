@@ -17,45 +17,40 @@ tags: []
 ## OpenGL references
 
 
-* [OpenGL 3.2 Quick Reference](http://www.khronos.org/files/opengl-quick-reference-card.pdf)
-* [OpenGL 4.1 Reference Pages](http://www.opengl.org/sdk/docs/man4/)
-* [OpenGL 4.0 Specification](http://www.opengl.org/registry/doc/glspec40.core.20100311.pdf). A heavy read.
-* [GLSL Specifications](http://www.opengl.org/registry/doc/GLSLangSpec.4.10.6.clean.pdf)
-* [List of all extensions](http://www.opengl.org/registry/) If your GPU is recent enough, some (many) of them will be available through GLEW
+* [OpenGL Quick Reference PDF](http://www.opengl.org/sdk/docs/reference_card/opengl45-reference-card.pdf)
+* [OpenGL 4.5 Reference Pages](http://www.opengl.org/sdk/docs/man4/)
+* [OpenGL 4.5 (Core Profile) Specification](https://www.khronos.org/registry/OpenGL/specs/gl/glspec45.core.pdf). A heavy read.
+* [GLSL Specifications](https://www.khronos.org/registry/OpenGL/specs/gl/GLSLangSpec.4.50.pdf)
+* [List of all extensions, and up-to-date specs](http://www.opengl.org/registry/) If your GPU is recent enough, most of them will be available through GLEW.
 
 
 ## Other tutorials
 
 
-* [http://arcsynthesis.org/gltut/](http://arcsynthesis.org/gltut/) A very thorough tutorial; high learning curve
-* [ogldev](http://ogldev.atspace.co.uk/index.html) Our main competitor :)
-* [http://openglbook.com/](http://openglbook.com/) A few other introductory tutorials
+* [ogldev](http://ogldev.atspace.co.uk/index.html) A nice and thorough tutorial
 * [NeHe ](http://nehe.gamedev.net/)Extensive OpenGL 1.1 programming tutorials and resources. Mostly deprecated now, but there are still a few intersting things.
 
 
 ## Books
 
 
-* [Real-time Rendering 3](http://www.realtimerendering.com/)
-* [OpenGL SuperBible](http://www.openglsuperbible.com/)
-* [More Opengl Programming](http://glbook.gamedev.net/GLBOOK/glbook.gamedev.net/moglgp/index.html)
-
+* [Real-time Rendering 3](http://www.realtimerendering.com/). Fantastic for learning the high-level concepts.
+* [GPU Pro book series](http://gpupro.blogspot.fr/). For detailed explanation of specific algorithms.
 
 ## Others
 
 
 * [A trip trough the graphic pipeline](http://fgiesen.wordpress.com/2011/07/09/a-trip-through-the-graphics-pipeline-2011-index/) : In-depth information about how the drivers & GPUs actually work. Fantastic source of information. Highly recommended.
-* [Unity stats](http://stats.unity3d.com/web/gpu.html) : You can see why I don't recommend OpenGL 3+ for production.
-* [Extensions stats](http://feedback.wildfiregames.com/report/opengl/) : More precise, but contains outdated data.
+* [Unity stats](https://hwstats.unity3d.com/)
+* [Extensions stats](http://gpuinfo.org/)
 
 
 # Debugging tools
 
 
-* [glslDevil ](http://cumbia.informatik.uni-stuttgart.de/glsldevil/). Fantastic GLSL debugger - when it works. Even the website is often down.
-* [GLIntercept ](http://glintercept.nutty.org/)Generates a webpage with the list of OpenGL commands issued. Displays shader code, content of images, content of framebuffers, etc.
+* [NVidia Parallel NSight](http://developer.nvidia.com/nvidia-parallel-nsight) A wonderful tool which gives access to extremely precise performance numbers. Highly recommended. Visual Studio + NVidia only. The one I use most.
+* [GLIntercept ](http://glintercept.nutty.org/) Generates a webpage with the list of OpenGL commands issued. Displays shader code, content of images, content of framebuffers, etc. A bit hard to master, but very precise and useful.
 * [gdebugger](http://www.gremedy.com/) A profiler
-* [NVidia Parallel NSight](http://developer.nvidia.com/nvidia-parallel-nsight) A wonderful tool which gives access to extremely precise performance numbers. Highly recommended. Visual Studio + NVidia only.
 
 
 # Libraries
