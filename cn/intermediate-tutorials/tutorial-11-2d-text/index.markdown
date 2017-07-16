@@ -137,4 +137,4 @@ void main(){
 
 另外，建议您阅读Joel Spolsky写的[The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets (No Excuses!)](http://www.joelonsoftware.com/articles/Unicode.html) by Joel Spolsky.
 
-如果您需要处理大量的文本，可以参考这篇<a>Valve的文章</a>。
+如果您需要处理大尺寸文本，可以参考这篇[Valve的文章](http://www.valvesoftware.com/publications/2007/SIGGRAPH2007_AlphaTestedMagnification.pdf)。

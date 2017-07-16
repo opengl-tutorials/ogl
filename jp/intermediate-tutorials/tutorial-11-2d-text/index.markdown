@@ -138,4 +138,4 @@ void main(){
 
 ところでJoel Spolskyの [The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets (No Excuses!)](http://www.joelonsoftware.com/articles/Unicode.html) は読んでおくべきです。
 
-それから多くのテキストを扱うなら、 [thisValve article](http://www.valvesoftware.com/publications/2007/SIGGRAPH2007_AlphaTestedMagnification.pdf) を読んでおくのも良いでしょう。
+それから大サイズのテキストを扱うなら、 [このValveの記事](http://www.valvesoftware.com/publications/2007/SIGGRAPH2007_AlphaTestedMagnification.pdf) を読んでおくのも良いでしょう。
