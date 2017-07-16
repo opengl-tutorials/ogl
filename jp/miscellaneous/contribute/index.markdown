@@ -10,7 +10,9 @@ order: 15
 tags: []
 language: jp
 ---
-{:TOC}
+
+* TOC
+{:toc}
 
 Did you found these tutorials useful ?
 Do you want to contribute ?
