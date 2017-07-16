@@ -201,7 +201,7 @@ float FoV = initialFoV - 5 * glfwGetMouseWheel();
 
 ``` cpp
 // 射影行列：視野45&deg;、4:3比、描画範囲0.1単位100単位
-ProjectionMatrix = glm::perspective(FoV, 4.0f / 3.0f, 0.1f, 100.0f);
+ProjectionMatrix = glm::perspective(glm::radians(FoV), 4.0f / 3.0f, 0.1f, 100.0f);
 // カメラ行列
 ViewMatrix       = glm::lookAt(
     position,           // カメラの位置

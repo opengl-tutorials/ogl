@@ -275,10 +275,10 @@ Y por suerte para nosotros, una matriz 4x4 puede representar está proyección [
 ``` cpp
 // Genera una matriz difícil de leer pero al menos es 4x4
 glm::mat4 projectionMatrix = glm::perspective(
-    FoV,         // El campo de visión horizontal, en grados : la cantidad de "zoom". Piensa en el lente de la cámara. Usualmente está entre 90° (extra ancho) y 30° (zoom aumentado)
-    4.0f / 3.0f, // Proporción. Depende del tamaño de tu ventana 4/3 == 800/600 == 1280/960, Parece familiar?
-    0.1f,        // Plano de corte cercano. Tan grande como sea posible o tendrás problemas de precisión.
-    100.0f       // Plano de corte lejano. Tan pequeño como se pueda.
+    glm::radians(FoV), // El campo de visión vertical, en radián: la cantidad de "zoom". Piensa en el lente de la cámara. Usualmente está entre 90° (extra ancho) y 30° (zoom aumentado)
+    4.0f / 3.0f,       // Proporción. Depende del tamaño de tu ventana 4/3 == 800/600 == 1280/960, Parece familiar?
+    0.1f,              // Plano de corte cercano. Tan grande como sea posible o tendrás problemas de precisión.
+    100.0f             // Plano de corte lejano. Tan pequeño como se pueda.
 );
 ```
 

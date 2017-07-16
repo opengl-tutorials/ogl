@@ -194,7 +194,7 @@ float FoV = initialFoV - 5 * glfwGetMouseWheel();
 ```
 
 // Проекционная матрица: Поле обзора = FoV, отношение сторон 4 к 3, плоскости отсечения 0.1 и 100 юнитов
-ProjectionMatrix = glm::perspective(FoV, 4.0f / 3.0f, 0.1f, 100.0f);
+ProjectionMatrix = glm::perspective(glm::radians(FoV), 4.0f / 3.0f, 0.1f, 100.0f);
 // Матрица камеры
 ViewMatrix       = glm::lookAt(
     position,           // Позиция камеры

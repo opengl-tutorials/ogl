@@ -391,7 +391,7 @@ La gestion des lumières de type "spots" nécessite quelques petites modificatio
 
 ``` cpp
 glm::vec3 lightPos(5, 20, 20);
-glm::mat4 depthProjectionMatrix = glm::perspective<float>(45.0f, 1.0f, 2.0f, 50.0f);
+glm::mat4 depthProjectionMatrix = glm::perspective<float>(glm::radians(45.0f), 1.0f, 2.0f, 50.0f);
 glm::mat4 depthViewMatrix = glm::lookAt(lightPos, lightPos-lightInvDir, glm::vec3(0,1,0));
 ```
 
