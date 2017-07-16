@@ -225,7 +225,7 @@ quat RotationBetweenVectors(vec3 start, vec3 dest){
 			rotationAxis = cross(vec3(1.0f, 0.0f, 0.0f), start);
 
 		rotationAxis = normalize(rotationAxis);
-		return gtx::quaternion::angleAxis(180.0f, rotationAxis);
+		return gtx::quaternion::angleAxis(glm::radians(180.0f), rotationAxis);
 	}
 
 	rotationAxis = cross(start, dest);
