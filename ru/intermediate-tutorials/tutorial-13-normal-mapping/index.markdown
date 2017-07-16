@@ -39,7 +39,7 @@ You are now so familiar with matrices that you know that in order to define a sp
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/NormalVector.png)
 
 
-Next we need a tangent, T : a vector perpendicular to the surface. But there are many such vectors :
+Next we need a tangent, T : a vector parallel to the surface. But there are many such vectors :
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/TangentVectors.png)
 
