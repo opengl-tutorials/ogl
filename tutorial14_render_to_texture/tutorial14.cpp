@@ -249,7 +249,7 @@ int main( void )
 		// Bind our texture in Texture Unit 0
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, Texture);
-		// Set our "myTextureSampler" sampler to user Texture Unit 0
+		// Set our "myTextureSampler" sampler to use Texture Unit 0
 		glUniform1i(TextureID, 0);
 
 		// 1rst attribute buffer : vertices
@@ -319,7 +319,7 @@ int main( void )
 		// Bind our texture in Texture Unit 0
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, renderedTexture);
-		// Set our "renderedTexture" sampler to user Texture Unit 0
+		// Set our "renderedTexture" sampler to use Texture Unit 0
 		glUniform1i(texID, 0);
 
 		glUniform1f(timeID, (float)(glfwGetTime()*10.0f) );

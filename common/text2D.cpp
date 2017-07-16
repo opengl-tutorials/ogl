@@ -84,7 +84,7 @@ void printText2D(const char * text, int x, int y, int size){
 	// Bind texture
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, Text2DTextureID);
-	// Set our "myTextureSampler" sampler to user Texture Unit 0
+	// Set our "myTextureSampler" sampler to use Texture Unit 0
 	glUniform1i(Text2DUniformID, 0);
 
 	// 1rst attribute buffer : vertices

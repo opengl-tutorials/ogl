@@ -208,19 +208,19 @@ int main( void )
 		// Bind our diffuse texture in Texture Unit 0
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, DiffuseTexture);
-		// Set our "DiffuseTextureSampler" sampler to user Texture Unit 0
+		// Set our "DiffuseTextureSampler" sampler to use Texture Unit 0
 		glUniform1i(DiffuseTextureID, 0);
 
 		// Bind our normal texture in Texture Unit 1
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, NormalTexture);
-		// Set our "Normal	TextureSampler" sampler to user Texture Unit 0
+		// Set our "NormalTextureSampler" sampler to use Texture Unit 1
 		glUniform1i(NormalTextureID, 1);
 
-		// Bind our normal texture in Texture Unit 2
+		// Bind our specular texture in Texture Unit 2
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, SpecularTexture);
-		// Set our "Normal	TextureSampler" sampler to user Texture Unit 0
+		// Set our "SpecularTextureSampler" sampler to use Texture Unit 2
 		glUniform1i(SpecularTextureID, 2);
 
 
