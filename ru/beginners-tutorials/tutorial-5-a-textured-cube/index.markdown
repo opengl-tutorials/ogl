@@ -366,7 +366,7 @@ GLuint loadTGA_glfw(const char * imagepath){
 ##Создание сжатых текстур
 
 
-* Скачайте [The Compressonator](http://developer.amd.com/Resources/archive/ArchivedTools/gpu/compressonator/Pages/default.aspx), утилита от ATI
+* Скачайте [The Compressonator](http://gpuopen.com/gaming-product/compressonator/), утилита от ATI
 * Загрузите в нее текстуру, размер которой является степенью двойки
 * Сожмите ее в DXT1, DXT3 или в DXT5 (о разнице между форматами можете почитать на [Wikipedia](http://en.wikipedia.org/wiki/S3_Texture_Compression))
 

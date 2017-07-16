@@ -373,7 +373,7 @@ GLuint loadTGA_glfw(const char * imagepath){
 ## 创建压缩纹理
 
 
-* 下载[The Compressonator](http://developer.amd.com/Resources/archive/ArchivedTools/gpu/compressonator/Pages/default.aspx),一款ATI工具
+* 下载[The Compressonator](http://gpuopen.com/gaming-product/compressonator/),一款ATI工具
 * 用它加载一个二次幂纹理
 * 将其压缩成DXT1、DXT3或DXT5格式（这些格式之间的差别请参考[Wikipedia](http://en.wikipedia.org/wiki/S3_Texture_Compression)）：
 

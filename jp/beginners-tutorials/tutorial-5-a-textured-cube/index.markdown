@@ -360,7 +360,7 @@ GLuint loadTGA_glfw(const char * imagepath){
 ## 圧縮されたテクスチャを作る
 
 
-* [The Compressonator](http://developer.amd.com/Resources/archive/ArchivedTools/gpu/compressonator/Pages/default.aspx)をダウンロードします。ATIツールです。
+* [The Compressonator](http://gpuopen.com/gaming-product/compressonator/)をダウンロードします。ATIツールです。
 * 2のべき乗サイズのテクスチャをそれにロードします。
 * DXT1、DXT3あるいはDXT5に圧縮します。(これらのフォーマットの違いは[Wikipedia](http://en.wikipedia.org/wiki/S3_Texture_Compression)を呼んでください。) :
 

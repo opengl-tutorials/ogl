@@ -363,7 +363,7 @@ Hay una mejor opción
 ## Creación de Texturas Comprimidas
 
 
-* Descarga [The Compressonator](http://developer.amd.com/Resources/archive/ArchivedTools/gpu/compressonator/Pages/default.aspx), una herramienta de AMD
+* Descarga [The Compressonator](http://gpuopen.com/gaming-product/compressonator/), una herramienta de AMD
 * Carga texturas de potencias de dos en él.
 * Genera mapas MIP para que no tengas que hacerlo en tiempo de ejecución.
 * Comprímelas en DXT1, DXT3 o en DXT5 (puedes encontrar más información sobre las diferencias entre estos formatos en [Wikipedia](http://en.wikipedia.org/wiki/S3_Texture_Compression)) :

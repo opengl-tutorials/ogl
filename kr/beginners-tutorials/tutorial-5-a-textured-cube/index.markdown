@@ -359,7 +359,7 @@ There's a better option.
 ## Creating compressed textures
 
 
-* Download [The Compressonator](http://developer.amd.com/Resources/archive/ArchivedTools/gpu/compressonator/Pages/default.aspx), an AMD tool
+* Download [The Compressonator](http://gpuopen.com/gaming-product/compressonator/), an AMD tool
 * Load a Power-Of-Two texture in it
 * Generate mipmaps so that you won't have to do it on runtime
 * Compress it in DXT1, DXT3 or in DXT5 (more about the differences between the various formats on [Wikipedia](http://en.wikipedia.org/wiki/S3_Texture_Compression)) :

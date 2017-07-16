@@ -363,7 +363,7 @@ Il y a une meilleure option : les textures compressées.
 
 ## Créer une texture compressée
 
-* Télécharge l'outil d'ATI : [Le Compressonator](http://developer.amd.com/Resources/archive/ArchivedTools/gpu/compressonator/Pages/default.aspx)
+* Télécharge l'outil d'ATI : [Le Compressonator](http://gpuopen.com/gaming-product/compressonator/)
 * Charge une texture en puissance de deux avec.
 * Compresse-la en DXT1, DXT3 ou DXT5 (plus d'informations sur les différences des formats sur [Wikipedia](https://en.wikipedia.org/wiki/S3_Texture_Compression))
 ![]({{site.baseurl}}/assets/images/tuto-5-textured-cube/TheCompressonator.png)
