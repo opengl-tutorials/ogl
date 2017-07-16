@@ -26,7 +26,7 @@ quat RotationBetweenVectors(vec3 start, vec3 dest){
 			rotationAxis = cross(vec3(1.0f, 0.0f, 0.0f), start);
 		
 		rotationAxis = normalize(rotationAxis);
-		return angleAxis(180.0f, rotationAxis);
+		return angleAxis(glm::radians(180.0f), rotationAxis);
 	}
 
 	// Implementation from Stan Melax's Game Programming Gems 1 article
