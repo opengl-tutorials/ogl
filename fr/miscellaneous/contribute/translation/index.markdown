@@ -6,7 +6,9 @@ order: 17
 tags: []
 language: fr
 ---
-{:TOC}
+
+* TOC
+{:toc}
 
 Tu veux traduire juste une page ? Pas de soucis !
 Toute une série de tutoriels ? Encore mieux !

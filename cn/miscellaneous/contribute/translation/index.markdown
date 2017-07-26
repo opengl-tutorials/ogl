@@ -10,7 +10,10 @@ order: 17
 tags: []
 language: cn
 ---
-{:TOC}
+
+* TOC
+{:toc}
+
 Do you want to translate just one page ? No problem !
 A whole series of tutorial ? Even better (^_^)!
 

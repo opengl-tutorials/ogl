@@ -10,7 +10,9 @@ order: 15
 tags: []
 language: ru
 ---
-{:TOC}
+
+* TOC
+{:toc}
 
 Did you found these tutorials useful ?
 Do you want to contribute ?

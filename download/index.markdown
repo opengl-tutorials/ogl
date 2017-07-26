@@ -14,16 +14,21 @@ categories: []
 tags: []
 ---
 
-<span style="color: #ff0000;">[Tutorial 1](http://www.opengl-tutorial.org/beginners-tutorials/tutorial-1-opening-a-window/) explains how to build the source code. Please read it !</span>
+<span style="color: #ff0000;">[Tutorial 1]({{site.baseurl}}/beginners-tutorials/tutorial-1-opening-a-window/) explains how to build the source code. Please read it !</span>
 
-You can download the ZIP archive containing the whole set of tutorials here (See the [FAQ](http://www.opengl-tutorial.org/miscellaneous/faq/) for which version to choose):
+You can download the ZIP archive containing the whole set of tutorials here:
 
-* [OpenGL-tutorial_v0015_33](https://github.com/opengl-tutorials/ogl/archive/OpenGL-tutorial_0015_33.zip) The normal version
-* [OpenGL-tutorial_v0015_21](https://github.com/opengl-tutorials/ogl/archive/OpenGL-tutorial_0015_21.zip) The OpenGL 2.1 port
+* [Tutorials source code on GitHub, .zip](https://github.com/opengl-tutorials/ogl/archive/master.zip)
 
-Alternatively, you have access to the latest version of the code on the Git repository :
+For older computers, you can try the 2.1 branch (not updated as often) :
 
-* [Checkout the source on GitHub](https://github.com/opengl-tutorials/ogl) (The nodes corresponding to the above zips have tags OpenGL-tutorial_0015_33 and OpenGL-tutorial_0015_21 respectively)
+* [Tutorials source code on GitHub, Opengl 2.1, .zip](https://github.com/opengl-tutorials/ogl/archive/2.1_branch.zip)
+
+Alternatively, you can directly checkout the Git repository :
+
+* [Checkout the source on GitHub](https://github.com/opengl-tutorials/ogl)
+
+If you have an issue building or running the code, <span style="color: #ff0000;">please read the [FAQ]({{ site.baseurl }}/miscellaneous/faq/)</span>.
 
 All the source code on this site (except third-party libraries) is released under the WTFPL Public Licence :
 ```

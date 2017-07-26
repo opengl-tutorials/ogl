@@ -10,7 +10,9 @@ order: 20
 tags: []
 language: kr
 ---
-{:TOC}
+
+* TOC
+{:toc}
 
 이부분 또한 긴 튜토리얼이 될것입니다.
 

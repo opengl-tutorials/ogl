@@ -6,7 +6,10 @@ order: 15
 tags: []
 language: fr
 ---
-{:TOC}
+
+* TOC
+{:toc}
+
 
 Tu as trouvé ces tutoriels utile ?
 Tu veux nous aider ?
