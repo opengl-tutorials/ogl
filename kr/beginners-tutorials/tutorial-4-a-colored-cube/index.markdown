@@ -2,7 +2,7 @@
 layout: tutorial
 status: publish
 published: true
-title: 'Tutorial 4 : A Colored Cube'
+title: 'Tutorial 4 :  색깔이 입혀진 육면체'
 date: '2011-04-26 07:55:37 +0200'
 date_gmt: '2011-04-26 07:55:37 +0200'
 categories: [tuto]
@@ -11,20 +11,22 @@ tags: []
 language: kr
 ---
 
-Welcome for the 4rth tutorial ! You will do the following :
+네번째 튜토리얼에 오신 것을 환영합니다! 이번에는 다음 내용들을 배워보겠습니다. :
 
-* Draw a cube instead of the boring triangle
-* Add some fancy colors
-* Learn what the Z-Buffer is
+* 단순한 삼각형 대신 육면체를 그리기
+* 좀 멋진 색깔 입히기
+* Z-Buffer가 무엇인지 배우기
 
 
-# Draw a cube
+# 육면체 그리기
 
-A cube has six square faces. Since OpenGL only knows about triangles, we'll have to draw 12 triangles : two for each face. We just define our vertices in the same way as we did for the triangle.
+하나의 육면체는 6개의 사각 면으로 되어 있습니다. OpenGL은 삼각형만 처리 할 수 있기 때문에, 우리는 12개의 삼각형을 그려야 합니다. 사각면 하나 당 2개의 삼각형이 필요합니다. 삼각형을 그릴 때와 같은 방법으로 Vertex들을 정의합니다.
 
 ``` cpp
-// Our vertices. Three consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
-// A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
+// 우리 Vertex들입니다. 3개의 연속 된 float 숫자가 하나의 3차원 Vertex입니다.
+// 3개의 연속 된 Vertex들이 하나의 삼각형을 정의합니다.
+// 하나의 육면체는 2개의 삼각형으로 이루어진 면 6개를 가지고 있고,
+// 그래서 총 6*2=12개의 삼각형, 12*3 개의 Vertex를 가지고 있습니다.
 static const GLfloat g_vertex_buffer_data[] = {
     -1.0f,-1.0f,-1.0f, // triangle 1 : begin
     -1.0f,-1.0f, 1.0f,
@@ -65,19 +67,19 @@ static const GLfloat g_vertex_buffer_data[] = {
 };
 ```
 
-The OpenGL buffer is created, bound, filled and configured with the standard functions (glGenBuffers, glBindBuffer, glBufferData, glVertexAttribPointer) ; see Tutorial 2 for a quick reminder. The draw call does not change either, you just have to set the right number of vertices that must be drawn :
+ OpenGL 버퍼는 표준 함수들을(glGenBuffers, glBindBuffer, glBufferData, glVertexAttribPointer) 이용해서 생성되고, 연결되고(bound), 채워지고, 설정 됩니다. 잠시 Tutorial 2를 복습 겸 살펴보셔도 좋겠습니다. draw call(억지로 한글로 번역하면 이상해서 그냥 draw call 그대로 사용)도 같습니다. 그냥 그려져야 할 정확한 Vertex의 개수만 설정 해 주면 됩니다.:
 
 ``` cpp
-// Draw the triangle !
+// 삼각형 그리기
 glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles -> 6 squares
 ```
 
-A few remarks on this code :
+이 코드에서 주목 할 몇 가지 :
 
-* For now, our 3D model is fixed : in order to change it, you have to modify the source code, recompile the application, and hope for the best. We'll learn how to load dynamic models in tutorial 7.
-* Each vertex is actually written at least 3 times (search "-1.0f,-1.0f,-1.0f" in the code above). This is an awful waste of memory. We'll learn how to deal with this in tutorial 9.
+* 지금은 우리 3D 모델이 고정되어 있습니다. 모델을 수정하려면 소스 코드를 고치고 다시 어플리케이션을 컴파일하고~~ 잘 되길 바래야 합니다.^^  Tutorial 7에서 동적인 모델을 로딩 하는 방법을 배우게 됩니다.
+* 실제로는 각 Vertex가 적어도 3번 적혀 있습니다.("-1.0f,-1.0f,-1.0f"을 위 코드에서 한번 찾아보세요.). 이건 정말 심각한 메모리 낭비입니다.  Tutorial 9에서 어떻게 다룰 지 배우겠습니다. 
 
-You now have all the needed pieces to draw the cube in white. Make the shaders work ! go on, at least try :)
+이제 흰 바탕에 육면체를 그리는데 필효한 것은 다 준비 되었습니다. 쉐이더를 써보세요! 쫄지말고 한번 시도해 보세요. ^^
 
 # Adding colors
 
