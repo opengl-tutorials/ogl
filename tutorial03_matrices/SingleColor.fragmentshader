@@ -1,6 +1,6 @@
 #version 330 core
 
-// Ouput data
+// Output data
 out vec3 color;
 
 void main()
