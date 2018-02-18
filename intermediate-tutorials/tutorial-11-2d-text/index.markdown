@@ -39,7 +39,7 @@ initText2D simply reads a texture and a couple of shaders. There's nothing fancy
 ![]({{site.baseurl}}/assets/images/tuto-11-2d-text/fontalpha.png)
 
 
-This texture was generated using [CBFG](http://www.codehead.co.uk/cbfg/), one of the many tools that generate textures from fonts. If was then imported in Paint.NET where I added a red background (for visualisation purposes only : everywhere you see red, it's supposed to be transparent ).
+This texture was generated using [CBFG](http://www.codehead.co.uk/cbfg/), one of the many tools that generate textures from fonts. It was then imported in Paint.NET where I added a red background (for visualisation purposes only : everywhere you see red, it's supposed to be transparent ).
 
 The goal of printText2D will thus be to generate quads with the appropriate screen position and texture coordinates.
 
