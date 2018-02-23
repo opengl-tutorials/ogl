@@ -15,7 +15,7 @@ tags: []
 
 Welcome for our 13th tutorial ! Today we will talk about normal mapping.
 
-Since [Tutorial 8 : Basic shading](http://www.opengl-tutorial.org/beginners-tutorials/tutorial-8-basic-shading/) , you know how to get decent shading using triangle normals. One caveat is that until now, we only had one normal per vertex : inside each triangle, they vary smoothly, on the opposite to the colour, which samples a texture. The basic idea of normal mapping is to give normals similar variations.
+Since [Tutorial 8 : Basic shading](http://www.opengl-tutorial.org/beginners-tutorials/tutorial-8-basic-shading/), you know how to get decent shading using triangle normals. One caveat is that until now, we only had one normal per vertex : inside each triangle, they vary smoothly, on the opposite to the colour, which samples a texture. The basic idea of normal mapping is to give normals similar variations.
 
 # Normal textures
 
@@ -32,7 +32,7 @@ normal = (2*color)-1 // on each component
 
 The texture has a general blue tone because overall, the normal is towards the "outside of the surface". As usual, X is right in the plane of the texture, Y is up (again in the plane of the texture), thus  given the right hand rule Z point to the "outside" of the plane of the texture.
 
-This texture is mapped just like the diffuse one; The big problem is how to convert our normal, which is expressed in the space each individual triangle ( tangent space, also called image space), in model space (since this is what is used in our shading equation).
+This texture is mapped just like the diffuse one; the big problem is how to convert our normal, which is expressed in the space each individual triangle (tangent space, also called image space), in model space (since this is what is used in our shading equation).
 
 # Tangent and Bitangent
 
@@ -118,7 +118,7 @@ For each triangle, we compute the edge (deltaPos) and the deltaUV
         glm::vec2 & uv1 = uvs[i+1];
         glm::vec2 & uv2 = uvs[i+2];
 
-        // Edges of the triangle : postion delta
+        // Edges of the triangle : position delta
         glm::vec3 deltaPos1 = v1-v0;
         glm::vec3 deltaPos2 = v2-v0;
 
@@ -144,7 +144,7 @@ Finally, we fill the *tangents *and *bitangents *buffers. Remember, these buffer
         tangents.push_back(tangent);
         tangents.push_back(tangent);
 
-        // Same thing for binormals
+        // Same thing for bitangents
         bitangents.push_back(bitangent);
         bitangents.push_back(bitangent);
         bitangents.push_back(bitangent);
@@ -156,7 +156,7 @@ Finally, we fill the *tangents *and *bitangents *buffers. Remember, these buffer
 
 Indexing our VBO is very similar to what we used to do, but there is a subtle difference.
 
-If we find a similar vertex (same position, same normal, same texture coordinates), we don't want to use its tangent and binormal too ; on the contrary, we want to average them. So let's modify our old code a bit :
+If we find a similar vertex (same position, same normal, same texture coordinates), we don't want to use its tangent and bitangent too ; on the contrary, we want to average them. So let's modify our old code a bit :
 
 ``` cpp
         // Try to find a similar vertex in out_XXXX
@@ -344,7 +344,7 @@ As said before, we'll do everything in camera space, because it's simpler to get
 ```
 {: .highlightglslfs }
 
-These three vector define a the TBN matrix, which is constructed this way :
+These three vector define the TBN matrix, which is constructed this way :
 ```
 
     mat3 TBN = transpose(mat3(
@@ -378,7 +378,7 @@ So we've got everything we need now. Diffuse lighting uses *clamp( dot( n,l ), 0
 Here is our result so far. You can notice that :
 
 * The bricks look bumpy because we have lots of variations in the normals
-* Cement looks flat because the  normal texture is uniformly blue
+* Cement looks flat because the normal texture is uniformly blue
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/normalmapping.png)
 

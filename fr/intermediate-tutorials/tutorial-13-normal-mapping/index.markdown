@@ -39,7 +39,7 @@ Maintenant, que tu connais les matrices tellement bien que tu sais que pour déf
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/NormalVector.png)
 
-Ensuite, on a besoin d'une tangente, T : un vecteur perpendiculaire à la surface. Mais il y a vraiment beaucoup de vecteurs correspondant à ce critère :
+Ensuite, on a besoin d'une tangente, T : un vecteur parallèle à la surface. Mais il y a vraiment beaucoup de vecteurs correspondant à ce critère :
 
 ![]({{site.baseurl}}/assets/images/tuto-13-normal-mapping/TangentVectors.png)
 
