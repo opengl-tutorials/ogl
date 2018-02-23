@@ -165,7 +165,7 @@ Ok, let's go. First, we'll have to deal with dependencies : we need some basic s
 First, GLEW. This one actually is a little bit magic, but let's leave this for later.
 
 ``` cpp
-// Include GLEW. Always include it before gl.h and glfw.h, since it's a bit magic.
+// Include GLEW. Always include it before gl.h and glfw3.h, since it's a bit magic.
 #include <GL/glew.h>
 ```
 
@@ -173,7 +173,7 @@ We decided to let GLFW handle the window and the keyboard, so let's include it t
 
 ``` cpp
 // Include GLFW
-#include <GL/glfw3.h>
+#include <GLFW/glfw3.h>
 ```
 
 We don't actually need this one right now, but this is a library for 3D mathematics. It will prove very useful soon. There is no magic in GLM, you can write your own if you want; it's just handy. The "using namespace" is there to avoid typing "glm::vec3", but "vec3" instead.

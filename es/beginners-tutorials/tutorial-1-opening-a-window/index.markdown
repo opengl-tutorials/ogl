@@ -149,7 +149,7 @@ Bueno, ahora si. Listos? Primero, debemos lidiar con las dependencias : necesita
 Primero GLEW. Esto de hecho es un poco de magia, pero luego lo explicamos.
 
 ``` cpp
-// Incluya GLEW. Siempre incluyelo antes de gl.h y glfw.h, un poco de magia.
+// Incluya GLEW. Siempre incluyelo antes de gl.h y glfw3.h, un poco de magia.
 #include <GL/glew.h>
 ```
 
@@ -157,7 +157,7 @@ Decidimos dejar que GLFW maneje la ventana y el teclado, así que lo incluimos :
 
 ``` cpp
 // Incluir GLFW
-#include <GL/glfw3.h>
+#include <GLFW/glfw3.h>
 
 ```
 

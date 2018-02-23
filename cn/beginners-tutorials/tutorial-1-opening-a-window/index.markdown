@@ -144,7 +144,7 @@ Mac OS不支持OpenGL 3.3。最近，搭载MacOS 10.7 Lion和兼容型GPU的Mac�
 然后是GLEW库。其原理我们以后再说。
 
 ``` cpp
-// Include GLEW. Always include it before gl.h and glfw.h, since it's a bit magic.
+// Include GLEW. Always include it before gl.h and glfw3.h, since it's a bit magic.
 #include <GL/glew.h>
 ```
 
@@ -152,7 +152,7 @@ Mac OS不支持OpenGL 3.3。最近，搭载MacOS 10.7 Lion和兼容型GPU的Mac�
 
 ``` cpp
 // Include GLFW
-#include <GL/glfw3.h>
+#include <GLFW/glfw3.h>
 ```
 
 下文中的GLM是个很有用3D数学库，我们暂时用不到，但很快就会派上用场。GLM库很好用，但也没什么神奇的，您不妨自己试着写一个。添加“using namespace”，这样就可以不用写“glm::vec3”，直接写“vec3”。
