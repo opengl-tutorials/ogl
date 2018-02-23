@@ -96,7 +96,7 @@ The fragment shader just needs a minor adaptation :
 layout(location = 0) out vec3 color;
 ```
 
-This means that when writing in the variable "color", we will actually write in the Render Target 0, which happens to be our texure because DrawBuffers[0] is GL_COLOR_ATTACHMENT*i*, which is, in our case, *renderedTexture*.
+This means that when writing in the variable "color", we will actually write in the Render Target 0, which happens to be our texture because DrawBuffers[0] is GL_COLOR_ATTACHMENT*i*, which is, in our case, *renderedTexture*.
 
 To recap :
 
