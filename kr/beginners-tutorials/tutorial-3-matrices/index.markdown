@@ -357,7 +357,7 @@ transformed_vertex = MVP * in_vertex;
   ``` cpp
   // Get a handle for our "MVP" uniform
   // Only during the initialisation
-  GLuint MatrixID = glGetUniformLocation(program_id, "MVP");
+  GLuint MatrixID = glGetUniformLocation(programID, "MVP");
 
   // Send our transformation to the currently bound shader, in the "MVP" uniform
   // This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
