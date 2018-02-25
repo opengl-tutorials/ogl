@@ -228,13 +228,16 @@ if (glewInit() != GLEW_OK) {
 }
 ```
 
-Build this and run. A window should appear, and be closed right away. Of course ! We need to wait until the user hits the Escape key :
+Build this and run. A window should appear, and be closed right away. Of course! We need to wait until the user hits the Escape key :
 
 ``` cpp
 // Ensure we can capture the escape key being pressed below
 glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
 do{
+    // Clear the screen. It's not mentioned before Tutorial 02, but it can cause flickering, so it's there nonetheless.
+    glClear( GL_COLOR_BUFFER_BIT );
+
     // Draw nothing, see you in tutorial 2 !
 
     // Swap buffers
@@ -243,10 +246,7 @@ do{
 
 } // Check if the ESC key was pressed or the window was closed
 while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
-glfwWindowShouldClose(window) == 0 );
+       glfwWindowShouldClose(window) == 0 );
 ```
 
 And this concludes our first tutorial ! In Tutorial 2, you will learn how to actually draw a triangle.
-
-
-
