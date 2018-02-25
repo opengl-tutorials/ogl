@@ -380,7 +380,7 @@ GLuint MatrixID = glGetUniformLocation(programID, "MVP");
 
 // Send our transformation to the currently bound shader, in the "MVP" uniform
 // This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
-glUniformMatrix4fv(mvp_handle, 1, GL_FALSE, &mvp[0][0]);
+glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
 ```
 
 * 第三步：在GLSL中用MVP变换顶点
