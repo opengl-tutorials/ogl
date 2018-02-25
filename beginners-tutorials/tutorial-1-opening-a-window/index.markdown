@@ -194,6 +194,7 @@ First thing to do it to initialize GLFW :
 
 ``` cpp
 // Initialise GLFW
+glewExperimental = true; // Needed for core profile
 if( !glfwInit() )
 {
     fprintf( stderr, "Failed to initialize GLFW\n" );
