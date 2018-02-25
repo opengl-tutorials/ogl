@@ -331,7 +331,13 @@ transformed_vertex = MVP * in_vertex;
 
 # Putting it all together
 
-* First step : generating our MVP matrix. This must be done for each model you render.
+* First step : include the GLM GTC matrix transform functions:
+
+``` cpp
+#include <glm/gtc/matrix_transform.hpp>
+```
+
+* Second step : generating our MVP matrix. This must be done for each model you render.
 
   ``` cpp
   // Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
@@ -353,7 +359,7 @@ transformed_vertex = MVP * in_vertex;
   glm::mat4 mvp = Projection * View * Model; // Remember, matrix multiplication is the other way around
   ```
 
-* Second step : give it to GLSL
+* Third step : give it to GLSL
 
   ``` cpp
   // Get a handle for our "MVP" uniform
@@ -365,7 +371,7 @@ transformed_vertex = MVP * in_vertex;
   glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
   ```
 
-* Third step : use it in GLSL to transform our vertices
+* Fourth step : use it in GLSL to transform our vertices in `SimpleVertexShader.vertexshader`
 
   ``` glsl
   // Input vertex data, different for all executions of this shader.
