@@ -54,12 +54,12 @@ order: 10
 * Нажимайте Configure до тех пор, пока не исчезнут все красные строки. Далее нажмите Generate. Теперь ваш Visual Studio проект создан и вы можете забыть про CMake. Можете даже удалить его, если хотите :)
 * Откройте в Visual Studio файл Tutorials.sln в папке, которую вы указывали во втором поле главного окна CMake (C:/Users/XYZ/Projects/OpenGLTutorials-build-Visual2010-32bits).
 [<img title="directories" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/directories.png" width="560" height="302" />]({{site.baseurl}}/assets/images/tuto-1-window/directories.png)
-В меню Build нажмите Build All. Искходный код каждого урока и зависимостей будет откомпилирован. Также, каждый исполняемый файл будет скопирован обратно в C:/Users/XYZ/Projects/OpenGLTutorials . Надеемся у вас не возникнет ошибок.
+В меню Build нажмите Build All. Исходный код каждого урока и зависимостей будет откомпилирован. Также, каждый исполняемый файл будет скопирован обратно в C:/Users/XYZ/Projects/OpenGLTutorials . Надеемся у вас не возникнет ошибок.
 [<img title="visual_2010" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/visual_2010-300x212.png" width="300" height="212" />]({{site.baseurl}}/assets/images/tuto-1-window/visual_2010.png)
 * Откройте C:/Users/XYZ/Projects/OpenGLTutorials/playground и запустите playground.exe. Если все прошло гладко, то у вас должно появиться черное окно.
 [<img title="empty_window" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/empty_window-300x231.png" width="300" height="231" />]({{site.baseurl}}/assets/images/tuto-1-window/empty_window.png)
 
-Вы также можете запустить любой урок из Visual Studio. Для этого нажмите правой кнопной мыши на Playground и выберете "Choose as startup project". Для отладки используйте клавишу F5.
+Вы также можете запустить любой урок из Visual Studio. Для этого нажмите правой кнопкой мыши на Playground и выберете "Choose as startup project". Для отладки используйте клавишу F5.
 
 ![](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/WorkingDir-300x211.png" width="300" height="211" /></a><a href="http://www.opengl-tutorial.org/wp-content/uploads/2012/04/StartupProject.png"><img title="StartupProject)
 
@@ -137,7 +137,7 @@ Mac OS не поддерживает OpenGL 3.3. Последние Маки с 
 
 К каждому уроку прилагается исходный код и все необходимые файлы данных, которые могут быть найдены в tutorialXX/. Тем не менее вы вряд ли будете изменять эти проекты, так как они даются для справки. Лучшим решением будет открыть playground/playground.cpp и изменять его так, как вам захочется. Если по каким-то причинам у вас его нет, то просто скопируйте код любого урока туда и все.
 
-Мы предоставляем фрагменты кога в каждом уроке. Не стесняйтесь копировать эти фрагменты в playground, пока читаете и экспериментировать с ними - это хорошая практика, гораздо лучшая, чем просто читать готовый код или просто копировать его.
+Мы предоставляем фрагменты кода в каждом уроке. Не стесняйтесь копировать эти фрагменты в playground, пока читаете и экспериментировать с ними - это хорошая практика, гораздо лучшая, чем просто читать готовый код или просто копировать его.
 
 # Открываем окно
 
