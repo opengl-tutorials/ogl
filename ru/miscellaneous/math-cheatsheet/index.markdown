@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: Math Cheatsheet
+title: Математическая шпаргалка
 date: '2011-05-11 20:04:48 +0200'
 date_gmt: '2011-05-11 20:04:48 +0200'
 categories: []
@@ -11,69 +11,73 @@ tags: []
 language: ru
 ---
 
-# Trigonometry
+# Тригонометрия
 
 
-## Pi
+## Пи
 
-const float pi = 3.14159265f; // but an infinity of digits in reality
+const float pi = 3.14159265f; // на самом деле бесконечное число цифр
 
-## Cosinus & Sinus
+## Косинус и синус
 
 <img class="alignnone" title="Sine_cosine_one_period" src="http://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Sine_cosine_one_period.svg/600px-Sine_cosine_one_period.svg.png" alt="" width="600" height="240" />
-*(From http://commons.wikimedia.org/wiki/User:Geek3 , under GNU Free Documentation License )*
+*(Источник: http://commons.wikimedia.org/wiki/User:Geek3 , под лицензией GNU Free Documentation License )*
 
-## Unit circle
+## Единичная окружность
 
 ![]({{site.baseurl}}/assets/images/math-cheatsheet/UnitCircle.png)
 
-*( Modified from http://en.wikipedia.org/wiki/User:Gustavb under Crative Commons 3.0 )*t is an angle in radians.
+*( Изменено на основе http://en.wikipedia.org/wiki/User:Gustavb под лицензией Crative Commons 3.0 )*
+t - угол в радианах.
 
-0 radians = 0 degrees
+0 радиан = 0 градусов
 
-180 degrees = Pi radians
+180 градусов = Pi радиан
 
-360 degrees ( full circle ) = 2*Pi radians
+360 градусов ( полный круг ) = 2*Pi радиан
 
-90 degrees = Pi/2 radians
+90 градусов = Pi/2 радиан
 
-# Vectors
+# Вектора
 
-ALWAYS know in which coordinates your vector is. See section 3 for details.
+ВСЕГДА необходимо знать в каких координатах ваш вектор. Подробнее смотрите в разделе 3.
 
-## Homogeneous coordinates
+## Однородные координаты
 
-A 3D vector is (x,y,z), but a homogeneous 3D vector is (x,y,z,w).
+Трёхмерный вектор представляется как (x,y,z), но однородный трёхмерный вектор - (x,y,z,w).
 
-* w=0 : it's a direction
-* w=1 : it's a position
-* else : it may still be correct, but you'd better know what you're doing.
+* w=0 : это направление
+* w=1 : это позиция
+* иначе : все еще может быть допустимым, но вам лучше знать, что вы делаете.
 
-You can only multiply a 4x4 matrix with a homogeneous vector.
+Вы можете только перемножать матрицу 4x4 с однородным вектором.
 
-## Length
+## Длина
 
-Just like cartesian distance : sqrt( x&sup2; + y&sup2; + z&sup2; ). w doesn't count.
+Как и декартово растояние: sqrt( x&sup2; + y&sup2; + z&sup2; ). w не учитывается.
 
-## Cross product
+## Векторное произведение
 
 ![]({{site.baseurl}}/assets/images/math-cheatsheet/Right_hand_rule_cross_product.png)
 
-*( Modified from http://en.wikipedia.org/wiki/User:Acdx , former image under Creative Commons 3.0 )*The X is the notation for the cross product. length( a x b ) == length(a) * length(b) * sin(&theta;), so you may want to normalize() the result.
+*( Изменено на основе http://en.wikipedia.org/wiki/User:Acdx , прежнее изображение под лицензией Creative Commons 3.0 )*
 
-## Dot product
+X обозначет вектороное произведение. длина( a x b ) == длина(a) * длина(b) * sin(&theta;), поэтому вы можете нормализовать (normalize()) результат.
+
+## Скалярное произведение
 
 
 ##![]({{site.baseurl}}/assets/images/math-cheatsheet/DotProduct.png)
 
 
-*( from http://en.wikipedia.org/wiki/File:Dot_Product.svg )*A.B = length(A)*cos(Theta) , but most likely computed as A.x*B.x +A.y*B.y +A.z*B.z
+*( Источник: http://en.wikipedia.org/wiki/File:Dot_Product.svg )*
+A.B = длина(A)*cos(Theta) , но, скорее всего, вычисляется как A.x*B.x +A.y*B.y +A.z*B.z
 
-## Addition and substraction
+## Сложение и вычитание
 
-compontent-wise :
-```
+покомпонентно :
 
+``` cpp
 res.x = A.x + B.x
 res.y = A.y + B.y
 ...
@@ -81,43 +85,44 @@ res.y = A.y + B.y
 
 ## Multiplication
 
-compontent-wise :
-```
+покомпонентно :
 
+``` cpp
 res.x = A.x * B.x
 res.y = A.y * B.y
 ...
 ```
 
-## Normalization
+## Нормализация
 
-Divide the vector by its length :
-```
+Разделите вектор на его длину:
 
+``` cpp
 normalizedVector = vec * ( 1.0f / vec.length() )
 ```
 
-# Matrices
+# Матрицы
 
 
-## Matrix-Matrix multiplication
+## Умножение Матрица-Матрица
 
-example for a translation matrix :
+пример для матрицы переноса:
 
 ![]({{site.baseurl}}/assets/images/math-cheatsheet/translationExamplePosition1.png)
 
 
  
 
-## Matrix-Vector multiplication
+## Умножение Матрица-Вектор
 
 ![]({{site.baseurl}}/assets/images/math-cheatsheet/MatrixXVect.gif)
 
 
-# Usual Transformations
+# Обычные преобразования
 
 ![]({{site.baseurl}}/assets/images/math-cheatsheet/MVP.png)
 
 
-... but in your shaders, you can also represent your vectors in tangent space. And in image-space when you do post-effects.
-<div id="_mcePaste" class="mcePaste" style="position: absolute; left: -10000px; top: 1254px; width: 1px; height: 1px; overflow: hidden;">res.x = A.x + B.x</div>
+... но в ваших шейдерах вы также можете представлять свои векторы в касательном пространстве. И в пространстве изображений, когда вы делаете пост-эффекты.
+
+res.x = A.x + B.x
