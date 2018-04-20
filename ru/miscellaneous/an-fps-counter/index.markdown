@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: An FPS counter
+title: Счетчик кадров в секунду (FPS)
 date: '2012-01-28 16:24:41 +0100'
 date_gmt: '2012-01-28 16:24:41 +0100'
 categories: []
@@ -11,9 +11,9 @@ tags: []
 language: ru
 ---
 
-In real-time graphics, it is important to keep an eye on performance. A good practice is to choose a target FPS ( usually 60 or 30 ) and make everything possible to stick to it.
+В графике реального времени важно следить за производительностью. Хорошая практика: выбрать целевой FPS (обычно 60 или 30) и сделать все возможное, чтобы придерживаться его.
 
-A FPS counter looks like this :
+Счетчик FPS выглядит так :
 ```
 
  double lastTime = glfwGetTime();
@@ -34,12 +34,12 @@ A FPS counter looks like this :
      ... rest of the main loop
 ```
 
-There is an odd thing in this code. It displays the time, in milliseconds, needed to draw a frame (averaged on 1 second) instead of how many frame were drawn in the last second.
+В этом коде есть странная вещь. Он отображает время в миллисекундах, необходимое для отрисовки кадра (усредненного на 1 секунду) вместо количества кадров, которое было нарисовано за последнюю секунду.
 
-This is actually **much better**. Don't rely on FPS. Never. FramesPerSecond = 1/SecondsPerFrame, so this is an inverse relationship, and we humans suck at understanding this kind of relationship. Let's take an example.
+Это на самом деле **намного лучше**. Не полагайтесь на FPS. Никогда. FramesPerSecond = 1 / SecondsPerFrame, так что это обратная связь, и мы, люди, плохо понимаем это отношение. Давайте рассмотрим пример.
 
-You write a great rendering function that runs at 1000 FPS ( 1ms/frame ). But you forgot a little computation in a shader, which adds an extra cost of 0.1ms. And bam, 1/0.0011 = 900. You just lost 100FPS. Morality : **never use FPS for performance analysis.**
+Вы пишете отличную функцию рендеринга, которая работает при 1000 FPS (1 мс/кадр). Но вы забыли небольшое вычисление в шейдере, что добавляет дополнительную расходы в 0,1 мс. И бум, 1 / 0.0011 = 900. Вы просто потеряли 100FPS. Мораль: **никогда не использовать FPS для анализа производительности.**
 
-If you intend to make a 60fps game, your target will be 16.6666ms ; If you intend to make a 30fps game, your target will be 33.3333ms. That's all you need to know.
+Если вы хотите сделать игру с 60 кадрами в секунду, ваша цель - 16.6666 мс; Если вы хотите сделать игру с 30 fps, ваша цель - 33.3333 мс. Это все, что вам нужно знать.
 
-This code is available in all tutorials starting from [Tutorial 9 : VBO indexing](http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-9-vbo-indexing/); see tutorial09_vbo_indexing/tutorial09.cpp . Other performance tools are available in [Tools - Debuggers](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/#header-4).
+Этот код доступен во всех учебниках, начиная с [Tutorial 9 : VBO indexing](http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-9-vbo-indexing/); см. tutorial09_vbo_indexing/tutorial09.cpp . Другие инструменты производительности доступны в [Tools - Debuggers](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/#header-4).
