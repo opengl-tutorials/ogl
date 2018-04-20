@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Contribute
+title: Внести вклад
 author:
   display_name: Sistr
   email: damien.mabin@gmail.com
@@ -14,17 +14,16 @@ language: ru
 * TOC
 {:toc}
 
-Did you found these tutorials useful ?
-Do you want to contribute ?
+Считаете этот учебный материал полезным? Хотите помочь?
 
-There are various way to contribute and we welcome any of them !
+Есть разные способы внести свой вклад, и мы приветствуем любой из них!
 
- - Want to share your knowledge and make your very own tutorial ? Drop us an email with your idea, we would be more than happy to help you, and host it on the website !
+- Хотите поделиться своими знаниями и сделать свой урок? Отправьте нам электронное письмо со своей идеей и мы будем бы более, чем рады помочь Вам разместить его на сайте!
 
- - Spotted an error (code, math, typo, gramatical error) in a tutorial ? Report it on [Github issue tracker](https://github.com/Whiteseeker/opengl-tutorials/issues).
+ - Заметили ошибку (в коде, в математических расчётах, опечатка, граматическая ошибка) в уроке? Сообщите об этом в [Github issue tracker](https://github.com/Whiteseeker/opengl-tutorials/issues).
 
- - Want to help us traduce one tutorial, or all the tutorials in a new language (like Spanish, Portuguese, etc) ? Follow this [guide]( {{ site.baseurl }}/miscellaneous/contribute/translation/).
+ - Хотите помочь нам перевести один или все уроки на новый язык (такой как испанский, португальский, и т.д.)? Прочтите это [руководство]( {{ site.baseurl }}/miscellaneous/contribute/translation/).
 
- - The website is not beautiful enough ? If you're talented in CSS and website please drop us an email !
+ - Веб-сайт не достаточно красив? Если Вы талантливы в CSS и сайтостоении, пожалуйста, отправьте нам электронное письмо!
 
-If you have any other ideas that you wish to share with us please don't hesitate to contact us by email.
+Если у Вас есть какие-либо другие идеи, которыми Вы хотите поделиться с нами, пожалуйста свяжитесь с нами по электронной почте.
