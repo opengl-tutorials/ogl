@@ -2,14 +2,14 @@
 layout: page
 status: publish
 published: true
-title: Basic OpenGL
+title: Kezdő útmutató
 date: '2011-05-07 10:45:02 +0200'
 date_gmt: '2011-05-07 10:45:02 +0200'
 categories: [section]
 tags: []
 language: hu
 ---
-Follow them in the right order !
+Kövesd őket a helyes sorrendben !
 
 {% assign sorted_pages = site.pages | sort:"order" %}
 {% for p in sorted_pages %}

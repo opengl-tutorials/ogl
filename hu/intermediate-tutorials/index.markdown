@@ -3,7 +3,7 @@ layout: page
 type: section
 status: publish
 published: true
-title: Intermediate Tutorials
+title: Haladó útmutatók
 date: '2011-05-07 10:45:46 +0200'
 date_gmt: '2011-05-07 10:45:46 +0200'
 categories: []
@@ -11,7 +11,7 @@ tags: []
 language: hu
 ---
 
-Follow them in any order
+A sorrend nem fontos
 
 {% assign sorted_pages = site.pages | sort:"order" %}
 {% for p in sorted_pages %}
