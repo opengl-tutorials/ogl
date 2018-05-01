@@ -1,0 +1,161 @@
+<header class="site-header">
+
+  <script>
+    String.prototype.replaceAt=function(index, character) {
+    return this.substr(0, index) + character + this.substr(index+character.length);
+    }
+    
+    function myFunction() {
+    var x = document.getElementById("myLanguage").value
+    var pageurl = "{{page.url}}"
+    if (pageurl.charAt(3) == '/') {
+      if(x=='en'){
+        pageurl = pageurl.substring(3);
+      } else {
+        pageurl = pageurl.replaceAt(1, x);
+      }
+      window.open ('{{site.baseurl}}' + pageurl,'_self',false);
+    } else { 
+      window.open ('{{site.baseurl}}/' + x + pageurl,'_self',false);
+    }
+    
+    
+    }
+  </script>
+  
+  <div class="wrap">
+    {% if page.language %}
+      <a class="site-title" href="{{site.baseurl}}/{{page.language}}/">{{ site.title }}</a>
+    {% else %}
+      <a class="site-title" href="{{site.baseurl}}/">{{ site.title }}</a>
+    {% endif %}
+
+    <nav class="site-nav">
+      
+      <a href="#" class="menu-icon">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+           viewBox="0 0 18 15" enable-background="new 0 0 18 15" xml:space="preserve">
+          <path fill="#505050" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0
+            h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#505050" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484
+            h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#505050" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0
+            c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <ul class="trigger">
+        {% assign lg = "" %}
+        {% if page.language %}
+          {% capture lg %}{{page.language}}/{% endcapture %}
+        {% endif %}
+
+        <li><a href="{{ site.baseurl }}/{{ lg }}beginners-tutorials/">Kezdő útmutatók</a>
+          <span class="arrow">&#9660;</span>
+          <ul class="sub-menu">
+            {% assign sorted_pages = site.pages | sort:"order" %}
+            {% capture tuts_root %}/{{ lg }}beginners-tutorials/{% endcapture %}
+            {% for p in sorted_pages %}
+              {% assign splt = p.url | split: tuts_root %}
+              {% if splt.size == 2 and splt[0] == '' %}
+                {% assign slash = splt[1] | split: '/' %}
+                {% if slash.size == 1 %}      
+                  <li><a href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a></li>
+                {% else %}
+                  <li><a href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a></li>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </li>
+        <li><a href="{{site.baseurl}}/{{ lg }}intermediate-tutorials/">Haladó útmutatók</a>
+          <span class="arrow">&#9660;</span>
+          <ul class="sub-menu">
+            {% assign sorted_pages = site.pages | sort:"order" %}
+            {% capture tuts_root %}/{{ lg }}intermediate-tutorials/{% endcapture %}
+            {% assign level = -1 %}
+            {% for p in sorted_pages %}
+              {% assign splt = p.url | split: tuts_root %}
+              {% if splt.size == 2 and splt[0] == '' %}
+                {% assign slash = splt[1] | split: '/' %}
+                {% if slash.size == 1 %}
+
+                  {% if level == 1 %}
+                    {% assign level = 0 %}
+                    </ul></li>
+                  {% elsif level == -1 %}
+                    {% assign level = 0 %}
+                  {% elsif level == 0 %}
+                    </li>
+                  {% endif %}
+                  <li><a  href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a>
+
+                {% else %}
+
+                  {% if level == 0 %}
+                    {% assign level = 1 %}
+                    <span class="arrow">&#9654;</span><ul class="sub-menu">
+                  {% endif %}
+                  <li><a  href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a></li>
+
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+            {% if level == 1 %}
+              {% assign level = 0 %}
+              </ul></li>
+            {% endif %}
+          </ul>
+        </li>
+        <li><a href="{{site.baseurl}}/{{ lg }}miscellaneous/">Egyéb</a>
+          <span class="arrow">&#9660;</span>
+          <ul class="sub-menu">
+            {% assign sorted_pages = site.pages | sort:"order" %}
+            {% capture tuts_root %}/{{ lg }}miscellaneous/{% endcapture %}
+            {% assign level = -1 %}
+            {% for p in sorted_pages %}
+              {% assign splt = p.url | split: tuts_root %}
+              {% if splt.size == 2 and splt[0] == '' %}
+                {% assign slash = splt[1] | split: '/' %}
+                {% if slash.size == 1 %}
+
+                  {% if level == 1 %}
+                    {% assign level = 0 %}
+                    </ul></li>
+                  {% elsif level == -1 %}
+                    {% assign level = 0 %}
+                  {% elsif level == 0 %}
+                    </li>
+                  {% endif %}
+                  <li><a  href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a>
+
+                {% else %}
+
+                  {% if level == 0 %}
+                    {% assign level = 1 %}
+                    <span class="arrow">&#9654;</span><ul class="sub-menu">
+                  {% endif %}
+                  <li><a  href="{{p.url | prepend: site.baseurl}}">{{p.title}}</a></li>
+
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+            {% if level == 1 %}
+              {% assign level = 0 %}
+              </ul></li>
+            {% endif %}
+          </ul>
+        </li>
+        <li><a href="{{site.baseurl}}/{{ lg }}download/">Letöltés</a></li>
+
+
+        <li><select id="myLanguage" onchange="myFunction()">
+          {% for l in site.languages %}
+            <option value="{{l}}" {% if page.language == {{l}} %} selected="1" {% endif %} >{{site.languages_names[forloop.index0]}}</option>	    
+          {% endfor %}
+	       </select></li>
+       </ul>
+      </div>
+    </nav>
+  </div>
+</header>
