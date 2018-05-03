@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: Building your own C application
+title: Создание вашего собственного проиложения на языке C
 date: '2012-10-06 14:03:21 +0200'
 date_gmt: '2012-10-06 14:03:21 +0200'
 categories: []
@@ -11,22 +11,22 @@ tags: []
 language: ru
 ---
 
-A lot of efforts have been made so that these tutorials are as simple to compile & run as possible. Unfortunately, this also means that CMakes hides how to do that on your own project.
+Было сделано много усилий, чтобы эти руководства были простыми для компиляции и запуска, насколько это возможно. К сожалению, это означает, что CMakes скрывает, как это сделать в вашем собственном проекте.
 
-So, this tutorial will explain how to build your own C application from scatch. But first, you need a basic knowledge of what the compiler actually does.
+Итак, это руководство объяснит, как создать на языке C собственное приложение с нуля. Но сначала вам нужно знать, что делает компилятор.
 
-<span style="color: #ff0000;">Please don't skip the first two sections. If you're reading this tutorial, you probably need to know this stuff.</span>
+<span style="color: #ff0000;">Пожалуйста, не пропускайте первые два раздела. Если вы читаете это руководство, то вам, вероятно, нужно знать этот материал.</span>
 
-# The C application model
+# Модель приложений на языке C
 
 
-## Preprocessing
+## Предварительная обработка
 
-This is what all those *#defines* and *#includes* are about.
+Здесь объясняется обо всех этих *#defines* и *#includes*.
 
-C preprocessing is a very simple process : cut'n pasting.
+Предварительная обработка - это очень простая задача: копипаст (вырезать-и-вставить).
 
-When the preprocessor sees the following MyCode.c :
+Когда препроцессор видит следующий MyCode.c :
 
 ``` cpp
 #include "MyHeader.h"
@@ -36,148 +36,150 @@ void main(){
 }
 ```
 
-, it simply opens the file MyHeader.h, and cut'n pastes its contents into MyCode.c :
+, он просто открывает файл MyHeader.h, и копирует его содержимое в MyCode.c :
+
 ```
 
-// Begin of MyCode.c
-// Begin of MyHeader.h
+// Начало MyCode.c
+// Начало MyHeader.h
 #ifndef MYHEADER_H
 #define MYHEADER_H
 
 void FunctionDefinedInHeader(); // Declare the function
 
 # endif
-// End of MyHeader.h
+// Конец MyHeader.h
 
 void main(){
     FunctionDefinedInHeader(); // Use it
 }
 
-// End of MyCode
+// Конец MyCode.c
 ```
 
-Similarly, *#define*s are cut'n pasted, *#if*s are analysed and potentially removed, etc.
+Аналогично, работают *#define*ы - производят подстановки, *#if*ы анализируют и удаляют неиспользуемые блоки, и т.д.
 
-At the end of this step we have a preprocessed C++ file, without any #define, #if, #ifdef, #include, ready to be compiled.
+В конце этого шага у нас есть предварительно обработанный файл C++ без каких-либо #define, #if, #ifdef, #include, готовый к компиляции.
 
-As an example, here is the main.cpp file of the 6th tutorial, fully preprocessed in Visual : [tutorial06_preprocessed]({{site.baseurl}}/assets/images/build-own-app/tutorial06_preprocessed.txt). Warning, it's a huge file ! But it's worth knowing what a seemingly simple .cpp really looks to the compiler.
+В качестве примера, вот файл main.cpp 6-го руководства, полностью предварительно обработанный в Visual : [tutorial06_preprocessed]({{site.baseurl}}/assets/images/build-own-app/tutorial06_preprocessed.txt). Осторожно, это огромный файл! Но знайте, что такой простой .cpp увидит компилятор.
 
-## Compilation
+## Компиляция
 
-The compiler translates C++ code into a representation that the CPU can directly understand. For instance, the following code :
+Компилятор преобразует код C++ в представление понятное центральному процессору. Например, следующий код :
 
 ``` cpp
 int i=3;
 int j=4*i+2;
 ```
 
-will be translated into this : x86 opcodes.
-```
+будет преобразован в это : опкоды (коды операций процессора) x86
 
+```
 mov         dword ptr [i],3
 mov         eax,dword ptr [i]
 lea         ecx,[eax*4+2]
 mov         dword ptr [j],ecx
 ```
 
-Each .cpp file is compiled separately, and the resulting binary code is written in .o/.obj files.
+Каждый .cpp файл компилируется отдельно и полученный двоичный код записывается в .o/.obj файлы.
 
 ![]({{site.baseurl}}/assets/images/build-own-app/compilation.png)
 
 
-Note that we don't have an executable yet : one remaining step is needed.
+Заметьте, что у нас до сих пор нет исполняемого файла : остался последний шаг.
 
-## Linking
+## Связывание (компоновка, линковка)
 
-The linker takes all the binary code (yours, and the one from external libraries), and generates the final executable. A few notes :
+Компоновщик берёт все двоичные коды (ваши и из внешних библиотек) и создаёт конечный исполняемый файл. Несколько замечаний :
 
-* A library has the .lib extension.
-* Some libraries are *static*. This means that the .lib contains all the x86 opcodes needed.
-* Some library are *dynamic* ( also said *shared* ). This means that the .lib doesn't contain any x86 code; it simply says "I swear that functions *Foo*, *Bar* and *WhatsNot* will be available at runtime".
 
-When the linker has run, you have an executable (.exe on Windows, .nothing_at_all on unix) :
+* Библиотеки имею расширение .lib.
+* Некоторый библиотеки *статические*. Это означает, что .lib содержит все необходимые x86 опкоды.
+* Некоторый библиотеки *динамические* (также говорят *разделяемые*). Это означает, что .lib не содержит кода x68; она просто говорит: "Обещаю, что функции *Foo*, *Bar* и *WhatsNot* будут доступны во время выполнения".
+
+Когда компоновщих закончит работу ы вас будет исполняемый файл (.exe в Windows, .nothing_at_all s unix) :
 
 ![]({{site.baseurl}}/assets/images/build-own-app/linking.png)
 
 
-## Runtime
+## Время выполнения
 
-When you launch the executable, the OS will open the .exe, and put the x86 opcodes in memory. As said earlier, some code isn't available at this point : the code from dynamic libraries. But the linker was nice enough to say where to look for it : the .exe clearly says that the glClearColor function is implemented in OpenGL32.dll.
+Когда вы запускаете исполняемый файл ОС открывает .exe и помещает все x68 опкоды в память. Как было сказано ранее, некоторый код недоступен в этот момент : код из динамических библиотек. Но компоновщих был достаточно хорош, чтобы сказать, где искать этот код :  в .exe чётко сказано, что функция glClearColor реализована в OpenGL32.dll.
 
 ![]({{site.baseurl}}/assets/images/build-own-app/dynamiclinking.png)
 
 
-Windows will happily open the .dll and find glClearColor :
+Windows с радостью откроет .dll и найдёт glClearColor :
 
 ![]({{site.baseurl}}/assets/images/build-own-app/depends.png)
 
 
-Sometimes a .dll can't be found, probably because you screwed the installation process, and the program just can't be run.
+Иногда .dll не может быть найдена, например, из-за прерывания процесса установки, и программа просто не может быть запущена.
 
 ![]({{site.baseurl}}/assets/images/build-own-app/dynamiclinking.png)
 
 
-# How do I do X with IDE Y ?
+# Как мне сделать X в среде разработке (IDE) Y ?
 
-The instructions on how to build an OpenGL application are separated from the following basic operations. This is on purpose :
+Инструкции по созданию OpenGL приложения разделены на последовательные базовые операции. Это сделано намеренно :
 
-* First, you'll need to do these thinks all of the time, so you'd better know them well
-* Second, you will know what is OpenGL-specific and what is not.
+* Во-первых, вам придётся это делать постоянно, так что лучше хорошенько в этом разобраться
+* Во-вторых, вы будете понимать что относиться к OpenGL, а что нет.
 
  
 
 ## Visual Studio
 
 
-### Creating a new project
+### Создание нового проекта
 
-File -> New -> Project -> Empty project. Don't use any weird wizard. Don't use any option you may not know about (disable MFC, ATL, precompiled headers, stdafx, main file).
+Файл -> Новый -> Проект -> Пустой проект (ориг. File -> New -> Project -> Empty project). Не используйзуете мастер. Не используйте какие-либо опции, о оторых не знаете (отключите MFC, ATL, предварительно скомпилированные заголовки, stdafx, main файл).
 
-### Adding a source file in a project
+### Добавление файлов исходных кодов в проект
 
-Right clic on Source Files -> Add new.
+Щёлкните правой кнопкой мыши по Файлы исходного кода -> Добавить новый (ориг. Source Files -> Add new).
 
-### Adding include directories
+### Добавление каталогов включаемых файлов
 
-Right clic on project -> Project Properties -> C++ -> General -> Additional include directories. This is actually a dropdown list, you can modify the list conveniently.
+Щёлкните правой кнопкой мыши по проекту -> Свойства -> C++ -> Общие -> Дополнительные каталоги включаемых файлов (ориг. Project Properties -> C++ -> General -> Additional include directories). Это, по сути, выпадающий список, который вы можете легко изменить.
 
-### Link with a library
+### Связь с библиотекой
 
-Right clic on project -> Project Properties -> Linker -> Input -> Additional dependencies : type the name of the .lib. For instance : opengl32.lib
+Щёлкните правой кнопкой мыши по проекту -> Свойства -> Компоновщик -> Ввод -> Дополнительные зависимости (ориг. Project Properties -> Linker -> Input -> Additional dependencies) : введеите имя .lib. Например: opengl32.lib
 
-In Project Properties -> Linker -> General -> Additional library directories, make sure that the path to the above library is present.
+В Свойства -> Компоновщик -> Общие -> Дополнительные каталоги библиотек (ориг. Project Properties -> Linker -> General -> Additional library directories) убедитесь, что задан путь к указанной библиотеке.
 
-### Build, Run & Debug
+### Сборка, запуск и отладка
 
-Setting the working directory (where your textures & shaders are) : Project Properties -> Debugging -> Working directory
+Задайте рабочий каталог (ту, где расположены ваши текстуры и шейдеры) : Свойства -> Отладка -> Рабочий каталог (ориг. Project Properties -> Debugging -> Working directory)
 
-Running : Shift-F5; but you'll probably never need to do that. *Debug* instead : F5
+Запуск : Shift-F5; но вам, вероятно, никогда не понадобится это делать. Вместо этого - *Отладка* : F5
 
-A short list of debugging shortcuts :
+Краткий список горячих клавиш для отладки :
 
-* F9 on a line, or clicking on the left of the line number: setting a breakpoint. A red dot will appear.
-* F10 : execute current line
-* F11 : execute current line, but step into the functions this line is calling ("step into")
-* Shift-F11 : run until the end of the function ("step out")
+* F9 на строке или шелчёк слева от номера строки: установка точки остановки. Появится красная точка.
+* F10 : выполнить текущую строку
+* F11 :  выполнить текущую строку, но заходить в функции, которые вызываются на этой строке ("шаг с заходом")
+* Shift-F11 : выполнить до конца функции ("шаг с выходом")
 
-You also have plenty of debugging windows : watched variables, callstack, threads, ...
+У вас также есть много отладочных окон: наблюдаемые переменные, стек вызовов, потоки, ...
 
 ## QtCreator
 
-QtCreator is available for free at [http://qt-project.org/](http://qt-project.org/).
+QtCreator доступен бесплатно по ссылке [http://qt-project.org/](http://qt-project.org/).
 
-### Creating a new project
+### Создание нового проекта
 
-Use a plain C or C++ project; avoid the templates filled with Qt stuff.
+Используйте простой C или C++ проект; избегайте шаблонов, заполненных материалом Qt.
 
 ![]({{site.baseurl}}/assets/images/build-own-app/QtCreator_newproject.png)
 
 
-Use default options.
+используйте параметры по-умолчанию.
 
-### Adding a source file in a project
+### Добавление файлов исходных кодов в проект
 
-Use the GUI, or add the file in the .pro :
+Используйте графический интерфейс  или добавьте файлы в файл .pro :
 ```
 
 SOURCES += main.cpp \
@@ -185,67 +187,67 @@ SOURCES += main.cpp \
            foo.cpp
 ```
 
-### Adding include directories
+### Добавление каталогов включаемых файлов
 
-In the .pro file :
+В файле .pro :
 ```
 
 <code>INCLUDEPATH += <your path> \ <other path> </code>
 ```
 
-### Link with a library
+### Связь с библиотекой
 
-Right clic on project -> Add library
+Щёлкните правой кнопкой мыши по проекту -> Add library
 
-* If you're on Linux and you installed the library with apt-get or similar, chances are that the library registered itself in the system. You can select "System package" and enter the name of the library ( ex : *libglfw* or *glew* )
+* Если вы используете Linux вы установили библиотеку с помощью apt-get или подобных образом, есть вероятность, что библиотека зарегистрировалась в системе. Вам нужно выбрать "System package" и указать имя библиотеки (например : *libglfw* или *glew* )
 
 ![]({{site.baseurl}}/assets/images/build-own-app/QtCreator_linking.png)
 
 
-* If not, use "System Library". Browse to where you compiled it.
+* Если нет, используйте «System Library». Указите, куда вы её скомпилировали.
 
 
-### Build, Run & Debug
+### Сборка, запуск и отладка
 
-Building : Ctrl-B, or the hammer on the bottom left corner.
+Сборка : Ctrl-B, или иконка молотка в нижнем левом углу.
 
-Running : the green arrow. You can set the program's arguments and working directory in Projects -> Run Settings
+Запуск : иконка с зелёной стрекой. Вы можете указать параметры командной строки приложения и рабочий каталогв Projects -> Run Settings
 
-Debugging :
+Отладкаg :
 
-* Setting a breakpoint : Click on the left of the line number. A red dot will appear.
-* F10 : execute current line
-* F11 : execute current line, but step into the functions this line is calling ("step into")
-* Shift-F11 : run until the end of the function ("step out")
+* Установка точки остановки : шелчёк слева от номера строки. Появится красная точка.
+* F10 : выполнить текущую строку
+* F11 :  выполнить текущую строку, но заходить в функции, которые вызываются на этой строке ("шаг с заходом")
+* Shift-F11 : выполнить до конца функции ("шаг с выходом")
 
-You also have plenty of debugging windows : watched variables, callstack, threads, ...
+У вас также есть много отладочных окон: наблюдаемые переменные, стек вызовов, потоки, ...
 
 ## XCode
 
-Work in progress...
+В разработке...
 
-### Creating a new project
-
-
-### Adding a source file in a project
+### Создание нового проекта
 
 
-### Adding include directories
+### Добавление файлов исходных кодов в проект
 
 
-### Link with a library
+### Добавление каталогов включаемых файлов
 
 
-### Build, Run & Debug
+### Связь с библиотекой
+
+
+### Сборка, запуск и отладка
 
 
 ## CMake
 
-CMake will create projects for almost any software building tool : Visual, QtCreator, XCode, make, Code::Blocks, Eclipse, etc, on any OS. This frees you from maintaining many project files.
+CMake создаёт проекты практически для любого инструмента построения программного обеспечения : Visual, QtCreator, XCode, make, Code::Blocks, Eclipseб и т.д. на любой ОС. он освобождает вас от необходимости поддерживать множество файлов проектов.
 
-### Creating a new project
+### Создание нового проекта
 
-Create a CMakeLists.txt file and write the following inside (adapt if needed) :
+Создайте файл CMakeLists.txt и добавьте в него следующее (доработайте при необходимости) :
 ```
 
 cmake_minimum_required (VERSION 2.6)
@@ -260,13 +262,13 @@ add_executable(your_exe_name
 )
 ```
 
-Launch the CMake GUI, browse to your .txt file, and select your build folder. Click Configure, then Generate. Your solution will be created in the build folder.
+Запуститье CMake GUI, найдите ваш .txt файл и выберите каталог для сборки. Щёлкните Configure, затем Generate. Ваше решение будет создано в каталоге для сборки.
 
-### Adding a source file in a project
+### Добавление файлов исходных кодов в проект
 
-Simply add a line in the add_executable command.
+Просто добавить строку в команде add_executable.
 
-### Adding include directories
+### Добавление каталогов включаемых файлов
 
 ```
 
@@ -279,7 +281,7 @@ include_directories(
 )
 ```
 
-### Link with a library
+### Связь с библиотекой
 
 ```
 
@@ -295,21 +297,21 @@ target_link_libraries(tutorial01_first_window
 )
 ```
 
-### Build, Run & Debug
+### Сборка, запуск и отладка
 
-CMake doesn't do that. Use your favourite IDE.
+CMake этого не делает. используйте вашу любимую среду разработки.
 
 ## make
 
-Please, just don't use that.
+Пожалуйста, просто не используй это.
 
 ## gcc
 
-It might be worth compiling a small project "by hand" in order to gain a better comprehension of the workflow. Just don't do this on a real project...
+Возможно, стоит скомпилировать небольшой проект "вручную", чтобы лучше понять рабочий процесс. Только не делай этого на реальном проекте...
 
-Note that you can also do that on Windows using mingw.
+Заметьте, что Вы также можете сделать это в Windows с помощью mingw.
 
-Compile each .cpp file separately :
+Скомпилируйте каждый .cpp файл отдельно :
 ```
 
 g++ -c main.cpp
@@ -317,29 +319,30 @@ g++ -c tools.cpp
 ```
 
 <div id=":2v"></div>
-As said above, you will have a main.o and a tools.o files. Link them :
+Как было сказано выше, у вас будут файлы main.o и tools.o. Свяжите их :
 ```
 
 g++ main.o tools.o
 ```
 
-a *a.out* file appeared; It's your executable, run it :
+появиться файл *a.out*; Это ваш исполняемый файл, запустите его :
 ```
 
 ./a.out
 ```
 
-That's it !
+Вот и все !
 
-# Building your own C application
+# Создание вашего собственного проиложения на языке C
 
-Armed with this knowledge, we can start building our own OpenGL application.
+Вооружившись этими знаниями, мы можем начать создавать собственное OpenGL приложение.
 
-* Download the dependencies : Here we use GLFW, GLEW and GLM, but depending on your project, you might need something different. Save same preferably in a subdirectory of your project (for instance : external/)
-* They should be pre-compiled for your platform. GLM doesn't have to be compiled, though.
-* Create a new project with the IDE of your choice
-* Add a new .cpp file in the project
+* Скачайте зависимости : тут мы используем GLFW, GLEW и GLM, но в зависимости от вашего проекта, вам может понадобиться что-то другое. Желательно сохранять в подкаталог вашего проекта (например: external/)
+* Они должны быть предварительно скомпилированы для вашей платформы. Однако GLM не обязательно компилировать.
+* Создайте новый проект в выбранной вами среде разработке 
+* Добавьте новый .cpp файл в проект
 * Copy and paste, for instance, the following code (this is actually playground.cpp) :
+* Скопируйте и вставьте, например, следующий код (это фактически playground.cpp) :
 
 ``` cpp
 #include <stdio.h>
@@ -354,7 +357,7 @@ using namespace glm;
 
 int main( void )
 {
-	// Initialise GLFW
+	// Инициализация GLFW
 	if( !glfwInit() )
 	{
 		fprintf( stderr, "Failed to initialize GLFW\n" );
@@ -367,7 +370,7 @@ int main( void )
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
 	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	// Open a window and create its OpenGL context
+	// Открытие окна и создание его OpenGL контекста
 	if( !glfwOpenWindow( 1024, 768, 0,0,0,0, 32,0, GLFW_WINDOW ) )
 	{
 		fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
@@ -375,7 +378,7 @@ int main( void )
 		return -1;
 	}
 
-	// Initialize GLEW
+	// Инициализация GLEW
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
 		return -1;
@@ -383,32 +386,32 @@ int main( void )
 
 	glfwSetWindowTitle( "Playground" );
 
-	// Ensure we can capture the escape key being pressed below
+	// Убедитесь, что мы можем захватить клавишу escape при нажатии ниже
 	glfwEnable( GLFW_STICKY_KEYS );
 
-	// Dark blue background
+	// Тёмно синий фон
 	glClearColor(0.0f, 0.0f, 0.3f, 0.0f);
 
 	do{
-		// Draw nothing, see you in tutorial 2 !
+		// Ничего не рисуйте, увидимся в уроке № 2 !
 
-		// Swap buffers
+		// Меняем буферы
 		glfwSwapBuffers();
 
-	} // Check if the ESC key was pressed or the window was closed
+	} // Проверяем, была ли нажата клавиша ESC или окно было закрыто
 	while( glfwGetKey( GLFW_KEY_ESC ) != GLFW_PRESS &&
 		   glfwGetWindowParam( GLFW_OPENED ) );
 
-	// Close OpenGL window and terminate GLFW
+	// Закрываем окно OpenGL и завершаем GLFW
 	glfwTerminate();
 
 	return 0;
 }
 ```
 
-* Compile the project.
+* Скомпилируйте проект.
 
-You will have many compiler errors. We will analyse all of them, one by one.
+У вас будет много ошибок компиляции. Мы проанализируем их все, по одной.
 
 # Troubleshooting
 
