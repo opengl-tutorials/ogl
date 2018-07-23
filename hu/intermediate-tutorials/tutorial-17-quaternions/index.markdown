@@ -144,7 +144,6 @@ You will be able to handle all you will need (or at least, it will be easier), a
 * The books on [Useful Tools & Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) !
 * As old as it can be, Game Programming Gems 1 has several awesome articles on quaternions. You can probably find them online too.
 * A [GDC presentation](http://www.essentialmath.com/GDC2012/GDC2012_JMV_Rotations.pdf) on rotations
-* The Game Programing Wiki's [Quaternion tutorial](http://content.gpwiki.org/index.php/OpenGL:Tutorials:Using_Quaternions_to_represent_rotation)
 * Ogre3D's [FAQ on quaternions](http://www.ogre3d.org/tikiwiki/Quaternion+and+Rotation+Primer). Most of the 2nd part is ogre-specific, though.
 * Ogre3D's [Vector3D.h](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/include/OgreVector3.h?at=default) and [Quaternion.cpp](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/src/OgreQuaternion.cpp?at=default)
 
