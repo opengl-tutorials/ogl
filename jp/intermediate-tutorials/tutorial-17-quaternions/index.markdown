@@ -145,7 +145,6 @@ mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScaleMatrix;
 *  [Useful Tools & Links](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) に本があります。
 * Game Programming Gems 1にはクォータニオンに関する素晴らしい記事があります。きっとネットで手に入るでしょう。
 * [GDC presentation](http://www.essentialmath.com/GDC2012/GDC2012_JMV_Rotations.pdf) の回転に関する項目
-* ゲームプログラミングwikiの [Quaternion tutorial](http://content.gpwiki.org/index.php/OpenGL:Tutorials:Using_Quaternions_to_represent_rotation)
 * Ogre3Dの [FAQ on quaternions](http://www.ogre3d.org/tikiwiki/Quaternion+and+Rotation+Primer)。二つ目の部分はおおむねogre特有です。
 * Ogre3Dの[Vector3D.h](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/include/OgreVector3.h?at=default) and [Quaternion.cpp](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/src/OgreQuaternion.cpp?at=default)
 
