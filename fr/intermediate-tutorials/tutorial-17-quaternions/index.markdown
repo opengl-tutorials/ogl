@@ -142,7 +142,6 @@ Tu vas être capable de gérer tout ce que tu veux (ou du moins, cela sera plus 
 * Les livres dans la page des [outils et liens utiles]({{site.baseurl}}/miscellaneous/useful-tools-links/#books) !
 * Aussi vieux qu'il puisse être, le Game Programming Gem 1 contient quelques articles géniaux sur les quaternions. Tu peux probablement le trouver en ligne aussi.
 * Cette [présentation de la GDC](http://www.essentialmath.com/GDC2012/GDC2012_JMV_Rotations.pdf) sur les rotations
-* Le [tutoriel sur les quaternions](http://content.gpwiki.org/index.php/OpenGL:Tutorials:Using_Quaternions_to_represent_rotation) du wiki des programmeurs de jeux vidéo
 * La [FAQ sur les quaternions](http://www.ogre3d.org/tikiwiki/Quaternion+and+Rotation+Primer) d'Ogre, bien que la seconde partie soit principalement spécifique à Ogre
 * Les fichiers d'Ogre [Vector3D.h](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/include/OgreVector3.h?at=default) et [Quaternions.cpp](https://bitbucket.org/sinbad/ogre/src/3cbd67467fab3fef44d1b32bc42ccf4fb1ccfdd0/OgreMain/src/OgreQuaternion.cpp?at=default).
 
