@@ -32,14 +32,10 @@ Mesh에 텍스쳐링(텍스처를 붙이는 작업)하려면, 여러분은 각 �
 
 
 # 혼자서 .BMP 이미지들 로딩해보기
-# Loading .BMP images yourself
-
 
 사실 BMP 파일 형식을 아는 건 그리 중요한게 아니에요. 많은 라이브러리들은 BMP 파일을 끝장나게 로드해 줄 수 있거든요. 그래도 아주 간단하고, 새련된 인터페이스 밑에서 얼마나 추악한 짓이 일어나고 있는지 이해하는데 도움이 될거에요. 자. 그러면 BMP 파일 로더를 처음부터 만들어서. 작동 방식을 알고. <span style="text-decoration: underline;">그다음에 영원히 코드를 잠재워버립시다</span>. 이 세상에는 더 가치 있는 코드가 많으니까요! 
 
 로딩 함수의 정의부터 살펴봐요!: 
-
-Here is the declaration of the loading function :
 
 ``` cpp
 GLuint loadBMP_custom(const char * imagepath);
