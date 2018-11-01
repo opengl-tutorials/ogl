@@ -11,14 +11,18 @@ tags: []
 language: kr
 ---
 
+지금까지, 우리는 소스코드에 큐브를 하드코딩했어요. 그게 꽤 끔찍하고, 그리 괜찮은 일이 아니라는 것이라는 걸 여러분도 이해했으리라 믿어요. 
 Until now, we hardcoded our cube directly in the source code. I'm sure you will agree that this was cumbersome and not very handy.
 
+이번 튜토리얼에서는 파일에서 3D 메쉬를 불러오는 법을 배울거에요. 텍스처 로딩에서 했던 것처럼 : 아주 제한적이고, 아주 작은 로더를 만들 거고. 실제 라이브러리들은 우리보다 괜찮을 거라고 확신할게요. 그러니까 나중에는 그 라이브러리 쓰는 방법도 알려줄게요. 
 In this tutorial we will learn how to load 3D meshes from files. We will do this just like we did for the textures : we will write a tiny, very limited loader, and I'll give you some pointers to actual libraries that can do this better that us.
 
+이 튜토리얼을 가능한 한 심플하게 만들기 위해, 우리는 OBJ 파일 포맷을 사용할 거에요. 아주 간단하고 일반적인 포멧이죠. 그리고 마찬가지 이유로. 우리는 버텍스당 UV 좌표 하나, normal 좌표 하나만을 가지는 OBJ 파일만 불러올 거에요. (normal에 대해선 아직 알 필요가 없어요.) 
 To keep this tutorial as simple as possible, we'll use the OBJ file format, which is both very simple and very common. And once again, to keep things simple, we will only deal with OBJ files with 1 UV coordinate and 1 normal per vertex (you don't have to know what a normal is right now).
 
-# Loading the OBJ
+# OBJ 로딩하기
 
+우리 함수는, 코드는 common/objloader.cpp에. 정의는 common/objloader.hpp에 있을거에요 - 아래 시그네쳐에요. :
 Our function, located in common/objloader.cpp and declared in common/objloader.hpp, will have the following signature :
 
 ``` cpp
@@ -30,10 +34,15 @@ bool loadOBJ(
 )
 ```
 
+우리는 loadOBJ가 파일 "path(경로)" 를 읽기 원하고, 그 경로에서 out_vertices/out_uvs/out_normals등의 데이터를 쓰기를 원할거고. 뭐가 잘못되었으면 false 값을 돌려줬으면 좋겠어요. std::vector 는 C++에 있는, 언제든지 크기를 수정할수 있는 배열이고. 템플릿이라는 것을 통해 지금은 glm::vec3 자료형을 보관중이에요. : 아. 이거는 수학적인 벡터가 아니에요. 그냥 배열이라니까요? 진짜로요. 마지막으로 알아볼건 & 인데. 이거는 '참조'라고 std::vector를 수정할 수 있다는 말이에요. 
+
+(역주 : JAVA등을 하던 사람은 이상하게 생각하겠지만, C++은 기본적으로 '모든' 변수를 '값'만 전달합니다. ) 
+
 We want loadOBJ to read the file "path", write the data in out_vertices/out_uvs/out_normals, and return false if something went wrong. std::vector is the C++ way to declare an array of glm::vec3 which size can be modified at will: it has nothing to do with a mathematical vector. Just an array, really. And finally, the & means that function will be able to modify the std::vectors.
 
-## Example OBJ file
+## 예제 OBJ 파일
 
+OBJ 파일은 대체로 이것보다 길거나 - 더 짧아요. : 
 An OBJ file looks more or less like this :
 
 ```
@@ -86,7 +95,15 @@ f 1/2/8 2/9/8 3/13/8
 f 1/2/8 3/13/8 4/14/8
 ```
 
+그래서, 뭔 뜻일까요?: 
 So :
+
+* '#' 은 그냥 주석이에요. C++로 치면 '//' 같은거요.
+* usemtl 과 mtllib는 모델이 어떻게 보여지는지 묘사하지만. 이번 튜토리얼에서는 안 쓸거에요. 
+* v은 정점이고. 
+* vt은 정점의 텍스쳐 좌표. 
+* vn은 정점의 normal 좌표고요. 
+* f는 면이에요. 
 
 * `#` is a comment, just like // in C++
 * usemtl and mtllib describe the look of the model. We won't use this in this tutorial.
@@ -95,7 +112,15 @@ So :
 * vn is the normal of one vertex
 * f is a face
 
+v, vt 그리고 vn은 쉽게 이해할 수 있겠지만. f는 조금 더 까다로워요. 그러니까 예제를 들어봐요! 만약 f 8/11/7 7/12/7 6/10/7이 있다고 해봅시다. 
 v, vt and vn are simple to understand. f is more tricky. So, for f 8/11/7 7/12/7 6/10/7 :
+
+* 8/11/7은 삼각형의 첫 번째 정점을 표현한거에요. 
+* 7/12/7은 삼각형의 두 번째 정점을 표현한거에요. 
+* 6/10/7은 삼각형의 세 번째 정점을 표현한거에요. 
+* 첫 번째 정점에서, 8은 사용할 정점의 위치에요. 그러니까 위에 나열된 정점들 중에서 8번째라는 말인데요. 8번째면 -1.000000 1.000000 -1.000000 이겠네요. (C++과 다르게 순서는 0이 아니라 1부터 시작해요.) 
+* 11은 사용한 텍스쳐 좌표의 위치에요. 그러면 0.748355 0.998230가 되겠네요. 
+* 7은 사용할 normal 좌표의 위치에요. 그러면 0.000000 1.000000 -0.000000이겠네요. 
 
 * 8/11/7 describes the first vertex of the triangle
 * 7/12/7 describes the second vertex of the triangle
@@ -104,12 +129,18 @@ v, vt and vn are simple to understand. f is more tricky. So, for f 8/11/7 7/12/7
 * 11 says which texture coordinate to use. So in this case, 0.748355 0.998230
 * 7 says which normal to use. So in this case, 0.000000 1.000000 -0.000000
 
+이 숫자들은 'indices(인덱스들)' 라고 불려요. 이 방식은 꽤 똑똑한 방식인데 - 만약 같은 위치에 있는 정점을 공유하려면. 그냥 파일에서 v 하나를 척은 다음에 여러 번 돌려쓰면 되는 거죠. 메모리도 아끼고요. 
+
 These numbers are called indices. It's handy because if several vertices share the same position, you just have to write one "v" in the file, and use it several times. This saves memory.
+
+나쁜 소식은 텍스처에는 다른 인덱스를 쓰라하고, normal에는 다른 인덱스를 쓰라하고, position에는 다른 인덱스를 쓰라고 할 수 없다는거죠. 그래서 이 튜토리얼에서는 인덱스 안된 메쉬를 사용할게요. 인덱싱은 나중에 - 튜토리얼 9에서 해요. 그때는 어떻게 돌아가는 지 알려드릴게요. 
 
 The bad news is that OpenGL can't be told to use one index for the position, another for the texture, and another for the normal. So the approach I took for this tutorial is to make a standard, non-indexed mesh, and deal with indexing later, in Tutorial 9, which will explain how to work around this.
 
-## Creating an OBJ file in Blender
+## Blender에서 OBJ 파일 만들기
 
+
+우리의 작은 로더는 심각하게 기능이 제한되어 있어서, Blender에서 파일을 뽑을때 정확한 옵션인지 특별히 주의를 기울이셔야 해요. 여기, 어떻게 Blender에서 뽑는지 보일거에요 :
 Since our toy loader will be severely limited, we have to be extra careful to set the right options when exporting the file. Here's how it should look in Blender :
 
 ![]({{site.baseurl}}/assets/images/tuto-7-model-loading/Blender.png)
