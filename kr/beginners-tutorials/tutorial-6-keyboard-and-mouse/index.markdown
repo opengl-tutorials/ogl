@@ -11,7 +11,7 @@ tags: []
 language: kr
 ---
 6번째 튜토리얼에 오신 걸 환영합니다! 
-Welcome for our 6th tutorial !
+
 오늘은 FPS 처럼 마우스와 키보드를 이용해 카매라를 어떻게 움직이는 지 알아볼거에요! 
 
 # 인터페이스
