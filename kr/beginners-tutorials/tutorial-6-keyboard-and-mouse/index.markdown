@@ -2,7 +2,7 @@
 layout: tutorial
 status: publish
 published: true
-title: 'Tutorial 6 : Keyboard and Mouse'
+title: 'Tutorial 6 : 키보드와 '
 date: '2011-05-08 08:26:13 +0200'
 date_gmt: '2011-05-08 08:26:13 +0200'
 categories: [tuto]
