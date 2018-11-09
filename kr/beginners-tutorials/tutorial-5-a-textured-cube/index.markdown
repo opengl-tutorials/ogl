@@ -2,7 +2,7 @@
 layout: tutorial
 status: publish
 published: true
-title: 'Tutorial 5 : A Textured Cube'
+title: 'Tutorial 5 : 텍스쳐가 입혀진 큐브'
 date: '2011-04-26 07:55:58 +0200'
 date_gmt: '2011-04-26 07:55:58 +0200'
 categories: [tuto]

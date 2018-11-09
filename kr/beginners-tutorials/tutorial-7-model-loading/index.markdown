@@ -2,7 +2,7 @@
 layout: tutorial
 status: publish
 published: true
-title: 'Tutorial 7 : Model loading'
+title: 'Tutorial 7 : 모델 불러오기'
 date: '2011-05-08 17:48:12 +0200'
 date_gmt: '2011-05-08 17:48:12 +0200'
 categories: [tuto]

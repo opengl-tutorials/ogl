@@ -161,7 +161,7 @@ glm::vec3 myRotationAxis( ??, ??, ??);
 glm::rotate( angle_in_degrees, myRotationAxis );
 ```
 
-## Cumulating transformations
+## 누적 변환
 
 이제 우리는 벡터들을 어떻게 회전하고, 평행이동하고, 스케일 하는지 알게 되었습니다. 이들 변환들을 합칠수 있다면 굉장하겠죠. 이는 매트릭스들을 함께 곱함으로서 이루어집니다. 예를 들어 :
 
@@ -169,43 +169,49 @@ glm::rotate( angle_in_degrees, myRotationAxis );
 TransformedVector = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalVector;
 ```
 
-**!!! 주의사항 !!!** 이 라인은 실제로는 스케일리을 먼.저. 하고나서 그 다.음.에 회전하고, 그 다.음.에 평행이동 합니다. 이것이 매트릭스 곱이 동작하는 법이에요.
+**!!! 주의사항 !!!** 이 라인은 실제로는 **스케일링**을 먼저 하고나서 그 다음에 회전하고, 그 다음에 평행이동 합니다. 이것이 매트릭스 곱이 동작하는 법이에요.
 
 연산을 다른 순서로 작성하는 것은 같은 결과를 내주지 않을 겁니다. 스스로 해보세요 :
 
-- make one step ahead ( beware of your computer ) and turn left;
+- 한 걸음 간 다음에 (아, 컴퓨터 조심하세요.) 왼쪽으로 돌아보세요. 
 
-- turn left, and make one step ahead
+- 왼쪽으로 돈 다음에, 한 걸음 가보세요. 
+
+실제로, 위 순서는 게임 캐릭터나 다른 것들에게 꼭 필요한 것들이에요. : 확대가 필요하다면, 먼저 한 다음. 방향을 전하고, 이동하는 거에요. 예를 들어 볼까요? 배를 하나 가져다 놓을게요. 
 
 As a matter of fact, the order above is what you will usually need for game characters and other items : Scale it first if needed; then set its direction, then translate it. For instance, given a ship model (rotations have been removed for simplification) :
 
-* The wrong way :
-	- You translate the ship by (10,0,0). Its center is now at 10 units of the origin.
-	- You scale your ship by 2\. Every coordinate is multiplied by 2 _relative to the origin_, which is far away... So you end up with a big ship, but centered at 2*10 = 20. Which you don't want.
 
-* The right way :
-	- You scale your ship by 2\. You get a big ship, centered on the origin.
-	- You translate your ship. It's still the same size, and at the right distance.
+* 틀린 방법 :
+	- 배를 (10, 0, 0) 으로 이동했어요. 이제 원점으로 부터 10 unit 떨어져 있네요. 
+	- 그리고 배를 2배로 키웠어요. 모든 좌표는 원점으로부터 상대적으로 2배 더 커졌고요. 어유. 멀리도 갔네. 확대가 끝나면 큰 배는 가지겠지만. 이제 원점으로 부터 2*10 = 20이나 멀어졌네요. 원하지 않는 선물을 받아버렸어요. 
+
+* 올바른 방법 :
+	- 배를 2배 키워요. 그러면 큰 배를 얻었고, 원점에 잘 있죠. 
+	- 그리고 배를 이동시켜요. 여전히 같은 크기를 가지고 있고, 올바른 방향을 가지고 있죠. 
+
+
+행렬 - 행렬 곱은 행렬 - 벡터 곱가 아주 유사해요, 그래서 구체적인 내용을 생략하고. 대신 참고가 [될 만한 링크를(Matricesa and Quaternions FAQ)]({{site.baseurl}}/assets/faq_quaternions/index.html#Q11)걸어드릴게요. 만약에 행렬곱이 필요하다면. 지금은 그냥 컴퓨터에게 맡깁시다. : 
 
 Matrix-matrix multiplication is very similar to matrix-vector multiplication, so I'll once again skip some details and redirect you the the [Matrices and Quaternions FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html#Q11) if needed. For now, we'll simply ask the computer to do it :
 
-**in C++, with GLM :**
+**GLM과 함깨, C++에선. :**
 
 ``` cpp
 glm::mat4 myModelMatrix = myTranslationMatrix * myRotationMatrix * myScaleMatrix;
 glm::vec4 myTransformedVector = myModelMatrix * myOriginalVector;
 ```
 
-**in GLSL :**
+**GLSL에선. :**
 
 ``` glsl
 mat4 transform = mat2 * mat1;
 vec4 out_vec = transform * in_vec;
 ```
 
-# The Model, View and Projection matrices
+# 모델, 뷰, 프로젝션 행렬
 
-_튜토리얼의 남은 부분들에서는, 우리가 블랜더의 가장 사랑받는 3d 모델-키 수자네-을 그릴줄 이미 알고 있었다고 하고 진행합니다_
+*튜토리얼의 남은 부분들에서는, 우리가 블랜더의 가장 사랑받는 3d 모델-키 수자네-을 그릴줄 이미 알고 있었다고 하고 진행합니다*
 
 모델과 뷰, 프로젝션 매트릭스는 변환들을 분명하게 구별하기 위한 좋은 도구 입니다. 이들을 안 쓸수도 있습니다 (여기까지 우리가 튜토리얼 1과 2에서 했던것 처럼). 하지만 써야만 합니다. 모든 사람이 이렇게 합니다. 왜냐면 이렇게 하는게 쉬운 길이니까요.
 
@@ -284,7 +290,6 @@ glm::mat4 projectionMatrix = glm::perspective(
 );
 ```
 
-One last time :
 마지막으로 :
 
 _우리는 카메라 공간 (모든 버텍스들이 카메라 좌표에 상대적) 에서 호모니지어스 공간 (모든 버텍스들이 작은 큐브 안에 정의되고, 큐브안에 있는 모든 것들은 화면에 띄어집니다)으로 갔습니다._
@@ -313,7 +318,7 @@ _우리는 카메라 공간 (모든 버텍스들이 카메라 좌표에 상대�
 
 그리고 여기 실제로 랜더 되는 이미지가 있네요 !
 
-## 변환들 쌓기 : 모델뷰 매트릭스
+## 변환 쌓기 : 모델뷰 매트릭스
 
 ... 당신이 이미 사랑했었던 일반적인 매트릭스 곱과 같습니다 !
 
@@ -336,7 +341,7 @@ transformed_vertex = MVP * in_vertex;
   // 프로젝션 매트릭스 : 45도 시야각, 4:3 비율, 시야 범위 : 0.1 유닛 <--> 100 유닛
   glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float) width / (float)height, 0.1f, 100.0f);
 
-  // 혹은 ortho(직교) 카메라에선 :
+  //혹은 ortho(직교) 카메라에선 :
   //glm::mat4 Projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f); // 월드 좌표로 표현
 
   // 카메라 매트릭스
@@ -352,46 +357,50 @@ transformed_vertex = MVP * in_vertex;
   glm::mat4 mvp = Projection * View * Model; // 기억하세요, 행렬곱은 계산은 반대순서로 이루어집니다
   ```
 
-* Second step : give it to GLSL
+* 두번째 : GLSL에게 줘버려요. 
 
   ``` cpp
-  // Get a handle for our "MVP" uniform
-  // Only during the initialisation
+  // 우리의 "MVP" 행렬에 참조를 얻습니다. 
+  // 아. 초기화때만 하셔야 해요. 
   GLuint MatrixID = glGetUniformLocation(programID, "MVP");
 
-  // Send our transformation to the currently bound shader, in the "MVP" uniform
-  // This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
+  // 현재 바인딩된 쉐이더에게 변환한 메트릭스를 보냅시다. 방금 얻은 참조로요. 
+  // 이건 각각의 모델마다 다른 MVP 행렬을 가지고 있을 것이니, 메인 루프에 해줍시다. (VP는 같을지 몰라도, M은 다를거에요.)
   glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
   ```
 
-* Third step : use it in GLSL to transform our vertices
+* 세번쨰 : 우리가 GLSL에게 넘겨준 행렬을 정점에 적용시킵시다. 
 
   ``` glsl
-  // Input vertex data, different for all executions of this shader.
+  //  vertex 데이터 입력 값, 쉐이더의 실행때마다 값이 다릅니다. 
   layout(location = 0) in vec3 vertexPosition_modelspace;
 
-  // Values that stay constant for the whole mesh.
+  //  이 값은 한 매쉬동안은 상수적입니다.  
   uniform mat4 MVP;
 
   void main(){
+    // 정점의 출력 좌표, clip space에선 : MVP * position 
     // Output position of the vertex, in clip space : MVP * position
     gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
   }
   ```
+
   {: .highlightglslvs }
 
-* Done ! Here is the same triangle as in tutorial 2, still at the origin (0,0,0), but viewed in perspective from point (4,3,3), heads up (0,1,0), with a 45° field of view.
+* 끝났어요! 튜토리얼 2와 같은 삼각형이 있을거에요. 아직도 원점 (0,0,0)에 있는 거 말이죠. 하지만 perspective로 (4,3,3) 좌표에서, 상향 벡터는 (0,1,0)으로 줬으니 45도 각도로 보일거에요. 
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/perspective_red_triangle.png)
 
-In tutorial 6 you'll learn how to modify these values dynamically using the keyboard and the mouse to create a game-like camera, but first, we'll learn how to give our 3D models some colour (tutorial 4) and textures (tutorial 5).
+튜토리얼 6에서는 키보드와 마우스를 이용해서 어떻게 우리가 오늘 썼던 값을 다이나믹하게 바꿀 수 있는지 배울거에요 - 마치 게임 카메라 같을걸요? - 하지만. 우선은 우리의 3D 모델에 어떻게 색상을 넣는지 (tutorial 4)와 텍스쳐를 넣을지부터 배울거에요. (tutorial 5)
 
-# Exercises
 
-*   Try changing the glm::perspective
-*   Instead of using a perspective projection, use an orthographic projection (glm::ortho)
-*   Modify ModelMatrix to translate, rotate, then scale the triangle
-*   Do the same thing, but in different orders. What do you notice ? What is the "best" order that you would want to use for a character ?
+# 연습문제
+
+
+* glm::perspective를 한번 바꿔보세요. 
+* perspective(원근법) projection(투영법)을 쓰는 대신, orthographic projection을 써보세요. (glm::ortho)
+* ModelMatrix를 이동하고, 회전하고, 확대해서 삼각형을 수정해보세요.ㅗ
+* 같은 걸 해보시는데, 한번 다른 순서로 해보시겠어요? 어떤게 최고의 방법이었나요? 어떤 순서로 해야 캐릭터가 예쁘게 보일 것 같았나요?
 
 _Addendum_
 
