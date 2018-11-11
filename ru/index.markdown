@@ -11,9 +11,11 @@ language: ru
 ---
 Этот сайт посвящен **урокам OpenGL 3.3** и выше!
 
-Полный исходный код уроков доступен []здесь](({{ site.baseurl }}/ru/download))
+Полный исходный код уроков доступен [здесь]({{ site.baseurl }}/ru/download)
 
-По любым вопросам, багам, заметкам вы можете всегда обратиться по этому адресу: <a href="mailto:contact@opengl-tutorial.org">contact@opengl-tutorial.org</a>.
+По любым вопросам, багам, заметкам вы можете всегда обратиться по этому адресу: <a href="mailto:contact@opengl-tutorial.org">contact@opengl-tutorial.org</a>, но не забудьте перед этим прочитать [FAQ]({{ site.baseurl }}/ru/miscellaneous/faq/)
+
+Приветствуется любая помощь ресурсу, в том числе [перевод]({{site.baseurl}}/ru/miscellaneous/contribute/translation/) 
 
 *От переводчика:*
 
