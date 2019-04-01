@@ -237,7 +237,7 @@ Let's quote Futurama again :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/camera.png)
 
-When you think about it, the same applies to cameras. It you want to view a moutain from another angle, you can either move the camera... or move the mountain. While not practical in real life, this is really simple and handy in Computer Graphics.
+When you think about it, the same applies to cameras. If you want to view a moutain from another angle, you can either move the camera... or move the mountain. While not practical in real life, this is really simple and handy in Computer Graphics.
 
 So initially your camera is at the origin of the World Space. In order to move the world, you simply introduce another matrix. Let's say you want to move your camera of 3 units to the right (+X). This is equivalent to moving your whole world (meshes included) 3 units to the LEFT ! (-X). While you brain melts, let's do it :
 
