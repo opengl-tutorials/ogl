@@ -20,7 +20,7 @@ language: kr
 
 # 육면체 그리기
 
-하나의 육면체는 6개의 사각 면으로 되어 있습니다. OpenGL은 삼각형만 처리 할 수 있기 때문에, 우리는 12개의 삼각형을 그려야 합니다. 사각면 하나 당 2개의 삼각형이 필요합니다. 삼각형을 그릴 때와 같은 방법으로 Vertex들을 정의합니다.
+하나의 육면체는 6개의 사각형으로 되어 있습니다. OpenGL은 삼각형만 처리할 수 있기 때문에, 우리는 12개의 삼각형을 그려야 합니다. 사각면 하나 당 2개의 삼각형이 필요합니다. 삼각형을 그릴 때와 같은 방법으로 Vertex들을 정의합니다.
 
 ``` cpp
 // 우리 Vertex들입니다. 3개의 연속 된 float 숫자가 하나의 3차원 Vertex입니다.
@@ -67,7 +67,7 @@ static const GLfloat g_vertex_buffer_data[] = {
 };
 ```
 
- OpenGL 버퍼는 표준 함수들을(glGenBuffers, glBindBuffer, glBufferData, glVertexAttribPointer) 이용해서 생성되고, 연결되고(bound), 채워지고, 설정 됩니다. 잠시 Tutorial 2를 복습 겸 살펴보셔도 좋겠습니다. draw call(억지로 한글로 번역하면 이상해서 그냥 draw call 그대로 사용)도 같습니다. 그냥 그려져야 할 정확한 Vertex의 개수만 설정 해 주면 됩니다.:
+ OpenGL 버퍼는 표준 함수들을(glGenBuffers, glBindBuffer, glBufferData, glVertexAttribPointer) 이용해서 생성되고, 연결되고(bound), 채워지고, 설정됩니다. 잠시 Tutorial 2를 복습 겸 살펴보셔도 좋습니다. draw call도 같습니다. 그냥 그려져야 할 정확한 Vertex의 개수만 설정 해 주면 됩니다.:
 
 ``` cpp
 // 삼각형 그리기
@@ -76,19 +76,19 @@ glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangl
 
 이 코드에서 주목 할 몇 가지 :
 
-* 지금은 우리 3D 모델이 고정되어 있습니다. 모델을 수정하려면 소스 코드를 고치고 다시 어플리케이션을 컴파일하고~~ 잘 되길 바래야 합니다.^^  Tutorial 7에서 동적인 모델을 로딩 하는 방법을 배우게 됩니다.
-* 실제로는 각 Vertex가 적어도 3번 적혀 있습니다.("-1.0f,-1.0f,-1.0f"을 위 코드에서 한번 찾아보세요.). 이건 정말 심각한 메모리 낭비입니다.  Tutorial 9에서 어떻게 다룰 지 배우겠습니다. 
+* 지금은 우리 3D 모델이 고정되어 있습니다. 모델을 수정하려면 소스 코드를 고치고 다시 어플리케이션을 컴파일한 뒤 잘 되길 바래야 합니다. Tutorial 7에서 동적인 모델을 로딩하는 방법을 배우게 됩니다.
+* 실제로는 각 Vertex가 적어도 3번 적혀 있습니다.("-1.0f,-1.0f,-1.0f"을 위 코드에서 한번 찾아보세요.). 이건 정말 심각한 메모리 낭비입니다. Tutorial 9에서 어떻게 다룰 지 배우겠습니다. 
 
-이제 흰 바탕에 육면체를 그리는데 필효한 것은 다 준비 되었습니다. 쉐이더를 써보세요! 쫄지말고 한번 시도해 보세요. ^^
+이제 흰 바탕에 육면체를 그리는데 필요한 것은 다 준비 되었습니다. 셰이더를 써보세요! 겁먹지 말고 한번 시도해 보세요.
 
-# Adding colors
+# 색 추가하기
 
-A color is, conceptually, exactly the same as a position : it's just data. In OpenGL terms, they are "attributes". As a matter of fact, we already used this with glEnableVertexAttribArray() and glVertexAttribPointer(). Let's add another attribute. The code is going to be very similar.
+색은 개념적으로 위치와 완전히 같은 데이터일 뿐입니다. OpenGL에서는 이들을 "Attribute"라 부릅니다. 사실 우리는 이미 glEnableVertexAttribArray()와 glVertexAttribPointer() 에서 그것을 사용했습니다. 코드도 아주 비슷한 형태가 될 것입니다.
 
-First, declare your colors : one RGB triplet per vertex. Here I generated some randomly, so the result won't look that good, but you can do something better, for instance by copying the vertex's position into its own color.
+가장 먼저 원하는 색상을 선언하세요. vertex 하나 당 RGB를 나타내는  세 숫자가 필요합니다. 여기에선 색을 무작위로 생성해서 보기 나쁘지만, vertex의 위치를 자신의 색상으로 설정하는 등의 다른 방법을 사용하면 더 좋게 만들 수 있습니다.
 
 ``` cpp
-// One color for each vertex. They were generated randomly.
+// vertex당 색상 하나 씩. 색상은 무작위로 생성되었음
 static const GLfloat g_color_buffer_data[] = {
     0.583f,  0.771f,  0.014f,
     0.609f,  0.115f,  0.436f,
@@ -129,7 +129,7 @@ static const GLfloat g_color_buffer_data[] = {
 };
 ```
 
-The buffer is created, bound and filled in the exact same way as the previous one :
+이전과 완전히 같은 방식으로 버퍼가 생성되고, 연결된 뒤 채워집니다.
 
 ``` cpp
 GLuint colorbuffer;
@@ -138,92 +138,93 @@ glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
 ```
 
-The configuration is also identical :
+설정도 동일합니다,
 
 ``` cpp
-// 2nd attribute buffer : colors
+// 두번째 attribute 버퍼 : 색상들
 glEnableVertexAttribArray(1);
 glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
 glVertexAttribPointer(
-    1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-    3,                                // size
-    GL_FLOAT,                         // type
-    GL_FALSE,                         // normalized?
-    0,                                // stride
-    (void*)0                          // array buffer offset
+    1,                                // attribute. 1인 특별한 이유는 없지만, 셰이더의 레이아웃과 같아야 합니다 
+    3,                                // 크기
+    GL_FLOAT,                         // 타입
+    GL_FALSE,                         // 정규화 여부
+    0,                                // 건너뛰기(stride)
+    (void*)0                          // 배열 버퍼 여백(offset)
 );
 ```
 
-Now, in the vertex shader, we have access to this additional buffer :
+이제 버텍스 셰이더에서 이 새로운 버퍼에 접근할 수 있습니다.
 
 ``` glsl
-// Notice that the "1" here equals the "1" in glVertexAttribPointer
+// 여기의 "1"이 glVertexAttribPointer의 "1"과 같습니다
 layout(location = 1) in vec3 vertexColor;
 ```
 
 {: .highlightglslvs }
 
-In our case, we won't do anything fancy with it in the vertex shader. We will simply forward it to the fragment shader :
+이 예제에서는 버텍스 셰이더로 멋진 일들은 안 할 겁니다. 바로 프래그먼트 셰이더로 전달해 주세요.
 
 ``` glsl
-// Output data ; will be interpolated for each fragment.
+// 출력 데이터. 각 fragment마다 보간(interpolate)될 예정입니다
 out vec3 fragmentColor;
 
 void main(){
 
     [...]
 
-    // The color of each vertex will be interpolated
-    // to produce the color of each fragment
+    // 보간될 vertex의 색상
+    // 각 fragment의 색상을 만든다
     fragmentColor = vertexColor;
 }
 ```
 {: .highlightglslvs }
 
-In the fragment shader, you declare fragmentColor again :
+프래그먼드 셰이더에서 fragmentColor을 다시 선언합니다.
 
 ``` glsl
-// Interpolated values from the vertex shaders
+// 버텍스 셰이더에서 가져온 보간된 값
 in vec3 fragmentColor;
 ```
 {: .highlightglslfs }
 
-... and copy it in the final output color :
+... 그리고 그 값을 최종 출력 색상으로 복사합니다.
 
 ``` glsl
-// Ouput data
+// 출력 데이터
 out vec3 color;
 
 void main(){
-    // Output color = color specified in the vertex shader,
-    // interpolated between all 3 surrounding vertices
+    // Output color = color 정점 셰이더에 명시되어 있습니다 specified in the vertex shader,
+    // 주변 3개의 vertex 로 보간됩니다
     color = fragmentColor;
 }
 ```
 {: .highlightglslfs }
 
-And that's what we get :
+그러면 이것이 결과입니다. And that's what we get :
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/missing_z_buffer.png)
 
 
-Urgh. Ugly. To understand what happens, here's what happens when you draw a "far" triangle and a "near" triangle :
+못생겼죠. 무슨 일이 일어났는지 이해하기 위해, "먼"삼각형과 "가까운"삼각형을 그릴 때 어떻게 되는지 봅시다. Urgh. Ugly. To understand what happens, here's what happens when you draw a "far" triangle and a "near" triangle :
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/FarNear.png)
 
 
-Seems OK. Now draw the "far" triangle last :
+괜찮아 보이죠. 이번엔 "먼"삼각형을 먼저 그립시다. Seems OK. Now draw the "far" triangle last :
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/NearFar.png)
 
 
-It overdraws the "near" one, even though it's supposed to be behind it ! This is what happens with our cube : some faces are supposed to be hidden, but since they are drawn last, they are visible. Let's call the Z-Buffer to the rescue !
+"가까운"삼각형을 덮어 버립니다! 원래는 그 뒤에 있어야 하는데 말이죠. 우리의 육면체에도 같은 일이 생깁니다. 어떤 면들은 숨겨져야 하는데, 나중에 그리면서 보이게 되는 거죠. Z-Buffer의 도움이 필요합니다! It overdraws the "near" one, even though it's supposed to be behind it ! This is what happens with our cube : some faces are supposed to be hidden, but since they are drawn last, they are visible. Let's call the Z-Buffer to the rescue !
 
-*Quick Note 1* : If you don't see the problem, change your camera position to (4,3,-3)
+*참고 1* : 문제가 보이지 않는다면 카메라 위치를 (4,3,-3)으로 바꿔 보세요.
 
-*Quick Note 2* : if "color is like position, it's an attribute", why do we need to declare out vec3 fragmentColor; and in vec3 fragmentColor; for the color, and not for the position ? Because the position is actually a bit special : It's the only thing that is compulsory (or OpenGL wouldn't know where to draw the triangle !). So in the vertex shader, gl_Position is a "built-in" variable.
+*참고 2* : 색상도 위치도 attribute라면, 왜 색상을 위해서만 out vec3 fragmentColor; 과 in vec3 fragmentColor; 을 선언할까요? 사실 위치는 조금 특별하기 때문입니다. 위치는 유일하게 강제적인 attribute (이게 없으면 OpenGL은 삼각형을 어디에 그려야 할 지 모릅니다!). 따라서 gl_Position은 정점 셰이더에 "내장된"(Built-in) 변수입니다.
+"color is like position, it's an attribute", why do we need to declare out vec3 fragmentColor; and in vec3 fragmentColor; for the color, and not for the position ? Because the position is actually a bit special : It's the only thing that is compulsory (or OpenGL wouldn't know where to draw the triangle !). So in the vertex shader, gl_Position is a "built-in" variable.
 
-# The Z-Buffer
+# Z-Buffer
 
 The solution to this problem is to store the depth (i.e. "Z") component of each fragment in a buffer, and each and every time you want to write a fragment, you first check if you should (i.e the new fragment is closer than the previous one).
 
