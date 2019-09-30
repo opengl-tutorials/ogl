@@ -154,7 +154,7 @@ glVertexAttribPointer(
 );
 ```
 
-이제 버텍스 셰이더에서 이 새로운 버퍼에 접근할 수 있습니다.
+이제 정점(vertex) 셰이더에서 이 새로운 버퍼에 접근할 수 있습니다.
 
 ``` glsl
 // 여기의 "1"이 glVertexAttribPointer의 "1"과 같습니다
@@ -163,7 +163,7 @@ layout(location = 1) in vec3 vertexColor;
 
 {: .highlightglslvs }
 
-이 예제에서는 버텍스 셰이더로 멋진 일들은 안 할 겁니다. 바로 프래그먼트 셰이더로 전달해 주세요.
+이 예제에서는 정점 셰이더로 멋진 일들은 안 할 겁니다. 바로 프래그먼트 셰이더로 전달해 주세요.
 
 ``` glsl
 // 출력 데이터. 각 fragment마다 보간(interpolate)될 예정입니다
@@ -183,7 +183,7 @@ void main(){
 프래그먼드 셰이더에서 fragmentColor을 다시 선언합니다.
 
 ``` glsl
-// 버텍스 셰이더에서 가져온 보간된 값
+// 정점 셰이더에서 가져온 보간된 값
 in vec3 fragmentColor;
 ```
 {: .highlightglslfs }
@@ -202,58 +202,57 @@ void main(){
 ```
 {: .highlightglslfs }
 
-그러면 이것이 결과입니다. And that's what we get :
+그 결과는 이렇습니다.
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/missing_z_buffer.png)
 
 
-못생겼죠. 무슨 일이 일어났는지 이해하기 위해, "먼"삼각형과 "가까운"삼각형을 그릴 때 어떻게 되는지 봅시다. Urgh. Ugly. To understand what happens, here's what happens when you draw a "far" triangle and a "near" triangle :
+못생겼죠. 무슨 일이 일어났는지 이해하기 위해, "먼"삼각형과 "가까운"삼각형을 그릴 때 어떻게 되는지 살펴봅시다. 
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/FarNear.png)
 
 
-괜찮아 보이죠. 이번엔 "먼"삼각형을 먼저 그립시다. Seems OK. Now draw the "far" triangle last :
+지금은 괜찮아 보이죠. 이번엔 "먼"삼각형을 먼저 그립시다.
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/NearFar.png)
 
 
-"가까운"삼각형을 덮어 버립니다! 원래는 그 뒤에 있어야 하는데 말이죠. 우리의 육면체에도 같은 일이 생깁니다. 어떤 면들은 숨겨져야 하는데, 나중에 그리면서 보이게 되는 거죠. Z-Buffer의 도움이 필요합니다! It overdraws the "near" one, even though it's supposed to be behind it ! This is what happens with our cube : some faces are supposed to be hidden, but since they are drawn last, they are visible. Let's call the Z-Buffer to the rescue !
+"가까운"삼각형을 덮어 버립니다! 원래는 그 뒤에 있어야 하는데 말이죠. 우리의 육면체에도 같은 일이 생깁니다. 어떤 면들은 숨겨져야 하는데, 나중에 그리면 보이게 되는 거죠. Z-Buffer의 도움이 필요합니다!
 
 *참고 1* : 문제가 보이지 않는다면 카메라 위치를 (4,3,-3)으로 바꿔 보세요.
 
 *참고 2* : 색상도 위치도 attribute라면, 왜 색상을 위해서만 out vec3 fragmentColor; 과 in vec3 fragmentColor; 을 선언할까요? 사실 위치는 조금 특별하기 때문입니다. 위치는 유일하게 강제적인 attribute (이게 없으면 OpenGL은 삼각형을 어디에 그려야 할 지 모릅니다!). 따라서 gl_Position은 정점 셰이더에 "내장된"(Built-in) 변수입니다.
-"color is like position, it's an attribute", why do we need to declare out vec3 fragmentColor; and in vec3 fragmentColor; for the color, and not for the position ? Because the position is actually a bit special : It's the only thing that is compulsory (or OpenGL wouldn't know where to draw the triangle !). So in the vertex shader, gl_Position is a "built-in" variable.
 
 # Z-Buffer
 
-The solution to this problem is to store the depth (i.e. "Z") component of each fragment in a buffer, and each and every time you want to write a fragment, you first check if you should (i.e the new fragment is closer than the previous one).
+이 문제의 해결 방법은 각 fragment의 깊이(Z) 컴포넌트를 버퍼에 저장하고, fragment에 쓸 때마다 그 값을 (새 fragment가 이전에 그려진 것보다 가까이 있는지)확인하는 것입니다. 
 
-You can do this yourself, but it's so much simpler to just ask the hardware to do it itself :
+직접 할 수도 있지만, 하드웨어에게 부탁하는 편이 훨씬 간단하죠.
 
 ``` cpp
-// Enable depth test
+// 깊이 검사(depth test)를 활성화
 glEnable(GL_DEPTH_TEST);
-// Accept fragment if it closer to the camera than the former one
+// 먼저 그려진 것보다 fragment가 가까이 있을 때 그린다
 glDepthFunc(GL_LESS);
 ```
 
-You also need to clear the depth each frame, instead of only the color :
+그리고 깊이 버퍼를 매 프레임마다 비워야 합니다.
 
 ``` cpp
-// Clear the screen
+// 화면을 비운다
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 ```
 
-And this is enough to solve all your problems.
+이렇게 문제를 모두 해결할 수 있습니다.
 
 ![]({{site.baseurl}}/assets/images/tuto-4-colored-cube/one_color_per_vertex.png)
 
-# Exercises
+# 연습
 
-* Draw the cube AND the triangle, at different locations. You will need to generate 2 MVP matrices, to make 2 draw calls in the main loop, but only 1 shader is required.
+* 육면체와 삼각형을 서로 다른 위치에 한번에 그리세요. 메인 루프 안에서 draw call 2번을 수행하기 위해 MVP 매트리스 2개가 필요하지만, 셰이더는 하나만 있으면 됩니다.
 
 
-* Generate the color values yourself. Some ideas : At random, so that colors change at each run; Depending on the position of the vertex; a mix of the two; Some other creative idea :) In case you don't know C, here's the syntax :
+* 색상을 직접 설정해 보세요. 예를 들어, 무작위로 실행할 때마다 바뀌게 하거나, vertex의 위치에 따라 색상이 정해지도록 해 보세요. 둘을 섞어 보기도 하고요. 다른 창의적인 아이디어도 시험해 보세요 :)  C언어를 잘 모르신다면, 이 코드를 참고하세요.
 
 ``` cpp
 static GLfloat g_color_buffer_data[12*3*3];
@@ -264,4 +263,4 @@ for (int v = 0; v < 12*3 ; v++){
 }
 ```
 
-* Once you've done that, make the colors change each frame. You'll have to call glBufferData each frame. Make sure the appropriate buffer is bound (glBindBuffer) before !
+* 해 보셨다면, 매 프레임 색이 바뀌도록 만들어 보세요. 매 프레임 glBufferData를 호출해야 합니다. 알맞은 버퍼가 연결(glBindBuffer)되어 있는지 꼭 확인하세요!
