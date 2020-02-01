@@ -46,26 +46,29 @@ void computeMatricesFromInputs(){
 	// Get mouse position
 	double xpos, ypos;
 
-        // for some reason, on linux, the camera ends up in a random location
-        // because of glfwGetCursorPos glfwSetCursorPos, whereas on Windows
-        // it works just fine.
-        // To make the camera work consistently across platforms, set
-        // the cursor location on first rendering, and only compute the
-        // offset on subsequent renderings.
-        static bool firstPass = true;
-        if(!firstPass){
-          glfwGetCursorPos(window, &xpos, &ypos);
-        }
+    // for some reason, on linux, the camera ends up in a random location
+    // because of glfwGetCursorPos glfwSetCursorPos, whereas on Windows
+    // it works just fine.
+    // To make the camera work consistently across platforms, set
+    // the cursor location on first rendering, and only compute the
+    // offset on subsequent renderings.
+    static bool firstPass = true;
+    if(!firstPass){
+      glfwGetCursorPos(window, &xpos, &ypos);
+    }
 
 	// Reset mouse position for next frame
 	glfwSetCursorPos(window, 1024/2, 768/2);
 
-        // Compute new orientation after the first frame
-        if(!firstPass){
-          // Compute new orientation
-          horizontalAngle += mouseSpeed * float(1024/2 - xpos );
-          verticalAngle   += mouseSpeed * float( 768/2 - ypos );
-        }
+    // Compute new orientation after the first frame
+    if(!firstPass){
+      // Compute new orientation
+      horizontalAngle += mouseSpeed * float(1024/2 - xpos );
+      verticalAngle   += mouseSpeed * float( 768/2 - ypos );
+     }
+	else {
+	  firstPass = false;
+     }
 
 	// Direction : Spherical coordinates to Cartesian coordinates conversion
 	glm::vec3 direction(
