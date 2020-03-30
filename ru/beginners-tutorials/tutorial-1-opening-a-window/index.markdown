@@ -79,7 +79,9 @@ order: 10
 * libgl1-mesa-dev
 * libglu1-mesa-dev
 * libxrandr-dev
-* libext-dev
+* libxext-dev
+* libxcursor-dev
+* libxinerama-dev
 
 Используйте sudo apt-get install ***** или su && yum install ******.
 * [Скачайте исходный код](/?page_id=200) и распакуйте его, к примеру в ~/Projects/OpenGLTutorials/
