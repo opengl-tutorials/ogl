@@ -41,7 +41,7 @@ Plusieurs raisons possibles :
 
 ## GPU/Système d'exploitation incompatible
 
-Vérifie STP si tu avez une carte Intel. Tu peux le faire en utilisant glewinfo, [GPU Caps Viewer](http://www.ozone3d.net/gpu_caps_viewer/) ou n'importe quel autre outil.
+Vérifie STP si tu as une carte Intel. Tu peux le faire en utilisant glewinfo, [GPU Caps Viewer](http://www.ozone3d.net/gpu_caps_viewer/) ou n'importe quel autre outil.
 
 Les cartes graphiques Intel, sauf les récentes HD4000, ne supporte pas OpenGL 3.3. Cela veut dire que la plupart supporte seulement OpenGL 2.1. Tu dois télécharger la version OpenGL 2.1 sur la [page des téléchargements]({{site.baseurl}}/fr/download/), à la place.
 
