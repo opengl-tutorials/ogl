@@ -67,8 +67,18 @@ int main( void )
 	// Get a handle for our "MVP" uniform
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
 
-	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+	// Projection matrix : 45Â° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
+	// glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+	// It's redundant to call glm::radians cause glm::perspective has done it.
+	// Here is the code from [Groovounet/glm, version 0.9.3.4](https://github.com/Groovounet/glm/releases/tag/0.9.3.4)
+	// template <typename valType> 
+	// GLM_FUNC_QUALIFIER detail::tmat4x4<valType> perspective(valType const & fovy, ..., valType const & zNear, ...)
+	// {
+	//	...
+	// 	valType range = tan(radians(fovy / valType(2))) * zNear;
+	//	...
+	// }
+	glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 	// Or, for an ortho camera :
 	//glm::mat4 Projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f); // In world coordinates
 	
