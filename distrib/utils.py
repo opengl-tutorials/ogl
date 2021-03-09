@@ -26,30 +26,7 @@ def SetVisualStudio11ExpressPath(path):
 	global VisualStudio11ExpressPath
 	CMakePath = path
 
-tests = [
-	('../tutorial16_shadowmaps/tutorial16_shadowmaps'                 , '../tutorial16_shadowmaps/tutorial16.cpp'               , '../tutorial16_shadowmaps/screenshots/ref.png'                    ),
-	('../tutorial14_render_to_texture/tutorial14_render_to_texture'   , '../tutorial14_render_to_texture/tutorial14.cpp'        , '../tutorial14_render_to_texture/screenshots/wavvy.png'           ),
-	('../misc05_picking/misc05_picking_slow_easy'                     , '../misc05_picking/misc05_picking_slow_easy.cpp'        , '../misc05_picking/screenshots/ref.png'                           ),
-	('../misc05_picking/misc05_picking_custom'                        , '../misc05_picking/misc05_picking_custom.cpp'           , '../misc05_picking/screenshots/ref.png'                           ),
-	('../misc05_picking/misc05_picking_BulletPhysics'                 , '../misc05_picking/misc05_picking_BulletPhysics.cpp'    , '../misc05_picking/screenshots/ref.png'                           ),
-	('../tutorial09_vbo_indexing/tutorial09_AssImp'                   , '../tutorial09_vbo_indexing/tutorial09_AssImp.cpp'      , '../tutorial09_vbo_indexing/screenshots/ref.png'                  ),
-	('../tutorial02_red_triangle/tutorial02_red_triangle'             , '../tutorial02_red_triangle/tutorial02.cpp'             , '../tutorial02_red_triangle/screenshots/red_triangle.png'         ),
-	('../tutorial03_matrices/tutorial03_matrices'                     , '../tutorial03_matrices/tutorial03.cpp'                 , '../tutorial03_matrices/screenshots/perspective_red_triangle.png' ),
-	('../tutorial04_colored_cube/tutorial04_colored_cube'             , '../tutorial04_colored_cube/tutorial04.cpp'             , '../tutorial04_colored_cube/screenshots/one_color_per_vertex.png' ),
-	('../tutorial05_textured_cube/tutorial05_textured_cube'           , '../tutorial05_textured_cube/tutorial05.cpp'            , '../tutorial05_textured_cube/screenshots/textured_cube.png'       ),
-	('../tutorial06_keyboard_and_mouse/tutorial06_keyboard_and_mouse' , '../tutorial06_keyboard_and_mouse/tutorial06.cpp'       , '../tutorial06_keyboard_and_mouse/screenshots/ref.png'            ),
-	('../tutorial07_model_loading/tutorial07_model_loading'           , '../tutorial07_model_loading/tutorial07.cpp'            , '../tutorial07_model_loading/screenshots/ref.png'                 ),
-	('../tutorial08_basic_shading/tutorial08_basic_shading'           , '../tutorial08_basic_shading/tutorial08.cpp'            , '../tutorial08_basic_shading/screenshots/ref.png'                 ),
-	('../tutorial09_vbo_indexing/tutorial09_vbo_indexing'             , '../tutorial09_vbo_indexing/tutorial09.cpp'             , '../tutorial09_vbo_indexing/screenshots/ref.png'                  ),
-	('../tutorial10_transparency/tutorial10_transparency'             , '../tutorial10_transparency/tutorial10.cpp'             , '../tutorial10_transparency/screenshots/ref.png'                  ),
-	('../tutorial11_2d_fonts/tutorial11_2d_fonts'                     , '../tutorial11_2d_fonts/tutorial11.cpp'                 , '../tutorial11_2d_fonts/screenshots/clock.png'                    ),
-	('../tutorial13_normal_mapping/tutorial13_normal_mapping'         , '../tutorial13_normal_mapping/tutorial13.cpp'           , '../tutorial13_normal_mapping/screenshots/ref.png'                ),
-	('../tutorial15_lightmaps/tutorial15_lightmaps'                   , '../tutorial15_lightmaps/tutorial15.cpp'                , '../tutorial15_lightmaps/screenshots/ref.png'                     ),
-	('../tutorial16_shadowmaps/tutorial16_shadowmaps_simple'          , '../tutorial16_shadowmaps/tutorial16_SimpleVersion.cpp' , '../tutorial16_shadowmaps/screenshots/refsimple.png'              ),
-	('../tutorial17_rotations/tutorial17_rotations'                   , '../tutorial17_rotations/tutorial17.cpp'                , '../tutorial17_rotations/screenshots/ref.png'                     ),
-	('../tutorial18_billboards_and_particles/tutorial18_billboards'   , '../tutorial18_billboards_and_particles/tutorial18_billboards.cpp' , '../tutorial18_billboards_and_particles/screenshots/ref1.png' ),
-	('../tutorial18_billboards_and_particles/tutorial18_particles'    , '../tutorial18_billboards_and_particles/tutorial18_particles.cpp'  , '../tutorial18_billboards_and_particles/screenshots/ref2.png' )
-]
+tests = [ ]
 
 def RemoveDirs(paths):
 	for path in paths:	
