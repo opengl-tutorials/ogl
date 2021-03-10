@@ -59,11 +59,11 @@ int main( void )
 	glBindVertexArray(VertexArrayID);
 
 	GLuint yellowTriangleProgramID = LoadShaders(
-	        "SimpleVertexShader.glsl",
+	        "TransformVertexShader.glsl",
 	        "YellowTriangleFragmentShader.glsl" );
 
     GLuint purpleTriangleProgramID = LoadShaders(
-            "SimpleVertexShader.glsl",
+            "TransformVertexShader.glsl",
             "PurpleTriangleFragmentShader.glsl" );
 
 
@@ -171,6 +171,7 @@ int main( void )
 	glDeleteBuffers(1, &vertexbuffer);
 	glDeleteVertexArrays(1, &VertexArrayID);
 	glDeleteProgram(yellowTriangleProgramID);
+    glDeleteProgram(purpleTriangleProgramID);
 
 	glfwTerminate();
 

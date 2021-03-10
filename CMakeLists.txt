@@ -56,23 +56,41 @@ add_definitions(
 	-D_CRT_SECURE_NO_WARNINGS
 )
 
-# Tutorial 2
-add_executable(task_1_triangles
+# task 1: triangles
+add_executable(task_1-triangles
 	task_1/triangles/triangles.cpp
 	common/shader.cpp
 	common/shader.hpp
 
 		task_1/triangles/YellowTriangleFragmentShader.glsl
-	task_1/triangles/PurpleTriangleFragmentShader.glsl
-	task_1/triangles/SimpleVertexShader.glsl
-	)
-target_link_libraries(task_1_triangles
+		task_1/triangles/PurpleTriangleFragmentShader.glsl
+		task_1/triangles/TransformVertexShader.glsl
+		)
+target_link_libraries(task_1-triangles
 	${ALL_LIBS}
 	)
 # Xcode and Visual working directories
-set_target_properties(task_1_triangles PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/task_1/triangles/")
-create_target_launcher(task_1_triangles WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/task_1/triangles/")
-create_default_target_launcher(task_1_triangles WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/task_1/triangles/")
+set_target_properties(task_1-triangles PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/task_1/triangles/")
+create_target_launcher(task_1-triangles WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/task_1/triangles/")
+create_default_target_launcher(task_1-triangles WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/task_1/triangles/")
+
+# task 1: three dim
+add_executable(task_1-three_dim
+		task_1/three_dim/three_dim.cpp
+
+		common/shader.cpp
+		common/shader.hpp
+
+		task_1/three_dim/ColorFragmentShader.glsl
+		task_1/triangles/TransformVertexShader.glsl
+		)
+target_link_libraries(task_1-three_dim
+		${ALL_LIBS}
+		)
+# Xcode and Visual working directories
+set_target_properties(task_1-three_dim PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/task_1/three_dim/")
+create_target_launcher(task_1-three_dim WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/task_1/three_dim/")
+create_default_target_launcher(task_1-three_dim WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/task_1/three_dim/")
 
 
 
@@ -89,8 +107,13 @@ SOURCE_GROUP(shaders REGULAR_EXPRESSION ".*/.*shader$" )
 
 if (NOT ${CMAKE_GENERATOR} MATCHES "Xcode" )
 	add_custom_command(
-		TARGET task_1_triangles POST_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/task_1_triangles${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/task_1/triangles/"
+		TARGET task_1-triangles POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/task_1-triangles${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/task_1/triangles/"
+	)
+
+	add_custom_command(
+			TARGET task_1-three_dim POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/task_1-three_dim${CMAKE_EXECUTABLE_SUFFIX}" "${CMAKE_CURRENT_SOURCE_DIR}/task_1/three_dim/"
 	)
 elseif (${CMAKE_GENERATOR} MATCHES "Xcode" )
 
