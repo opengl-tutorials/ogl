@@ -104,9 +104,11 @@ int main( void )
 
     int64_t cameraRotationRadius = 3;
 
+    double startTime = glfwGetTime();
+
 	do{
 
-        double startTime = glfwGetTime();
+	    double lastTime = startTime;
 
 	    double cameraX = cos(M_PI * 2 * currentRotation / timePerRotation) * cameraRotationRadius;
 	    double cameraZ = sin(M_PI * 2 * currentRotation / timePerRotation) * cameraRotationRadius;
@@ -150,8 +152,8 @@ int main( void )
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 
-        double endTime = glfwGetTime();
-        double elapsedTime = (endTime - startTime) * 1000;
+        startTime = glfwGetTime();
+        double elapsedTime = (startTime - lastTime) * 1000;
         int64_t freeTime = std::max(timePerFrame - elapsedTime, 0.0);
 
         // Sleep until next frame to keep FPS rate at the certain level
@@ -160,6 +162,9 @@ int main( void )
         }
 
 		currentRotation += elapsedTime + freeTime;
+        if (currentRotation >= timePerRotation) {
+            currentRotation -= static_cast<int64_t>(currentRotation / timePerRotation) * timePerRotation;
+        }
 
 	} while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 );
 
