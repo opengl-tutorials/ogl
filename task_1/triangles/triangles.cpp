@@ -1,6 +1,9 @@
+#include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <stdio.h>
 #include <stdlib.h>
+#include <thread>
 
 #include <GL/glew.h>
 
@@ -91,14 +94,22 @@ int main( void )
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    int64_t rotationFrequency = 1000;
-    int64_t rotationIteration = 0;
+    // Fixed FPS
+    int targetFPS = 60;
+    double timePerFrame = 1000.0 / targetFPS;
+
+    // Fixed rotation frequency
+    double timePerRotation = 8 * 1000;
+    double currentRotation = 0;
+
     int64_t cameraRotationRadius = 3;
 
 	do{
 
-	    double cameraX = cos(M_PI * 2 * rotationIteration / rotationFrequency) * cameraRotationRadius;
-	    double cameraZ = sin(M_PI * 2 * rotationIteration / rotationFrequency) * cameraRotationRadius;
+        double startTime = glfwGetTime();
+
+	    double cameraX = cos(M_PI * 2 * currentRotation / timePerRotation) * cameraRotationRadius;
+	    double cameraZ = sin(M_PI * 2 * currentRotation / timePerRotation) * cameraRotationRadius;
 
         // Camera matrix
         glm::mat4 View = glm::lookAt(
@@ -139,7 +150,16 @@ int main( void )
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 
-		++rotationIteration;
+        double endTime = glfwGetTime();
+        double elapsedTime = (endTime - startTime) * 1000;
+        int64_t freeTime = std::max(timePerFrame - elapsedTime, 0.0);
+
+        // Sleep until next frame to keep FPS rate at the certain level
+        if (freeTime > 0) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(freeTime));
+        }
+
+		currentRotation += elapsedTime + freeTime;
 
 	} while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 );
 
