@@ -1,9 +1,14 @@
 # CMake entry point
-cmake_minimum_required (VERSION 3.0)
+cmake_minimum_required (VERSION 3.10)
+
+if( CMAKE_CXX_COMPILER MATCHES ".*mingw.*")
+	message(STATUS "Cross-compiling using ${CMAKE_CXX_COMPILER}... Skip compiler checks")
+	set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
+endif()
+
 project (ogl-hw)
 
 find_package(OpenGL REQUIRED)
-
 
 if( CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR )
 	message( FATAL_ERROR "Please select another Build Directory ! (and give it a clever name, like bin_Visual2012_64bits/)" )
@@ -118,3 +123,8 @@ if (NOT ${CMAKE_GENERATOR} MATCHES "Xcode" )
 elseif (${CMAKE_GENERATOR} MATCHES "Xcode" )
 
 endif (NOT ${CMAKE_GENERATOR} MATCHES "Xcode" )
+
+if( CMAKE_CXX_COMPILER MATCHES ".*mingw.*")
+	target_link_options(task_1-triangles PUBLIC "-static")
+	target_link_options(task_1-three_dim PUBLIC "-static")
+endif()

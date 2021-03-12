@@ -1,5 +1,4 @@
 **/*.dll
-**/*.exe
 build/*
 bin-*/*
 distrib/build_*/*
@@ -11,3 +10,5 @@ Thumbs.db
 OpenGL-tutorial_v*
 **.mtl
 .DS_Store
+*build*
+.idea
