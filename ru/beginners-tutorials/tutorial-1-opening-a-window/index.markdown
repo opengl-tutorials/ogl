@@ -48,20 +48,28 @@ order: 10
 * Обновление драйверов должно быть для вас легкой задачей. Все что вам нужно - это просто сходить на сайт NVidia или AMD, скачать оттуда драйверы и установить их. Если вдруг вы не знаете точно модель вашей видеокарты, то вы можете посмотреть ее в свойствах адаптера, для этого перейдите в Панель управления -> Система -> Диспетчер устройств -> Видео адаптер. Если у вас встроенный Intel GPU, то драйверы всегда поставляются в комплекте.
 * Мы предлагаем вам использовать Visual Studio 2015 Express for Desktop в качестве среды, которую вы можете бесплатно скачать [здесь](https://www.visualstudio.com/en-US/products/visual-studio-express-vs). Если же вы захотите использовать MinGW, то мы рекомендуем вам [Qt Creator](http://qt-project.org/). В любом случае, устанавливайте то, что вам необходимо и хотя шаги в уроках рассматриваются в Visual Studio, скорее всего различия в других IDE будут минимальны.
 * Скачайте [CMake](http://www.cmake.org/cmake/resources/software.html) и установите его.
-* [Скачайте исходный код](/?page_id=200), распакуйте его к примеру в C:/Users/XYZ/Projects/OpenGLTutorials
-* Запустите CMake. В первом поле укажите путь к распакованной папке. Если сомневаетесь, то это та папка, где находится файл CMakeLists.txt. Во втором поле укажите папку, в которую будут записываться исполняемые файлы, например вы можете указать здесь C:/Users/XYZ/Projects/OpenGLTutorials-build-Visual2010-32bits или что-то подобное. К слову, эта папка может находиться где угодно.[<img title="CMake" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/CMake.png" width="846" height="392" />]({{site.baseurl}}/assets/images/tuto-1-window/CMake.png)
+* [Скачайте исходный код](http://www.opengl-tutorial.org/ru/download/), распакуйте его к примеру в C:/Users/XYZ/Projects/OpenGLTutorials
+* Запустите CMake. В первом поле укажите путь к распакованной папке. Если сомневаетесь, то это та папка, где находится файл CMakeLists.txt. Во втором поле укажите папку, в которую будут записываться исполняемые файлы, например вы можете указать здесь C:/Users/XYZ/Projects/OpenGLTutorials-build-Visual2010-32bits или что-то подобное. К слову, эта папка может находиться где угодно.
+
+![]({{site.baseurl}}/assets/images/tuto-1-window/CMake.png)
+
 * Нажмите кнопку Configure. Так как вы впервые настраиваете проект CMake спросит вас, какой именно компилятор вы хотите использовать. Здесь все упирается в ваш инструментарий, который вы выбрали в шаге 2. Кстати, если у вас Windows 64-bit, то вы можете выбрать 64 разрядные компиляторы, но если вы не уверены, то используйте 32.
 * Нажимайте Configure до тех пор, пока не исчезнут все красные строки. Далее нажмите Generate. Теперь ваш Visual Studio проект создан и вы можете забыть про CMake. Можете даже удалить его, если хотите :)
 * Откройте в Visual Studio файл Tutorials.sln в папке, которую вы указывали во втором поле главного окна CMake (C:/Users/XYZ/Projects/OpenGLTutorials-build-Visual2010-32bits).
-[<img title="directories" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/directories.png" width="560" height="302" />]({{site.baseurl}}/assets/images/tuto-1-window/directories.png)
+
+![]({{site.baseurl}}/assets/images/tuto-1-window/directories.png)
+
 В меню Build нажмите Build All. Исходный код каждого урока и зависимостей будет откомпилирован. Также, каждый исполняемый файл будет скопирован обратно в C:/Users/XYZ/Projects/OpenGLTutorials . Надеемся у вас не возникнет ошибок.
-[<img title="visual_2010" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/visual_2010-300x212.png" width="300" height="212" />]({{site.baseurl}}/assets/images/tuto-1-window/visual_2010.png)
+
+![]({{site.baseurl}}/assets/images/tuto-1-window/visual_2010.png)
+
 * Откройте C:/Users/XYZ/Projects/OpenGLTutorials/playground и запустите playground.exe. Если все прошло гладко, то у вас должно появиться черное окно.
-[<img title="empty_window" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/empty_window-300x231.png" width="300" height="231" />]({{site.baseurl}}/assets/images/tuto-1-window/empty_window.png)
+
+![]({{site.baseurl}}/assets/images/tuto-1-window/empty_window.png)
 
 Вы также можете запустить любой урок из Visual Studio. Для этого нажмите правой кнопкой мыши на Playground и выберете "Choose as startup project". Для отладки используйте клавишу F5.
 
-![](http://www.opengl-tutorial.org/wp-content/uploads/2011/04/WorkingDir-300x211.png" width="300" height="211" /></a><a href="http://www.opengl-tutorial.org/wp-content/uploads/2012/04/StartupProject.png"><img title="StartupProject)
+![]({{site.baseurl}}/assets/images/tuto-1-window/StartupProject.png)
 
 
 ##Компиляция в Linux
@@ -82,7 +90,7 @@ order: 10
 * libext-dev
 
 Используйте sudo apt-get install ***** или su && yum install ******.
-* [Скачайте исходный код](/?page_id=200) и распакуйте его, к примеру в ~/Projects/OpenGLTutorials/
+* [Скачайте исходный код](http://www.opengl-tutorial.org/ru/download/) и распакуйте его, к примеру в ~/Projects/OpenGLTutorials/
 * Перейдите в ~/Projects/OpenGLTutorials/ и введите следующие команды:
 
 * mkdir build
@@ -111,19 +119,20 @@ Mac OS не поддерживает OpenGL 3.3. Последние Маки с 
 
 * Установите XCode из Mac App Store
 * [Скачайте CMake](http://www.cmake.org/cmake/resources/software.html) и установите .dmg . Нет необходимости устанавливать утилиты командной строки.
-* [Скачайте исходный код](/?page_id=200) (**обязательно версия 2.1**) и распакуйте его к примеру в ~/Projects/OpenGLTutorials/ .
+* [Скачайте исходный код](http://www.opengl-tutorial.org/ru/download/) (**обязательно версия 2.1**) и распакуйте его к примеру в ~/Projects/OpenGLTutorials/ .
 * Запустите CMake (Applications -> CMake). В первом поле ввода укажите путь к папке с распакованным исходным кодом уроков. Если сомневаетесь, то это папка, содержащая файл CMakeLists.txt. Во втором поле укажите где вы хотите сохранить исполняемые файлы. К примеру это может быть ~/Projects/OpenGLTutorials_bin_XCode/. Обратите внимание, эта папка может находиться где угодно.
 * Нажмите на кнопку Configure. Так как вы используете конфигурацию впервые, то CMake спросит у вас какой компилятор вы хотите использовать. Выберете XCode.
 * Нажимайте Configure до тех пор, пока не исчезнут все красные строки. Нажмите Generate. Теперь проектный файл для XCode создан и вы можете забыть о CMake, и даже можете удалить его, если захотите.
 * Откройте ~/Projects/OpenGLTutorials_bin_XCode/ . Найдите и откройте файл Tutorials.xcodeproj
-* Выберете урок, который хотите запустить в XCode Scheme Panel и нажмите кнопку Run для компиляции и запуска[<img title="Xcode-projectselection" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/Xcode-projectselection.png" width="826" height="330" />]({{site.baseurl}}/assets/images/tuto-1-window/Xcode-projectselection.png)
+* Выберете урок, который хотите запустить в XCode Scheme Panel и нажмите кнопку Run для компиляции и запуска
 
+![]({{site.baseurl}}/assets/images/tuto-1-window/Xcode-projectselection.png)
 
 ##Внимание для пользователей Code::Blocks
 
 Из-за 2 багов (один в C::B, один в CMake), вам необходимо изменить командную строку Project -> Build Options -> Make commands, как указано на скриншоте:
 
-[<img title="CodeBlocksFix" alt="" src="http://www.opengl-tutorial.org/wp-content/uploads/2011/04/CodeBlocksFix.png" width="746" height="340" />]({{site.baseurl}}/assets/images/tuto-1-window/CodeBlocksFix.png)
+![]({{site.baseurl}}/assets/images/tuto-1-window/CodeBlocksFix.png)
 
 Вам также необходимо установить рабочую директорию: Project -> Properties -> Build targets -> tutorial N -> рабочая директория исполняемых файлов (это src_dir/tutorial_N)
 
@@ -143,7 +152,7 @@ Mac OS не поддерживает OpenGL 3.3. Последние Маки с 
 
 Наконец! Настало время кода OpenGL!
 
-Хотя... Все уроки будут показывать вам низко-уровневый путь для тех или иных задач, таким образом вы будете видеть, что здесь нет никакой магии, однако открытие окна - задача скучная, поэтому мы будем использовать внешнюю библиотеку GLFW для этой работы. Если вы хотите сделать это сами, то вам необходимо использовать Win32 API в ОС Windows, X11 API в Linux, Cocoa API в Mac. Также вы можете использовать другие библиотеки, такие как: SFML, FreeGLUT, SDL и подобные (см. страницу [Ссылки](/?page_id=210)).
+Хотя... Все уроки будут показывать вам низко-уровневый путь для тех или иных задач, таким образом вы будете видеть, что здесь нет никакой магии, однако открытие окна - задача скучная, поэтому мы будем использовать внешнюю библиотеку GLFW для этой работы. Если вы хотите сделать это сами, то вам необходимо использовать Win32 API в ОС Windows, X11 API в Linux, Cocoa API в Mac. Также вы можете использовать другие библиотеки, такие как: SFML, FreeGLUT, SDL и подобные (см. страницу [Ссылки](http://www.opengl-tutorial.org/ru/miscellaneous/useful-tools-links/)).
 
 Итак, поехали! Первое что мы делаем - это разбираемся с зависимостями. Нам необходимо базовый функционал для вывода в консоль:
 
