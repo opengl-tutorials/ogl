@@ -14,23 +14,23 @@ categories: []
 tags: []
 ---
 
-<span style="color: #ff0000;">[Tutorial 1]({{site.baseurl}}/beginners-tutorials/tutorial-1-opening-a-window/) explains how to build the source code. Please read it !</span>
+<span style="color: #ff0000;">В [Уроке 1]({{site.baseurl}}/ru/beginners-tutorials/tutorial-1-opening-a-window/) объяснено как правильно собрать проект. Прочитайте пожалуйста!</span>
 
-You can download the ZIP archive containing the whole set of tutorials here:
+Здесь вы можете скачать ZIP архив, содержащий весь набор уроков:
 
-* [Tutorials source code on GitHub, .zip](https://github.com/opengl-tutorials/ogl/archive/master.zip)
+* [Исходный код уроков на GitHub, .zip](https://github.com/opengl-tutorials/ogl/archive/master.zip)
 
-For older computers, you can try the 2.1 branch (not updated as often) :
+Для более старых компьютеров, вы можете попробовать версию уроков для OpenGL 2.1 (может быть устаревшей):
 
-* [Tutorials source code on GitHub, Opengl 2.1, .zip](https://github.com/opengl-tutorials/ogl/archive/2.1_branch.zip)
+* [Исходный код уроков на GitHub, OpenGL 2.1, .zip](https://github.com/opengl-tutorials/ogl/archive/2.1_branch.zip)
 
-Alternatively, you can directly checkout the Git repository :
+Также, вы можете клонировать Git репозиторий напрямую:
 
-* [Checkout the source on GitHub](https://github.com/opengl-tutorials/ogl)
+* [Репозиторий с исходным кодом уроков на GitHub](https://github.com/opengl-tutorials/ogl)
 
-If you have an issue building or running the code, <span style="color: #ff0000;">please read the [FAQ]({{ site.baseurl }}/miscellaneous/faq/)</span>.
+Если у вас возникла проблема со сборкой или запуском проекта, <span style="color: #ff0000;">пожалуйста, прочитайте [FAQ]({{ site.baseurl }}/miscellaneous/faq/)</span>.
 
-All the source code on this site (except third-party libraries) is released under the WTFPL Public Licence :
+Весь исходный код на этом сайте (за исключением сторонних библиотек) выпускается под WTFPL Public Licence:
 ```
 
            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
@@ -48,4 +48,4 @@ as the name is changed.
  0. You just DO WHAT THE FUCK YOU WANT TO.
 ```
 
-All the tutorial material is available under Creative-Common license: CC-BY-NC-ND available [here](http://creativecommons.org/licenses/by-nc-nd/3.0/fr/deed.en)
+Все материалы уроков доступны под лицензией Creative-Common: CC-BY-NC-ND доступны [здесь](http://creativecommons.org/licenses/by-nc-nd/3.0/fr/deed.en)
