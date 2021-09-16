@@ -14,7 +14,7 @@ tags: []
 {:toc}
 
 > _The engines don't move the ship at all. The ship stays where it is and the engines move the universe around it._
-> 
+>
 > Futurama
 
 **This is the single most important tutorial of the whole set. Be sure to read it at least eight times.**
@@ -51,7 +51,7 @@ In 3D graphics we will mostly use 4x4 matrices. They will allow us to transform 
 
 This isn't as scary as it looks. Put your left finger on the a, and your right finger on the x. This is _ax_. Move your left finger to the next number (b), and your right finger to the next number (y). You've got _by_. Once again : _cz_. Once again : _dw_. ax + by + cz + dw. You've got your new x ! Do the same for each line, and you'll get your new (x,y,z,w) vector.
 
-Now this is quite boring to compute, an we will do this often, so let's ask the computer to do it instead.
+Now this is quite boring to compute, and we will do this often, so let's ask the computer to do it instead.
 
 **In C++, with GLM:**
 
@@ -68,7 +68,7 @@ glm::vec4 transformedVector = myMatrix * myVector; // Again, in this order ! thi
 mat4 myMatrix;
 vec4 myVector;
 // fill myMatrix and myVector somehow
-vec4 transformedVector = myMatrix * myVector; // Yeah, it's pretty much the same than GLM
+vec4 transformedVector = myMatrix * myVector; // Yeah, it's pretty much the same as GLM
 ```
 {: .highlightglslvs }
 
@@ -94,7 +94,7 @@ Let's now see what happens to a vector that represents a direction towards the -
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/translationExampleDirection1.png)
 
-... ie our original (0,0,-1,0) direction, which is great because as I said ealier, moving a direction does not make sense.
+... i.e. our original (0,0,-1,0) direction, which is great because as I said ealier, moving a direction does not make sense.
 
 So, how does this translate to code ?
 
@@ -102,7 +102,7 @@ So, how does this translate to code ?
 
 ``` cpp
 #include <glm/gtx/transform.hpp> // after <glm/glm.hpp>
- 
+
 glm::mat4 myMatrix = glm::translate(glm::mat4(), glm::vec3(10.0f, 0.0f, 0.0f));
 glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);
 glm::vec4 transformedVector = myMatrix * myVector; // guess the result
@@ -131,7 +131,7 @@ glm::mat4 myIdentityMatrix = glm::mat4(1.0f);
 
 ## Scaling matrices
 
-Scaling matrices are quite easy too :
+Scaling matrices is quite easy too :
 
 ![]({{site.baseurl}}/assets/images/tuto-3-matrix/scalingMatrix.png)
 
@@ -152,7 +152,7 @@ glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
 
 ## Rotation matrices
 
-These are quite complicated. I'll skip the details here, as it's not important to know their exact layout for everyday use. For more information, please have a look to the [Matrices and Quaternions FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html) (popular resource, probably available in your language as well). You can also have a look at the [Rotations tutorials]({{site.baseurl}}/intermediate-tutorials/tutorial-17-quaternions) 
+These are quite complicated. I'll skip the details here, as it's not important to know their exact layout for everyday use. For more information, please have a look to the [Matrices and Quaternions FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html) (popular resource, probably available in your language as well). You can also have a look at the [Rotations tutorials]({{site.baseurl}}/intermediate-tutorials/tutorial-17-quaternions).
 
 **In C++ :**
 
@@ -174,7 +174,7 @@ TransformedVector = TranslationMatrix * RotationMatrix * ScaleMatrix * OriginalV
 
 Writing the operations in another order wouldn't produce the same result. Try it yourself :
 
-- make one step ahead ( beware of your computer ) and turn left;
+- make one step ahead (beware of your computer) and turn left;
 
 - turn left, and make one step ahead
 
@@ -342,17 +342,17 @@ transformed_vertex = MVP * in_vertex;
   ``` cpp
   // Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
   glm::mat4 Projection = glm::perspective(glm::radians(45.0f), (float) width / (float)height, 0.1f, 100.0f);
-  
+
   // Or, for an ortho camera :
   //glm::mat4 Projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f); // In world coordinates
-  
+
   // Camera matrix
   glm::mat4 View = glm::lookAt(
       glm::vec3(4,3,3), // Camera is at (4,3,3), in World Space
       glm::vec3(0,0,0), // and looks at the origin
       glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
       );
-  
+
   // Model matrix : an identity matrix (model will be at the origin)
   glm::mat4 Model = glm::mat4(1.0f);
   // Our ModelViewProjection : multiplication of our 3 matrices
@@ -365,7 +365,7 @@ transformed_vertex = MVP * in_vertex;
   // Get a handle for our "MVP" uniform
   // Only during the initialisation
   GLuint MatrixID = glGetUniformLocation(programID, "MVP");
-  
+
   // Send our transformation to the currently bound shader, in the "MVP" uniform
   // This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
   glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
@@ -376,10 +376,10 @@ transformed_vertex = MVP * in_vertex;
   ``` glsl
   // Input vertex data, different for all executions of this shader.
   layout(location = 0) in vec3 vertexPosition_modelspace;
-  
+
   // Values that stay constant for the whole mesh.
   uniform mat4 MVP;
-  
+
   void main(){
     // Output position of the vertex, in clip space : MVP * position
     gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
