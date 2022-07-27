@@ -3,7 +3,7 @@
 // Interpolated values from the vertex shaders
 in vec2 UV;
 
-// Ouput data
+// Output data
 out vec3 color;
 
 // Values that stay constant for the whole mesh.
