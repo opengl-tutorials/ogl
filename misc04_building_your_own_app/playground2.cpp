@@ -21,7 +21,7 @@ int main( void )
 #endif
 
 
-	// Initialise GLFW
+	// Initialize GLFW
 	if( !glfwInit() )
 	{
 		fprintf( stderr, "Failed to initialize GLFW\n" );

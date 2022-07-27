@@ -23,7 +23,7 @@ using namespace glm;
 
 int main( void )
 {
-	// Initialise GLFW
+	// Initialize GLFW
 	if( !glfwInit() )
 	{
 		fprintf( stderr, "Failed to initialize GLFW\n" );
@@ -35,7 +35,7 @@ int main( void )
 	glfwWindowHint(GLFW_RESIZABLE,GL_FALSE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make macOS happy; should not be needed
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Open a window and create its OpenGL context
@@ -59,7 +59,7 @@ int main( void )
 
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-    // Hide the mouse and enable unlimited mouvement
+    // Hide the mouse and enable unlimited movement
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     
     // Set the mouse at the center of the screen
@@ -71,7 +71,7 @@ int main( void )
 
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
-	// Accept fragment if it closer to the camera than the former one
+	// Accept fragment if it is closer to the camera than the former one
 	glDepthFunc(GL_LESS);
 
 	GLuint VertexArrayID;
@@ -186,7 +186,7 @@ int main( void )
 		glUniform1i(TextureID, 0);
 
 		// This is the only interesting part of the tutorial.
-		// This is equivalent to mlutiplying (1,0,0) and (0,1,0) by inverse(ViewMatrix).
+		// This is equivalent to multiplying (1,0,0) and (0,1,0) by inverse(ViewMatrix).
 		// ViewMatrix is orthogonal (it was made this way), 
 		// so its inverse is also its transpose, 
 		// and transposing a matrix is "free" (inversing is slooow)
