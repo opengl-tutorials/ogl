@@ -82,19 +82,23 @@ void computeMatricesFromInputs(){
 	glm::vec3 left = (-1.0f)*right;
 
 	// Move forward
-	if (glfwGetKey( window, GLFW_KEY_UP ) == GLFW_PRESS){
+	if (glfwGetKey( window, GLFW_KEY_UP ) == GLFW_PRESS
+		|| glfwGetKey( window, GLFW_KEY_W ) == GLFW_PRESS){
 		position += forwards * deltaTime * speed;
 	}
 	// Move backward
-	if (glfwGetKey( window, GLFW_KEY_DOWN ) == GLFW_PRESS){
+	if (glfwGetKey( window, GLFW_KEY_DOWN ) == GLFW_PRESS
+		|| glfwGetKey( window, GLFW_KEY_S ) == GLFW_PRESS){
 		position += backwards * deltaTime * speed;
 	}
 	// Strafe right
-	if (glfwGetKey( window, GLFW_KEY_RIGHT ) == GLFW_PRESS){
+	if (glfwGetKey( window, GLFW_KEY_RIGHT ) == GLFW_PRESS
+		|| glfwGetKey( window, GLFW_KEY_D ) == GLFW_PRESS){
 		position += right * deltaTime * speed;
 	}
 	// Strafe left
-	if (glfwGetKey( window, GLFW_KEY_LEFT ) == GLFW_PRESS){
+	if (glfwGetKey( window, GLFW_KEY_LEFT ) == GLFW_PRESS
+		|| glfwGetKey( window, GLFW_KEY_A ) == GLFW_PRESS){
 		position += left * deltaTime * speed;
 	}
 	// Move up
