@@ -19,11 +19,12 @@ glm::mat4 getProjectionMatrix(){
 	return ProjectionMatrix;
 }
 
+const float PI = glm::pi<float>();
 
 // Initial position : on +Z
 glm::vec3 position = glm::vec3( 0, 0, 5 ); 
 // Initial horizontal angle : toward -Z
-float horizontalAngle = 3.14f;
+float horizontalAngle = PI;
 // Initial vertical angle : none
 float verticalAngle = 0.0f;
 // Initial Field of View
@@ -54,30 +55,39 @@ void computeMatricesFromInputs(){
 	horizontalAngle += mouseSpeed * float(1024/2 - xpos );
 	verticalAngle   += mouseSpeed * float( 768/2 - ypos );
 
+	if (verticalAngle < PI/2+0.01) {
+		verticalAngle = PI/2+0.01;
+	}
+	if (verticalAngle > 3*PI/2-0.01) {
+		verticalAngle = 3*PI/2-0.01;
+	}
+
 	// Direction : Spherical coordinates to Cartesian coordinates conversion
 	glm::vec3 direction(
 		cos(verticalAngle) * sin(horizontalAngle), 
 		sin(verticalAngle),
 		cos(verticalAngle) * cos(horizontalAngle)
 	);
-	
-	// Right vector
-	glm::vec3 right = glm::vec3(
-		sin(horizontalAngle - 3.14f/2.0f), 
-		0,
-		cos(horizontalAngle - 3.14f/2.0f)
-	);
-	
+
+	// Forwards vector
+	glm::vec3 forwards = glm::normalize(glm::vec3(direction.x,0,direction.z));
+	glm::vec3 backwards = (-1.0f)*forwards;
+
 	// Up vector
-	glm::vec3 up = glm::cross( right, direction );
+	glm::vec3 up = glm::vec3( 0, 1, 0 );
+	glm::vec3 down = (-1.0f)*up;
+
+	// Right vector
+	glm::vec3 right = glm::cross(forwards,up);
+	glm::vec3 left = (-1.0f)*right;
 
 	// Move forward
 	if (glfwGetKey( window, GLFW_KEY_UP ) == GLFW_PRESS){
-		position += direction * deltaTime * speed;
+		position += forwards * deltaTime * speed;
 	}
 	// Move backward
 	if (glfwGetKey( window, GLFW_KEY_DOWN ) == GLFW_PRESS){
-		position -= direction * deltaTime * speed;
+		position += backwards * deltaTime * speed;
 	}
 	// Strafe right
 	if (glfwGetKey( window, GLFW_KEY_RIGHT ) == GLFW_PRESS){
@@ -85,7 +95,16 @@ void computeMatricesFromInputs(){
 	}
 	// Strafe left
 	if (glfwGetKey( window, GLFW_KEY_LEFT ) == GLFW_PRESS){
-		position -= right * deltaTime * speed;
+		position += left * deltaTime * speed;
+	}
+	// Move up
+	if (glfwGetKey( window, GLFW_KEY_SPACE ) == GLFW_PRESS){
+		position += up * deltaTime * speed;
+	}
+	// Move down
+	if (glfwGetKey( window, GLFW_KEY_LEFT_SHIFT ) == GLFW_PRESS
+		|| glfwGetKey( window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS){
+		position += down * deltaTime * speed;
 	}
 
 	float FoV = initialFoV;// - 5 * glfwGetMouseWheel(); // Now GLFW 3 requires setting up a callback for this. It's a bit too complicated for this beginner's tutorial, so it's disabled instead.
