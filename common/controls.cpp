@@ -33,8 +33,6 @@ float initialFoV = 45.0f;
 float speed = 3.0f; // 3 units / second
 float mouseSpeed = 0.005f;
 
-
-
 void computeMatricesFromInputs(){
 
 	// glfwGetTime is called only once, the first time this function is called
@@ -43,6 +41,14 @@ void computeMatricesFromInputs(){
 	// Compute time difference between current and last frame
 	double currentTime = glfwGetTime();
 	float deltaTime = float(currentTime - lastTime);
+
+	// First time this function is called, the cursor position is reset since
+	// an unintended movement will otherwise register on the first frame
+	static bool first_frame = true;
+    if (first_frame){
+        glfwSetCursorPos(window, 1024/2, 768/2);
+        first_frame  = false;
+    }
 
 	// Get mouse position
 	double xpos, ypos;
