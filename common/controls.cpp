@@ -53,7 +53,7 @@ void computeMatricesFromInputs(){
 
 	// Compute new orientation
 	horizontalAngle += mouseSpeed * float(1024/2 - xpos );
-	verticalAngle   += mouseSpeed * float( 768/2 - ypos );
+	verticalAngle   -= mouseSpeed * float( 768/2 - ypos );
 
 	if (verticalAngle < PI/2+0.01) {
 		verticalAngle = PI/2+0.01;
