@@ -79,7 +79,7 @@ So essentially quaternions store a *rotation axis* and a *rotation angle*, in a 
 
 ## Reading quaternions
 
-This format is definitely less intuitive than Euler angles, but it's still readable: the xyz components match roughly the rotation axis, and w is the acos of the rotation angle (divided by 2). For instance, imagine that you see the following values in the debugger: [ 0.7 0 0 0.7 ]. x=0.7, it's bigger than y and z, so you know it's mostly a rotation around the X axis; and 2*acos(0.7) = 1.59 radians, so it's a rotation of 90&deg;.
+This format is definitely less intuitive than Euler angles, but it's still readable: the xyz components match roughly the rotation axis, and the acos of w is the rotation angle (divided by 2). For instance, imagine that you see the following values in the debugger: [ 0.7 0 0 0.7 ]. x=0.7, it's bigger than y and z, so you know it's mostly a rotation around the X axis; and 2*acos(0.7) = 1.59 radians, so it's a rotation of 90&deg;.
 
 Similarly, [0 0 0 1] (w=1) means that angle = 2*acos(1) = 0, so this is a `unit quaternion`, which makes no rotation at all.
 
