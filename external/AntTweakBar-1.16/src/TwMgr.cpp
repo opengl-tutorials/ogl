@@ -7,6 +7,7 @@
 //
 //  ---------------------------------------------------------------------------
 
+#include <functional>
 
 #include "TwPrecomp.h"
 #include <AntTweakBar.h>
