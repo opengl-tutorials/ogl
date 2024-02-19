@@ -14,7 +14,7 @@ tags: []
 {:toc}
 
 > _The engines don't move the ship at all. The ship stays where it is and the engines move the universe around it._
-> 
+>
 > Futurama
 
 **This is the single most important tutorial of the whole set. Be sure to read it at least eight times.**
@@ -102,7 +102,7 @@ So, how does this translate to code?
 
 ``` cpp
 #include <glm/gtx/transform.hpp> // after <glm/glm.hpp>
- 
+
 glm::mat4 myMatrix = glm::translate(glm::mat4(), glm::vec3(10.0f, 0.0f, 0.0f));
 glm::vec4 myVector(10.0f, 10.0f, 10.0f, 0.0f);
 glm::vec4 transformedVector = myMatrix * myVector; // guess the result
@@ -147,12 +147,12 @@ and the w still didn't change. You may ask: what is the meaning of "scaling a di
 
 ``` cpp
 // Use #include <glm/gtc/matrix_transform.hpp> and #include <glm/gtx/transform.hpp>
-glm::mat4 myScalingMatrix = glm::scale(2.0f, 2.0f ,2.0f);
+glm::mat4 myScalingMatrix = glm::scale(glm::mat4(1), glm::vec3(2,2,2));
 ```
 
 ## Rotation matrices
 
-These are quite complicated. I'll skip the details here, as it's not important to know their exact layout for everyday use. For more information, please have a look to the [Matrices and Quaternions FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html) (popular resource, probably available in your language as well). You can also have a look at the [Rotations tutorials]({{site.baseurl}}/intermediate-tutorials/tutorial-17-quaternions) 
+These are quite complicated. I'll skip the details here, as it's not important to know their exact layout for everyday use. For more information, please have a look to the [Matrices and Quaternions FAQ]({{site.baseurl}}/assets/faq_quaternions/index.html) (popular resource, probably available in your language as well). You can also have a look at the [Rotations tutorials]({{site.baseurl}}/intermediate-tutorials/tutorial-17-quaternions)
 
 **In C++:**
 
@@ -345,7 +345,7 @@ transformed_vertex = MVP * in_vertex;
   
   // Or, for an ortho camera:
   //glm::mat4 Projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f); // In world coordinates
-  
+
   // Camera matrix
   glm::mat4 View = glm::lookAt(
       glm::vec3(4,3,3), // Camera is at (4,3,3), in World Space
@@ -365,7 +365,7 @@ transformed_vertex = MVP * in_vertex;
   // Get a handle for our "MVP" uniform
   // Only during the initialisation
   GLuint MatrixID = glGetUniformLocation(programID, "MVP");
-  
+
   // Send our transformation to the currently bound shader, in the "MVP" uniform
   // This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
   glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
@@ -376,10 +376,10 @@ transformed_vertex = MVP * in_vertex;
   ``` glsl
   // Input vertex data, different for all executions of this shader.
   layout(location = 0) in vec3 vertexPosition_modelspace;
-  
+
   // Values that stay constant for the whole mesh.
   uniform mat4 MVP;
-  
+
   void main(){
     // Output position of the vertex, in clip space: MVP * position
     gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
