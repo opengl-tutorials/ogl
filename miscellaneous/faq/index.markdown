@@ -13,7 +13,7 @@ print: true
 
 # About sending e-mails...
 
-Sending an e-mail to contact@opengl-tutorial.org is the most effective way to get support. However, if you have a problem, please include as much information as you can. This means at least :
+You can try sending an e-mail to contact@opengl-tutorial.org, but we don't have much time anymore to provide support. In any case, please include as much information as you can. This means at least :
 
 * OS : Gentoo ? Windows XP ? ... (remember : use the 2.1 port if you have a mac !)
 * 32 bits or 64 bits ?
@@ -46,10 +46,6 @@ Several possible reasons :
 
 Please check if you have an Intel card. You can do so using glewinfo, GPU Caps Viewer, or any other tool.
 
-Intel cards, except recent HD4000, don't support OpenGL 3.3. As a matter of fact, most only support OpenGL 2.1. You have to download the 2.1 version from the Downloads page instead.
-
-The other possible reason is that you're on a Mac, with a pre-Lion version. Same stuff applies...
-
 ## Wrong working directory
 
 Chances are that you don't run them from the right directory. Try double-clicking on the .exe from the explorer.
@@ -64,8 +60,8 @@ If you created a program from scratch, make sure you created a VAO :
 
 ```
 GLuint VertexArrayID;
- glGenVertexArrays(1, &VertexArrayID);
- glBindVertexArray(VertexArrayID);
+glGenVertexArrays(1, &VertexArrayID);
+glBindVertexArray(VertexArrayID);
 ```
 
 ## GLEW bug
@@ -93,25 +89,6 @@ glewExperimental = true;
 
 You did read Tutorial 1, right ? You didn't try to write your own makefile and build everything yourself, RIGHT ?
 
-# Why should I use OpenGL 3.3 if Intel and Mac can't run it ?!
-
-... also known as :
-
-# Which version of OpenGL should I use ?
-
-As a matter of fact, I don't recommend using OpenGL 3 or above for an application. I use it in the tutorials because it's the **clean** way to learn OpenGL, without all the deprecated stuff, and because once you know 3.3, using 2.1 is straighforward.
-
-What I recommend is :
-
-* Learn in OpenGL 3.3 so that you know the "right way"
-* Set a target hardware for your application. For instance, *require *FBOs and GLSL.
-* Use GLEW to load all the extensions. At startup, refuse all hardware which hasn't the required functionality level.
-* From now on, you can code almost like if you were on 3.3, with only a few changes.
-* If you really want to deal with older/cheaper hardware , you can still deal with them by disabling effects which require FBOs, for instance.
-
-<div><span style="font-size: medium;"><span style="line-height: 24px;">There's one big situation where you might want to use a very recent version, say 4.2 : you're a graduate student doing high-end research, you really need a recent feature, and you don't care about compatibility because your software will never be ran outside your lab. In this case, don't waste time and go straight to the highest OpenGL version your hardware supports.</span></span></div>
-
-
 # Where do I download OpenGL 3 ?
 
 You don't.
@@ -121,7 +98,6 @@ On Windows, for instance, you only have opengl32.dll, which is only OpenGL 1.1. 
 GLEW calls wglGetProcAdress on all needed symbols, and make them available to you. (you can do it yourself but it's horribly boring). It also declares new constants which did not exist 10 years ago, like, for instance, GL_VERTEX_ATTRIB_ARRAY_DIVISOR_ARB.
 
 So, just make sure your GPU driver supports the needed version, use GLEW, and you're good to go.
-
 
 
 # Why do you create a VAO in each tutorial, but you never use it ?
