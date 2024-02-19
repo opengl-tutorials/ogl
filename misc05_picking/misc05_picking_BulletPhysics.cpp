@@ -86,7 +86,7 @@ void ScreenPosToWorldRay(
 
 int main( void )
 {
-	// Initialise GLFW
+	// Initialize GLFW
 	if( !glfwInit() )
 	{
 		fprintf( stderr, "Failed to initialize GLFW\n" );
@@ -135,7 +135,7 @@ int main( void )
 
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
-	// Accept fragment if it closer to the camera than the former one
+	// Accept fragment if it is closer to the camera than the former one
 	glDepthFunc(GL_LESS); 
 
 	// Cull triangles which normal is not towards the camera

@@ -4,7 +4,7 @@
 in vec2 UV;
 in vec4 ShadowCoord;
 
-// Ouput data
+// Output data
 layout(location = 0) out vec3 color;
 
 // Values that stay constant for the whole mesh.

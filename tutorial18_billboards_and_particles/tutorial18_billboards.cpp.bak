@@ -23,7 +23,7 @@ using namespace glm;
 
 int main( void )
 {
-	// Initialise GLFW
+	// Initialize GLFW
 	if( !glfwInit() )
 	{
 		fprintf( stderr, "Failed to initialize GLFW\n" );
@@ -63,7 +63,7 @@ int main( void )
 
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
-	// Accept fragment if it closer to the camera than the former one
+	// Accept fragment if it is closer to the camera than the former one
 	glDepthFunc(GL_LESS);
 
 	GLuint VertexArrayID;
@@ -178,7 +178,7 @@ int main( void )
 		glUniform1i(TextureID, 0);
 
 		// This is the only interesting part of the tutorial.
-		// This is equivalent to mlutiplying (1,0,0) and (0,1,0) by inverse(ViewMatrix).
+		// This is equivalent to multiplying (1,0,0) and (0,1,0) by inverse(ViewMatrix).
 		// ViewMatrix is orthogonal (it was made this way), 
 		// so its inverse is also its transpose, 
 		// and transposing a matrix is "free" (inversing is slooow)
