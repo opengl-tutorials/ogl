@@ -95,11 +95,14 @@ if ( header[0]!='B' || header[1]!='M' ){
 Now we can read the size of the image, the location of the data in the file, etc :
 
 ``` cpp
+// add to standard headers
+#include <string.h>
+
 // Read ints from the byte array
-dataPos    = *(int*)&(header[0x0A]);
-imageSize  = *(int*)&(header[0x22]);
-width      = *(int*)&(header[0x12]);
-height     = *(int*)&(header[0x16]);
+memcpy(&dataPos, header + 0xA, sizeof dataPos);
+memcpy(&imageSize, header + 0x22, sizeof imageSize);
+memcpy(&width, header + 0x12, sizeof width);
+memcpy(&height, header + 0x16, sizeof height);
 ```
 
 We have to make up some info if it's missing :
