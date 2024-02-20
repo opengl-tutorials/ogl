@@ -2,7 +2,7 @@
 layout: page
 status: publish
 published: true
-title: 'Tutorial 9 : VBO Indexing'
+title: 'Tutorial 9 : Indexado VBO'
 date: '2011-05-12 19:21:49 +0200'
 date_gmt: '2011-05-12 19:21:49 +0200'
 categories: [tuto]
@@ -14,88 +14,88 @@ language: es
 * TOC
 {:toc}
 
-# The principle of indexing
+# El principío del indexado
 
-Until now, when building your VBO, we always duplicated our vertices whenever two triangles shared an edge.
+Hasta ahora, al construir un VBO, siempre duplicamos nuestros vértices cada vez que dos triángulos compartían un borde.
 
-In this tutorial, we introduce indexing, which enables to reuse the same vertex over and over again. This is done with an *index buffer*.
+En este tutorial, presentamos la indexación, que permite reutilizar el mismo vértice una y otra vez. Esto se hace con un * index buffer *.
 
 ![]({{site.baseurl}}/assets/images/tuto-9-vbo-indexing/indexing1.png)
 
 
-The index buffer contains integers, three for each triangle in the mesh, which reference the various *attribute buffers* (position, colour, UV coordinates, other UV coordinates, normal, ...). It's a little bit like in the OBJ file format, with one huge difference : there is only ONE index buffer. This means that for a vertex to be shared between two triangles, all attributes must be the same.
+El índice del búfer contiene números enteros, tres para cada triángulo en la malla, que hacen referencia a los diversos * búferes de atributos * (posición, color, coordenadas UV, otras coordenadas UV, normal, ...). Es un poco como en el formato de archivo OBJ, con una gran diferencia: solo hay UN búfer de índice. Esto significa que para que un vértice se comparta entre dos triángulos, todos los atributos deben ser iguales.
 
-# Shared vs Separate
+# Compartido vs separado
 
-Let's take the example of the normals. In this figure, the artist who created these two triangle probably wanted them to represent a smooth surface. We can thus blend the normals of the two triangle into a single vertex normal. For visualization purposes, I added a red line which represents the aspect of the smooth surface.
+Tomemos el ejemplo de las normales. En esta figura, el artista que creó estos dos triángulos probablemente quería que representaran una superficie lisa. Así podemos mezclar las normales de los dos triángulos en un solo vértice normal. Para fines de visualización, agregué una línea roja que representa el aspecto de la superficie lisa.
 
 ![]({{site.baseurl}}/assets/images/tuto-9-vbo-indexing/goodsmooth.png)
 
 
-In this second figure however, the artist visibly wanted a "seam", a rough edge. But if we merge the normals, this means that the shader will smoothly interpolate as usual and create a smooth aspect just like before :
+En esta segunda figura, sin embargo, el artista quería visiblemente una "costura", un borde áspero. Pero si fusionamos las normales, esto significa que el sombreador se interpolará suavemente como de costumbre y creará un aspecto suave como antes:
 
 ![]({{site.baseurl}}/assets/images/tuto-9-vbo-indexing/badmooth.png)
 
 
-So in this case it's actually better to have two different normals, one for each vertex. The only way to do this in OpenGL is to duplicate the whole vertex, with its whole set of attributes.
+Entonces, en este caso, en realidad es mejor tener dos normales diferentes, una para cada vértice. La única forma de hacer esto en OpenGL es duplicar todo el vértice, con todo su conjunto de atributos.
 
 ![]({{site.baseurl}}/assets/images/tuto-9-vbo-indexing/spiky.png)
 
 
-# Indexed VBO in OpenGL
+# VBO indexado en OpenGL
 
-Using indexing is very simple. First, you need to create an additional buffer, which you fill with the right indices. The code is the same as before, but now it's an ELEMENT_ARRAY_BUFFER, not an ARRAY_BUFFER.
+Usar indexación es muy simple. Primero, debe crear un búfer adicional, que debe completar con los índices correctos. El código es el mismo que antes, pero ahora es un ELEMENT_ARRAY_BUFFER, no un ARRAY_BUFFER.
 
 ``` cpp
 std::vector<unsigned int> indices;
 
-// fill "indices" as needed
+// llenar los "índices" según sea necesario
 
-// Generate a buffer for the indices
+// Generar un buffer para los índices.
  GLuint elementbuffer;
  glGenBuffers(1, &elementbuffer);
  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 ```
 
-and to draw the mesh, simply replace glDrawArrays by this :
+y para dibujar la malla, simplemente reemplace glDrawArrays por esto:
 
 ``` cpp
-// Index buffer
+// Indice del buffer
  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 
- // Draw the triangles !
+ // Dibujar los triangulos !
  glDrawElements(
-     GL_TRIANGLES,      // mode
-     indices.size(),    // count
-     GL_UNSIGNED_INT,   // type
-     (void*)0           // element array buffer offset
+     GL_TRIANGLES,      // modo
+     indices.size(),    // conteo
+     GL_UNSIGNED_INT,   // tipo
+     (void*)0           // offset de elementos arreglo del buffer
  );
 ```
 
-(quick note : it's better to use "unsigned short" than "unsigned int", because it takes less memory, which also makes it faster)
+(nota rápida: es mejor usar "unsigned short" que "unsigned int", porque requiere menos memoria, lo que también lo hace más rápido)
 
-# Filling the index buffer
+# Llenar el búfer de índices
 
-Now we actually have a problem. As I said before, OpenGL can only use one index buffer, whereas OBJ (and some other popular 3D formats like Collada) use one index buffer *by attribute*. Which means that we somehow have to convert from N index buffers to 1 index buffer.
+Ahora tenemos un problema. Como dije antes, OpenGL solo puede usar un búfer de índices, mientras que OBJ (y algunos otros formatos 3D populares como Collada) usan un búfer de índices * por atributo *. Lo que significa que de alguna manera tenemos que convertir de N buffers de índice a 1 buffer de índice.
 
-The algorithm to do this is as follows :
+El algoritmo para hacer esto es el siguiente:
 ```
 
-For each input vertex
-    Try to find a similar ( = same for all attributes ) vertex between all those we already output
-    If found :
-        A similar vertex is already in the VBO, use it instead !
-    If not found :
-        No similar vertex found, add it to the VBO
+Por cada vértice de entrada
+    Tratar de buscar un similar ( = el mismo por todos los atributos ) vértice entre todos aquellos que ya sacamos
+    Si encuentra :
+        Un vértice similar ya está en el VBO, ¡úsalo ese!
+    Si no lo encuentra :
+        No se encontró un vértice similar, agréguelo a la VBO
 ```
 
-The actual C++ code can be found in common/vboindexer.cpp. It's heavily commented so if you understand the algorithm above, it should be all right.
+El código real de C ++ se puede encontrar en common/vboindexer.cpp. Está muy comentado, por lo que si comprende el algoritmo anterior, debería estar bien.
 
-The criterion for similarity is that vertices' position, UVs and normals should be ** equal. You'll have to adapt this if you add more attributes.
+El criterio de similitud es que la posición de los vértices, los rayos UV y las normales deben ser ** iguales. Tendras que adaptar esto si deseas agregar más atributos.
 
-Searching a similar vertex is done with a lame linear search for simplicity. A std::map would be more appropriate for real use.
+La búsqueda de un vértice similar se realiza con una simple búsqueda lineal para simplificar. Un std::map sería más apropiado para un uso real.
 
-# Extra : the FPS counter
+# Extra : el contador de FPS
 
-It's not directly related to indexing, but it's a good moment to have a look at [the FPS counter](http://www.opengl-tutorial.org/miscellaneous/an-fps-counter/) because we can eventually see the speed improvement of indexing. Other performance tools are available in [Tools - Debuggers](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/#header-4).
+No está directamente relacionado con la indexación, pero es un buen momento para echar un vistazo [el contador de FPS](http://www.opengl-tutorial.org/miscellaneous/an-fps-counter/) porque eventualmente podemos ver la mejora de la velocidad de indexación. Otras herramientas de rendimiento están disponibles en [Tools - Debuggers](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/#header-4).
