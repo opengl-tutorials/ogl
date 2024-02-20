@@ -2,7 +2,7 @@
 layout: tutorial
 status: publish
 published: true
-title: 'Tutorial 7 : Model loading'
+title: 'Урок 7 : загрузка моделей'
 date: '2011-05-08 17:48:12 +0200'
 date_gmt: '2011-05-08 17:48:12 +0200'
 categories: [tuto]
@@ -11,15 +11,15 @@ tags: []
 language: ru
 ---
 
-Until now, we hardcoded our cube directly in the source code. I'm sure you will agree that this was cumbersome and not very handy.
+До этого мы задавали данные для отрисовки куба прямо в коде. Уверен, вы согласны, что это громоздко и неудобно.
 
-In this tutorial we will learn how to load 3D meshes from files. We will do this just like we did for the textures : we will write a tiny, very limited loader, and I'll give you some pointers to actual libraries that can do this better that us.
+В этом уроке мы научимся как загружать 3D меши из файлов. Мы сделаем это так же, как сделали с текстурами : мы напишем небольшой, узкоспециализированный загрузчик, и я дам вам ссылку на готовые библиотеки, которые делают это лучше, чем мы.
 
-To keep this tutorial as simple as possible, we'll use the OBJ file format, which is both very simple and very common. And once again, to keep things simple, we will only deal with OBJ files with 1 UV coordinate and 1 normal per vertex (you don't have to know what a normal is right now).
+Чтобы сделать этот урок как можно проще, мы будем использовать формат файла OBJ, которые одновременно очень простой и распространённый. И ещё раз, чтобы упростить задачу, мы будем иметь дело только с файлами OBJ с одной UV координатой и одной нормалью на каждую вершину (сейчас вам необязательно знать, что такое нормаль).
 
-# Loading the OBJ
+# Загрузка OBJ файла
 
-Our function, located in common/objloader.cpp and declared in common/objloader.hpp, will have the following signature :
+Наша функция расположена в файле common/objloader.cpp и объявлена common/objloader.hpp, и оглавление будет выглядеть примерно так :
 
 ``` cpp
 bool loadOBJ(
@@ -30,11 +30,11 @@ bool loadOBJ(
 )
 ```
 
-We want loadOBJ to read the file "path", write the data in out_vertices/out_uvs/out_normals, and return false if something went wrong. std::vector is the C++ way to declare an array of glm::vec3 which size can be modified at will: it has nothing to do with a mathematical vector. Just an array, really. And finally, the & means that function will be able to modify the std::vectors.
+Мы хотим чтобы функция loadOBJ прочитала файл "path", записала данные в out_vertices/out_uvs/out_normals и вернула false если что-то пошло не так. std::vector это способ объявить массив из glm::vec3, размер которого можно изменить по желанию, он не имеет ничего общего с математическим вектором. Всего лишь массив. И наконец & значит, что функция сможет изменять std::vectors.
 
-## Example OBJ file
+## Пример OBJ файла
 
-An OBJ file looks more or less like this :
+OBJ файл выглядит примерно так :
 ```
 
 # Blender3D v249 OBJ File: untitled.blend
@@ -86,38 +86,39 @@ f 1/2/8 2/9/8 3/13/8
 f 1/2/8 3/13/8 4/14/8
 ```
 
-So :
+Так :
 
-* # is a comment, just like // in C++
-* usemtl and mtllib describe the look of the model. We won't use this in this tutorial.
-* v is a vertex
-* vt is the texture coordinate of one vertex
-* vn is the normal of one vertex
-* f is a face
+* #это комментарий, как // в C++
+* usemtl и mtllib описывают внешний вид модели. Мы не будем использовать их в этом уроке
+* v обозначает вершину
+* vt - это текстурная координата вершины
+* vn - это нормаль вершины
+* f - это грань
 
-v, vt and vn are simple to understand. f is more tricky. So, for f 8/11/7 7/12/7 6/10/7 :
+v, vt и vn просты в понимании. С f все сложнее. Так для строки f 8/11/7 7/12/7 6/10/7 :
 
-* 8/11/7 describes the first vertex of the triangle
-* 7/12/7 describes the second vertex of the triangle
-* 6/10/7 describes the third vertex of the triangle (duh)
-* For the first vertex, 8 says which vertex to use. So in this case, -1.000000 1.000000 -1.000000 (index start to 1, not to 0 like in C++)
-* 11 says which texture coordinate to use. So in this case, 0.748355 0.998230
-* 7 says which normal to use. So in this case, 0.000000 1.000000 -0.000000
+* 8/11/7 обозначает первую вершину треугольника
+* 7/12/7 обозначает вторую вершину треугольника
+* 6/10/7 обозначает третью вершину треугольника
+* В первой вершине 8 обозначает какую вершину использовать. В данном случае -1.000000 1.000000 -1.000000 (вершины нумеруются с единицы, не с нуля как в C++)
+* 11 обозначает какую текстурную координату использовать. В данном случае 0.748355 0.998230
+* 7 обозначает какую использовать нормаль. В данном случае, 0.000000 1.000000 -0.000000
 
-These numbers are called indices. It's handy because if several vertices share the same position, you just have to write one "v" in the file, and use it several times. This saves memory.
+Эти номера называются индексами. Это удобно, потому что в случае если несколько вершин находятся в одной и той же позиции, можно написать только одну v в файле и использовать её несколько раз. Это экономит память.
 
-The bad news is that OpenGL can't be told to use one index for the position, another for the texture, and another for the normal. So the approach I took for this tutorial is to make a standard, non-indexed mesh, and deal with indexing later, in Tutorial 9, which will explain how to work around this.
+Плохие новость заключается в том, что OpenGL не может использовать один индекс для вершины, другой для текстур и ещё один для нормали. 
+The bad news is that OpenGL can't be told to use one index for the position, another for the texture, and another for the normal. Мой подход в этом уроке заключается в том, чтобы создать простой, неиндексированный меш, а разбираться с индексами позже, в 9 уроке, который объяснит, как с этим работать.
 
-## Creating an OBJ file in Blender
+## Создание OBJ файла в Blender'е
 
-Since our toy loader will severely limited, we have to be extra careful to set the right options when exporting the file. Here's how it should look in Blender :
+Так как наш загрузчик будет иметь некоторые ограничения, мы должны быть осторожнее с настройками экспорта файла. Вот как они должны выглядеть в Blender'е :
 
 ![]({{site.baseurl}}/assets/images/tuto-7-model-loading/Blender.png)
 
 
-## Reading the file
+## Чтение файла
 
-Ok, down with the actual code. We need some temporary variables in which we will store the contents of the .obj :
+Хорошо, ниже приведен сам код. Нам понадобятся несколько временных переменных, в которых мы сохраним данные из .obj :
 
 ``` cpp
 std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;
@@ -126,7 +127,7 @@ std::vector< glm::vec2 > temp_uvs;
 std::vector< glm::vec3 > temp_normals;
 ```
 
-Since Tutorial 5 : A Textured Cube, you know how to open a file :
+После пятого урока : текстурированный куб, вы знаете как открыть файл :
 
 ``` cpp
 FILE * file = fopen(path, "r");
@@ -136,7 +137,7 @@ if( file == NULL ){
 }
 ```
 
-Let's read this file until the end :
+Давайте будем читать этот файл до конца :
 
 ``` cpp
 while( 1 ){
@@ -150,9 +151,9 @@ while( 1 ){
     // else : parse lineHeader
 ```
 
-(notice that we assume that the first word of a line won't be longer than 128, which is a very silly assumption. But for a toy parser, it's all right)
+(обратите внимание, что мы предполагаем, что первое слово в строке не длиннее чем 128, что является очень глупым предположением. Но для простейшего парсера подойдет и такой вариант)
 
-Let's deal with the vertices first :
+Давайте сначала разберемся с вершинами :
 
 ``` cpp
 if ( strcmp( lineHeader, "v" ) == 0 ){
@@ -161,7 +162,7 @@ if ( strcmp( lineHeader, "v" ) == 0 ){
     temp_vertices.push_back(vertex);
 ```
 
-i.e : If the first word of the line is "v", then the rest has to be 3 floats, so create a glm::vec3 out of them, and add it to the vector.
+то есть: если первое слово в строке "v", то следующие 3 должны быть числами с плавающей точкой, так что создаем из них glm::vec3 и добавляем в vector.
 
 ``` cpp
 }else if ( strcmp( lineHeader, "vt" ) == 0 ){
@@ -170,9 +171,9 @@ i.e : If the first word of the line is "v", then the rest has to be 3 floats, so
     temp_uvs.push_back(uv);
 ```
 
-i.e if it's not a "v" but a "vt", then the rest has to be 2 floats, so create a glm::vec2 and add it to the vector.
+то есть: если первое слово не "v", а "vt", тогда дальше должны идте два числа, создаем glm::vec2 из них и добавляем в vector.
 
-same thing for the normals :
+То же самое для нормалей :
 
 ``` cpp
 }else if ( strcmp( lineHeader, "vn" ) == 0 ){
@@ -181,7 +182,7 @@ same thing for the normals :
     temp_normals.push_back(normal);
 ```
 
-And now the "f", which is more difficult :
+А сейчас разберем "f", который больее сложный :
 
 ``` cpp
 }else if ( strcmp( lineHeader, "f" ) == 0 ){
@@ -203,13 +204,13 @@ And now the "f", which is more difficult :
     normalIndices.push_back(normalIndex[2]);
 ```
 
-This code is in fact very similar to the previous one, except that there is more data to read.
+По факту этот код очень похож на предыдущие, за исключением того, что здесь больше данных для чтения.
 
-## Processing the data
+## Обработка данных
 
-So what we did there was simply to change the "shape" of the data. We had a string, we now have a set of std::vectors. But it's not enough, we have to put this into a form that OpenGL likes. Namely, removing the indexes and have plain glm::vec3 instead. This operation is called indexing.
+Итак, мы всего лишь изменили "форму" данных, у нас была строка, сейчас у нас есть набор из std::vector'ов. Но этого недостаточно, вы должны перевести всё это в форму, понятную для OpenGL. А именно, удалить индексы и использовать вместо этого просто glm::vec3. Эта операция называется индексацией.
 
-We go through each vertex ( each v/vt/vn ) of each triangle ( each line with a "f" ) :
+Мы пройдемся через все вершины ( каждый из v/vt/vn ) каждого треугольника ( все строки с "f" ) :
 
 ``` cpp
     // For each vertex of each triangle
@@ -217,28 +218,30 @@ We go through each vertex ( each v/vt/vn ) of each triangle ( each line with a "
 
 ```
 
-the index to the vertex' position is vertexIndices[i] :
+индекс позиции вершины - это vertexIndices[i] :
 
 ``` cpp
 unsigned int vertexIndex = vertexIndices[i];
 ```
 
-so the position is temp_vertices[ vertexIndex-1 ] (there is a -1 because C++ indexing starts at 0 and OBJ indexing starts at 1, remember ?) :
+так что позиция вершины - это temp_vertices[ vertexIndex-1 ] (здесь мы отнимаем единицу, потому что индексирование в C++ начинается с нуля, а в OBJ с единицы, помните?) :
 
 ``` cpp
 glm::vec3 vertex = temp_vertices[ vertexIndex-1 ];
 ```
 
-And this makes the position of our new vertex
+Это будет позицией нашей новой вершины
 
 ``` cpp
 out_vertices.push_back(vertex);
 ```
 
+Делаем то же самое для UV и нормалей, готово!
 The same is applied for UVs and normals, and we're done !
 
-# Using the loaded data
+# Использование загруженных данных
 
+После этого почти не нужно ничего менять. Вместо объявление нашего обычного static const GLfloat g_vertex_buffer_data[] = {...}, вы объявили std::vector из вершин вместо этого (и то же самое для UV и нормалей). Вы вызываете loadOBJ с правильными параметрами :
 Once we've got this, almost nothing changes. Instead of declaring our usual static const GLfloat g_vertex_buffer_data[] = {...}, you declare a std::vector vertices instead (same thing for UVS and normals). You call loadOBJ with the right parameters :
 
 ``` cpp
@@ -249,21 +252,23 @@ std::vector< glm::vec3 > normals; // Won't be used at the moment.
 bool res = loadOBJ("cube.obj", vertices, uvs, normals);
 ```
 
-and give your vectors to OpenGL instead of your arrays :
+и он передает ваши vector'ы OpenGL вместо массивов :
 
 ``` cpp
 glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
 ```
 
-And that's it !
+Вот и всё !
 
-# Results
+# Результаты
 
-Sorry for the lame texture, I'm NOT a good artist :( Any contribution welcome !
+Извините за плохую текстуру, я НЕ хороший художник :( Любой вклад приветствуется !
 
 ![]({{site.baseurl}}/assets/images/tuto-7-model-loading/ModelLoading.png)
 
 
-# Other formats/loaders
+# Другие форматы/загрузчики
 
-This tiny loader should give you enough to get started, but won't want to use this in real life. Have a look at our [Useful Links & Tools](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) page for some tools you can use. Note, however, that you'd better wait for tutorial 9 before *actually *trying to use them.
+Этот небольшой загрузчик должен вым дать всё необходимое для начала, но не используйте его в настоящий проектах. Посмотрите лучше наш список [Полезных ссылок и инструментов](http://www.opengl-tutorial.org/miscellaneous/useful-tools-links/) с некоторыми вещами, которые вы можете использовать. Однако лучше подождать до урока 9 прежде чем *в самом деле* их использовать.
+
+Примечание переводчика: Я не профессиональный переводчик, но мне показалось странным, что эта статья до сих пор не на русском, надеюсь я кому-нибудь помог :) 

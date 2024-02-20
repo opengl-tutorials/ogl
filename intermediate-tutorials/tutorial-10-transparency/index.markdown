@@ -110,8 +110,8 @@ Which means :
 ```
 
 New color in framebuffer =
-           current alpha in framebuffer * current color in framebuffer +
-           (1 - current alpha in framebuffer) * shader's output color
+           shader's output alpha * shader's output color +
+           (1 - shader's output alpha) * current color in framebuffer
 ```
 
 Example from the image above, with red on top :
