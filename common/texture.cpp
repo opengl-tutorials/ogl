@@ -55,6 +55,8 @@ GLuint loadBMP_custom(const char * imagepath){
 	if (imageSize==0)    imageSize=width*height*3; // 3 : one byte for each Red, Green and Blue component
 	if (dataPos==0)      dataPos=54; // The BMP header is done that way
 
+	fseek(file, dataPos, SEEK_SET);
+
 	// Create a buffer
 	data = new unsigned char [imageSize];
 
