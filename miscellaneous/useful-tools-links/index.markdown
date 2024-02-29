@@ -51,6 +51,7 @@ tags: []
 * [NVidia Parallel NSight](http://developer.nvidia.com/nvidia-parallel-nsight) A wonderful tool which gives access to extremely precise performance numbers. Highly recommended. Visual Studio + NVidia only. The one I use most.
 * [GLIntercept ](http://glintercept.nutty.org/) Generates a webpage with the list of OpenGL commands issued. Displays shader code, content of images, content of framebuffers, etc. A bit hard to master, but very precise and useful.
 * [gdebugger](http://www.gremedy.com/) A profiler
+* [ApiTrace](http://apitrace.github.io/) A tracer that is able to replay the trace and inspect your program state after each OpenGL call.
 
 
 # Libraries
