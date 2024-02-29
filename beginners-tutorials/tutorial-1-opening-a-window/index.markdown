@@ -83,33 +83,32 @@ You can also launch any tutorial from inside Visual Studio. Right-click on Playg
 
 ## Building on Linux
 
-They are so many Linux variants out there that it's impossible to list every possible platform. Adapt if required, and don't hesitate to read your distribution's documentation.
-
- 
+There are so many Linux variants out there that it's impossible to list every possible platform. Adapt if required, and don't hesitate to read your distribution's documentation.
 
 * Install the latest drivers. We highly recommend the closed-source binary drivers. It's not GNU or whatever, but they work. If your distribution doesn't provide an automatic install, try [Ubuntu's guide](http://help.ubuntu.com/community/BinaryDriverHowto).
-* Install all needed compilers, tools & libs. Complete list is : *cmake make g++ libx11-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxrandr-dev libxext-dev libxcursor-dev libxinerama-dev libxi-dev* . Use `sudo apt-get install *****` or `su && yum install ******`.
+* Install all needed compilers, tools & libs:
+    * On Ubuntu, use `sudo apt install cmake make g++ libx11-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxrandr-dev libxext-dev libxcursor-dev libxinerama-dev libxi-dev`.
+    * On Fedora, use `sudo dnf install cmake make g++ libX11-devel libXi-devel mesa-libGLU-devel mesa-libGL-devel libXrandr-devel libXext-devel libXcursor-devel libXinerama-devel libXi-devel`.
 * [Download the source code](http://www.opengl-tutorial.org/download/) and unzip it, for instance in ~/Projects/OpenGLTutorials/
-* cd in ~/Projects/OpenGLTutorials/ and enter the following commands :
-
- * mkdir build
- * cd build
- * cmake ..
-
-
-* A makefile has been created in the build/ directory.
-* type "make all". Every tutorial and dependency will be compiled. Each executable will also be copied back into ~/Projects/OpenGLTutorials/ . Hopefuly no error occurs.
-* Open ~/Projects/OpenGLTutorials/playground, and launch ./playground. A black window should appear.
+* cd in ~/Projects/OpenGLTutorials/ and enter the following commands:
+  ```bash
+  mkdir build
+  cd build
+  cmake ..
+  ```
+* A makefile has been created in the `build/` directory.
+* type `make all`. Every tutorial and dependency will be compiled. Each executable will also be copied back into `~/Projects/OpenGLTutorials/` . Hopefully no error occurs.
+* Open `~/Projects/OpenGLTutorials/playground`, and launch `./playground`. A black window should appear.
 
 Note that you really should use an IDE like [Qt Creator](http://qt-project.org/). In particular, this one has built-in support for CMake, and it will provide a much nicer experience when debugging. Here are the instructions for QtCreator :
 
 * In QtCreator, go to File->Tools->Options->Compile&Execute->CMake
-* Set the path to CMake. This is most probably /usr/bin/cmake
-* File->Open Project; Select tutorials/CMakeLists.txt
+* Set the path to CMake. This is most probably `/usr/bin/cmake`
+* File->Open Project; Select `tutorials/CMakeLists.txt`
 * Select a build directory, preferably outside the tutorials folder
-* Optionally set -DCMAKE_BUILD_TYPE=Debug in the parameters box. Validate.
-* Click on the hammer on the bottom. The tutorials can now be launched from the tutorials/ folder.
-* To run the tutorials from QtCreator, click on Projects->Execution parameters->Working Directory, and select the directory where the shaders, textures & models live. Example for tutorial 2 : ~/opengl-tutorial/tutorial02_red_triangle/
+* Optionally set `-DCMAKE_BUILD_TYPE=Debug` in the parameters box. Validate.
+* Click on the hammer on the bottom. The tutorials can now be launched from the `tutorials/` folder.
+* To run the tutorials from QtCreator, click on Projects->Execution parameters->Working Directory, and select the directory where the shaders, textures & models live. Example for tutorial 2 : `~/opengl-tutorial/tutorial02_red_triangle/`
 
 
 ## Building on Mac
