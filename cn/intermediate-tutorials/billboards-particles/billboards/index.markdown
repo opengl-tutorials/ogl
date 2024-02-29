@@ -2,7 +2,7 @@
 layout: tutorial
 status: publish
 published: true
-title: Billboards
+title: 公告板技术
 date: '2013-10-15 17:15:15 +0200'
 date_gmt: '2013-10-15 17:15:15 +0200'
 categories: []
@@ -14,48 +14,43 @@ language: cn
 * TOC
 {:toc}
 
-Billboards are 2D elements incrusted in a 3D world. Not a 2D menu on top of everything else; not a 3D plane around which you can turn; but something in-between, like health bars in many games.
-
-What's different with billboards is that they are positionned at a specific location, but their orientation is automatically computed so that it always faces the camera.
-
+公告板是3D世界中的有2D样式的物体。不是绘制2D菜单覆盖在所有物体上；也不是一个可以围绕你转动的3D面板；而是在它们之间的一种设计，例如许多游戏中的血量条。 公告板的特殊之处在于它们处于特定的位置，它们的朝向会自动计算来使它们面向相机。
  
 
-# Solution #1 : The 2D way
+# 方案 #1 : 2D方法
 
-This one is supra-easy.
+这个真的超级简单。
 
-Just compute where your point is on screen, and display a 2D text (see Tutorial 11) at this position.
+只要计算点在屏幕上的位置，然后在这个位置显示2D文字(见教程11)。
 
 ``` cpp
-// Everything here is explained in Tutorial 3 ! There's nothing new.
+// 下面所有代码在教程3中都有解释，并没有新加入什么
 glm::vec4 BillboardPos_worldspace(x,y,z, 1.0f);
 glm::vec4 BillboardPos_screenspace = ProjectionMatrix * ViewMatrix * BillboardPos_worldspace;
 BillboardPos_screenspace /= BillboardPos_screenspace.w;
 
 if (BillboardPos_screenspace.z < 0.0f){
-    // Object is behind the camera, don't display it.
+    // 物体在相机后面，不显示
 }
 ```
 
-Ta-dah !
+当当当当!
 
-On the plus side, this method is really easy, and the billboard will have the same size regardless of its distance to the camera. But 2D text is always displayed on top of everything else, and this can/will mess up the rendering and show above other objects.
-
+这个方法的优点是它非常简单，而且无论相机有多远，公告板也会都会保持同样的大小。但是2D文字总会显示在其他物体之上，并且这也可能会破坏渲染并挡住其他物体。
  
 
-# Solution #2 : The 3D way
+# 方案 #2 : 3D方法
 
-This one is usually better and not much more complicated.
+这个方法通常更优，同时没有更复杂很多。
 
-The goal is to keep the mesh aligned with the camera, even when the camera moves :
+我们这里的目标是无论相机如何移动，使网格与相机对齐：
 
 ![]({{site.baseurl}}/assets/images/tuto-billboard/2a.gif)
 
 
-You can view this problem as generating an appropriate Model matrix, even though it's is much simpler than that.
+你可以把这个问题看作生成一个合适的模型矩阵，虽然这个问题远远更简单。
 
-The idea is that each corner of the billboard is at the center position, displaced by the camera's up and right vectors :
-
+思路就是通过相机的“上(up)”和“右(right)”向量改变公告板的每个角，使它们保持在特定位置。
  
 
 ![]({{site.baseurl}}/assets/images/tuto-billboard/principle.png)
@@ -63,18 +58,18 @@ The idea is that each corner of the billboard is at the center position, displac
 
  
 
-Of course, we only know the billboard's center position in world space, so we also need the camera's up/right vectors in world space.
+当然，我们仅仅知道公告板中心在世界空间下的坐标，所以我们也需要相机的在世界空间下的up和right向量。
 
-In camera space, the camera's up vector is (0,1,0). To get it in world space, just multiply this by the matrix that goes from Camera Space to World Space, which is, of course, the inverse of the View matrix.
+在相机空间下，相机的up向量是(0,1,0)。要将其转换到世界空间，只需要乘从相机空间到世界空间的转移矩阵，当然也就是视图矩阵(View matrix)的逆矩阵。
 
-An easier way to express the same math is :
+用更简单的方法阐述这个数学运算就是：
 ```
 
 CameraRight_worldspace = {ViewMatrix[0][0], ViewMatrix[1][0], ViewMatrix[2][0]}
 CameraUp_worldspace = {ViewMatrix[0][1], ViewMatrix[1][1], ViewMatrix[2][1]}
 ```
 
-Once we have this, it's very easy to compute the final vertex' position :
+得到了这个之后，计算最终的顶点坐标就非常容易了。
 
 ``` glsl
 vec3 vertexPosition_worldspace =
@@ -84,20 +79,20 @@ vec3 vertexPosition_worldspace =
 ```
 {: .highlightglslvs }
 
-* particleCenter_worldspace is, as its name suggests, the billboard's center position. It is specified with an uniform vec3.
-* squareVertices is the original mesh. squareVertices.x is -0.5 for the left vertices, which are thus moved towars the left of the camera (because of the *CameraRight_worldspace)
-* BillboardSize is the size, in world units, of the billboard, sent as another uniform.
+* particleCenter_worldspace正如其变量名的，表示公告板的中心坐标。它被定义为一个uniform vec3。
+* squareVertices是原网格。左定点squareVertices.x是-0.5，因此也就会被移向相机左侧(因为*CameraRight_worldspace)
+* BillboardSize表示公告板的大小，使用的是世界空间下的单位，并作为uniform传入。
 
-<div><span style="font-size: medium;"><span style="line-height: 24px;">And presto, here's the result. Wasn't this easy ? </span></span><span style="font-size: 16px;"> </span></div>
+<div><span style="font-size: medium;"><span style="line-height: 24px;">一二三 变！结果是这样的，是不是很简单？</span></span><span style="font-size: 16px;"> </span></div>
 ![]({{site.baseurl}}/assets/images/tuto-billboard/2.gif)
 
 
  
 
-For the record, here's how squareVertices is made :
+请注意, 下面是如何生成squareVertices：
 
 ``` cpp
-// The VBO containing the 4 vertices of the particles.
+// 包含例子4个定点的VBO
  static const GLfloat g_vertex_buffer_data[] = {
  -0.5f, -0.5f, 0.0f,
  0.5f, -0.5f, 0.0f,
@@ -106,36 +101,34 @@ For the record, here's how squareVertices is made :
  };
 ```
 
-# Solution #3 : The fixed-size 3D way
+# 方案 #3 : 固定尺寸的3D方法
 
-As you can see above, the size of the billboard changes with respect to the camera's distance. This is the expected result in some cases, but in others, such as health bars, you probably want a fixed-size instead.
+正如你上面看到的，公告板会随着相机的距离改变大小。这在某些情况下是我们期待的，但是在其他情况比如血量条，你可能会希望它能固定大小。
 
-Since the displacement between the center and a corner must be fixed in screen-space, that's exactly what we're going to do : compute the center's position in screen space, and offset it.
+因为中心和四角的位移必须在屏幕空间下计算，我们可以这么做：计算公告板中心在屏幕空间下的位置，在将其偏移。
 
 ``` cpp
 vertexPosition_worldspace = particleCenter_wordspace;
-// Get the screen-space position of the particle's center
+// 计算粒子中心在屏幕空间下的位置
 gl_Position = VP * vec4(vertexPosition_worldspace, 1.0f);
-// Here we have to do the perspective division ourselves.
+// 这里我们必须自己做透视除法
 gl_Position /= gl_Position.w;
 
-// Move the vertex in directly screen space. No need for CameraUp/Right_worlspace here.
+// 直接在屏幕空间下移动顶点。无需考虑CameraUp/Right_worlspace。
 gl_Position.xy += squareVertices.xy * vec2(0.2, 0.05);
 ```
 
-Remember that at this stage of the rendering pipeline, you're in Normalized Device Coordinates, so between -1 and 1 on both axes : it's not in pixels.
+记住，在渲染管线的这一步，你使用的是正规化的设备坐标(Normalized Device Coordinates)，也就是两个坐标取值是在-1到1之间的：这里管线给的不是像素值。
 
-If you want a size in pixels, easy : just use (ScreenSizeInPixels / BillboardSizeInPixels) instead of BillboardSizeInScreenPercentage.
-
+如果你想要使用像素单位的尺寸，很简单：只需要使用 (ScreenSizeInPixels / BillboardSizeInPixels) 而非 BillboardSizeInScreenPercentage。
  
 
 ![]({{site.baseurl}}/assets/images/tuto-billboard/3.gif)
 
 
  
+# 方案 #4 : 仅仅纵向旋转
 
-# Solution #4 : Vertical rotation only
+有些系统会将远处的树木和路灯建模成公告板。你肯定，肯定不想让你的树弯曲：它**一定**是直立的。所以你需要一个混合系统来只让其绕一个轴旋转。
 
-Some systems model faraway trees and lamps as billboards. But you really, really don't want your tree to be bent : it MUST be vertical. So you need an hybrid system that rotates only around one axis.
-
-Well, this one is left as an exercise to the reader !
+好吧，这个留给读者当作练习！
