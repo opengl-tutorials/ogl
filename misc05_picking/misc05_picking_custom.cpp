@@ -76,7 +76,7 @@ void ScreenPosToWorldRay(
 
 
 	out_origin = glm::vec3(lRayStart_world);
-	out_direction = glm::normalize(lRayDir_world);
+	out_direction = lRayDir_world;
 }
 
 
